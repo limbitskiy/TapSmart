@@ -1,0 +1,12 @@
+stages:
+  - deploy
+
+deploy-dev:
+  stage: deploy
+  only:
+    - main
+  script:
+    - cd /var/www/miniapp.tokling.com
+    - git pull
+    - yarn
+    - yarn build
