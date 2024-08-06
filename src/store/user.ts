@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
+import { Howl, Howler } from "howler";
 
 export const useUserStore = defineStore("user", () => {
   const router = useRouter();
@@ -61,6 +62,14 @@ export const useUserStore = defineStore("user", () => {
   };
 
   const fetchInitData = async () => {
+    const sound = new Howl({
+      src: ["/soundtrack.mp3"],
+      volume: 0.5,
+      loop: true,
+    });
+
+    sound.play();
+
     const data = await axios.get("https://httpbin.org/delay/3");
 
     setData(data);

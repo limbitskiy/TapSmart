@@ -28,6 +28,9 @@ import { storeToRefs } from "pinia";
 import TutorialSlide from "../components/TutorialSlide.vue";
 import Button from "@/components/UI/Button.vue";
 import { useRouter } from "vue-router";
+import { useVibrate } from "@vueuse/core";
+
+const { vibrate, stop, isSupported } = useVibrate({ pattern: [300] });
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -43,12 +46,14 @@ const nextSlide = () => {
   if (data.value[currentSlide.value + 1]) {
     currentSlide.value += 1;
   }
+  vibrate();
 };
 
 const prevSlide = () => {
   if (data.value[currentSlide.value - 1]) {
     currentSlide.value -= 1;
   }
+  vibrate();
 };
 
 const onSkip = () => {
