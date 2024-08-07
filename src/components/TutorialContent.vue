@@ -57,7 +57,6 @@ const preloadImages = (data) =>
 const nextSlide = () => {
   if (data.value[currentSlide.value + 1]) {
     currentSlide.value += 1;
-    navigator.vibrate([200, 100, 200]);
   } else {
     vibrate();
   }
@@ -66,7 +65,6 @@ const nextSlide = () => {
 const prevSlide = () => {
   if (data.value[currentSlide.value - 1]) {
     currentSlide.value -= 1;
-    navigator.vibrate([200, 100, 200]);
   } else {
     vibrate();
   }
