@@ -6,7 +6,7 @@ export const fetchSounds = async () => {
   return new Promise((res, rej) => {
     const sound = new Howl({
       src: ["/soundtrack.mp3"],
-      volume: 0.5,
+      volume: 0.3,
       loop: true,
       onload: () => {
         res(sound);

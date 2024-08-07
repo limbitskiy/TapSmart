@@ -57,19 +57,19 @@ const preloadImages = (data) =>
 const nextSlide = () => {
   if (data.value[currentSlide.value + 1]) {
     currentSlide.value += 1;
+    navigator.vibrate([200, 100, 200]);
+  } else {
+    vibrate();
   }
-  console.log(isSupported);
-
-  vibrate();
 };
 
 const prevSlide = () => {
   if (data.value[currentSlide.value - 1]) {
     currentSlide.value -= 1;
+    navigator.vibrate([200, 100, 200]);
+  } else {
+    vibrate();
   }
-  console.log(isSupported);
-
-  vibrate();
 };
 
 const onSkip = () => {
