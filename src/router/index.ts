@@ -1,11 +1,11 @@
 import { createWebHistory, createRouter } from "vue-router";
 
-import Intro from "@/views/Intro.vue";
+import Intro from "@/views/Init.vue";
 
 const routes = [
-  { path: "/", redirect: "/intro" },
+  { path: "/", redirect: "/init" },
   {
-    path: "/intro",
+    path: "/init",
     component: Intro,
     meta: { transition: "long-fade" },
   },

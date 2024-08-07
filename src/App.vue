@@ -1,9 +1,9 @@
 <template>
   <div class="main-page flex w-full h-[100dvh] relative">
     <RouterView v-slot="{ Component, route }">
-      <transition :name="route.meta.transition || 'fade'" mode="out-in">
+      <Transition :name="route.meta.T || 'fade'" mode="out-in">
         <component :is="Component" />
-      </transition>
+      </Transition>
     </RouterView>
   </div>
 </template>

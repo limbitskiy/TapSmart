@@ -1,12 +1,10 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
 import { Howl, Howler } from "howler";
+import { fetchSounds, fetchInitData } from "@/api";
 
 export const useUserStore = defineStore("user", () => {
-  const router = useRouter();
-
   const state = ref({
     locale: {},
     tutorial: [
@@ -49,7 +47,10 @@ export const useUserStore = defineStore("user", () => {
         icon: "options",
       },
     ],
+    soundtrack: null,
   });
+
+  const router = useRouter();
 
   const tutorial = computed(() => state.value.tutorial);
 
@@ -61,25 +62,27 @@ export const useUserStore = defineStore("user", () => {
     state.value.data = data;
   };
 
-  const fetchInitData = async () => {
-    const sound = new Howl({
-      src: ["/soundtrack.mp3"],
-      volume: 0.5,
-      loop: true,
-    });
+  const loadInitData = async () => {
+    const res = await Promise.all([fetchSounds(), fetchInitData()]);
 
-    sound.play();
+    console.log(res);
 
-    const data = await axios.get("https://httpbin.org/delay/3");
+    state.value.soundtrack = res[0];
 
-    setData(data);
+    setData(res[1]);
 
+    return true;
+  };
+
+  const startApp = () => {
     if (state.value.tutorial?.length) {
       router.push("/tutorial");
     } else {
       router.push("/");
     }
+
+    state.value.soundtrack.play();
   };
 
-  return { tutorial, menu, locale, fetchInitData };
+  return { tutorial, menu, locale, loadInitData, startApp };
 });
