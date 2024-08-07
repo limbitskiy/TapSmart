@@ -7,8 +7,8 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: white;
+  background-color: #000;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -23,15 +23,36 @@
 
 #app {
   height: 100dvh;
-  display: grid;
-  place-items: center;
 }
 
 .tutorial-bg {
-  // background-image: url("/tiger.png");
   background-size: 55dvh;
   background-repeat: no-repeat;
   background-position: bottom;
+}
+
+.page-title {
+  @apply text-3xl font-bold mt-2;
+
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.page-subtitle {
+  @apply mt-2 max-w-[80%];
+}
+
+.pill-title {
+  @apply text-2xl font-bold mt-2;
+
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.font-poppins {
+  font-family: "Poppins", sans-serif;
 }
 
 // navigation
@@ -43,7 +64,7 @@
 // transitions
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.2s ease;
 }
 
 .fade-enter-from,
@@ -59,15 +80,4 @@
 .long-fade-enter-from,
 .long-fade-leave-to {
   opacity: 0;
-}
-
-.slide-enter-active,
-.slide-leave-active {
-  transition: transform 15s;
-}
-.slide-enter, .slide-leave-to /* .slide-leave-active в версиях <2.1.8 */ {
-  transform: translateX(100%);
-}
-.slide-leave-active {
-  position: absolute;
 }

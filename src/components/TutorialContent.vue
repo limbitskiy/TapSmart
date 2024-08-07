@@ -2,7 +2,7 @@
   <div class="tutorial-cnt flex-1 flex flex-col p-4">
     <div class="tutorial-header py-2 flex items-center justify-between absolute top-2 w-[calc(100vw-2rem)] z-20">
       <div class="tutorial-header__start">
-        <span class="text-[var(--accent-color)]">Taxes</span>
+        <span class="text-[var(--accent-color)]">{{ data[currentSlide].topic }}</span>
       </div>
       <div class="tutorial-header__end">
         <button class="border border-gray-400 px-6 py-1 rounded-lg" @click="onSkip">Skip</button>
