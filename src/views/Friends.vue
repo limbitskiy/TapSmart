@@ -69,7 +69,7 @@
           <span class="pill-title">Your friends</span>
           <div class="counter bg-[var(--grey-dark)] py-1 px-2 rounded flex items-center h-7 font-semibold">{{ filteredFriends.length }}</div>
         </div>
-        <div class="refresh-friends" @click="onRefreshFriends">
+        <div class="refresh-friends mr-4" @click="onRefreshFriends">
           <img src="@/assets/icons/refresh.svg" />
         </div>
       </div>

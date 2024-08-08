@@ -1,16 +1,14 @@
 <template>
   <div class="main-page flex w-full h-[100dvh] relative">
     <RouterView v-slot="{ Component, route }">
-      <Suspense>
-        <Transition :name="route.meta.transition || 'fade'" mode="out-in">
-          <component :is="Component" />
-        </Transition>
-      </Suspense>
+      <!-- <Suspense> -->
+      <Transition :name="route.meta.transition || 'fade'" mode="out-in">
+        <component :is="Component" />
+      </Transition>
+      <!-- </Suspense> -->
     </RouterView>
 
-    <Transition name="toast-slide">
-      <Toast v-if="toast.isShown" />
-    </Transition>
+    <Toast />
   </div>
 </template>
 
@@ -22,5 +20,4 @@ import { onMounted } from "vue";
 import { RouterView } from "vue-router";
 
 const userStore = useUserStore();
-const { toast } = storeToRefs(userStore);
 </script>

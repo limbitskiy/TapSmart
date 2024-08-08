@@ -99,7 +99,7 @@ export const useUserStore = defineStore("user", () => {
         },
       ],
     },
-    soundtrack: null,
+    sounds: {},
     toast: {
       message: null,
       isShown: false,
@@ -118,14 +118,24 @@ export const useUserStore = defineStore("user", () => {
 
   const toast = computed(() => state.value.toast);
 
+  const sounds = computed(() => state.value.sounds);
+
   const setData = (data) => {
     state.value.data = data;
   };
 
-  const playSoundtrack = () => {
-    if (state.value.soundtrack) {
-      state.value.soundtrack.play();
-    }
+  // const playSoundtrack = () => {
+  //   if (state.value.soundtrack) {
+  //     state.value.soundtrack.play();
+  //   }
+  // };
+
+  const playSound = (soundId) => {
+    state.value.sounds[soundId].play();
+  };
+
+  const addSound = (id, sound) => {
+    state.value.sounds[id] = sound;
   };
 
   // const loadInitData = async () => {
@@ -157,5 +167,5 @@ export const useUserStore = defineStore("user", () => {
     }, 3000);
   };
 
-  return { tutorial, friends, menu, locale, toast, startApp, showToast };
+  return { tutorial, friends, menu, locale, toast, sounds, startApp, showToast, addSound, playSound };
 });

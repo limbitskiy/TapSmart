@@ -225,7 +225,7 @@ import { tg } from "../api/telegram";
 import { useUserStore } from "@/store/user.ts";
 
 const userStore = useUserStore();
-const { startApp } = userStore;
+const { startApp, addSound, playSound } = userStore;
 
 const loading = ref(true);
 const errors = ref([]);
@@ -238,7 +238,7 @@ const onClick = () => {
 
 tg?.ready();
 
-preloadAssets().then((data) => {
+preloadAssets({ addSound }).then((data) => {
   const preloadErrors = data.filter((p) => p.status === "rejected");
 
   if (preloadErrors.length) {
@@ -247,5 +247,6 @@ preloadAssets().then((data) => {
   }
 
   loading.value = false;
+  // playSound("soundtrack");
 });
 </script>

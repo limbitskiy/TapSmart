@@ -24,3 +24,10 @@ export const images = {
 export const sounds = {
   soundtrack: "/soundtrack.mp3",
 };
+
+export const fonts = {
+  Poppins: {
+    src: "./src/assets/fonts/poppins-v21-latin-700.woff2",
+    weight: 700,
+  },
+};

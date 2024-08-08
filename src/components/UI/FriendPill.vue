@@ -1,6 +1,6 @@
 <template>
   <Pill>
-    <div class="pill-content flex items-center justify-between gap-4 w-[calc(100vw-6em)]">
+    <div class="pill-content flex items-center justify-between gap-4 w-full">
       <slot name="start">
         <div class="start flex gap-3">
           <div class="avatar flex">

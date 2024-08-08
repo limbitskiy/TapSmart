@@ -1,5 +1,5 @@
 <template>
-  <nav class="fixed bottom-2 w-[100vw] p-4">
+  <nav class="fixed bottom-0 w-full p-4">
     <ul class="flex items-center justify-around bg-black text-white rounded-2xl py-2">
       <!-- <span>{{ Object.keys(route) }}</span>
       <span>{{ route.path }}</span> -->
