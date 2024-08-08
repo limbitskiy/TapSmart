@@ -81,3 +81,13 @@
 .long-fade-leave-to {
   opacity: 0;
 }
+
+.toast-slide-enter-active,
+.toast-slide-leave-active {
+  transition: 0.5s ease;
+}
+
+.toast-slide-enter-from,
+.toast-slide-leave-to {
+  transform: translateY(-100%);
+}

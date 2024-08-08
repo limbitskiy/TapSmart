@@ -46,4 +46,11 @@ const router = createRouter({
   routes,
 });
 
+// access only through /init
+// router.beforeEach((to, from) => {
+//   if (to.path !== "/init" && from.path === "/") {
+//     return { path: "/init" };
+//   }
+// });
+
 export default router;

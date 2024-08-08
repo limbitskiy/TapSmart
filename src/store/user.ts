@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { Howl, Howler } from "howler";
-import { fetchSounds, fetchInitData } from "@/api";
+import { fetchSounds, fetchInitData } from "@/api/server";
 
 export const useUserStore = defineStore("user", () => {
   const state = ref({
@@ -59,6 +59,7 @@ export const useUserStore = defineStore("user", () => {
           title: "Lord",
           money: "120K",
           moneyEarned: "564K",
+          points: "340",
         },
         {
           id: 4343243449,
@@ -67,6 +68,7 @@ export const useUserStore = defineStore("user", () => {
           title: "Lord",
           money: "100K",
           moneyEarned: "481K",
+          points: "2K",
         },
         {
           id: 3254235,
@@ -75,6 +77,7 @@ export const useUserStore = defineStore("user", () => {
           title: "Duke",
           money: "80K",
           moneyEarned: "371K",
+          points: "28K",
         },
         {
           id: 3254611,
@@ -83,6 +86,7 @@ export const useUserStore = defineStore("user", () => {
           title: "Duke",
           money: "75K",
           moneyEarned: "271K",
+          points: "871K",
         },
         {
           id: 3452221,
@@ -91,10 +95,15 @@ export const useUserStore = defineStore("user", () => {
           title: "Duke",
           money: "45K",
           moneyEarned: "593K",
+          points: "563",
         },
       ],
     },
     soundtrack: null,
+    toast: {
+      message: null,
+      isShown: false,
+    },
   });
 
   const router = useRouter();
@@ -106,6 +115,8 @@ export const useUserStore = defineStore("user", () => {
   const menu = computed(() => state.value.menu);
 
   const locale = computed(() => state.value.locale);
+
+  const toast = computed(() => state.value.toast);
 
   const setData = (data) => {
     state.value.data = data;
@@ -135,5 +146,17 @@ export const useUserStore = defineStore("user", () => {
     // playSoundtrack();
   };
 
-  return { tutorial, friends, menu, locale, loadInitData, startApp };
+  const showToast = (text) => {
+    if (state.value.toast.isShown) return;
+
+    state.value.toast.message = text;
+    state.value.toast.isShown = true;
+
+    setTimeout(() => {
+      state.value.toast.message = null;
+      state.value.toast.isShown = false;
+    }, 3000);
+  };
+
+  return { tutorial, friends, menu, locale, toast, loadInitData, startApp, showToast };
 });

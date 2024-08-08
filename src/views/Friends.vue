@@ -75,21 +75,21 @@
       </div>
 
       <div class="switches flex justify-start gap-3 mt-4">
-        <Button class="py-0 px-2" :class="filters.online ? '' : 'bg-gray-500 text-white'" @click="onOnlineFilter">Online</Button>
-        <Button class="py-0 px-2" :class="filters.battles ? '' : 'bg-gray-500 text-white'" @click="onBattlesFilter">Battles</Button>
+        <Button class="!py-1 !px-3" :class="filters.online ? '' : 'bg-gray-500 text-white'" @click="onOnlineFilter">Online</Button>
+        <Button class="!py-1 !px-3" :class="filters.battles ? '' : 'bg-gray-500 text-white'" @click="onBattlesFilter">Battles</Button>
       </div>
 
       <div class="friend-list flex flex-col gap-4 my-4">
-        <FriendPill v-for="friend in filteredFriends" :key="friend.id" :data="friend" color="dark" />
+        <FriendPill v-for="friend in filteredFriends" :key="friend.id" :data="friend" color="dark" :battles="filters.battles" />
       </div>
     </Pill>
 
     <div class="invite-btn-cnt fixed bottom-24 w-full p-4 flex justify-between gap-3">
-      <Button class="flex items-center justify-between flex-1">
+      <Button class="flex items-center justify-between flex-1" @click="onInviteFriend">
         <span class="text-xl">Invite a friend</span>
         <img src="@/assets/images/paw.svg" />
       </Button>
-      <Button black><img src="@/assets/icons/copy.svg" /></Button>
+      <Button black @click="onCopyToClipboard"><img src="@/assets/icons/copy.svg" /></Button>
     </div>
   </div>
 </template>
@@ -102,9 +102,11 @@ import Button from "@/components/UI/Button.vue";
 import IconPill from "@/components/UI/IconPill.vue";
 import Pill from "@/components/UI/Pill.vue";
 import FriendPill from "@/components/UI/FriendPill.vue";
+import { getUserId } from "@/api/telegram";
 
 const userStore = useUserStore();
 
+const { showToast } = userStore;
 const { friends: data } = storeToRefs(userStore);
 
 const filters = ref({
@@ -131,15 +133,22 @@ const onBattlesFilter = () => {
   filters.value.battles = !filters.value.battles;
 };
 
-onMounted(() => {
-  const tg = window.Telegram?.WebApp;
+const generateLink = () => {
+  const userId = getUserId();
+  return `${import.meta.env.VITE_BOT_NAME}?startapp=${userId}`;
+};
 
-  tg?.MainButton.setParams({
-    text: "Invite friends",
-    color: "#FD911E",
-    text_color: "#222",
-  });
+const onInviteFriend = () => {
+  const link = generateLink();
+  console.log(`link is: ${link}`);
+  showToast(`Link is: ${link}`);
+};
 
-  tg?.MainButton.show();
-});
+const onCopyToClipboard = () => {
+  const link = generateLink();
+  navigator.clipboard.writeText(link);
+  showToast("Link has been copied to clipboard");
+};
+
+onMounted(() => {});
 </script>

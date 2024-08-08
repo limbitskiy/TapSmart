@@ -5,16 +5,21 @@
         <component :is="Component" />
       </Transition>
     </RouterView>
+    <Transition name="toast-slide">
+      <Toast v-if="toast.isShown" />
+    </Transition>
   </div>
 </template>
 
 <script setup lang="ts">
+import Toast from "@/components/Toast.vue";
 import { useUserStore } from "@/store/user.ts";
 import { storeToRefs } from "pinia";
 import { onMounted } from "vue";
 import { RouterView } from "vue-router";
 
 const userStore = useUserStore();
+const { toast } = storeToRefs(userStore);
 
 onMounted(() => {
   const tg = window.Telegram?.WebApp;
