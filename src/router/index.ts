@@ -1,41 +1,47 @@
 import { createWebHistory, createRouter } from "vue-router";
 
-import Intro from "@/views/Init.vue";
+import Init from "@/views/Init.vue";
+import Tutorial from "@/views/Tutorial.vue";
+import Home from "@/views/Home.vue";
+import Main from "@/views/Main.vue";
+import Battles from "@/views/Battles.vue";
+import Friends from "@/views/Friends.vue";
+import Options from "@/views/Options.vue";
 
 const routes = [
   { path: "/", redirect: "/init" },
   {
     path: "/init",
-    component: Intro,
+    component: Init,
     meta: { transition: "long-fade" },
   },
   {
     path: "/tutorial",
-    component: () => import("@/views/Tutorial.vue"),
+    component: Tutorial,
   },
   {
     path: "/home",
-    component: () => import("@/views/Home.vue"),
+    component: Home,
     children: [
       {
         id: 0,
         path: "main",
-        component: () => import("@/views/Main.vue"),
+        component: Main,
       },
       {
         id: 1,
         path: "battles",
-        component: () => import("@/views/Battles.vue"),
+        component: Battles,
       },
       {
         id: 2,
         path: "friends",
-        component: () => import("@/views/Friends.vue"),
+        component: Friends,
       },
       {
         id: 3,
         path: "options",
-        component: () => import("@/views/Options.vue"),
+        component: Options,
       },
     ],
   },
@@ -47,10 +53,10 @@ const router = createRouter({
 });
 
 // access only through /init
-router.beforeEach((to, from) => {
-  if (to.path !== "/init" && from.path === "/") {
-    return { path: "/init" };
-  }
-});
+// router.beforeEach((to, from) => {
+//   if (to.path !== "/init" && from.path === "/") {
+//     return { path: "/init" };
+//   }
+// });
 
 export default router;

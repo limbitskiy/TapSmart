@@ -209,7 +209,9 @@
           </linearGradient>
         </defs>
       </svg>
-      <span v-if="error" class="text-xl font-bold text-red-400">{{ error }}</span>
+      <ul v-if="errors.length" class="text-red-400 text-center">
+        <li v-for="error in errors" :key="error">{{ error }}</li>
+      </ul>
       <span v-else-if="loading" class="text-xl font-bold text-[var(--accent-color)]">Loading...</span>
       <span v-else class="text-xl font-bold animate-pulse">Please tap screen</span>
     </div>
@@ -218,14 +220,15 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-
+import preloadAssets from "@/composables/preloadAssets.ts";
+import { tg } from "../api/telegram";
 import { useUserStore } from "@/store/user.ts";
 
 const userStore = useUserStore();
-const { loadInitData, startApp } = userStore;
+const { startApp } = userStore;
 
 const loading = ref(true);
-const error = ref(false);
+const errors = ref([]);
 
 const onClick = () => {
   if (!loading.value) {
@@ -233,12 +236,16 @@ const onClick = () => {
   }
 };
 
-loadInitData()
-  .then(() => {
-    loading.value = false;
-  })
-  .catch((e) => {
-    // loading.value = false;
-    error.value = e.message;
-  });
+tg?.ready();
+
+preloadAssets().then((data) => {
+  const preloadErrors = data.filter((p) => p.status === "rejected");
+
+  if (preloadErrors.length) {
+    errors.value = preloadErrors.map((err) => err.reason);
+    return;
+  }
+
+  loading.value = false;
+});
 </script>

@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
-import { Howl, Howler } from "howler";
-import { fetchSounds, fetchInitData } from "@/api/server";
+// import { Howl, Howler } from "howler";
+// import { fetchSounds, fetchInitData } from "@/api/server";
 
 export const useUserStore = defineStore("user", () => {
   const state = ref({
@@ -128,13 +128,12 @@ export const useUserStore = defineStore("user", () => {
     }
   };
 
-  const loadInitData = async () => {
-    // const res = await Promise.all([fetchSounds, fetchInitData]);
-    const res = await Promise.all([fetchInitData]);
-    state.value.soundtrack = res[0];
-    setData(res[1]);
-    return true;
-  };
+  // const loadInitData = async () => {
+  //   const res = await Promise.all([fetchInitData]);
+  //   state.value.soundtrack = res[0];
+  //   setData(res[1]);
+  //   return true;
+  // };
 
   const startApp = () => {
     if (state.value.tutorial?.length) {
@@ -158,5 +157,5 @@ export const useUserStore = defineStore("user", () => {
     }, 3000);
   };
 
-  return { tutorial, friends, menu, locale, toast, loadInitData, startApp, showToast };
+  return { tutorial, friends, menu, locale, toast, startApp, showToast };
 });

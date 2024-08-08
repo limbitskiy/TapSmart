@@ -1,4 +1,4 @@
-const tg = window.Telegram?.WebApp;
+export const tg = window.Telegram?.WebApp;
 
 export const showMainButton = () => {
   tg?.MainButton.setParams({

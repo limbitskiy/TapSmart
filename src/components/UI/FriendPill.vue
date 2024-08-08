@@ -1,6 +1,6 @@
 <template>
   <Pill>
-    <div class="pill-content flex items-center justify-between gap-4">
+    <div class="pill-content flex items-center justify-between gap-4 w-[calc(100vw-6em)]">
       <slot name="start">
         <div class="start flex gap-3">
           <div class="avatar flex">
@@ -22,11 +22,11 @@
         </div>
       </slot>
       <slot name="end">
-        <div v-if="battles" class="battles-played flex items-center gap-2">
+        <div v-show="battles" class="battles-played flex items-center gap-2">
           <img class="h-6" src="/swords.png" />
           <span class="text-xl font-bold">{{ data.points }}</span>
         </div>
-        <div v-else class="money-earned flex items-center gap-2">
+        <div v-show="!battles" class="money-earned flex items-center gap-2">
           <img class="h-6" src="/coin.png" />
           <span class="text-xl font-bold text-[var(--accent-color)]">{{ data.moneyEarned }}</span>
         </div>

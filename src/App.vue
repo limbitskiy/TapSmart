@@ -1,10 +1,13 @@
 <template>
   <div class="main-page flex w-full h-[100dvh] relative">
     <RouterView v-slot="{ Component, route }">
-      <Transition :name="route.meta.T || 'fade'" mode="out-in">
-        <component :is="Component" />
-      </Transition>
+      <Suspense>
+        <Transition :name="route.meta.transition || 'fade'" mode="out-in">
+          <component :is="Component" />
+        </Transition>
+      </Suspense>
     </RouterView>
+
     <Transition name="toast-slide">
       <Toast v-if="toast.isShown" />
     </Transition>
@@ -20,10 +23,4 @@ import { RouterView } from "vue-router";
 
 const userStore = useUserStore();
 const { toast } = storeToRefs(userStore);
-
-onMounted(() => {
-  const tg = window.Telegram?.WebApp;
-
-  tg?.ready();
-});
 </script>

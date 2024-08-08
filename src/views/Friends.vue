@@ -79,9 +79,9 @@
         <Button class="!py-1 !px-3" :class="filters.battles ? '' : 'bg-gray-500 text-white'" @click="onBattlesFilter">Battles</Button>
       </div>
 
-      <div class="friend-list flex flex-col gap-4 my-4">
+      <TransitionGroup class="friend-list flex flex-col gap-4 my-4" name="list" tag="div">
         <FriendPill v-for="friend in filteredFriends" :key="friend.id" :data="friend" color="dark" :battles="filters.battles" />
-      </div>
+      </TransitionGroup>
     </Pill>
 
     <div class="invite-btn-cnt fixed bottom-24 w-full p-4 flex justify-between gap-3">
