@@ -118,7 +118,8 @@ export const useUserStore = defineStore("user", () => {
   };
 
   const loadInitData = async () => {
-    const res = await Promise.all([fetchSounds, fetchInitData]);
+    // const res = await Promise.all([fetchSounds, fetchInitData]);
+    const res = await Promise.all([fetchInitData]);
     state.value.soundtrack = res[0];
     setData(res[1]);
     return true;

@@ -130,4 +130,16 @@ const onOnlineFilter = () => {
 const onBattlesFilter = () => {
   filters.value.battles = !filters.value.battles;
 };
+
+onMounted(() => {
+  const tg = window.Telegram?.WebApp;
+
+  tg?.MainButton.setParams({
+    text: "Invite friends",
+    color: "#FD911E",
+    text_color: "#222",
+  });
+
+  tg?.MainButton.show();
+});
 </script>

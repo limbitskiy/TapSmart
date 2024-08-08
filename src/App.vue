@@ -11,7 +11,14 @@
 <script setup lang="ts">
 import { useUserStore } from "@/store/user.ts";
 import { storeToRefs } from "pinia";
+import { onMounted } from "vue";
 import { RouterView } from "vue-router";
 
 const userStore = useUserStore();
+
+onMounted(() => {
+  const tg = window.Telegram?.WebApp;
+
+  tg?.ready();
+});
 </script>
