@@ -102,7 +102,7 @@ import Button from "@/components/UI/Button.vue";
 import IconPill from "@/components/UI/IconPill.vue";
 import Pill from "@/components/UI/Pill.vue";
 import FriendPill from "@/components/UI/FriendPill.vue";
-import { getUserId } from "@/api/telegram";
+import { tg, getUserId } from "@/api/telegram";
 
 const userStore = useUserStore();
 
@@ -135,14 +135,14 @@ const onBattlesFilter = () => {
 
 const generateLink = () => {
   const userId = getUserId();
-  return `${import.meta.env.VITE_BOT_NAME}?startapp=${userId}`;
+  return `${import.meta.env.VITE_APP_PATH}?startapp=${userId}`;
 };
 
 const onInviteFriend = () => {
   const link = generateLink();
   console.log(`link is: ${link}`);
   // showToast(`Link is: ${link}`);
-  window.location = `https://t.me/share/url?url={${link}}&text={WoW! Check out this cool battles game i just found!}`;
+  tg.openTelegramLink(`https://t.me/share/url?url=${link}&text=WoW! Check out this cool battles game i just found!`);
 };
 
 const onCopyToClipboard = () => {
