@@ -1,5 +1,5 @@
 <template>
-  <div class="home-friends flex-1 relative">
+  <div id="home-friends" class="flex-1">
     <div class="top-part p-5">
       <div class="page-title mb-4">{{ data.title }}</div>
       <div class="page-subtitle">{{ data.subtitle }}</div>
@@ -63,7 +63,7 @@
     </Pill>
 
     <!-- friends pill -->
-    <Pill class="py-8 mt-12 mb-36" color="darker">
+    <Pill class="py-8 mt-12 mb-36 relative" color="darker">
       <div class="header flex items-center justify-between">
         <div class="title flex gap-2">
           <span class="pill-title">Your friends</span>

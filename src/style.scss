@@ -2,14 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-// @font-face {
-//   font-display: swap;
-//   font-family: "Poppins";
-//   font-style: normal;
-//   font-weight: 700;
-//   src: url("@/assets/fonts/poppins-v21-latin-700.woff2") format("woff2");
-// }
-
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -40,7 +32,7 @@
 }
 
 .page-title {
-  @apply text-3xl font-bold mt-2;
+  @apply text-3xl font-bold mt-2 leading-10;
 
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -67,53 +59,4 @@
 .router-link-active {
   outline: 2px solid var(--accent-color);
   filter: none;
-}
-
-// transitions
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.long-fade-enter-active,
-.long-fade-leave-active {
-  transition: opacity 5s ease;
-}
-
-.long-fade-enter-from,
-.long-fade-leave-to {
-  opacity: 0;
-}
-
-.toast-slide-enter-active,
-.toast-slide-leave-active {
-  transition: 0.4s ease;
-}
-
-.toast-slide-enter-from,
-.toast-slide-leave-to {
-  transform: translateY(-100%);
-}
-
-.list-move, /* apply transition to moving elements */
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.5s ease;
-}
-
-.list-enter-from,
-.list-leave-to {
-  opacity: 0;
-  // transform: translateX(100%);
-}
-
-/* ensure leaving items are taken out of layout flow so that moving
-   animations can be calculated correctly. */
-.list-leave-active {
-  position: absolute;
 }

@@ -1,5 +1,6 @@
 import { createApp } from "vue";
 import "./style.scss";
+import "@/assets/css/animation.scss";
 import router from "./router";
 import { createPinia } from "pinia";
 import App from "./App.vue";

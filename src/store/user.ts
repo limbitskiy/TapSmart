@@ -7,21 +7,29 @@ import { useRouter } from "vue-router";
 export const useUserStore = defineStore("user", () => {
   const state = ref({
     locale: {},
-    // tutorial: [
-    //   {
-    //     id: 0,
-    //     title: "Welcome to our app!",
-    //     subtitle: "Tiger-app is a multiplayer platform for learning languages, making friends and earning achievements.",
-    //     background: "tiger-bg.png",
-    //   },
-    //   {
-    //     id: 1,
-    //     title: "<span class='text-[var(--accent-color)]'>Play battles,</span> earn friends and learn!",
-    //     topic: "Taxes",
-    //     subtitle: "In Tiger-app you can play different types of battles, earn new achievements and event make new friends while you're at it",
-    //     background: "tiger-bg1.png",
-    //   },
-    // ],
+    tutorial: [
+      {
+        id: 0,
+        title: "<span class='text-[var(--accent-color)]'>Welcome</span><br /> to our app!",
+        subtitle: "Tiger-app is a multiplayer platform for learning languages, making friends and earning achievements.",
+        "bg-image": "tiger-bg.png",
+        "bg-color": "#1f2937",
+      },
+      {
+        id: 1,
+        title: "<span class='text-[var(--accent-color)]'>Play battles,</span> earn friends and learn!",
+        topic: "Battles",
+        subtitle: "In Tiger-app you can play different types of battles, earn new achievements and event make new friends while you're at it",
+        "bg-image": "tiger-bg1.png",
+        "bg-color": "#281f37",
+      },
+      {
+        id: 2,
+        title: "Confirm languages",
+        subtitle: "Just to be sure, let's confirm our target and native languages",
+        "bg-color": "#27396d",
+      },
+    ],
     menu: [
       {
         id: 0,
@@ -90,7 +98,7 @@ export const useUserStore = defineStore("user", () => {
         },
         {
           id: 3452221,
-          name: "Amy_345621",
+          name: "Annie_345621",
           isOnline: true,
           title: "Duke",
           money: "45K",
@@ -104,6 +112,7 @@ export const useUserStore = defineStore("user", () => {
       message: null,
       isShown: false,
     },
+    entryPoint: "/required-settings",
   });
 
   const router = useRouter();
@@ -124,12 +133,6 @@ export const useUserStore = defineStore("user", () => {
     state.value.data = data;
   };
 
-  // const playSoundtrack = () => {
-  //   if (state.value.soundtrack) {
-  //     state.value.soundtrack.play();
-  //   }
-  // };
-
   const playSound = (soundId) => {
     state.value.sounds[soundId].play();
   };
@@ -138,21 +141,12 @@ export const useUserStore = defineStore("user", () => {
     state.value.sounds[id] = sound;
   };
 
-  // const loadInitData = async () => {
-  //   const res = await Promise.all([fetchInitData]);
-  //   state.value.soundtrack = res[0];
-  //   setData(res[1]);
-  //   return true;
-  // };
-
   const startApp = () => {
-    if (state.value.tutorial?.length) {
-      router.push("/tutorial");
+    if (state.value.entryPoint) {
+      router.push(state.value.entryPoint);
     } else {
-      router.push("/home/friends");
+      router.push("/home/main");
     }
-
-    // playSoundtrack();
   };
 
   const showToast = (text) => {

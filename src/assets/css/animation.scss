@@ -1,0 +1,64 @@
+// transitions
+
+// routes
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+// intro
+.long-fade-enter-active,
+.long-fade-leave-active {
+  transition: opacity 5s ease;
+}
+
+.long-fade-enter-from,
+.long-fade-leave-to {
+  opacity: 0;
+}
+
+// toast
+.toast-slide-enter-active,
+.toast-slide-leave-active {
+  transition: 0.4s ease;
+}
+
+.toast-slide-enter-from,
+.toast-slide-leave-to {
+  transform: translateY(-100%);
+}
+
+// friends-list
+.list-move,
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  scale: 0;
+}
+
+.list-leave-active {
+  position: absolute;
+  transition: none !important;
+  z-index: -1;
+}
+
+// modal
+.modal-slide-up-enter-active,
+.modal-slide-up-leave-active {
+  transition: 0.4s ease;
+}
+
+.modal-slide-up-enter-from,
+.modal-slide-up-leave-to {
+  transform: translateY(100%);
+}

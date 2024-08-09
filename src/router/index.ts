@@ -7,8 +7,11 @@ import Main from "@/views/Main.vue";
 import Battles from "@/views/Battles.vue";
 import Friends from "@/views/Friends.vue";
 import Options from "@/views/Options.vue";
+import NotFound from "@/views/NotFound.vue";
+import RequiredSettings from "@/views/RequiredSettings.vue";
 
 const routes = [
+  { path: "/:pathMatch(.*)*", component: NotFound },
   { path: "/", redirect: "/init" },
   {
     path: "/init",
@@ -18,6 +21,10 @@ const routes = [
   {
     path: "/tutorial",
     component: Tutorial,
+  },
+  {
+    path: "/required-settings",
+    component: RequiredSettings,
   },
   {
     path: "/home",

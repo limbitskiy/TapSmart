@@ -27,9 +27,6 @@ import { storeToRefs } from "pinia";
 import TutorialSlide from "../components/TutorialSlide.vue";
 import Button from "@/components/UI/Button.vue";
 import { useRouter } from "vue-router";
-import { useVibrate } from "@vueuse/core";
-
-const { vibrate, stop, isSupported } = useVibrate({ pattern: [300, 100, 300] });
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -39,42 +36,19 @@ const currentSlide = ref(0);
 
 // const computedStyles = computed(() => "url(/" + data.value[currentSlide.value].picture + ")");
 
-const preloadImages = (data) =>
-  Promise.all(
-    data.value.map(
-      (item) =>
-        new Promise((res, rej) => {
-          const image = new Image();
-          image.onload = () => {
-            res(image);
-          };
-          image.onerror = rej;
-          image.src = "/" + item.background;
-        })
-    )
-  );
-
 const nextSlide = () => {
   if (data.value[currentSlide.value + 1]) {
     currentSlide.value += 1;
-  } else {
-    vibrate();
   }
 };
 
 const prevSlide = () => {
   if (data.value[currentSlide.value - 1]) {
     currentSlide.value -= 1;
-  } else {
-    vibrate();
   }
 };
 
 const onSkip = () => {
   router.push("/home/main");
 };
-
-onMounted(async () => {
-  await preloadImages(data);
-});
 </script>

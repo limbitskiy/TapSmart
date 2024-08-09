@@ -21,6 +21,7 @@ export const assets = {
   copy: "assets/icons/copy.svg",
   refresh: "assets/icons/refresh.svg",
   paw: "assets/images/paw.svg",
+  "chevron-right": "assets/icons/chevron-right.svg",
 };
 
 export const sounds = {
