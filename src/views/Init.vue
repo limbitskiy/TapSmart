@@ -209,7 +209,7 @@
           </linearGradient>
         </defs>
       </svg>
-      <ul v-if="errors.length" class="text-red-400 text-center">
+      <ul v-if="errors.length" class="text-red-400 text-center max-h-[50dvh] overflow-auto">
         <li v-for="error in errors" :key="error">{{ error }}</li>
       </ul>
       <span v-else-if="loading" class="text-xl font-bold text-[var(--accent-color)]">Loading...</span>

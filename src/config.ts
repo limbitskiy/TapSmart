@@ -14,11 +14,13 @@ export const images = {
   "telegram-premium": "/telegram-premium.png",
   "tutorial-bg1": "/tiger-bg.png",
   "tutorial-bg2": "/tiger-bg1.png",
+};
 
-  // assets folder
-  copy: "./src/assets/icons/copy.svg",
-  refresh: "./src/assets/icons/refresh.svg",
-  paw: "./src/assets/images/paw.svg",
+// assets folder
+export const assets = {
+  copy: "assets/icons/copy.svg",
+  refresh: "assets/icons/refresh.svg",
+  paw: "assets/images/paw.svg",
 };
 
 export const sounds = {
@@ -27,7 +29,7 @@ export const sounds = {
 
 export const fonts = {
   Poppins: {
-    src: "./src/assets/fonts/poppins-v21-latin-700.woff2",
+    src: "assets/fonts/poppins-v21-latin-700.woff2",
     weight: 700,
   },
 };

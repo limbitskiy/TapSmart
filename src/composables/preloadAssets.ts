@@ -1,4 +1,4 @@
-import { images, sounds, fonts } from "@/config.ts";
+import { images, sounds, fonts, assets } from "@/config.ts";
 import { Howl, Howler } from "howler";
 
 async function preloadAssets({ addSound }) {
@@ -6,7 +6,7 @@ async function preloadAssets({ addSound }) {
     ...Object.keys(fonts).map(
       (key) =>
         new Promise((res, rej) => {
-          const font = new FontFace(key, `url(${fonts[key].src})`, {
+          const font = new FontFace(key, `url(${getAssetURL(fonts[key].src)}`, {
             weight: fonts[key].weight,
           });
 
@@ -15,7 +15,23 @@ async function preloadAssets({ addSound }) {
           font
             .load()
             .then(() => res(font))
-            .catch(() => rej(new Error(`Couldn't load font: '${key}'`)));
+            .catch((err) => {
+              console.error(err);
+              rej(new Error(`Couldn't load font: '${key}'`));
+            });
+        })
+    ),
+    ...Object.keys(assets).map(
+      (key) =>
+        new Promise((res, rej) => {
+          const image = new Image();
+          image.src = getAssetURL(assets[key]);
+          image.onload = () => {
+            res(image);
+          };
+          image.onerror = () => {
+            rej(new Error(`Couldn't load image: '${assets[key]}'`));
+          };
         })
     ),
     ...Object.keys(images).map(
@@ -49,6 +65,10 @@ async function preloadAssets({ addSound }) {
         })
     ),
   ]);
+}
+
+function getAssetURL(url) {
+  return new URL(`../${url}`, import.meta.url).href;
 }
 
 export default preloadAssets;
