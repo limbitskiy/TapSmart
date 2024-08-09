@@ -110,7 +110,7 @@ const { showToast } = userStore;
 const { friends: data } = storeToRefs(userStore);
 
 const filters = ref({
-  online: true,
+  online: false,
   battles: false,
 });
 
@@ -141,7 +141,8 @@ const generateLink = () => {
 const onInviteFriend = () => {
   const link = generateLink();
   console.log(`link is: ${link}`);
-  showToast(`Link is: ${link}`);
+  // showToast(`Link is: ${link}`);
+  window.location = `https://t.me/share/url?url={${link}}&text={WoW! Check out this cool battles game i just found!}`;
 };
 
 const onCopyToClipboard = () => {
