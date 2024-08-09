@@ -115,12 +115,14 @@ const filters = ref({
 });
 
 const filteredFriends = computed(() => {
+  let friendList = [...data.value.friendList];
+
   if (filters.value.online) {
-    let clonedData = { ...data.value };
-    clonedData = clonedData.friendList.filter((friend) => friend.isOnline);
-    return clonedData;
+    friendList = friendList.filter((friend) => friend.isOnline);
   }
-  return data.value.friendList;
+  friendList.sort((a, b) => +b.moneyEarned.slice(0, -1) - +a.moneyEarned.slice(0, -1));
+
+  return friendList;
 });
 
 const onRefreshFriends = () => {};
@@ -141,8 +143,7 @@ const generateLink = () => {
 const onInviteFriend = () => {
   const link = generateLink();
   console.log(`link is: ${link}`);
-  // showToast(`Link is: ${link}`);
-  tg.openTelegramLink(`https://t.me/share/url?url=${link}&text=WoW! Check out this cool battles game i just found!`);
+  tg.openTelegramLink(`https://t.me/share/url?url=${link}&text=Multiplayer language battles with more than 42 language choices.`);
 };
 
 const onCopyToClipboard = () => {
