@@ -1,12 +1,12 @@
 <template>
   <div class="pill-radio-group-cnt">
-    <Pill v-for="item in data" :key="item.id" v-bind="$attrs" @click="emit('pick', item.id)">
+    <Pill v-for="item in data" :key="item.value" v-bind="$attrs" @click="emit('select', item.value)">
       <div class="pill-content flex items-center justify-between gap-2">
         <div class="pill-start">
-          <span>{{ item.text }}</span>
+          <span>{{ item.label }}</span>
         </div>
         <div class="pill-end flex items-center gap-4">
-          <input type="radio" :value="item.text" v-model="picked" />
+          <input type="radio" :value="item.value" :checked="item.value === selected" />
         </div>
       </div>
     </Pill>
@@ -18,13 +18,18 @@ import { ref } from "vue";
 import Pill from "@/components/UI/Pill.vue";
 
 const props = defineProps<{
-  data: [];
-  picked: string;
+  data: [
+    {
+      label: string;
+      value: any;
+    }
+  ];
+  selected: any;
 }>();
 
 const emit = defineEmits<{
-  pick: [string];
+  select: [any];
 }>();
 
-const picked = ref(props.picked);
+// const selected = ref(props.selected);
 </script>

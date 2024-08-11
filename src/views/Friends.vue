@@ -33,11 +33,11 @@
       </div>
     </div>
 
-    <!-- income pill -->
+    <!-- income -->
     <Pill class="py-8" color="darker">
       <span class="pill-title">Your income</span>
 
-      <Pill class="mt-4" color="dark">
+      <Pill class="mt-4" color="dark" ripple>
         <div class="content flex justify-between p-4">
           <span class="text-xl font-semibold">Total income:</span>
           <div class="price flex gap-2 items-center">
@@ -47,14 +47,14 @@
         </div>
       </Pill>
 
-      <Pill class="mt-4" color="dark">
+      <Pill class="mt-4" color="dark" ripple>
         <div class="content flex justify-between">
           <span class="text-xl font-semibold">Battles played:</span>
           <span class="text-xl font-bold text-[var(--accent-color)]">188</span>
         </div>
       </Pill>
 
-      <Pill class="mt-4" color="dark">
+      <Pill class="mt-4" color="dark" ripple>
         <div class="content flex justify-between">
           <span class="text-xl font-semibold">Points earned:</span>
           <span class="text-xl font-bold text-[var(--accent-color)]">12,564</span>
@@ -62,8 +62,8 @@
       </Pill>
     </Pill>
 
-    <!-- friends pill -->
-    <Pill class="py-8 mt-12 mb-36 relative" color="darker">
+    <!-- friends -->
+    <Pill class="py-8 mt-12 mb-48 relative" color="darker">
       <div class="header flex items-center justify-between">
         <div class="title flex gap-2">
           <span class="pill-title">Your friends</span>
@@ -84,7 +84,8 @@
       </TransitionGroup>
     </Pill>
 
-    <div class="invite-btn-cnt fixed bottom-24 w-full p-4 flex justify-between gap-3">
+    <!-- invite buttons -->
+    <div class="invite-btn-cnt fixed bottom-24 w-full p-4 flex justify-between gap-3 z-10">
       <Button class="flex items-center justify-between flex-1" @click="onInviteFriend">
         <span class="text-xl">Invite a friend</span>
         <img src="@/assets/images/paw.svg" />

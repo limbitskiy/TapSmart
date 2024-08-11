@@ -1,11 +1,57 @@
 <template>
   <div id="required-settings" class="flex-1">
     <div class="top-part p-5 mb-4">
-      <div class="page-title mb-4">Confirm languages</div>
-      <div class="page-subtitle">To provide the best experience, we must confirm your native and target languages.</div>
+      <div class="page-title mb-4">Profile</div>
+      <div class="page-subtitle">See your battle stats or change your language!</div>
     </div>
 
-    <Pill class="py-8 mt-8" color="darker">
+    <Pill class="py-8" color="darker">
+      <span class="pill-title">Stats</span>
+
+      <div class="pill-grid grid grid-cols-2 gap-4">
+        <Pill class="mt-4" color="dark" ripple>
+          <div class="content flex flex-col gap-2 items-center justify-between p-2">
+            <span class="text-xl font-semibold text-gray-300">Coins earned</span>
+            <div class="price flex gap-2 items-center">
+              <img class="h-6" src="/coin.png" />
+              <span class="text-xl font-bold text-[var(--accent-color)]">358K</span>
+            </div>
+          </div>
+        </Pill>
+
+        <Pill class="mt-4" color="dark" ripple>
+          <div class="content flex flex-col gap-2 items-center justify-between p-2">
+            <span class="text-xl font-semibold text-gray-300">Points earned</span>
+            <div class="price flex gap-2 items-center">
+              <img class="h-6" src="/point.png" />
+              <span class="text-xl font-bold text-purple-500">177K</span>
+            </div>
+          </div>
+        </Pill>
+      </div>
+
+      <Pill class="mt-4" color="dark" ripple>
+        <div class="content flex gap-2 items-center justify-between p-2">
+          <span class="text-xl font-semibold text-gray-300">Battles played</span>
+          <div class="price flex gap-2 items-center">
+            <img class="h-6" src="/swords.png" />
+            <span class="text-xl font-bold">79</span>
+          </div>
+        </div>
+      </Pill>
+
+      <Pill class="mt-4" color="dark" ripple>
+        <div class="content flex gap-2 items-center justify-between p-2">
+          <span class="text-xl font-semibold text-gray-300">Words learned</span>
+          <div class="price flex gap-2 items-center">
+            <img class="h-6" src="/book.png" />
+            <span class="text-xl font-bold">130</span>
+          </div>
+        </div>
+      </Pill>
+    </Pill>
+
+    <Pill class="py-8 mt-16" color="darker">
       <span class="pill-title">Settings</span>
 
       <PillButton class="mt-4" color="dark" ripple>
@@ -56,10 +102,6 @@
         </template>
       </PillButton>
     </Pill>
-
-    <div class="bnt-cnt flex justify-between absolute bottom-2 w-full">
-      <Button class="w-full" label="Next" @click="$router.push('/home/friends')">Next</Button>
-    </div>
   </div>
 </template>
 
@@ -72,12 +114,11 @@ import Pill from "@/components/UI/Pill.vue";
 import PillButton from "@/components/UI/PillButton.vue";
 import PillRadioGroup from "@/components/UI/PillRadioGroup.vue";
 import { tg, getUserId } from "@/api/telegram";
-import Modal from "../components/Modal.vue";
 
 const nativeLang = ref(1);
 const targetLang = ref(0);
 
-const modalData = ref([
+const modalData = [
   {
     label: "English",
     value: 0,
@@ -86,7 +127,7 @@ const modalData = ref([
     label: "Русский",
     value: 1,
   },
-]);
+];
 
 const onNativeSelect = (lang, cb) => {
   nativeLang.value = lang;

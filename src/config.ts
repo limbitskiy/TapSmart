@@ -5,7 +5,9 @@ export const images = {
   battles: "/battles.png",
   "battle-single": "/battle-single.png",
   coin: "/coin.png",
+  point: "/point.png",
   cone: "/cone.png",
+  book: "/book.png",
   friends: "/friends.png",
   home: "/home.png",
   options: "/options.png",
@@ -25,7 +27,7 @@ export const assets = {
 };
 
 export const sounds = {
-  soundtrack: "/soundtrack.mp3",
+  // soundtrack: "/soundtrack.mp3",
 };
 
 export const fonts = {

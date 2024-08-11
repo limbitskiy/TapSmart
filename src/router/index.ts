@@ -9,6 +9,7 @@ import Friends from "@/views/Friends.vue";
 import Options from "@/views/Options.vue";
 import NotFound from "@/views/NotFound.vue";
 import RequiredSettings from "@/views/RequiredSettings.vue";
+import Profile from "@/views/Profile.vue";
 
 const routes = [
   { path: "/:pathMatch(.*)*", component: NotFound },
@@ -25,6 +26,10 @@ const routes = [
   {
     path: "/required-settings",
     component: RequiredSettings,
+  },
+  {
+    path: "/profile",
+    component: Profile,
   },
   {
     path: "/home",
