@@ -58,7 +58,7 @@
     </Pill>
 
     <div class="bnt-cnt flex justify-between absolute bottom-2 w-full">
-      <Button class="w-full" label="Next" @click="$router.push('/home/friends')">Next</Button>
+      <Button class="w-full" label="Next" @click="onNext">Next</Button>
     </div>
   </div>
 </template>
@@ -73,6 +73,12 @@ import PillButton from "@/components/UI/PillButton.vue";
 import PillRadioGroup from "@/components/UI/PillRadioGroup.vue";
 import { tg, getUserId } from "@/api/telegram";
 import Modal from "../components/Modal.vue";
+import { useRouter } from "vue-router";
+
+const userStore = useUserStore();
+// const { startApp } = userStore;
+
+const router = useRouter();
 
 const nativeLang = ref(1);
 const targetLang = ref(0);
@@ -100,5 +106,9 @@ const onTargetSelect = (lang, cb) => {
   setTimeout(() => {
     cb();
   }, 100);
+};
+
+const onNext = () => {
+  router.push("/home/main");
 };
 </script>

@@ -4,11 +4,13 @@
       <h2 class="page-title mb-3" v-html="data.title" />
       <span class="page-subtitle" v-html="data.subtitle" />
     </div>
-    <div class="tutorial-bg absolute inset-0 w-full h-full z-0" :style="{ backgroundImage: `url(/${data['bg-image']})` }"></div>
+    <div class="tutorial-bg absolute inset-0 w-full h-full z-0" :style="{ backgroundImage: `url(${images[data['bg-image']]})` }"></div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { images } from "@/config.ts";
+
 defineProps<{
   data: {
     title: string;

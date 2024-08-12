@@ -32,7 +32,7 @@
 }
 
 .page-title {
-  @apply text-3xl font-bold mt-2 leading-10;
+  @apply text-3xl font-bold mt-2 leading-10 max-w-[80%];
 
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -40,7 +40,7 @@
 }
 
 .page-subtitle {
-  @apply mt-2 max-w-[80%];
+  @apply mt-2 inline-block max-w-[80%];
 }
 
 .pill-title {

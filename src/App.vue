@@ -1,11 +1,11 @@
 <template>
   <div class="main-page flex w-full h-[100dvh] relative">
     <RouterView v-slot="{ Component, route }">
-      <!-- <Suspense> -->
-      <Transition :name="route.meta.transition || 'fade'" mode="out-in">
-        <component :is="Component" />
-      </Transition>
-      <!-- </Suspense> -->
+      <Suspense>
+        <Transition :name="route.meta.transition || 'fade'" mode="out-in">
+          <component :is="Component" />
+        </Transition>
+      </Suspense>
     </RouterView>
 
     <Toast />

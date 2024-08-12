@@ -14,8 +14,9 @@ export const images = {
   swords: "/swords.png",
   telegram: "/telegram.png",
   "telegram-premium": "/telegram-premium.png",
-  "tutorial-bg1": "/tiger-bg.png",
-  "tutorial-bg2": "/tiger-bg1.png",
+  "tutorial-0": "/tiger-bg.png",
+  "tutorial-1": "/tiger-bg1.png",
+  "tutorial-2": "/tiger-bg2.png",
 };
 
 // assets folder
