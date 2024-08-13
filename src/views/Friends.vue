@@ -127,7 +127,7 @@ const filteredFriends = computed(() => {
   }
 
   if (filters.value.battles) {
-    friendList = friendList.sort((a, b) => b.points_earned - a.points_earned);
+    friendList = friendList.sort((a, b) => b.points - a.points);
   } else {
     friendList.sort((a, b) => b.moneyEarned - a.moneyEarned);
   }
