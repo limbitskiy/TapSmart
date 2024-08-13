@@ -4,12 +4,12 @@ export const useStoreHelpers = (_section) => {
   const dataStore = useDataStore();
   const section = _section;
 
-  const getLocale = (key) => {
-    return dataStore[section].locale[key];
+  const getLocale = (key, sectionOverride) => {
+    return dataStore[sectionOverride ?? section].locale[key];
   };
 
-  const getStoreData = (key) => {
-    return dataStore[section].store[key];
+  const getStoreData = (key, sectionOverride) => {
+    return dataStore[sectionOverride ?? section].store[key];
   };
 
   return {

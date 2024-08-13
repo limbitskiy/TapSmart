@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useDataStore } from "@/store/data.ts";
-import { getFriendsData } from "@/api/server";
+import { makeRequest } from "@/api/server";
 
 export const useUserStore = defineStore("user", () => {
   const state = ref({
@@ -12,7 +12,7 @@ export const useUserStore = defineStore("user", () => {
     },
     service: {},
     entryPoint: null,
-    apiUrl: {},
+    apiUrl: null,
   });
 
   const router = useRouter();
@@ -53,11 +53,22 @@ export const useUserStore = defineStore("user", () => {
     }, 3000);
   };
 
-  const fetchFriendsPage = async () => {
-    const result = await getFriendsData(state.value.service);
-    setData(result.data.data);
-    return;
+  const initialFetch = async (data) => {
+    return await useFetch({ data });
   };
 
-  return { toast, setStore, startApp, showToast, fetchFriendsPage };
+  const fetchFriendsPage = async () => {
+    return await useFetch({ key: "friend_table_list" });
+  };
+
+  const setLanguages = async (data) => {
+    return await useFetch({ key: "profile_set", data });
+  };
+
+  const useFetch = async ({ key, data }) => {
+    const result = await makeRequest({ key, data, service: state.value.service, apiUrl: state.value.apiUrl });
+    setStore(result.data);
+  };
+
+  return { toast, startApp, showToast, fetchFriendsPage, setLanguages, initialFetch };
 });

@@ -14,7 +14,7 @@
             class="mt-4"
             color="light"
             :data="getStoreData('native_languge_list')"
-            :selected="nativeLang"
+            :selected="getStoreData('native_language')"
             ripple
             @select="
               (lang) => {
@@ -38,7 +38,7 @@
             class="mt-4"
             color="light"
             :data="getStoreData('native_languge_list')"
-            :selected="targetLang"
+            :selected="getStoreData('target_language')"
             ripple
             @select="
               (lang) => {
@@ -64,12 +64,17 @@ import PillRadioGroup from "@/components/UI/PillRadioGroup.vue";
 import { tg } from "@/api/telegram";
 import { useStoreHelpers } from "@/composables/useStoreHelpers";
 
+const emit = defineEmits<{
+  change: [data: { setting: string; value: number }];
+}>();
+
 const { getLocale, getStoreData } = useStoreHelpers("profile");
 
 const nativeLang = ref(getStoreData("native_language"));
 const targetLang = ref(getStoreData("target_language"));
 
 const onNativeSelect = (lang, cb) => {
+  emit("change", { setting: "native_language", value: lang });
   nativeLang.value = lang;
   setTimeout(() => {
     cb();
@@ -77,6 +82,7 @@ const onNativeSelect = (lang, cb) => {
 };
 
 const onTargetSelect = (lang, cb) => {
+  emit("change", { setting: "target_language", value: lang });
   targetLang.value = lang;
   setTimeout(() => {
     cb();

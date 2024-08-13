@@ -222,13 +222,12 @@
 import { ref } from "vue";
 import preloadAssets from "@/composables/preloadAssets.ts";
 import { tg } from "../api/telegram";
-import { fetchData } from "../api/server";
 import { useUserStore } from "@/store/user.ts";
 import { useSoundStore } from "@/store/sound.ts";
 
 const userStore = useUserStore();
 const soundStore = useSoundStore();
-const { startApp, setStore } = userStore;
+const { startApp, initialFetch } = userStore;
 const { addSound, playSound } = soundStore;
 
 const loading = ref(true);
@@ -244,23 +243,17 @@ tg?.ready();
 
 console.log("tg:", tg);
 
-const payload = {
-  tg: {
-    initData: tg.initDataUnsafe,
-    version: tg.version,
-    platform: tg.platform,
-  },
-};
-
-try {
-  const result = await fetchData(payload);
-  setStore(result.data);
-} catch (error) {
-  errors.value.push(error);
-}
-
-preloadAssets({ addSound }).then((data) => {
-  const preloadErrors = data.filter((p) => p.status === "rejected");
+Promise.allSettled([
+  initialFetch({
+    tg: {
+      initData: tg.initDataUnsafe,
+      version: tg.version,
+      platform: tg.platform,
+    },
+  }),
+  preloadAssets({ addSound }),
+]).then((data) => {
+  const preloadErrors = [data[0], ...data[1].value].filter((p) => p.status === "rejected");
 
   if (preloadErrors.length) {
     errors.value = preloadErrors.map((err) => err.reason);

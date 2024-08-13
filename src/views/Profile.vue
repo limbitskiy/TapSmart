@@ -14,7 +14,7 @@
             <span class="text-xl font-semibold text-gray-300">{{ getLocale("coins_earned") }}</span>
             <div class="price flex gap-2 items-center">
               <img class="h-6" src="/coin.png" />
-              <span class="text-xl font-bold text-[var(--accent-color)]">358K</span>
+              <span class="text-xl font-bold text-[var(--accent-color)]">{{ getStoreData("coins") }}</span>
             </div>
           </div>
         </Pill>
@@ -24,7 +24,7 @@
             <span class="text-xl font-semibold text-gray-300">{{ getLocale("points_earned") }}</span>
             <div class="price flex gap-2 items-center">
               <img class="h-6" src="/point.png" />
-              <span class="text-xl font-bold text-purple-500">177K</span>
+              <span class="text-xl font-bold text-purple-500">{{ getStoreData("points") }}</span>
             </div>
           </div>
         </Pill>
@@ -35,7 +35,7 @@
           <span class="text-xl font-semibold text-gray-300">{{ getLocale("battles_played") }}</span>
           <div class="price flex gap-2 items-center">
             <img class="h-6" src="/swords.png" />
-            <span class="text-xl font-bold">79</span>
+            <span class="text-xl font-bold">{{ getStoreData("battles") }}</span>
           </div>
         </div>
       </Pill>
@@ -45,25 +45,29 @@
           <span class="text-xl font-semibold text-gray-300">{{ getLocale("words_learned") }}</span>
           <div class="price flex gap-2 items-center">
             <img class="h-6" src="/book.png" />
-            <span class="text-xl font-bold">130</span>
+            <span class="text-xl font-bold">{{ getStoreData("learned") }}</span>
           </div>
         </div>
       </Pill>
     </Pill>
 
-    <Settings />
+    <Settings @change="onSettingsChange" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { useUserStore } from "@/store/user.ts";
 import Pill from "@/components/UI/Pill.vue";
 import Settings from "@/components/Settings.vue";
 import { useStoreHelpers } from "@/composables/useStoreHelpers";
 import { tg } from "@/api/telegram";
 
 const { getLocale, getStoreData } = useStoreHelpers("profile");
+const userStore = useUserStore();
+
+const { setLanguages } = userStore;
 
 const router = useRouter();
 
@@ -72,4 +76,8 @@ tg.BackButton.onClick(() => {
   tg.BackButton.hide();
   router.push("/home/battles");
 });
+
+const onSettingsChange = ({ setting, value }) => {
+  setLanguages({ [setting]: value });
+};
 </script>

@@ -38,7 +38,7 @@
       <span class="pill-title">{{ getLocale("income_title") }}</span>
 
       <Pill class="mt-4" color="dark" ripple>
-        <div class="content flex justify-between p-4">
+        <div class="content flex flex-col items-center gap-2 justify-between">
           <span class="text-xl font-semibold">{{ getLocale("total_income") }}</span>
           <div class="price flex gap-2 items-center">
             <img class="h-6" :src="getAsset('coin')" />
@@ -63,7 +63,7 @@
     </Pill>
 
     <!-- friends -->
-    <Pill class="py-8 mt-12 mb-48 relative" color="darker">
+    <Pill class="py-8 mt-12 mb-32 relative" color="darker">
       <div class="header flex items-center justify-between">
         <div class="title flex gap-2">
           <span class="pill-title">{{ getLocale("friends_title") }}</span>
@@ -85,7 +85,7 @@
     </Pill>
 
     <!-- invite buttons -->
-    <div class="invite-btn-cnt fixed bottom-24 w-full p-4 flex justify-between gap-3 z-10">
+    <div class="invite-btn-cnt fixed bottom-16 w-full p-4 flex justify-between gap-3 z-10">
       <Button class="flex items-center justify-between flex-1" @click="onInviteFriend">
         <span class="text-xl">{{ getLocale("invite_a_friend") }}</span>
         <img :src="getAsset('paw')" />

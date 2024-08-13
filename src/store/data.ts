@@ -3,29 +3,6 @@ import { computed, ref } from "vue";
 
 export const useDataStore = defineStore("data", () => {
   const state = ref({
-    tutorial: [
-      // {
-      //   id: 0,
-      //   title: "<span class='text-[var(--accent-color)]'>Welcome</span><br /> to our app!",
-      //   subtitle: "Tiger-app is a multiplayer platform for learning languages, making friends and earning achievements.",
-      //   "bg-image": "tiger-bg.png",
-      //   "bg-color": "#1f2937",
-      // },
-      // {
-      //   id: 1,
-      //   title: "<span class='text-[var(--accent-color)]'>Play battles,</span> earn friends and learn!",
-      //   topic: "Battles",
-      //   subtitle: "In Tiger-app you can play different types of battles, earn new achievements and event make new friends while you're at it",
-      //   "bg-image": "tiger-bg1.png",
-      //   "bg-color": "#281f37",
-      // },
-      // {
-      //   id: 2,
-      //   title: "Confirm languages",
-      //   subtitle: "Just to be sure, let's confirm our target and native languages",
-      //   "bg-color": "#27396d",
-      // },
-    ],
     menu: [
       // {
       //   id: 0,
@@ -52,6 +29,29 @@ export const useDataStore = defineStore("data", () => {
       //   icon: "options",
       // },
     ],
+    tutorial: {
+      // {
+      //   id: 0,
+      //   title: "<span class='text-[var(--accent-color)]'>Welcome</span><br /> to our app!",
+      //   subtitle: "Tiger-app is a multiplayer platform for learning languages, making friends and earning achievements.",
+      //   "bg-image": "tiger-bg.png",
+      //   "bg-color": "#1f2937",
+      // },
+      // {
+      //   id: 1,
+      //   title: "<span class='text-[var(--accent-color)]'>Play battles,</span> earn friends and learn!",
+      //   topic: "Battles",
+      //   subtitle: "In Tiger-app you can play different types of battles, earn new achievements and event make new friends while you're at it",
+      //   "bg-image": "tiger-bg1.png",
+      //   "bg-color": "#281f37",
+      // },
+      // {
+      //   id: 2,
+      //   title: "Confirm languages",
+      //   subtitle: "Just to be sure, let's confirm our target and native languages",
+      //   "bg-color": "#27396d",
+      // },
+    },
     friends: {
       // title: "Friends",
       // subtitle: "Inviting a friend gives you points. Play battles with your friends to get even more points!",
@@ -103,8 +103,8 @@ export const useDataStore = defineStore("data", () => {
       //   },
       // ],
     },
-    profile: [],
-    "required-settings": [],
+    profile: {},
+    "required-settings": {},
   });
 
   const tutorial = computed(() => state.value.tutorial);
@@ -118,11 +118,25 @@ export const useDataStore = defineStore("data", () => {
   const requiredSettings = computed(() => state.value["required-settings"]);
 
   const setData = (data) => {
-    console.log(data);
+    console.log("data: ", data);
 
-    Object.keys(data).forEach((key) => {
-      state.value[key] = data[key];
+    Object.keys(data).forEach((section) => {
+      Object.keys(data[section]).forEach((sectionKey) => {
+        if (sectionKey === "locale") {
+          state.value[section].locale = data[section].locale;
+        } else if (sectionKey === "store") {
+          if (!state.value[section].store) {
+            state.value[section].store = data[section].store;
+            return;
+          }
+
+          Object.keys(data[section].store).forEach((storeKey) => {
+            state.value[section].store[storeKey] = data[section].store[storeKey];
+          });
+        }
+      });
     });
+    console.log("merged store: ", state.value);
   };
 
   return { tutorial, friends, menu, profile, requiredSettings, setData };
