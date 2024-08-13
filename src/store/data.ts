@@ -103,6 +103,8 @@ export const useDataStore = defineStore("data", () => {
         },
       ],
     },
+    profile: [],
+    "required-settings": [],
   });
 
   const tutorial = computed(() => state.value.tutorial);
@@ -110,6 +112,10 @@ export const useDataStore = defineStore("data", () => {
   const friends = computed(() => state.value.friends);
 
   const menu = computed(() => state.value.menu);
+
+  const profile = computed(() => state.value.profile);
+
+  const requiredSettings = computed(() => state.value["required-settings"]);
 
   const setData = (data) => {
     console.log(data);
@@ -119,5 +125,5 @@ export const useDataStore = defineStore("data", () => {
     });
   };
 
-  return { tutorial, friends, menu, setData };
+  return { tutorial, friends, menu, profile, requiredSettings, setData };
 });

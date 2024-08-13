@@ -14,13 +14,13 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from "@/store/user.ts";
+import { useDataStore } from "@/store/data.ts";
 import { storeToRefs } from "pinia";
 import { useRouter, useRoute } from "vue-router";
 
 const router = useRouter();
 const route = useRoute();
 
-const userStore = useUserStore();
-const { menu: data } = storeToRefs(userStore);
+const dataStore = useDataStore();
+const { menu: data } = storeToRefs(dataStore);
 </script>

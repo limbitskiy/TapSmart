@@ -20,10 +20,6 @@ export const useUserStore = defineStore("user", () => {
 
   const toast = computed(() => state.value.toast);
 
-  const setIsFirstCall = (value) => {
-    state.value.isFirstCall = value;
-  };
-
   const setStore = (data) => {
     console.log(data);
 
@@ -56,5 +52,5 @@ export const useUserStore = defineStore("user", () => {
     }, 3000);
   };
 
-  return { toast, setStore, startApp, showToast, setIsFirstCall };
+  return { toast, setStore, startApp, showToast };
 });

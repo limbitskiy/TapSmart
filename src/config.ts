@@ -17,6 +17,7 @@ export const images = {
   "tutorial-0": "/tiger-bg.png",
   "tutorial-1": "/tiger-bg1.png",
   "tutorial-2": "/tiger-bg2.png",
+  profile: "/profile1.png",
 };
 
 // assets folder

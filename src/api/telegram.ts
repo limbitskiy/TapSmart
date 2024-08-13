@@ -13,3 +13,7 @@ export const showMainButton = () => {
 export const getUserId = () => {
   return tg?.initDataUnsafe?.user?.id;
 };
+
+export const getUserName = () => {
+  return tg?.initDataUnsafe?.user?.username;
+};

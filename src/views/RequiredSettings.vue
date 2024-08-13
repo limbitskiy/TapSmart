@@ -1,21 +1,21 @@
 <template>
   <div id="required-settings" class="flex-1">
     <div class="top-part p-5 mb-4">
-      <div class="page-title mb-4">Confirm languages</div>
-      <div class="page-subtitle">To provide the best experience, we must confirm your native and target languages.</div>
+      <div class="page-title mb-4">{{ getLocale("requiredSettings", "title") }}</div>
+      <div class="page-subtitle">{{ getLocale("requiredSettings", "subtitle") }}</div>
     </div>
 
     <Pill class="py-8 mt-8" color="darker">
-      <span class="pill-title">Settings</span>
+      <span class="pill-title">{{ getLocale("requiredSettings", "settings_title") }}</span>
 
       <PillButton class="mt-4" color="dark" ripple>
         <template #name>
-          <span class="text-lg font-semibold text-gray-300">Native language</span>
+          <span class="text-lg font-semibold text-gray-300">{{ getLocale("requiredSettings", "native_language") }}</span>
         </template>
-        <template #value>{{ modalData.find((item) => item.value === nativeLang).label }}</template>
+        <template #value>{{ modalData.find((item) => item.id === nativeLang).label }}</template>
         <template #modal="{ closeModal }">
           <Pill class="" color="dark">
-            <span class="pill-title">Select native language:</span>
+            <span class="pill-title">{{ getLocale("requiredSettings", "modal_language_title") }}</span>
             <PillRadioGroup
               class="mt-4"
               color="light"
@@ -34,12 +34,12 @@
 
       <PillButton class="mt-4" color="dark" ripple>
         <template #name>
-          <span class="text-lg font-semibold text-gray-300">Target language</span>
+          <span class="text-lg font-semibold text-gray-300">{{ getLocale("requiredSettings", "target_language") }}</span>
         </template>
-        <template #value>{{ modalData.find((item) => item.value === targetLang).label }}</template>
+        <template #value>{{ modalData.find((item) => item.id === targetLang).label }}</template>
         <template #modal="{ closeModal }">
           <Pill class="" color="dark">
-            <span class="pill-title">Select target language:</span>
+            <span class="pill-title">{{ getLocale("requiredSettings", "modal_language_title") }}</span>
             <PillRadioGroup
               class="mt-4"
               color="light"
@@ -57,8 +57,8 @@
       </PillButton>
     </Pill>
 
-    <div class="bnt-cnt flex justify-between absolute bottom-2 w-full">
-      <Button class="w-full" label="Next" @click="onNext">Next</Button>
+    <div class="bnt-cnt flex justify-between absolute bottom-0 w-full">
+      <Button class="w-full py-4" label="Next" @click="onNext">{{ getLocale("requiredSettings", "button_next") }}</Button>
     </div>
   </div>
 </template>
@@ -74,6 +74,7 @@ import PillRadioGroup from "@/components/UI/PillRadioGroup.vue";
 import { tg, getUserId } from "@/api/telegram";
 import Modal from "../components/Modal.vue";
 import { useRouter } from "vue-router";
+import { getLocale } from "../utils";
 
 const userStore = useUserStore();
 // const { startApp } = userStore;
@@ -85,12 +86,12 @@ const targetLang = ref(0);
 
 const modalData = ref([
   {
+    id: 0,
     label: "English",
-    value: 0,
   },
   {
+    id: 1,
     label: "Русский",
-    value: 1,
   },
 ]);
 
@@ -109,6 +110,6 @@ const onTargetSelect = (lang, cb) => {
 };
 
 const onNext = () => {
-  router.push("/home/main");
+  router.push("/home/battles");
 };
 </script>

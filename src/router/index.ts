@@ -6,7 +6,9 @@ import Home from "@/views/Home.vue";
 import Main from "@/views/Main.vue";
 import Battles from "@/views/Battles.vue";
 import Friends from "@/views/Friends.vue";
-import Options from "@/views/Options.vue";
+import Tasks from "@/views/Tasks.vue";
+import Leaders from "@/views/Leaders.vue";
+import Market from "@/views/Market.vue";
 import NotFound from "@/views/NotFound.vue";
 import RequiredSettings from "@/views/RequiredSettings.vue";
 import Profile from "@/views/Profile.vue";
@@ -35,11 +37,11 @@ const routes = [
     path: "/home",
     component: Home,
     children: [
-      {
-        id: 0,
-        path: "main",
-        component: Main,
-      },
+      // {
+      //   id: 0,
+      //   path: "main",
+      //   component: Main,
+      // },
       {
         id: 1,
         path: "battles",
@@ -52,8 +54,18 @@ const routes = [
       },
       {
         id: 3,
-        path: "options",
-        component: Options,
+        path: "tasks",
+        component: Tasks,
+      },
+      {
+        id: 4,
+        path: "leaders",
+        component: Leaders,
+      },
+      {
+        id: 4,
+        path: "market",
+        component: Market,
       },
     ],
   },

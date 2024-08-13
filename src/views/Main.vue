@@ -1,6 +1,13 @@
 <template>
   <div class="home-main flex-1 overflow-auto flex flex-col">
-    <Pill class="mt-12 flex-1 rounded-3xl bg-[var(--grey-darker)]">
+    <Pill class="mt-4" color="dark" ripple>
+      <div class="content flex justify-between">
+        <span class="text-xl font-semibold">Profile</span>
+        <span class="text-xl font-bold text-[var(--accent-color)]">12,564</span>
+      </div>
+    </Pill>
+
+    <!-- <Pill class="mt-12 flex-1 rounded-3xl bg-[var(--grey-darker)]">
       <p class="text-2xl font-bold mt-2">Main page</p>
       <p class="mt-2">This is a page where you can select a battle to participate in</p>
 
@@ -54,7 +61,7 @@
           </Pill>
         </div>
       </Pill>
-    </Pill>
+    </Pill> -->
   </div>
 </template>
 

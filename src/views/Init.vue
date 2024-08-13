@@ -242,6 +242,8 @@ const onClick = () => {
 
 tg?.ready();
 
+console.log("tg:", tg);
+
 const payload = {
   tg: {
     initData: tg.initDataUnsafe,
