@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useDataStore } from "@/store/data.ts";
+import { getFriendsData } from "@/api/server";
 
 export const useUserStore = defineStore("user", () => {
   const state = ref({
@@ -52,5 +53,11 @@ export const useUserStore = defineStore("user", () => {
     }, 3000);
   };
 
-  return { toast, setStore, startApp, showToast };
+  const fetchFriendsPage = async () => {
+    const result = await getFriendsData(state.value.service);
+    setData(result.data.data);
+    return;
+  };
+
+  return { toast, setStore, startApp, showToast, fetchFriendsPage };
 });

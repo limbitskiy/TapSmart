@@ -1,5 +1,6 @@
 import { images, sounds, fonts, assets } from "@/config.ts";
 import { Howl, Howler } from "howler";
+import { getAssetURL } from "@/utils";
 
 async function preloadAssets({ addSound }) {
   return await Promise.allSettled([
@@ -65,10 +66,6 @@ async function preloadAssets({ addSound }) {
         })
     ),
   ]);
-}
-
-function getAssetURL(url) {
-  return new URL(`../${url}`, import.meta.url).href;
 }
 
 export default preloadAssets;

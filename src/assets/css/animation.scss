@@ -41,7 +41,7 @@
 // routes
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.2s ease;
+  transition: opacity 0.1s ease;
 }
 
 .fade-enter-from,
@@ -52,7 +52,7 @@
 // intro
 .long-fade-enter-active,
 .long-fade-leave-active {
-  transition: opacity 5s ease;
+  transition: opacity 0.1s ease;
 }
 
 .long-fade-enter-from,

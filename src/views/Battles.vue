@@ -1,6 +1,7 @@
 <template>
   <div class="home-main flex-1 overflow-auto flex flex-col">
-    <Pill class="mt-4" color="darker" ripple @click="$router.push('/profile')">
+    <ProfilePill />
+    <!-- <Pill class="mt-4" color="darker" ripple @click="$router.push('/profile')">
       <div class="content flex gap-4">
         <img :src="getAsset('profile')" />
         <div class="profile-meta flex flex-col">
@@ -8,7 +9,7 @@
           <span class="font-bold text-[var(--accent-color)]">Lord</span>
         </div>
       </div>
-    </Pill>
+    </Pill> -->
 
     <!-- <Pill class="mt-12 flex-1 rounded-3xl bg-[var(--grey-darker)]">
       <p class="text-2xl font-bold mt-2">Main page</p>
@@ -74,6 +75,7 @@ import { useDataStore } from "@/store/data.ts";
 import { storeToRefs } from "pinia";
 import { getAsset } from "../utils";
 import { tg, getUserName } from "@/api/telegram";
+import ProfilePill from "@/components/ProfilePill.vue";
 
 const dataStore = useDataStore();
 const { profile: data } = storeToRefs(dataStore);

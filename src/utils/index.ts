@@ -1,14 +1,15 @@
 import { images, assets, sounds } from "@/config.ts";
-import { useDataStore } from "@/store/data.ts";
 
 const assetLibrary = { ...images, ...assets, ...sounds };
 
 export const getAsset = (name) => {
-  return assetLibrary[name];
+  if (assetLibrary[name].split("/")[0] === "assets") {
+    return getAssetURL(assetLibrary[name]);
+  } else {
+    return assetLibrary[name];
+  }
 };
 
-export const getLocale = (section, key) => {
-  const dataStore = useDataStore();
-
-  return dataStore[section].locale[key];
+export const getAssetURL = (url) => {
+  return new URL(`../${url}`, import.meta.url).href;
 };
