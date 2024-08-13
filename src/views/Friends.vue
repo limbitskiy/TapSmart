@@ -125,7 +125,12 @@ const filteredFriends = computed(() => {
   if (filters.value.online) {
     friendList = friendList.filter((friend) => friend.isOnline);
   }
-  friendList.sort((a, b) => b.moneyEarned - a.moneyEarned);
+
+  if (filters.value.battles) {
+    friendList = friendList.sort((a, b) => b.points_earned - a.points_earned);
+  } else {
+    friendList.sort((a, b) => b.moneyEarned - a.moneyEarned);
+  }
 
   return friendList;
 });
