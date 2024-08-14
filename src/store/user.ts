@@ -37,6 +37,7 @@ export const useUserStore = defineStore("user", () => {
   const startApp = () => {
     if (state.value.entryPoint) {
       router.push(state.value.entryPoint);
+      state.value.entryPoint = null;
     } else {
       router.push("/home/main");
     }
@@ -71,7 +72,10 @@ export const useUserStore = defineStore("user", () => {
     setStore(result.data);
 
     if (state.value.entryPoint && route.path !== "/init") {
+      console.log(`routing to ${state.value.entryPoint}`);
+
       router.push(state.value.entryPoint);
+      state.value.entryPoint = null;
     }
   };
 
