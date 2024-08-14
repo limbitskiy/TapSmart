@@ -37,7 +37,7 @@
           <PillRadioGroup
             class="mt-4"
             color="light"
-            :data="getStoreData('native_language_list')"
+            :data="getStoreData('target_language_list')"
             :selected="getStoreData('target_language')"
             ripple
             @select="

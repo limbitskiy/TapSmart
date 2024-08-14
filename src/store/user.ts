@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { useDataStore } from "@/store/data.ts";
 import { makeRequest } from "@/api/server";
 
@@ -16,6 +16,7 @@ export const useUserStore = defineStore("user", () => {
   });
 
   const router = useRouter();
+  const route = useRoute();
   const dataStore = useDataStore();
   const { setData } = dataStore;
 
@@ -68,6 +69,10 @@ export const useUserStore = defineStore("user", () => {
   const useFetch = async ({ key, data }) => {
     const result = await makeRequest({ key, data, service: state.value.service, apiUrl: state.value.apiUrl });
     setStore(result.data);
+
+    if (state.value.entryPoint && route.path !== "/init") {
+      router.push(state.value.entryPoint);
+    }
   };
 
   return { toast, startApp, showToast, fetchFriendsPage, setLanguages, initialFetch };
