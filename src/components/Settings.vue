@@ -6,14 +6,14 @@
       <template #name>
         <span class="text-lg font-semibold text-gray-300">{{ getLocale("native_language") }}</span>
       </template>
-      <template #value>{{ getStoreData("native_languge_list").find((item) => item.id === nativeLang).label }}</template>
+      <template #value>{{ getStoreData("native_language_list").find((item) => item.id === nativeLang).label }}</template>
       <template #modal="{ closeModal }">
         <Pill class="" color="dark">
           <span class="pill-title">{{ getLocale("modal_language_title") }}</span>
           <PillRadioGroup
             class="mt-4"
             color="light"
-            :data="getStoreData('native_languge_list')"
+            :data="getStoreData('native_language_list')"
             :selected="getStoreData('native_language')"
             ripple
             @select="
@@ -30,14 +30,14 @@
       <template #name>
         <span class="text-lg font-semibold text-gray-300">{{ getLocale("target_language") }}</span>
       </template>
-      <template #value>{{ getStoreData("target_languge_list").find((item) => item.id === targetLang).label }}</template>
+      <template #value>{{ getStoreData("target_language_list").find((item) => item.id === targetLang).label }}</template>
       <template #modal="{ closeModal }">
         <Pill class="" color="dark">
           <span class="pill-title">{{ getLocale("modal_language_title") }}</span>
           <PillRadioGroup
             class="mt-4"
             color="light"
-            :data="getStoreData('native_languge_list')"
+            :data="getStoreData('native_language_list')"
             :selected="getStoreData('target_language')"
             ripple
             @select="
