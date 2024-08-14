@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import { useDataStore } from "@/store/data.ts";
 import { makeRequest } from "@/api/server";
 
@@ -16,7 +16,6 @@ export const useUserStore = defineStore("user", () => {
   });
 
   const router = useRouter();
-  const route = useRoute();
   const dataStore = useDataStore();
   const { setData } = dataStore;
 
@@ -29,7 +28,6 @@ export const useUserStore = defineStore("user", () => {
       if (key === "data") {
         setData(data[key]);
       }
-
       state.value[key] = data[key];
     });
   };
@@ -37,7 +35,6 @@ export const useUserStore = defineStore("user", () => {
   const startApp = () => {
     if (state.value.entryPoint) {
       router.push(state.value.entryPoint);
-      state.value.entryPoint = null;
     } else {
       router.push("/home/main");
     }
@@ -71,11 +68,12 @@ export const useUserStore = defineStore("user", () => {
     const result = await makeRequest({ key, data, service: state.value.service, apiUrl: state.value.apiUrl });
     setStore(result.data);
 
-    if (state.value.entryPoint && route.path !== "/init") {
-      console.log(`routing to ${state.value.entryPoint}`);
+    const redirectLocation = result.data.redirect;
 
-      router.push(state.value.entryPoint);
-      state.value.entryPoint = null;
+    if (redirectLocation) {
+      console.log(`redirecting to ${redirectLocation}`);
+
+      router.push(redirectLocation);
     }
   };
 
