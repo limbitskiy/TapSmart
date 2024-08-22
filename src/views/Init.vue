@@ -246,6 +246,7 @@ console.log("tg:", tg);
 Promise.allSettled([
   initialFetch({
     tg: {
+      rawInitData: tg.initData,
       initData: tg.initDataUnsafe,
       version: tg.version,
       platform: tg.platform,
