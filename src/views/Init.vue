@@ -245,6 +245,7 @@ console.log("tg:", tg);
 
 Promise.allSettled([
   initialFetch({
+    botName: import.meta.env.VITE_BOT_NAME,
     tg: {
       rawInitData: tg.initData,
       initData: tg.initDataUnsafe,
