@@ -15,7 +15,7 @@
     </div>
     <div class="bnt-cnt flex justify-between absolute bottom-2 w-[calc(100vw-2rem)]">
       <Button :class="{ invisible: isFirstSlide }" black @click="prevSlide">{{ getLocale("button_back") }}</Button>
-      <Button label="Next" @click="nextSlide">{{ isLastSlide ? getLocale("button_finish") : getLocale("button_next") }}</Button>
+      <Button @click="nextSlide">{{ isLastSlide ? getLocale("button_finish") : getLocale("button_next") }}</Button>
     </div>
   </div>
 </template>

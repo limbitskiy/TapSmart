@@ -28,6 +28,7 @@ export const useUserStore = defineStore("user", () => {
       if (key === "data") {
         setData(data[key]);
       }
+
       state.value[key] = data[key];
     });
   };
@@ -60,6 +61,10 @@ export const useUserStore = defineStore("user", () => {
     return await useFetch({ key: "friend_table_list" });
   };
 
+  const fetchBattlesPage = async () => {
+    return await useFetch({ key: "battle_init" });
+  };
+
   const setLanguages = async (data) => {
     return await useFetch({ key: "profile_set", data });
   };
@@ -77,5 +82,5 @@ export const useUserStore = defineStore("user", () => {
     }
   };
 
-  return { toast, startApp, showToast, fetchFriendsPage, setLanguages, initialFetch };
+  return { toast, startApp, showToast, fetchFriendsPage, fetchBattlesPage, setLanguages, initialFetch, useFetch };
 });

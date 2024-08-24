@@ -9,7 +9,7 @@
           <span>•</span>
           <div class="coins flex gap-1 items-center">
             <img class="h-4" :src="getAsset('coin')" />
-            <span class="text-md">{{ getStoreData("coins") }}</span>
+            <span class="text-md">{{ getStoreData("bolts") }}</span>
           </div>
         </div>
         <div class="progress mt-2 bg-gray-400 rounded-full w-full h-1">

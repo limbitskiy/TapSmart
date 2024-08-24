@@ -3,7 +3,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import Init from "@/views/Init.vue";
 import Tutorial from "@/views/Tutorial.vue";
 import Home from "@/views/Home.vue";
-import Main from "@/views/Main.vue";
+// import Main from "@/views/Main.vue";
 import Battles from "@/views/Battles.vue";
 import Friends from "@/views/Friends.vue";
 import Tasks from "@/views/Tasks.vue";
@@ -11,7 +11,9 @@ import Leaders from "@/views/Leaders.vue";
 import Market from "@/views/Market.vue";
 import NotFound from "@/views/NotFound.vue";
 import RequiredSettings from "@/views/RequiredSettings.vue";
-import Profile from "@/views/Profile.vue";
+import ProfileView from "@/views/ProfileView.vue";
+import YesNo from "@/components/battles/YesNo.vue";
+import FourAnswers from "@/components/battles/FourAnswers.vue";
 
 const routes = [
   { path: "/:pathMatch(.*)*", component: NotFound },
@@ -31,7 +33,7 @@ const routes = [
   },
   {
     path: "/profile",
-    component: Profile,
+    component: ProfileView,
   },
   {
     path: "/home",
@@ -41,6 +43,18 @@ const routes = [
         id: 1,
         path: "battles",
         component: Battles,
+        children: [
+          {
+            id: 11,
+            path: "yes-no",
+            component: YesNo,
+          },
+          {
+            id: 12,
+            path: "4-answers",
+            component: FourAnswers,
+          },
+        ],
       },
       {
         id: 2,

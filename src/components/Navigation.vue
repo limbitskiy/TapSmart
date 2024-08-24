@@ -1,6 +1,6 @@
 <template>
   <nav class="fixed bottom-0 w-full z-10">
-    <ul class="flex items-center justify-around bg-[var(--grey-dark)] text-white py-1">
+    <ul class="flex items-center justify-around bg-black text-white py-1">
       <!-- <span>{{ Object.keys(route) }}</span>
       <span>{{ route.path }}</span> -->
       <RouterLink v-for="menuItem in data.store.items" :to="menuItem.link" class="w-16 h-16 rounded-xl grayscale">

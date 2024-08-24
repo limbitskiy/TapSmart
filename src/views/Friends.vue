@@ -120,7 +120,13 @@ const filters = ref({
 });
 
 const filteredFriends = computed(() => {
-  let friendList = [...getStoreData("friends", "friends")];
+  const friendsData = getStoreData("friends", "friends");
+
+  if (!friendsData) {
+    return [];
+  }
+
+  let friendList = [...friendsData];
 
   if (filters.value.online) {
     friendList = friendList.filter((friend) => friend.isOnline);

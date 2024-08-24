@@ -1,17 +1,17 @@
 <template>
-  <Pill class="py-8 mt-16" color="darker">
+  <Pill class="py-8 mt-16" color="dark">
     <span class="pill-title">{{ getLocale("settings_title") }}</span>
 
-    <PillButton class="mt-4" color="dark" ripple>
+    <PillButton class="mt-4" color="light" ripple>
       <template #name>
         <span class="text-lg font-semibold text-gray-300">{{ getLocale("native_language") }}</span>
       </template>
       <template #value>{{ getStoreData("native_language_list").find((item) => item.id === nativeLang).label }}</template>
       <template #modal="{ closeModal }">
-        <Pill class="" color="dark">
+        <div>
           <span class="pill-title">{{ getLocale("modal_language_title") }}</span>
           <PillRadioGroup
-            class="mt-4"
+            class="mt-2"
             color="light"
             :data="getStoreData('native_language_list')"
             :selected="getStoreData('native_language')"
@@ -22,20 +22,20 @@
               }
             "
           />
-        </Pill>
+        </div>
       </template>
     </PillButton>
 
-    <PillButton class="mt-4" color="dark" ripple>
+    <PillButton class="mt-4" color="light" ripple>
       <template #name>
         <span class="text-lg font-semibold text-gray-300">{{ getLocale("target_language") }}</span>
       </template>
       <template #value>{{ getStoreData("target_language_list").find((item) => item.id === targetLang).label }}</template>
       <template #modal="{ closeModal }">
-        <Pill class="" color="dark">
+        <div>
           <span class="pill-title">{{ getLocale("modal_language_title") }}</span>
           <PillRadioGroup
-            class="mt-4"
+            class="mt-2"
             color="light"
             :data="getStoreData('target_language_list')"
             :selected="getStoreData('target_language')"
@@ -46,7 +46,7 @@
               }
             "
           />
-        </Pill>
+        </div>
       </template>
     </PillButton>
   </Pill>

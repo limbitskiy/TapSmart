@@ -1,7 +1,11 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
+import { useBattleStore } from "@/store/battle.ts";
 
 export const useDataStore = defineStore("data", () => {
+  const battleStore = useBattleStore();
+  const { setBattleData } = battleStore;
+
   const state = ref({
     menu: [
       // {
@@ -121,23 +125,31 @@ export const useDataStore = defineStore("data", () => {
     console.log("data: ", data);
 
     Object.keys(data).forEach((section) => {
-      Object.keys(data[section]).forEach((sectionKey) => {
-        if (sectionKey === "locale") {
-          state.value[section].locale = data[section].locale;
-        } else if (sectionKey === "store") {
-          if (!state.value[section].store) {
-            state.value[section].store = data[section].store;
-            return;
-          }
+      if (section === "battle_procesor") {
+        setBattleData(data[section]);
+      } else {
+        Object.keys(data[section]).forEach((sectionKey) => {
+          if (sectionKey === "locale") {
+            state.value[section].locale = data[section].locale;
+          } else if (sectionKey === "store") {
+            if (!state.value[section].store) {
+              state.value[section].store = data[section].store;
+              return;
+            }
 
-          Object.keys(data[section].store).forEach((storeKey) => {
-            state.value[section].store[storeKey] = data[section].store[storeKey];
-          });
-        }
-      });
+            Object.keys(data[section].store).forEach((storeKey) => {
+              state.value[section].store[storeKey] = data[section].store[storeKey];
+            });
+          }
+        });
+      }
     });
     console.log("merged store: ", state.value);
   };
 
-  return { tutorial, friends, menu, profile, requiredSettings, setData };
+  const addBolts = (amount) => {
+    state.value.profile.store.bolts += amount;
+  };
+
+  return { tutorial, friends, menu, profile, requiredSettings, setData, addBolts };
 });

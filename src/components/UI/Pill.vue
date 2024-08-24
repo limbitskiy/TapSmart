@@ -1,5 +1,11 @@
 <template>
-  <div :class="`pill p-4 rounded-2xl select-none bg-[var(--grey-${color})] ${outlined ? 'border' : ''}`" ref="container" @mousedown="addRipple" class="ripple-outer">
+  <div
+    :class="`pill p-4 rounded-2xl select-none ${outlined ? 'border' : ''}`"
+    ref="container"
+    @mousedown="addRipple"
+    class="ripple-outer"
+    :style="`background-color: var(--grey-${color})`"
+  >
     <transition-group class="ripples" name="grow" tag="div">
       <div
         class="ripple"

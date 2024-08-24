@@ -2,14 +2,17 @@
   <div class="modal">
     <div v-if="visible" id="modal-backdrop" class="modal-backdrop fixed inset-1 bg-black bg-opacity-50 z-40" @click="onBackdropClick"></div>
     <Transition name="modal-slide-up">
-      <div v-if="visible" class="fixed bottom-0 w-full z-50" color="darker">
+      <BackgroundPill v-if="visible" class="fixed bottom-0 w-full z-50 max-h-[90dvh] overflow-scroll" color="dark">
+        <div class="w-8 h-1 bg-gray-500 rounded-full m-auto relative -top-4"></div>
         <slot></slot>
-      </div>
+      </BackgroundPill>
     </Transition>
   </div>
 </template>
 
 <script setup lang="ts">
+import BackgroundPill from "@/components/UI/BackgroundPill.vue";
+
 defineProps<{
   visible: boolean;
 }>();
