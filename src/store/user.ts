@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useDataStore } from "@/store/data.ts";
+import { useBattleStore } from "@/store/battle.ts";
 import { makeRequest } from "@/api/server";
 
 export const useUserStore = defineStore("user", () => {
@@ -20,17 +21,16 @@ export const useUserStore = defineStore("user", () => {
 
   const router = useRouter();
   const dataStore = useDataStore();
-  const { setData } = dataStore;
+  const battleStore = useBattleStore();
 
   const notificationData = computed(() => notification.value);
-  // const toast = computed(() => state.value.toast);
 
   const setStore = (data) => {
     console.log(data);
 
     Object.keys(data).forEach((key) => {
       if (key === "data") {
-        setData(data[key]);
+        dataStore.setData(data[key]);
       }
 
       state.value[key] = data[key];
@@ -43,18 +43,6 @@ export const useUserStore = defineStore("user", () => {
     } else {
       router.push("/home/main");
     }
-  };
-
-  const showToast = (text) => {
-    if (state.value.toast.isShown) return;
-
-    state.value.toast.message = text;
-    state.value.toast.isShown = true;
-
-    setTimeout(() => {
-      state.value.toast.message = null;
-      state.value.toast.isShown = false;
-    }, 3000);
   };
 
   const showNotification = ({ title, subtitle, buttons, timeout }) => {
@@ -103,7 +91,17 @@ export const useUserStore = defineStore("user", () => {
   };
 
   const useFetch = async ({ key, data }) => {
-    const result = await makeRequest({ key, data, service: state.value.service, apiUrl: state.value.apiUrl });
+    // const result = await makeRequest({ key, data, service: state.value.service, apiUrl: state.value.apiUrl });
+    const result = await makeRequest({
+      apiUrl: state.value.apiUrl,
+      payload: {
+        key,
+        data,
+        service: state.value.service,
+        answers: battleStore.answers,
+        lastTaskId: battleStore.lastTaskId,
+      },
+    });
     setStore(result.data);
 
     const redirectLocation = result.data.redirect;
@@ -118,7 +116,6 @@ export const useUserStore = defineStore("user", () => {
   return {
     notificationData,
     startApp,
-    showToast,
     fetchFriendsPage,
     fetchBattlesPage,
     setLanguages,

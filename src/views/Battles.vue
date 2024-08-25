@@ -4,8 +4,8 @@
     <div class="top-btns flex gap-4 w-full px-4">
       <Button class="flex-1 bg-black text-white border-2" @click="changeMech">Change mech</Button>
       <Button class="flex-1"
-        ><div class="flex">
-          <span class="flex-1">Challenge</span>
+        ><div class="flex justify-center gap-1">
+          <span class="">Challenge</span>
           <div class="counter text-sm bg-green-500 rounded-md h-5 p-[2px] grid place-items-center leading-3">13</div>
         </div>
       </Button>

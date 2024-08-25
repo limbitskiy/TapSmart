@@ -15,7 +15,8 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   let breakpointInterval = null;
-  let taskIndex = ref(0);
+  const taskIndex = ref(0);
+  const lastTaskId = ref(null);
 
   const state = ref({});
 
@@ -44,8 +45,10 @@ export const useBattleStore = defineStore("battle", () => {
           }
 
           breakpointInterval = setInterval(() => {
-            console.log(`breakpoint!`);
-            breakpointCall();
+            if (document.hasFocus()) {
+              console.log(`breakpoint!`);
+              breakpointCall();
+            }
           }, data.store["breakpoint"]);
         }
 
@@ -82,8 +85,17 @@ export const useBattleStore = defineStore("battle", () => {
   const onAnswer = (answer) => {
     const currentDataItem = state.value.data[taskIndex.value];
 
+    // set lastTaskId
+    lastTaskId.value = currentDataItem.id;
+
     // store answer
-    answers.value.push({ id: currentDataItem.id, answer });
+    const foundIdx = answers.value.findIndex((answer) => answer.id === currentDataItem.id);
+
+    if (foundIdx !== -1) {
+      answers.value[foundIdx] = { id: currentDataItem.id, answer };
+    } else {
+      answers.value.push({ id: currentDataItem.id, answer });
+    }
 
     switch (state.value.battle_type) {
       // yes-no battle logic
@@ -135,8 +147,7 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const callApi = (apiName) => {
-    userStore.useFetch({ key: apiName, data: answers.value });
-    answers.value = [];
+    userStore.useFetch({ key: apiName });
   };
 
   const breakpointCall = () => {
@@ -154,5 +165,5 @@ export const useBattleStore = defineStore("battle", () => {
     userStore.useFetch({ key: "battle_init", data: { battle_type: +mechId } });
   };
 
-  return { currentTask, energy, setBattleData, onAnswer, changeMechanic };
+  return { currentTask, energy, lastTaskId, answers, setBattleData, onAnswer, changeMechanic };
 });
