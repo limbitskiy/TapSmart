@@ -8,12 +8,12 @@
       </Suspense>
     </RouterView>
 
-    <Toast />
+    <Notification />
   </div>
 </template>
 
 <script setup lang="ts">
-import Toast from "@/components/Toast.vue";
+import Notification from "@/components/Notification.vue";
 import { useUserStore } from "@/store/user.ts";
 import { storeToRefs } from "pinia";
 import { onMounted } from "vue";

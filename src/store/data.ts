@@ -1,10 +1,11 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { useBattleStore } from "@/store/battle.ts";
+import { useUserStore } from "@/store/user.ts";
 
 export const useDataStore = defineStore("data", () => {
   const battleStore = useBattleStore();
-  const { setBattleData } = battleStore;
+  const userStore = useUserStore();
 
   const state = ref({
     menu: [
@@ -126,7 +127,9 @@ export const useDataStore = defineStore("data", () => {
 
     Object.keys(data).forEach((section) => {
       if (section === "battle_procesor") {
-        setBattleData(data[section]);
+        battleStore.setBattleData(data[section]);
+      } else if (section === "notification") {
+        userStore.showNotification(data[section]);
       } else {
         Object.keys(data[section]).forEach((sectionKey) => {
           if (sectionKey === "locale") {

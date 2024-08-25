@@ -5,11 +5,14 @@ import { useDataStore } from "@/store/data.ts";
 import { makeRequest } from "@/api/server";
 
 export const useUserStore = defineStore("user", () => {
+  const notification = ref({
+    title: null,
+    subtitle: null,
+    buttons: {},
+    isShown: false,
+  });
+
   const state = ref({
-    toast: {
-      message: null,
-      isShown: false,
-    },
     service: {},
     entryPoint: null,
     apiUrl: null,
@@ -19,7 +22,8 @@ export const useUserStore = defineStore("user", () => {
   const dataStore = useDataStore();
   const { setData } = dataStore;
 
-  const toast = computed(() => state.value.toast);
+  const notificationData = computed(() => notification.value);
+  // const toast = computed(() => state.value.toast);
 
   const setStore = (data) => {
     console.log(data);
@@ -53,6 +57,35 @@ export const useUserStore = defineStore("user", () => {
     }, 3000);
   };
 
+  const showNotification = ({ title, subtitle, buttons }) => {
+    if (notification.value.isShown) return;
+
+    notification.value.title = title;
+    notification.value.subtitle = subtitle;
+    notification.value.buttons = buttons;
+    notification.value.isShown = true;
+
+    console.log(`notification!!!`, notification.value);
+
+    // setTimeout(() => {
+    //   notification.value.title = null;
+    //   notification.value.subtitle = null;
+    //   notification.value.buttons = {};
+    //   notification.value.isShown = false;
+    // }, 3000);
+  };
+
+  const hideNotification = () => {
+    notification.value.title = null;
+    notification.value.subtitle = null;
+    notification.value.buttons = {};
+    notification.value.isShown = false;
+  };
+
+  const notificationAction = ({ api, data }) => {
+    useFetch({ key: api, data });
+  };
+
   const initialFetch = async (data) => {
     return await useFetch({ data });
   };
@@ -82,5 +115,17 @@ export const useUserStore = defineStore("user", () => {
     }
   };
 
-  return { toast, startApp, showToast, fetchFriendsPage, fetchBattlesPage, setLanguages, initialFetch, useFetch };
+  return {
+    notificationData,
+    startApp,
+    showToast,
+    fetchFriendsPage,
+    fetchBattlesPage,
+    setLanguages,
+    initialFetch,
+    useFetch,
+    showNotification,
+    hideNotification,
+    notificationAction,
+  };
 });
