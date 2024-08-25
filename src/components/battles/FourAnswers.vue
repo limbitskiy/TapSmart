@@ -6,11 +6,19 @@
       </div>
     </div>
     <div class="answers flex-1 grid place-items-center bg-[var(--grey-dark)] rounded-t-3xl">
-      <div class="answer-buttons grid w-full grid-cols-2 grid-rows-2 gap-4 px-4">
-        <Button class="w-full bg-[var(--dark-blue-color)] text-white" @click="() => handleAnswer(currentTask.task.variants[0])">{{ currentTask.task.variants[0] }}</Button>
-        <Button class="w-full bg-[var(--dark-blue-color)] text-white" @click="() => handleAnswer(currentTask.task.variants[1])">{{ currentTask.task.variants[1] }}</Button>
-        <Button class="w-full bg-[var(--dark-blue-color)] text-white" @click="() => handleAnswer(currentTask.task.variants[2])">{{ currentTask.task.variants[2] }}</Button>
-        <Button class="w-full bg-[var(--dark-blue-color)] text-white" @click="() => handleAnswer(currentTask.task.variants[3])">{{ currentTask.task.variants[3] }}</Button>
+      <div class="answer-buttons grid w-full grid-cols-2 grid-rows-2 gap-4 px-4 leading-5">
+        <Button class="w-full bg-[var(--dark-blue-color)] text-white min-h-[64px] overflow-hidden text-ellipsis" @click="() => handleAnswer(currentTask.task.variants[0])">{{
+          currentTask.task.variants[0]
+        }}</Button>
+        <Button class="w-full bg-[var(--dark-blue-color)] text-white min-h-[64px] overflow-hidden text-ellipsis" @click="() => handleAnswer(currentTask.task.variants[1])">{{
+          currentTask.task.variants[1]
+        }}</Button>
+        <Button class="w-full bg-[var(--dark-blue-color)] text-white min-h-[64px] overflow-hidden text-ellipsis" @click="() => handleAnswer(currentTask.task.variants[2])">{{
+          currentTask.task.variants[2]
+        }}</Button>
+        <Button class="w-full bg-[var(--dark-blue-color)] text-white min-h-[64px] overflow-hidden text-ellipsis" @click="() => handleAnswer(currentTask.task.variants[3])">{{
+          currentTask.task.variants[3]
+        }}</Button>
       </div>
     </div>
   </div>

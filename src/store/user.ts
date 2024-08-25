@@ -57,7 +57,7 @@ export const useUserStore = defineStore("user", () => {
     }, 3000);
   };
 
-  const showNotification = ({ title, subtitle, buttons }) => {
+  const showNotification = ({ title, subtitle, buttons, timeout }) => {
     if (notification.value.isShown) return;
 
     notification.value.title = title;
@@ -67,12 +67,12 @@ export const useUserStore = defineStore("user", () => {
 
     console.log(`notification!!!`, notification.value);
 
-    // setTimeout(() => {
-    //   notification.value.title = null;
-    //   notification.value.subtitle = null;
-    //   notification.value.buttons = {};
-    //   notification.value.isShown = false;
-    // }, 3000);
+    setTimeout(() => {
+      notification.value.title = null;
+      notification.value.subtitle = null;
+      notification.value.buttons = {};
+      notification.value.isShown = false;
+    }, timeout);
   };
 
   const hideNotification = () => {

@@ -20,7 +20,7 @@ export const useBattleStore = defineStore("battle", () => {
   const state = ref({});
 
   const answers = ref([]);
-  const errors = ref(0);
+  const energy = ref(1500);
 
   const currentTask = computed(() => state.value.data[taskIndex.value]);
 
@@ -131,7 +131,7 @@ export const useBattleStore = defineStore("battle", () => {
 
   const onWrong = () => {
     console.log(`not correct`);
-    errors.value += 1;
+    energy.value -= 100;
   };
 
   const callApi = (apiName) => {
@@ -154,5 +154,5 @@ export const useBattleStore = defineStore("battle", () => {
     userStore.useFetch({ key: "battle_init", data: { battle_type: +mechId } });
   };
 
-  return { currentTask, errors, setBattleData, onAnswer, changeMechanic };
+  return { currentTask, energy, setBattleData, onAnswer, changeMechanic };
 });

@@ -11,6 +11,11 @@
             <img class="h-4" :src="getAsset('coin')" />
             <span class="text-md">{{ getStoreData("bolts") }}</span>
           </div>
+          <span>•</span>
+          <div class="energy flex gap-1 items-center">
+            <img class="h-4" :src="getAsset('energy')" />
+            <span class="text-md">{{ energy }}</span>
+          </div>
         </div>
         <div class="progress mt-2 bg-gray-400 rounded-full w-full h-1">
           <div class="value rounded-full bg-[var(--green-color)] w-[30%] h-1"></div>
@@ -25,6 +30,11 @@ import Pill from "@/components/UI/Pill.vue";
 import { getAsset } from "@/utils";
 import { useStoreHelpers } from "@/composables/useStoreHelpers";
 import { getUserName } from "@/api/telegram";
+import { useBattleStore } from "@/store/battle.ts";
+import { storeToRefs } from "pinia";
 
 const { getLocale, getStoreData } = useStoreHelpers("profile");
+const battleStore = useBattleStore();
+
+const { energy } = storeToRefs(battleStore);
 </script>
