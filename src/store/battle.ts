@@ -45,10 +45,8 @@ export const useBattleStore = defineStore("battle", () => {
           }
 
           breakpointInterval = setInterval(() => {
-            if (document.hasFocus()) {
-              console.log(`breakpoint!`);
-              breakpointCall();
-            }
+            console.log(`breakpoint!`);
+            breakpointCall();
           }, data.store["breakpoint"]);
         }
 
@@ -151,7 +149,13 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const breakpointCall = () => {
-    userStore.useFetch({ key: "battle_breakpoint" });
+    if (document.hasFocus()) {
+      console.log(`is in focus`);
+      userStore.useFetch({ key: "battle_breakpoint" });
+      return;
+    }
+
+    console.log(`is not in focus`);
   };
 
   const changeMechanic = (mechanic) => {
