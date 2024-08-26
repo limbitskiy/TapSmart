@@ -247,6 +247,7 @@ Promise.allSettled([
   initialFetch({
     botName: import.meta.env.VITE_BOT_NAME,
     tg: {
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       rawInitData: tg.initData,
       initData: tg.initDataUnsafe,
       version: tg.version,
