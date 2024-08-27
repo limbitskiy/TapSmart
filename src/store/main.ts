@@ -5,7 +5,7 @@ import { useDataStore } from "@/store/data.ts";
 import { useBattleStore } from "@/store/battle.ts";
 import { makeRequest } from "@/api/server";
 
-export const useUserStore = defineStore("user", () => {
+export const useMainStore = defineStore("main", () => {
   const notification = ref({
     title: null,
     subtitle: null,
@@ -25,15 +25,23 @@ export const useUserStore = defineStore("user", () => {
 
   const notificationData = computed(() => notification.value);
 
-  const setStore = (data) => {
-    console.log(data);
+  const parseResponse = (response) => {
+    console.log(`Setting stores: `, response);
 
-    Object.keys(data).forEach((key) => {
+    Object.keys(response).forEach((key) => {
       if (key === "data") {
-        dataStore.setData(data[key]);
+        Object.keys(response["data"]).forEach((section) => {
+          const sectionData = response["data"][section];
+
+          if (section === "notification") {
+            showNotification(sectionData);
+          } else {
+            dataStore.set(section, sectionData);
+          }
+        });
       }
 
-      state.value[key] = data[key];
+      state.value[key] = response[key];
     });
   };
 
@@ -91,7 +99,6 @@ export const useUserStore = defineStore("user", () => {
   };
 
   const useFetch = async ({ key, data }) => {
-    // const result = await makeRequest({ key, data, service: state.value.service, apiUrl: state.value.apiUrl });
     const result = await makeRequest({
       apiUrl: state.value.apiUrl,
       payload: {
@@ -102,7 +109,7 @@ export const useUserStore = defineStore("user", () => {
         lastTaskId: battleStore.lastTaskId,
       },
     });
-    setStore(result.data);
+    parseResponse(result.data);
 
     const redirectLocation = result.data.redirect;
 

@@ -3,18 +3,18 @@
     <div class="content flex gap-2 items-center">
       <img :src="getAsset('avatar1')" />
       <div class="profile-meta flex flex-col flex-1">
-        <span class="text-xl font-bold">{{ getUserName() || "Unknown Tiger" }}</span>
+        <span class="text-xl font-bold">{{ userName || "Unknown Tiger" }}</span>
         <div class="rank-money flex gap-2">
-          <span class="text-md text-[var(--accent-color)]">{{ getStoreData("rank") }}</span>
+          <span class="text-md text-[var(--accent-color)]">{{ data["rank"] }}</span>
           <span>•</span>
           <div class="coins flex gap-1 items-center">
             <img class="h-4" :src="getAsset('coin')" />
-            <span class="text-md">{{ getStoreData("bolts") }}</span>
+            <span class="text-md">{{ data["bolts"] }}</span>
           </div>
           <span>•</span>
           <div class="energy flex gap-1 items-center">
             <img class="h-4" :src="getAsset('energy')" />
-            <span class="text-md">{{ energy }}</span>
+            <span class="text-md">{{ battle["energy"] }}</span>
           </div>
         </div>
         <div class="progress mt-2 bg-gray-400 rounded-full w-full h-1">
@@ -26,15 +26,20 @@
 </template>
 
 <script setup lang="ts">
-import Pill from "@/components/UI/Pill.vue";
-import { getAsset } from "@/utils";
-import { useStoreHelpers } from "@/composables/useStoreHelpers";
-import { getUserName } from "@/api/telegram";
-import { useBattleStore } from "@/store/battle.ts";
 import { storeToRefs } from "pinia";
+import { getUserName, userName } from "@/api/telegram";
+import { getAsset } from "@/utils";
 
-const { getLocale, getStoreData } = useStoreHelpers("profile");
-const battleStore = useBattleStore();
+// stores
+import { useDataStore } from "@/store/data.ts";
+import { useLocaleStore } from "@/store/locale.ts";
 
-const { energy } = storeToRefs(battleStore);
+// components
+import Pill from "@/components/UI/Pill.vue";
+
+const dataStore = useDataStore();
+const localeStore = useLocaleStore();
+
+const { profile: data, battle } = storeToRefs(dataStore);
+const { profile: locale } = storeToRefs(localeStore);
 </script>

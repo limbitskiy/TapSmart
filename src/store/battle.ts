@@ -2,12 +2,12 @@ import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useDataStore } from "@/store/data.ts";
-import { useUserStore } from "@/store/user.ts";
+import { useMainStore } from "@/store/main.ts";
 
 export const useBattleStore = defineStore("battle", () => {
   const router = useRouter();
   const dataStore = useDataStore();
-  const userStore = useUserStore();
+  const userStore = useMainStore();
 
   const battleTypes = {
     1: "yes-no",

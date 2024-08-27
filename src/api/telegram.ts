@@ -1,3 +1,5 @@
+import { computed } from "vue";
+
 export const tg = window.Telegram?.WebApp;
 
 export const showMainButton = () => {
@@ -17,3 +19,5 @@ export const getUserId = () => {
 export const getUserName = () => {
   return tg?.initDataUnsafe?.user?.username;
 };
+
+export const userName = computed(() => tg?.initDataUnsafe?.user?.username);

@@ -222,10 +222,10 @@
 import { ref } from "vue";
 import preloadAssets from "@/composables/preloadAssets.ts";
 import { tg } from "../api/telegram";
-import { useUserStore } from "@/store/user.ts";
+import { useMainStore } from "@/store/main.ts";
 import { useSoundStore } from "@/store/sound.ts";
 
-const userStore = useUserStore();
+const userStore = useMainStore();
 const soundStore = useSoundStore();
 const { startApp, initialFetch } = userStore;
 const { addSound, playSound } = soundStore;

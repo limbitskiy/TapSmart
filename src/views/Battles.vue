@@ -27,7 +27,7 @@
 import { ref } from "vue";
 import Pill from "@/components/UI/Pill.vue";
 import { useDataStore } from "@/store/data.ts";
-import { useUserStore } from "@/store/user.ts";
+import { useMainStore } from "@/store/main.ts";
 import { useBattleStore } from "@/store/battle.ts";
 import { storeToRefs } from "pinia";
 import { getAsset } from "../utils";
@@ -38,7 +38,7 @@ import Modal from "@/components/Modal.vue";
 import ChangeMechanic from "@/components/ChangeMechanic.vue";
 
 const dataStore = useDataStore();
-const userStore = useUserStore();
+const userStore = useMainStore();
 const battle = useBattleStore();
 const { errors } = storeToRefs(battle);
 

@@ -21,10 +21,10 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from "@/store/user.ts";
+import { useMainStore } from "@/store/main.ts";
 import { storeToRefs } from "pinia";
 
-const userStore = useUserStore();
+const userStore = useMainStore();
 const { notificationData } = storeToRefs(userStore);
 const { hideNotification, notificationAction } = userStore;
 

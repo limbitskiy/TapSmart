@@ -1,30 +1,30 @@
 <template>
   <div id="profile" class="flex-1">
     <div class="top-part p-5 mb-4">
-      <div class="page-title mb-4">{{ getLocale("title") }}</div>
-      <div class="page-subtitle">{{ getLocale("subtitle") }}</div>
+      <div class="page-title mb-4">{{ locale["title"] }}</div>
+      <div class="page-subtitle">{{ locale["subtitle"] }}</div>
     </div>
 
     <Pill class="py-8" color="dark">
-      <span class="pill-title">{{ getLocale("stats_title") }}</span>
+      <span class="pill-title">{{ locale["stats_title"] }}</span>
 
       <div class="pill-grid grid grid-cols-2 gap-4">
         <Pill class="mt-4" color="light" ripple>
           <div class="content flex flex-col gap-2 items-center justify-between text-center">
-            <span class="text-xl font-semibold text-gray-300">{{ getLocale("coins_earned") }}</span>
+            <span class="text-xl font-semibold text-gray-300">{{ locale["coins_earned"] }}</span>
             <div class="price flex gap-2 items-center">
               <img class="h-6" src="/coin.png" />
-              <span class="text-xl font-bold text-[var(--accent-color)]">{{ getStoreData("coins") }}</span>
+              <span class="text-xl font-bold text-[var(--accent-color)]">{{ data["coins"] }}</span>
             </div>
           </div>
         </Pill>
 
         <Pill class="mt-4" color="light" ripple>
           <div class="content flex flex-col gap-2 items-center justify-between text-center">
-            <span class="text-xl font-semibold text-gray-300">{{ getLocale("points_earned") }}</span>
+            <span class="text-xl font-semibold text-gray-300">{{ locale["points_earned"] }}</span>
             <div class="price flex gap-2 items-center">
               <img class="h-6" src="/point.png" />
-              <span class="text-xl font-bold text-purple-500">{{ getStoreData("points") }}</span>
+              <span class="text-xl font-bold text-purple-500">{{ data["points"] }}</span>
             </div>
           </div>
         </Pill>
@@ -32,20 +32,20 @@
 
       <Pill class="mt-4" color="light" ripple>
         <div class="content flex gap-2 items-center justify-between">
-          <span class="text-xl font-semibold text-gray-300">{{ getLocale("battles_played") }}</span>
+          <span class="text-xl font-semibold text-gray-300">{{ locale["battles_played"] }}</span>
           <div class="price flex gap-2 items-center">
             <img class="h-6" src="/swords.png" />
-            <span class="text-xl font-bold">{{ getStoreData("battles") }}</span>
+            <span class="text-xl font-bold">{{ data["battles"] }}</span>
           </div>
         </div>
       </Pill>
 
       <Pill class="mt-4" color="light" ripple>
         <div class="content flex gap-2 items-center justify-between">
-          <span class="text-xl font-semibold text-gray-300">{{ getLocale("words_learned") }}</span>
+          <span class="text-xl font-semibold text-gray-300">{{ locale["words_learned"] }}</span>
           <div class="price flex gap-2 items-center">
             <img class="h-6" src="/book.png" />
-            <span class="text-xl font-bold">{{ getStoreData("learned") }}</span>
+            <span class="text-xl font-bold">{{ data["learned"] }}</span>
           </div>
         </div>
       </Pill>
@@ -58,16 +58,26 @@
 <script setup lang="ts">
 import { computed, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { useUserStore } from "@/store/user.ts";
+import { tg } from "@/api/telegram";
+import { storeToRefs } from "pinia";
+
+// store
+import { useMainStore } from "@/store/main.ts";
+import { useDataStore } from "@/store/data.ts";
+import { useLocaleStore } from "@/store/locale.ts";
+
+// components
 import Pill from "@/components/UI/Pill.vue";
 import Settings from "@/components/Settings.vue";
-import { useStoreHelpers } from "@/composables/useStoreHelpers";
-import { tg } from "@/api/telegram";
 
-const { getLocale, getStoreData } = useStoreHelpers("profile");
-const userStore = useUserStore();
+const mainStore = useMainStore();
+const dataStore = useDataStore();
+const localeStore = useLocaleStore();
 
-const { setLanguages } = userStore;
+const { profile: data } = storeToRefs(dataStore);
+const { profile: locale } = storeToRefs(localeStore);
+
+const { setLanguages } = mainStore;
 
 const router = useRouter();
 

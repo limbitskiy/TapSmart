@@ -1,20 +1,20 @@
 <template>
   <Pill class="py-8 mt-16" color="dark">
-    <span class="pill-title">{{ getLocale("settings_title") }}</span>
+    <span class="pill-title">{{ locale["settings_title"] }}</span>
 
     <PillButton class="mt-4" color="light" ripple>
       <template #name>
-        <span class="text-lg font-semibold text-gray-300">{{ getLocale("native_language") }}</span>
+        <span class="text-lg font-semibold text-gray-300">{{ locale["native_language"] }}</span>
       </template>
-      <template #value>{{ getStoreData("native_language_list").find((item) => item.id === nativeLang).label }}</template>
+      <template #value>{{ data["native_language_list"].find((item) => item.id === nativeLang).label }}</template>
       <template #modal="{ closeModal }">
         <div>
-          <span class="pill-title">{{ getLocale("modal_language_title") }}</span>
+          <span class="pill-title">{{ locale["modal_language_title"] }}</span>
           <PillRadioGroup
             class="mt-2"
             color="light"
-            :data="getStoreData('native_language_list')"
-            :selected="getStoreData('native_language')"
+            :data="data['native_language_list']"
+            :selected="data['native_language']"
             ripple
             @select="
               (lang) => {
@@ -28,17 +28,17 @@
 
     <PillButton class="mt-4" color="light" ripple>
       <template #name>
-        <span class="text-lg font-semibold text-gray-300">{{ getLocale("target_language") }}</span>
+        <span class="text-lg font-semibold text-gray-300">{{ locale["target_language"] }}</span>
       </template>
-      <template #value>{{ getStoreData("target_language_list").find((item) => item.id === targetLang).label }}</template>
+      <template #value>{{ data["target_language_list"].find((item) => item.id === targetLang).label }}</template>
       <template #modal="{ closeModal }">
         <div>
-          <span class="pill-title">{{ getLocale("modal_language_title") }}</span>
+          <span class="pill-title">{{ locale["modal_language_title"] }}</span>
           <PillRadioGroup
             class="mt-2"
             color="light"
-            :data="getStoreData('target_language_list')"
-            :selected="getStoreData('target_language')"
+            :data="data['target_language_list']"
+            :selected="data['target_language']"
             ripple
             @select="
               (lang) => {
@@ -54,24 +54,30 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from "vue";
-import { useDataStore } from "@/store/data.ts";
 import { storeToRefs } from "pinia";
-import { useRouter } from "vue-router";
-import Button from "@/components/UI/Button.vue";
+import { tg } from "@/api/telegram";
+
+// stores
+import { useDataStore } from "@/store/data.ts";
+import { useLocaleStore } from "@/store/locale.ts";
+
+// components
 import Pill from "@/components/UI/Pill.vue";
 import PillButton from "@/components/UI/PillButton.vue";
 import PillRadioGroup from "@/components/UI/PillRadioGroup.vue";
-import { tg } from "@/api/telegram";
-import { useStoreHelpers } from "@/composables/useStoreHelpers";
 
 const emit = defineEmits<{
   change: [data: { setting: string; value: number }];
 }>();
 
-const { getLocale, getStoreData } = useStoreHelpers("profile");
+const dataStore = useDataStore();
+const localeStore = useLocaleStore();
 
-const nativeLang = ref(getStoreData("native_language"));
-const targetLang = ref(getStoreData("target_language"));
+const { profile: data } = storeToRefs(dataStore);
+const { profile: locale } = storeToRefs(localeStore);
+
+const nativeLang = ref(data.value["native_language"]);
+const targetLang = ref(data.value["target_language"]);
 
 const onNativeSelect = (lang, cb) => {
   emit("change", { setting: "native_language", value: lang });
