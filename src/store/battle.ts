@@ -48,7 +48,7 @@ export const useBattleStore = defineStore("battle", () => {
         }
 
         breakpointInterval = setInterval(() => {
-          console.log(`breakpoint!`);
+          // console.log(`breakpoint!`);
           breakpointCall();
         }, data["breakpoint"]);
       }
@@ -60,7 +60,7 @@ export const useBattleStore = defineStore("battle", () => {
       state.value[key] = data[key];
     });
 
-    console.log("battle store:", state.value);
+    // console.log("battle store:", state.value);
   };
 
   const expand = (data) => {
@@ -123,7 +123,7 @@ export const useBattleStore = defineStore("battle", () => {
 
     incrementTaskIndex();
 
-    console.log(answers.value);
+    // console.log(answers.value);
   };
 
   const incrementTaskIndex = () => {
@@ -136,12 +136,12 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const onCorrect = () => {
-    console.log(`correct`);
+    // console.log(`correct`);
     dataStore.addBolts(2);
   };
 
   const onWrong = () => {
-    console.log(`not correct`);
+    // console.log(`not correct`);
     energy.value -= 100;
   };
 

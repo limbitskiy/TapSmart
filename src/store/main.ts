@@ -26,7 +26,7 @@ export const useMainStore = defineStore("main", () => {
   const notificationData = computed(() => notification.value);
 
   const parseResponse = (response) => {
-    console.log(`Setting stores: `, response);
+    // console.log(`Setting stores: `, response);
 
     Object.keys(response).forEach((key) => {
       if (key === "data") {
@@ -61,7 +61,7 @@ export const useMainStore = defineStore("main", () => {
     notification.value.buttons = buttons;
     notification.value.isShown = true;
 
-    console.log(`notification!!!`, notification.value);
+    // console.log(`notification!!!`, notification.value);
 
     setTimeout(() => {
       notification.value.title = null;
