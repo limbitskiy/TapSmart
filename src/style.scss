@@ -63,3 +63,13 @@
   outline: 2px solid var(--accent-color);
   filter: none;
 }
+
+// battles
+.yes-btn,
+.no-btn {
+  width: min(15vh, 85px);
+  height: min(15vh, 85px);
+  display: grid;
+  place-items: center;
+  border-radius: 1rem;
+}
