@@ -1,7 +1,7 @@
 <template>
   <div class="home-main flex-1 overflow-auto flex flex-col gap-2">
     <Profile />
-    <div class="top-btns flex gap-4 w-full px-4">
+    <div class="top-btns flex gap-4 w-full px-4 relative">
       <Button class="flex-1 bg-black text-white border-2" @click="changeMech">{{ locale["button_change_mech"] }}</Button>
       <Button class="flex-1"
         ><div class="flex justify-center gap-1">
@@ -9,6 +9,7 @@
           <div class="counter text-sm bg-green-500 rounded-md h-5 p-[2px] grid place-items-center leading-3">13</div>
         </div>
       </Button>
+      <VolumeControl />
     </div>
     <RouterView v-slot="{ Component }">
       <Transition name="fade" mode="out-in">
@@ -29,7 +30,7 @@ import { storeToRefs } from "pinia";
 import { getAsset } from "../utils";
 import { tg, getUserName } from "@/api/telegram";
 
-// stored
+// stores
 import { useDataStore } from "@/store/data.ts";
 import { useMainStore } from "@/store/main.ts";
 import { useLocaleStore } from "@/store/locale.ts";
@@ -40,6 +41,7 @@ import Profile from "@/components/Profile.vue";
 import Button from "@/components/UI/Button.vue";
 import Modal from "@/components/Modal.vue";
 import ChangeMechanic from "@/components/ChangeMechanic.vue";
+import VolumeControl from "@/components/VolumeControl.vue";
 
 const dataStore = useDataStore();
 const mainStore = useMainStore();

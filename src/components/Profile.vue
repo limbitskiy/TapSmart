@@ -1,5 +1,5 @@
 <template>
-  <Pill class="m-4 border border-gray-600" color="dark" ripple @click="$router.push('/profile')">
+  <Pill class="mx-4 mt-4 border border-gray-600" color="dark" ripple @click="$router.push('/profile')">
     <div class="content flex gap-2 items-center">
       <img :src="getAsset('avatar1')" />
       <div class="profile-meta flex flex-col flex-1">

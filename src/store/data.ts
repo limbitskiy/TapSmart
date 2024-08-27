@@ -10,6 +10,11 @@ export const useDataStore = defineStore("data", () => {
   const locale = useLocaleStore();
 
   const state = ref({});
+  const settings = ref({
+    sound: false,
+    music: false,
+    vibro: true,
+  });
 
   const tutorial = computed(() => state.value.tutorial);
   const profile = computed(() => state.value.profile);
@@ -52,5 +57,5 @@ export const useDataStore = defineStore("data", () => {
     state.value.profile.bolts += amount;
   };
 
-  return { menu, tutorial, profile, battle, friends, set, addBolts };
+  return { menu, tutorial, profile, battle, friends, settings, set, addBolts };
 });

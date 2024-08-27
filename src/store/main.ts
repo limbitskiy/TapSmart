@@ -59,7 +59,7 @@ export const useMainStore = defineStore("main", () => {
     notification.value.title = title;
     notification.value.subtitle = subtitle;
     notification.value.buttons = buttons;
-    notification.value.isShown = true;
+    // notification.value.isShown = true;
 
     // console.log(`notification!!!`, notification.value);
 

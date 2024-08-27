@@ -1,6 +1,6 @@
 <template>
   <div ref="container" @mousedown="addRipple" class="ripple-outer">
-    <transition-group class="ripples z-10" name="grow" tag="div">
+    <transition-group class="ripples" name="grow" tag="div">
       <div
         class="ripple"
         v-for="ripple in ripples"
