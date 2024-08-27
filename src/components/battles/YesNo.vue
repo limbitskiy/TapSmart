@@ -8,8 +8,17 @@
     </div>
     <div class="answers flex-1 grid place-items-center bg-[var(--grey-dark)] rounded-t-3xl">
       <div class="answer-buttons flex w-full justify-evenly">
-        <div class="no-btn w-20 h-20 bg-[var(--red-color)] grid place-items-center rounded-2xl" @click="() => handleAnswer('no')">No</div>
-        <div class="yes-btn w-20 h-20 bg-[var(--green-color)] grid place-items-center rounded-2xl" @click="() => handleAnswer('yes')">Yes</div>
+        <div class="no-btn w-[90px] h-[90px] bg-[var(--red-color)] grid place-items-center rounded-2xl" @click="() => handleAnswer('no')">
+          <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3.5 3.5L38.5 38.5" stroke="white" stroke-width="7" stroke-linecap="round" />
+            <path d="M38.5 3.5L3.5 38.5" stroke="white" stroke-width="7" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="yes-btn w-[90px] h-[90px] bg-[var(--green-color)] grid place-items-center rounded-2xl" @click="() => handleAnswer('yes')">
+          <svg width="56" height="41" viewBox="0 0 56 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 20L19.5294 36L52 4" stroke="white" stroke-width="7" stroke-linecap="round" />
+          </svg>
+        </div>
       </div>
     </div>
   </div>

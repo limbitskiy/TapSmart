@@ -13,6 +13,7 @@ export const useLocaleStore = defineStore("locale", () => {
   const profile = computed(() => state.value.profile);
   const requiredSettings = computed(() => state.value["required-settings"]);
   const friends = computed(() => state.value.friends);
+  const battles = computed(() => state.value.battles);
 
   const set = (section, data) => {
     if (!state.value[section]) {
@@ -23,5 +24,5 @@ export const useLocaleStore = defineStore("locale", () => {
     state.value[section] = { ...state.value[section], ...data };
   };
 
-  return { tutorial, requiredSettings, profile, friends, set };
+  return { tutorial, requiredSettings, profile, friends, battles, set };
 });

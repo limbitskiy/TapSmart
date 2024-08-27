@@ -23,6 +23,11 @@ export const useDataStore = defineStore("data", () => {
     }
 
     if (data.store) {
+      if (section === "battles") {
+        battleStore.set(data.store);
+        return;
+      }
+
       if (!state.value[section]) {
         state.value[section] = data.store;
         return;
@@ -34,10 +39,17 @@ export const useDataStore = defineStore("data", () => {
       //   state.value[section].store[storeKey] = data.store[storeKey];
       // });
     }
+
+    if (data.expand) {
+      if (section === "battles") {
+        battleStore.expand(data.expand);
+        return;
+      }
+    }
   };
 
   const addBolts = (amount) => {
-    state.value.profile.store.bolts += amount;
+    state.value.profile.bolts += amount;
   };
 
   return { menu, tutorial, profile, battle, friends, set, addBolts };

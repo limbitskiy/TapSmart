@@ -12,6 +12,8 @@ export const useBattleStore = defineStore("battle", () => {
   const battleTypes = {
     1: "yes-no",
     2: "4-answers",
+    3: "bubble-pairs",
+    4: "audio-question",
   };
 
   let breakpointInterval = null;
@@ -25,59 +27,58 @@ export const useBattleStore = defineStore("battle", () => {
 
   const currentTask = computed(() => state.value.data[taskIndex.value]);
 
-  const setBattleData = (data) => {
-    if (data.store) {
-      Object.keys(data.store).forEach((key) => {
-        if (key === "battle_type") {
-          const battleType = data.store["battle_type"];
+  const currentBattleType = ref(1);
 
-          if (!battleType) {
-            console.error(`No such battle type`);
-          }
+  const set = (data) => {
+    Object.keys(data).forEach((key) => {
+      if (key === "battle_type") {
+        currentBattleType.value = data["battle_type"];
 
-          router.push(`/home/battles/${battleTypes[battleType]}`);
+        if (!currentBattleType.value) {
+          console.error(`No such battle type`);
         }
 
-        // breakpoint logic
-        if (key === "breakpoint" && breakpointInterval !== data.store["breakpoint"]) {
-          if (breakpointInterval) {
-            clearInterval(breakpointInterval);
-          }
+        router.push(`/home/battles/${battleTypes[currentBattleType.value]}`);
+      }
 
-          breakpointInterval = setInterval(() => {
-            console.log(`breakpoint!`);
-            breakpointCall();
-          }, data.store["breakpoint"]);
+      // breakpoint logic
+      if (key === "breakpoint" && breakpointInterval !== data["breakpoint"]) {
+        if (breakpointInterval) {
+          clearInterval(breakpointInterval);
         }
 
-        if (state.value[key]) {
-          state.value[key] = {};
-        }
+        breakpointInterval = setInterval(() => {
+          console.log(`breakpoint!`);
+          breakpointCall();
+        }, data["breakpoint"]);
+      }
 
-        state.value[key] = data.store[key];
-      });
-    }
+      if (state.value[key]) {
+        state.value[key] = {};
+      }
 
-    if (data.expand) {
-      // overwrite items with duplicate id's
-      Object.keys(data.expand).forEach((expandKey) => {
-        if (state.value[expandKey] && Array.isArray(state.value[expandKey])) {
-          data.expand[expandKey].forEach((item) => {
-            const foundIdx = state.value[expandKey].findIndex((storeItem) => storeItem.id === item.id);
-
-            if (foundIdx != -1) {
-              state.value[expandKey].splice(foundIdx, 1);
-            }
-
-            state.value[expandKey].push(item);
-          });
-        } else {
-          console.error(`Error trying to expand battle store`);
-        }
-      });
-    }
+      state.value[key] = data[key];
+    });
 
     console.log("battle store:", state.value);
+  };
+
+  const expand = (data) => {
+    Object.keys(data).forEach((key) => {
+      if (state.value[key] && Array.isArray(state.value[key])) {
+        data[key].forEach((item) => {
+          const foundIdx = state.value[key].findIndex((storeItem) => storeItem.id === item.id);
+
+          if (foundIdx != -1) {
+            state.value[key].splice(foundIdx, 1);
+          }
+
+          state.value[key].push(item);
+        });
+      } else {
+        console.error(`Error trying to expand battle store`);
+      }
+    });
   };
 
   const onAnswer = (answer) => {
@@ -158,16 +159,9 @@ export const useBattleStore = defineStore("battle", () => {
     console.log(`is not in focus`);
   };
 
-  const changeMechanic = (mechanic) => {
-    const mechId = Object.keys(battleTypes).find((key) => battleTypes[key] === mechanic);
-
-    if (!mechId) {
-      console.error(`Could not send correct mechanic`);
-      return;
-    }
-
+  const changeMechanic = (mechId) => {
     userStore.useFetch({ key: "battle_init", data: { battle_type: +mechId } });
   };
 
-  return { currentTask, energy, lastTaskId, answers, setBattleData, onAnswer, changeMechanic };
+  return { currentTask, energy, lastTaskId, answers, currentBattleType, set, onAnswer, changeMechanic, expand };
 });
