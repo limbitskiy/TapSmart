@@ -1,5 +1,5 @@
 <template>
-  <div class="yes-no-battle flex-1 flex flex-col mb-20">
+  <div class="yes-no-battle flex-1 flex flex-col mb-[72px]">
     <div class="question flex-1 grid place-items-center font-black text-2xl">
       <div class="question-text flex flex-col items-center text-center">
         <span ref="el">{{ currentTask.task.question }}</span>
