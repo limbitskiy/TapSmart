@@ -14,8 +14,8 @@
       </Transition>
     </div>
     <div class="bnt-cnt flex justify-between absolute bottom-2 w-[calc(100vw-2rem)]">
-      <Button :class="{ invisible: isFirstSlide }" black @click="prevSlide">{{ locale["button_back"] }}</Button>
-      <Button @click="nextSlide">{{ isLastSlide ? locale["button_finish"] : locale["button_next"] }}</Button>
+      <Button :class="{ invisible: isFirstSlide }" black class="px-4 py-2" @click="prevSlide">{{ locale["button_back"] }}</Button>
+      <Button class="px-4 py-2" @click="nextSlide">{{ isLastSlide ? locale["button_finish"] : locale["button_next"] }}</Button>
     </div>
   </div>
 </template>

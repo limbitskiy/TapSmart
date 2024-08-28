@@ -1,6 +1,6 @@
 <template>
-  <Pill class="py-8 mt-16" color="dark">
-    <span class="pill-title">{{ locale["settings_title"] }}</span>
+  <Pill class="py-8 mt-4" color="dark">
+    <span class="bg-pill-title">{{ locale["settings_title"] }}</span>
 
     <PillButton class="mt-4" color="light" ripple>
       <template #name>

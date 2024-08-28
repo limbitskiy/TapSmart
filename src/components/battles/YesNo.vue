@@ -2,36 +2,36 @@
   <div class="yes-no-battle flex-1 flex flex-col mb-[72px]">
     <div class="question flex-1 grid place-items-center font-black text-2xl">
       <div class="question-text flex flex-col items-center text-center">
-        <span ref="el">{{ currentTask.task.question }}</span>
-        <span ref="el">{{ currentTask.task.answer }}</span>
+        <span class="fira-condensed-black text-[26px]" ref="el">{{ currentTask.task.question }}</span>
+        <span class="fira-condensed-black text-[26px]" ref="el">{{ currentTask.task.answer }}</span>
       </div>
     </div>
 
     <Teleport to="body">
       <div v-for="bonus in bonuses" :key="bonus.id" class="bonus bonus-animate z-20 flex gap-1 items-center absolute" :style="{ left: bonus.x + 'px', top: bonus.y + 'px' }">
-        <img class="h-4" :src="getAsset('coin')" />
+        <img class="h-4" :src="getAsset('bolt')" />
         <span class="font-bold">+2</span>
       </div>
     </Teleport>
 
     <div class="answers flex-1 grid place-items-center bg-[var(--grey-dark)] rounded-t-3xl">
       <div class="answer-buttons flex w-full justify-evenly py-4">
-        <Ripple class="rounded-2xl">
-          <div class="no-btn bg-[var(--red-color)]" @click="(event) => handleAnswer('no', event)">
-            <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3.5 3.5L38.5 38.5" stroke="white" stroke-width="7" stroke-linecap="round" />
-              <path d="M38.5 3.5L3.5 38.5" stroke="white" stroke-width="7" stroke-linecap="round" />
-            </svg>
-          </div>
-        </Ripple>
+        <!-- <Ripple class="rounded-2xl"> -->
+        <div class="no-btn bg-[var(--red-color)] border-b-4 border-[#6A3524]" @click="(event) => handleAnswer('no', event)">
+          <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3.5 3.5L38.5 38.5" stroke="white" stroke-width="7" stroke-linecap="round" />
+            <path d="M38.5 3.5L3.5 38.5" stroke="white" stroke-width="7" stroke-linecap="round" />
+          </svg>
+        </div>
+        <!-- </Ripple> -->
 
-        <Ripple class="rounded-2xl">
-          <div class="yes-btn bg-[var(--green-color)]" @click="(event) => handleAnswer('yes', event)">
-            <svg width="56" height="41" viewBox="0 0 56 41" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4 20L19.5294 36L52 4" stroke="white" stroke-width="7" stroke-linecap="round" />
-            </svg>
-          </div>
-        </Ripple>
+        <!-- <Ripple class="rounded-2xl"> -->
+        <div class="yes-btn bg-[var(--green-color)] border-b-4 border-[#034E0A]" @click="(event) => handleAnswer('yes', event)">
+          <svg width="56" height="41" viewBox="0 0 56 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 20L19.5294 36L52 4" stroke="white" stroke-width="7" stroke-linecap="round" />
+          </svg>
+        </div>
+        <!-- </Ripple> -->
       </div>
     </div>
   </div>
@@ -116,14 +116,17 @@ const animateWrong = async () => {
 };
 
 const createBonus = ({ x, y }) => {
-  const idx = bonuses.value.push({
-    id: Date.now(),
+  const id = Date.now();
+
+  bonuses.value.push({
+    id,
     x: x - 20,
     y: y - 60,
   });
 
   setTimeout(() => {
-    bonuses.value.splice(idx - 1, 1);
+    const idx = bonuses.value.findIndex((item) => item.id === id);
+    bonuses.value.splice(idx, 1);
   }, 700);
 
   return true;

@@ -1,7 +1,7 @@
 <template>
   <div id="required-settings" class="flex-1">
     <div class="top-part p-5 mb-4">
-      <div class="page-title mb-4">{{ locale["title"] }}</div>
+      <div class="page-title mb-2">{{ locale["title"] }}</div>
       <div class="page-subtitle">{{ locale["subtitle"] }}</div>
     </div>
 

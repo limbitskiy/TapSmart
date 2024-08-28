@@ -1,19 +1,19 @@
 <template>
   <div id="friends" class="flex-1">
     <div class="top-part p-5">
-      <div class="page-title mb-4">{{ locale["title"] }}</div>
-      <div class="page-subtitle">{{ locale["subtitle"] }}</div>
+      <div class="page-title mb-2">{{ locale["title"] }}</div>
+      <div class="page-subtitle text-gray-200">{{ locale["subtitle"] }}</div>
 
-      <div class="pills flex flex-col gap-4 my-8">
+      <div class="pills flex flex-col gap-4 my-4">
         <IconPill color="dark">
           <template #start>
             <img class="h-[39px]" :src="getAsset('telegram')" />
           </template>
 
           <template #end>
-            <div class="text flex flex-col gap-1">
-              <span class="text-lg font-semibold">{{ locale["tg_pill_title"] }}</span>
-              <span class="text-sm text-gray-400" v-html="locale['tg_pill_subtitle']"></span>
+            <div class="flex flex-col gap-1">
+              <span class="text-lg pill-title">{{ locale["tg_pill_title"] }}</span>
+              <span class="text-gray-400" v-html="locale['tg_pill_subtitle']"></span>
             </div>
           </template>
         </IconPill>
@@ -24,9 +24,9 @@
           </template>
 
           <template #end>
-            <div class="text flex flex-col gap-1">
-              <span class="text-lg font-semibold">{{ locale["premium_pill_title"] }}</span>
-              <span class="text-sm text-gray-400" v-html="locale['premium_pill_subtitle']"></span>
+            <div class="flex flex-col gap-1">
+              <span class="text-lg pill-title">{{ locale["premium_pill_title"] }}</span>
+              <span class="text-gray-400" v-html="locale['premium_pill_subtitle']"></span>
             </div>
           </template>
         </IconPill>
@@ -34,10 +34,10 @@
     </div>
 
     <!-- income -->
-    <Pill class="py-8" color="darker">
-      <span class="pill-title">{{ locale["income_title"] }}</span>
+    <BackgroundPill class="py-8">
+      <span class="bg-pill-title">{{ locale["income_title"] }}</span>
 
-      <Pill class="mt-4" color="dark" ripple>
+      <Pill class="mt-4" color="light" ripple>
         <div class="content flex flex-col items-center gap-2 justify-between">
           <span class="text-xl font-semibold">{{ locale["total_income"] }}</span>
           <div class="price flex gap-2 items-center">
@@ -47,20 +47,20 @@
         </div>
       </Pill>
 
-      <Pill class="mt-4" color="dark" ripple>
+      <Pill class="mt-4" color="light" ripple>
         <div class="content flex justify-between">
           <span class="text-xl font-semibold">{{ locale["battles_played"] }}</span>
           <span class="text-xl font-bold text-[var(--accent-color)]">{{ data["battles"] }}</span>
         </div>
       </Pill>
 
-      <Pill class="mt-4" color="dark" ripple>
+      <Pill class="mt-4" color="light" ripple>
         <div class="content flex justify-between">
           <span class="text-xl font-semibold">{{ locale["points_earned"] }}</span>
           <span class="text-xl font-bold text-[var(--accent-color)]">{{ data["points"] }}</span>
         </div>
       </Pill>
-    </Pill>
+    </BackgroundPill>
 
     <!-- friends -->
     <Pill class="py-8 mt-12 mb-32 relative" color="darker">
@@ -86,11 +86,11 @@
 
     <!-- invite buttons -->
     <div class="invite-btn-cnt fixed bottom-16 w-full p-4 flex justify-between gap-3 z-10">
-      <Button class="flex items-center justify-between flex-1" @click="onInviteFriend">
+      <Button class="flex items-center justify-between flex-1 px-4 py-2" @click="onInviteFriend">
         <span class="text-xl">{{ locale["invite_a_friend"] }}</span>
         <img :src="getAsset('paw')" />
       </Button>
-      <Button black @click="onCopyToClipboard"><img :src="getAsset('copy')" /></Button>
+      <Button class="px-4 py-2" black @click="onCopyToClipboard"><img :src="getAsset('copy')" /></Button>
     </div>
   </div>
 </template>
@@ -111,6 +111,7 @@ import Button from "@/components/UI/Button.vue";
 import IconPill from "@/components/UI/IconPill.vue";
 import Pill from "@/components/UI/Pill.vue";
 import FriendPill from "@/components/UI/FriendPill.vue";
+import BackgroundPill from "@/components/UI/BackgroundPill.vue";
 
 const mainStore = useMainStore();
 const dataStore = useDataStore();

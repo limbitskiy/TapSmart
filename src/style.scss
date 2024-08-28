@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "FiraSansRegular", sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -37,8 +37,8 @@
 .page-title {
   @apply text-3xl font-bold mt-2 leading-8 max-w-[80%];
 
-  font-family: "Poppins", sans-serif;
-  font-weight: 700;
+  font-family: "FiraSansBlack", sans-serif;
+  font-weight: 900;
   font-style: normal;
 }
 
@@ -47,20 +47,23 @@
 }
 
 .pill-title {
-  @apply text-2xl font-bold mt-2;
+  @apply text-lg leading-5 font-bold;
 
-  font-family: "Poppins", sans-serif;
+  font-family: "FiraSansBold", sans-serif;
   font-weight: 700;
   font-style: normal;
 }
 
-.font-poppins {
-  font-family: "Poppins", sans-serif;
+.bg-pill-title {
+  @apply text-[22px] leading-5 font-bold;
+
+  font-family: "FiraSansCondensedBlack", sans-serif;
+  font-weight: 900;
 }
 
 // navigation
 .router-link-active {
-  outline: 2px solid var(--accent-color);
+  outline: 1px solid var(--accent-color);
   filter: none;
 }
 
@@ -72,6 +75,32 @@
   display: grid;
   place-items: center;
   border-radius: 1rem;
+  position: relative;
+
+  &:active {
+    border-bottom: none;
+    top: 3px;
+  }
+}
+
+.yes-btn:active {
+  background-color: #65b36d;
+}
+
+.no-btn:active {
+  background-color: #e67955;
+}
+
+.four-answer-btn {
+  @apply w-full !text-[16px] bg-[var(--dark-blue-color)] text-white min-h-[64px] overflow-hidden text-ellipsis border-b-4 border-[#252D7C];
+
+  position: relative;
+
+  &:active {
+    background-color: #5b66e4;
+    border-bottom: none;
+    top: 3px;
+  }
 }
 
 // custom radio

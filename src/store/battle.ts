@@ -10,22 +10,26 @@ export const useBattleStore = defineStore("battle", () => {
   const userStore = useMainStore();
 
   const battleTypes = {
-    1: "yes-no",
-    2: "4-answers",
-    3: "bubble-pairs",
-    4: "audio-question",
+    1: "yesno",
+    2: "4answers",
+    3: "bubble_pairs",
+    4: "audio_question",
   };
 
   let breakpointInterval = null;
   const taskIndex = ref(0);
   const lastTaskId = ref(null);
 
-  const state = ref({});
+  const state = ref({
+    data: [],
+    mechanics: null,
+  });
 
   const answers = ref([]);
   const energy = ref(1500);
 
   const currentTask = computed(() => state.value.data[taskIndex.value]);
+  const mechanics = computed(() => state.value.mechanics);
 
   const currentBattleType = ref(1);
 
@@ -159,9 +163,13 @@ export const useBattleStore = defineStore("battle", () => {
     console.log(`is not in focus`);
   };
 
-  const changeMechanic = (mechId) => {
+  const changeMechanic = (mechId: number) => {
     userStore.useFetch({ key: "battle_init", data: { battle_type: +mechId } });
   };
 
-  return { currentTask, energy, lastTaskId, answers, currentBattleType, set, onAnswer, changeMechanic, expand };
+  const getMechanicName = (mechId) => {
+    return battleTypes[mechId];
+  };
+
+  return { battleTypes, currentTask, energy, lastTaskId, answers, currentBattleType, mechanics, set, onAnswer, changeMechanic, expand, getMechanicName };
 });

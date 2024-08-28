@@ -6,7 +6,7 @@
       <RouterLink v-for="menuItem in data.items" :to="menuItem.link" class="w-16 h-16 rounded-xl grayscale">
         <div class="nav-item flex flex-col items-center justify-center gap-1 p-2">
           <img :src="'/' + menuItem.icon + '.png'" class="h-6 object-contain" />
-          <span class="text-sm font-bold">{{ menuItem.title }}</span>
+          <span class="fira-condensed-bold text-sm">{{ menuItem.title }}</span>
         </div>
       </RouterLink>
     </ul>

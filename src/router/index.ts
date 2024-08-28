@@ -46,12 +46,12 @@ const routes = [
         children: [
           {
             id: 11,
-            path: "yes-no",
+            path: "yesno",
             component: YesNo,
           },
           {
             id: 12,
-            path: "4-answers",
+            path: "4answers",
             component: FourAnswers,
           },
         ],

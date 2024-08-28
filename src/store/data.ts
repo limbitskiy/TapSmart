@@ -5,7 +5,7 @@ import { useMainStore } from "@/store/main.ts";
 import { useLocaleStore } from "@/store/locale.ts";
 
 export const useDataStore = defineStore("data", () => {
-  const battleStore = useBattleStore();
+  const battles = useBattleStore();
   const mainStore = useMainStore();
   const locale = useLocaleStore();
 
@@ -20,7 +20,6 @@ export const useDataStore = defineStore("data", () => {
   const profile = computed(() => state.value.profile);
   const menu = computed(() => state.value.menu);
   const friends = computed(() => state.value.friends);
-  const battle = computed(() => battleStore);
 
   const set = (section, data) => {
     if (data.locale) {
@@ -29,7 +28,7 @@ export const useDataStore = defineStore("data", () => {
 
     if (data.store) {
       if (section === "battles") {
-        battleStore.set(data.store);
+        battles.set(data.store);
         return;
       }
 
@@ -47,7 +46,7 @@ export const useDataStore = defineStore("data", () => {
 
     if (data.expand) {
       if (section === "battles") {
-        battleStore.expand(data.expand);
+        battles.expand(data.expand);
         return;
       }
     }
@@ -57,5 +56,5 @@ export const useDataStore = defineStore("data", () => {
     state.value.profile.bolts += amount;
   };
 
-  return { menu, tutorial, profile, battle, friends, settings, set, addBolts };
+  return { menu, tutorial, profile, battles, friends, settings, set, addBolts };
 });

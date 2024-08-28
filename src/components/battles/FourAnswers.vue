@@ -2,23 +2,23 @@
   <div class="4-answers-battle flex-1 flex flex-col mb-[72px]">
     <div class="question flex-1 grid place-items-center font-black text-2xl">
       <div class="question-text flex flex-col gap-2 items-center">
-        <span ref="el">{{ currentTask.task.question }}</span>
+        <span class="fira-condensed-black text-[26px]" ref="el">{{ currentTask.task.question }}</span>
       </div>
     </div>
+
+    <Teleport to="body">
+      <div v-for="bonus in bonuses" :key="bonus.id" class="bonus bonus-animate z-20 flex gap-1 items-center absolute" :style="{ left: bonus.x + 'px', top: bonus.y + 'px' }">
+        <img class="h-4" :src="getAsset('bolt')" />
+        <span class="exo-bold">+2</span>
+      </div>
+    </Teleport>
+
     <div class="answers flex-1 grid place-items-center bg-[var(--grey-dark)] rounded-t-3xl">
       <div class="answer-buttons grid w-full grid-cols-2 grid-rows-2 gap-4 px-4 leading-5 py-4">
-        <Button class="w-full bg-[var(--dark-blue-color)] text-white min-h-[64px] overflow-hidden text-ellipsis" @click="() => handleAnswer(currentTask.task.variants[0])">{{
-          currentTask.task.variants[0]
-        }}</Button>
-        <Button class="w-full bg-[var(--dark-blue-color)] text-white min-h-[64px] overflow-hidden text-ellipsis" @click="() => handleAnswer(currentTask.task.variants[1])">{{
-          currentTask.task.variants[1]
-        }}</Button>
-        <Button class="w-full bg-[var(--dark-blue-color)] text-white min-h-[64px] overflow-hidden text-ellipsis" @click="() => handleAnswer(currentTask.task.variants[2])">{{
-          currentTask.task.variants[2]
-        }}</Button>
-        <Button class="w-full bg-[var(--dark-blue-color)] text-white min-h-[64px] overflow-hidden text-ellipsis" @click="() => handleAnswer(currentTask.task.variants[3])">{{
-          currentTask.task.variants[3]
-        }}</Button>
+        <Button class="four-answer-btn" @click="(event) => handleAnswer(currentTask.task.variants[0], event)">{{ currentTask.task.variants[0] }}</Button>
+        <Button class="four-answer-btn" @click="(event) => handleAnswer(currentTask.task.variants[1], event)">{{ currentTask.task.variants[1] }}</Button>
+        <Button class="four-answer-btn" @click="(event) => handleAnswer(currentTask.task.variants[2], event)">{{ currentTask.task.variants[2] }}</Button>
+        <Button class="four-answer-btn" @click="(event) => handleAnswer(currentTask.task.variants[3], event)">{{ currentTask.task.variants[3] }}</Button>
       </div>
     </div>
   </div>
@@ -26,21 +26,28 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useBattleStore } from "@/store/battle.ts";
 import { storeToRefs } from "pinia";
-import Button from "@/components/UI/Button.vue";
+import { getAsset } from "@/utils";
 import { useAnimate } from "@vueuse/core";
+
+// stores
+import { useBattleStore } from "@/store/battle.ts";
+
+// components
+import Button from "@/components/UI/Button.vue";
 
 const battleStore = useBattleStore();
 const { currentTask } = storeToRefs(battleStore);
 const { onAnswer } = battleStore;
 
 const el = ref();
+const bonuses = ref([]);
 
-const handleAnswer = async (answer) => {
+const handleAnswer = async (answer, { clientX, clientY }) => {
   const correct = answer === currentTask.value.correct;
 
   if (correct) {
+    await createBonus({ x: clientX, y: clientY });
     await animateCorrect();
   } else {
     await animateWrong();
@@ -81,5 +88,22 @@ const animateWrong = async () => {
     }
   );
   await animate.value.finished;
+};
+
+const createBonus = ({ x, y }) => {
+  const id = Date.now();
+
+  bonuses.value.push({
+    id,
+    x: x - 20,
+    y: y - 60,
+  });
+
+  setTimeout(() => {
+    const idx = bonuses.value.findIndex((item) => item.id === id);
+    bonuses.value.splice(idx, 1);
+  }, 700);
+
+  return true;
 };
 </script>
