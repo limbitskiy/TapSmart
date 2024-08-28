@@ -74,11 +74,13 @@
           class="w-full bg-[var(--green-color)] text-white rounded-full fira-condensed-bold mt-2 py-1"
           @click="() => onMechSelect(2)"
         >
-          <span class="btn-content">
+          <div class="btn-content flex items-center justify-center gap-1">
             {{ locale["button_trial_message"] }}
-            <img class="h-4" :src="getAsset('nut')" />
-            <span class="exo-black">{{ battles.mechanics["4answers"].nuts }}</span>
-          </span>
+            <div class="bolts flex items-center gap-1">
+              <img class="h-4" :src="getAsset('nut')" />
+              <span class="exo-black">{{ battles.mechanics["4answers"].nuts }}</span>
+            </div>
+          </div>
         </button>
         <button
           v-else
