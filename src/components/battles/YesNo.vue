@@ -1,9 +1,9 @@
 <template>
   <div class="yes-no-battle flex-1 flex flex-col mb-[72px]">
     <div class="question flex-1 grid place-items-center font-black text-2xl">
-      <div class="question-text flex flex-col items-center text-center">
-        <span class="fira-condensed-black text-[26px]" ref="el">{{ currentTask.task.question }}</span>
-        <span class="fira-condensed-black text-[26px]" ref="el">{{ currentTask.task.answer }}</span>
+      <div ref="el" class="question-text flex flex-col items-center text-center">
+        <span class="fira-condensed-black text-[26px]">{{ currentTask.task.question }}</span>
+        <span class="fira-condensed-black text-[26px]">{{ currentTask.task.answer }}</span>
       </div>
     </div>
 
@@ -49,6 +49,7 @@ import { useDataStore } from "@/store/data.ts";
 
 // components
 import Ripple from "../UI/Ripple.vue";
+import { transform } from "typescript";
 
 const dataStore = useDataStore();
 
@@ -73,38 +74,63 @@ const handleAnswer = async (answer, { clientX, clientY }) => {
   onAnswer({ isCorrect: correct, answerString: answer });
 };
 
-const animateCorrect = async () => {
-  const { animate } = await useAnimate(
-    el,
-    [
-      { color: "#21f435", offset: 0.1 },
-      { transform: "scale(1.5)", opacity: 0 },
-    ],
-    300
-  );
-  await animate.value.finished;
+const animateCorrect = () => {
+  return new Promise((res) => {
+    el.value.classList.add("animate__heartBeat");
+
+    setTimeout(() => {
+      el.value.classList.remove("animate__heartBeat");
+      res(true);
+    }, 500);
+  });
+  // const { animate } = await useAnimate(
+  //   el,
+  //   [
+  //     { transform: "translate3d(-5px, 0, 0)" },
+  //     { transform: "translate3d(5px, 0, 0)" },
+  //     { transform: "translate3d(-5px, 0, 0)" },
+  //     { transform: "translate3d(5px, 0, 0)" },
+  //     { transform: "translate3d(-5px, 0, 0)" },
+  //     { transform: "translate3d(5px, 0, 0)" },
+  //     { transform: "translate3d(-5px, 0, 0)" },
+  //     { transform: "translate3d(5px, 0, 0)" },
+  //   ],
+  //   {
+  //     duration: 500,
+  //     // fill: "forwards",
+  //   }
+  // );
+  // await animate.value.finished;
 };
 
-const animateWrong = async () => {
-  const { animate } = await useAnimate(
-    el,
-    [
-      { color: "red", offset: 0.05 },
-      { transform: "translateX(-5px)" },
-      { transform: "translateX(5px)" },
-      { transform: "translateX(-5px)" },
-      { transform: "translateX(5px)" },
-      { transform: "translateX(-5px)" },
-      { transform: "translateX(5px)" },
-      { transform: "translateX(-5px)" },
-      { transform: "translateX(5px)" },
-    ],
-    {
-      duration: 500,
-      easing: "linear",
-    }
-  );
-  await animate.value.finished;
+const animateWrong = () => {
+  return new Promise((res) => {
+    el.value.classList.add("animate__headShake");
+
+    setTimeout(() => {
+      el.value.classList.remove("animate__headShake");
+      res(true);
+    }, 500);
+  });
+  // const { animate } = await useAnimate(
+  //   el,
+  //   [
+  //     { color: "red", offset: 0.05 },
+  //     { transform: "translateX(-5px)" },
+  //     { transform: "translateX(5px)" },
+  //     { transform: "translateX(-5px)" },
+  //     { transform: "translateX(5px)" },
+  //     { transform: "translateX(-5px)" },
+  //     { transform: "translateX(5px)" },
+  //     { transform: "translateX(-5px)" },
+  //     { transform: "translateX(5px)" },
+  //   ],
+  //   {
+  //     duration: 500,
+  //     easing: "linear",
+  //   }
+  // );
+  // await animate.value.finished;
 };
 
 const createBonus = ({ x, y }) => {
