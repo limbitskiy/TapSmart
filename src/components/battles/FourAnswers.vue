@@ -46,8 +46,6 @@ const bonuses = ref([]);
 const handleAnswer = async (answer: string, { clientX, clientY }) => {
   const correct = answer === currentTask.value.correct;
 
-  onAnswer({ isCorrect: correct, answerString: answer });
-
   if (correct) {
     onVibrate("correct");
     await drawBonus({ x: clientX, y: clientY });
@@ -56,6 +54,8 @@ const handleAnswer = async (answer: string, { clientX, clientY }) => {
     onVibrate("wrong");
     await animateWrong();
   }
+
+  onAnswer({ isCorrect: correct, answerString: answer });
 };
 
 const animateCorrect = () => {

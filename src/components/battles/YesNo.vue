@@ -40,11 +40,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
-import { useAnimate } from "@vueuse/core";
 import { getAsset } from "@/utils";
 
 // stores
-import { useBattleStore } from "@/store/battle.ts";
 import { useDataStore } from "@/store/data.ts";
 
 // components
@@ -65,7 +63,7 @@ const handleAnswer = async (answer, { clientX, clientY }) => {
 
   if (correct) {
     onVibrate("correct");
-    await createBonus({ x: clientX, y: clientY });
+    await drawBonus({ x: clientX, y: clientY });
     await animateCorrect();
   } else {
     onVibrate("wrong");
@@ -97,7 +95,7 @@ const animateWrong = () => {
   });
 };
 
-const createBonus = ({ x, y }) => {
+const drawBonus = ({ x, y }) => {
   const id = Date.now();
 
   bonuses.value.push({
