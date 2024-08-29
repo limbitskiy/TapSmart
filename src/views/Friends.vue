@@ -65,11 +65,11 @@
     <!-- friends -->
     <BackgroundPill class="py-8 mt-12 mb-32 relative">
       <div class="header flex items-center justify-between">
-        <div class="title flex gap-2">
+        <div class="title flex items-center gap-2">
           <span class="bg-pill-title">{{ locale["friends_title"] }}</span>
-          <div class="counter bg-[var(--grey-dark)] py-1 px-2 rounded flex items-center h-7 font-semibold">{{ filteredFriends.length }}</div>
+          <div class="counter bg-[var(--grey-light)] py-1 px-2 rounded flex items-center h-7 exo-black">{{ filteredFriends.length }}</div>
         </div>
-        <div class="refresh-friends mr-4" @click="onRefreshFriends">
+        <div ref="el" class="refresh-friends mr-4" @click="onRefreshFriends">
           <img :src="getAsset('refresh')" />
         </div>
       </div>
@@ -127,6 +127,8 @@ const { friends: locale } = storeToRefs(localeStore);
 
 const { showToast, fetchFriendsPage } = mainStore;
 
+const el = ref();
+
 await fetchFriendsPage();
 
 const filters = ref({
@@ -156,6 +158,7 @@ const filteredFriends = computed(() => {
 
 const onRefreshFriends = () => {
   fetchFriendsPage();
+  el.value.animate({ rotate: "360deg" }, 1000);
 };
 
 const onOnlineFilter = () => {
