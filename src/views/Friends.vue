@@ -168,7 +168,7 @@ const onBattlesFilter = () => {
 
 const generateLink = () => {
   const userId = getUserId();
-  return `https://t.me/${import.meta.env.VITE_BOT_NAME}/${import.meta.env.VITE_APP_NAME}?startapp=${userId}`;
+  return `https://t.me/${import.meta.env.VITE_BOT_NAME}/${import.meta.env.VITE_APP_NAME}?startapp=fr${userId}`;
 };
 
 const onInviteFriend = () => {
