@@ -13,6 +13,9 @@ export const useLocaleStore = defineStore("locale", () => {
     friends: {},
     battles: {},
     "required-settings": {},
+    tasks: {},
+    leaders: {},
+    market: {},
   });
 
   const tutorial = computed(() => state.value.tutorial);
@@ -20,6 +23,9 @@ export const useLocaleStore = defineStore("locale", () => {
   const requiredSettings = computed(() => state.value["required-settings"]);
   const friends = computed(() => state.value.friends);
   const battles = computed(() => state.value.battles);
+  const tasks = computed(() => state.value.tasks);
+  const leaders = computed(() => state.value.leaders);
+  const market = computed(() => state.value.market);
 
   const set = (section: LocaleSections, data: {}) => {
     if (!state.value[section]) {
@@ -30,5 +36,5 @@ export const useLocaleStore = defineStore("locale", () => {
     state.value[section] = { ...state.value[section], ...data };
   };
 
-  return { tutorial, requiredSettings, profile, friends, battles, set };
+  return { tutorial, requiredSettings, profile, friends, battles, tasks, leaders, market, set };
 });

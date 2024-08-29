@@ -161,7 +161,7 @@ export const useBattleStore = defineStore("battle", () => {
     }
   };
 
-  const changeMechanic = (mechId: number) => {
+  const changeMechanic = (mechId: string) => {
     userStore.useFetch({ key: "battle_init", data: { battle_type: +mechId } });
   };
 

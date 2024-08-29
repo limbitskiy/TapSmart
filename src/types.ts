@@ -12,8 +12,8 @@ export interface NotificationProps {
   timeout: number;
 }
 
-export type LocaleSections = "tutorial" | "profile" | "battles" | "menu" | "friends" | "required-settings";
+export type LocaleSections = "tutorial" | "profile" | "battles" | "menu" | "friends" | "required-settings" | "leaders" | "market" | "tasks";
 
 export type SettingsKeys = "sound" | "music" | "vibro";
 
-export type DataSections = "tutorial" | "profile" | "battles" | "menu" | "friends";
+export type DataSections = "tutorial" | "profile" | "battles" | "menu" | "friends" | "leaders" | "market" | "tasks";

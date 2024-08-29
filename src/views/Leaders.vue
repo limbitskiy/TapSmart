@@ -1,8 +1,33 @@
 <template>
-  <div class="home-leaders grid place-items-center flex-1">
-    <div class="cnt flex flex-col items-center gap-4">
-      <img src="/cone.png" />
-      <span class="text-2xl font-bold text-center text-[var(--accent-color)]">Leaderboard</span>
+  <div id="leaders" class="flex-1">
+    <div class="top-part p-5 mb-4">
+      <div class="page-title mb-4">{{ locale["title"] }}</div>
+      <div class="page-subtitle" v-html="locale['subtitle']"></div>
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { computed, ref, onMounted } from "vue";
+import { tg, getUserId } from "@/api/telegram";
+import { getAsset } from "@/utils";
+import { storeToRefs } from "pinia";
+
+// store
+import { useMainStore } from "@/store/main.ts";
+import { useDataStore } from "@/store/data.ts";
+import { useLocaleStore } from "@/store/locale.ts";
+
+// components
+import Button from "@/components/UI/Button.vue";
+import IconPill from "@/components/UI/IconPill.vue";
+import Pill from "@/components/UI/Pill.vue";
+import BackgroundPill from "@/components/UI/BackgroundPill.vue";
+
+const mainStore = useMainStore();
+const dataStore = useDataStore();
+const localeStore = useLocaleStore();
+
+const { leaders: data } = storeToRefs(dataStore);
+const { leaders: locale } = storeToRefs(localeStore);
+</script>

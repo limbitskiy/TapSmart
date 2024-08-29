@@ -42,6 +42,9 @@ import { ref } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 
+//composables
+import { useBattle } from "@/composables/useBattle";
+
 // stores
 import { useDataStore } from "@/store/data.ts";
 
@@ -51,64 +54,12 @@ import Ripple from "../UI/Ripple.vue";
 const dataStore = useDataStore();
 
 const { currentTask } = storeToRefs(dataStore.battles);
-const { onAnswer, onVibrate } = dataStore.battles;
-
-const bonuses = ref([]);
 
 const el = ref();
 
-const handleAnswer = async (answer, { clientX, clientY }) => {
-  const correct =
-    (answer === "yes" && currentTask.value.task.answer === currentTask.value.correct) || (answer === "no" && currentTask.value.task.answer !== currentTask.value.correct);
-
-  if (correct) {
-    onVibrate("correct");
-    await drawBonus({ x: clientX, y: clientY });
-    await animateCorrect();
-  } else {
-    onVibrate("wrong");
-    await animateWrong();
-  }
-
-  onAnswer({ isCorrect: correct, answerString: answer });
+const defineCorrect = (answer: string, currentTask: { correct: string; task: { answer: string } }) => {
+  return (answer === "yes" && currentTask.task.answer === currentTask.correct) || (answer === "no" && currentTask.task.answer !== currentTask.correct);
 };
 
-const animateCorrect = () => {
-  return new Promise((res) => {
-    el.value.classList.add("animate__heartBeat");
-
-    setTimeout(() => {
-      el.value.classList.remove("animate__heartBeat");
-      res(true);
-    }, 500);
-  });
-};
-
-const animateWrong = () => {
-  return new Promise((res) => {
-    el.value.classList.add("animate__headShake");
-
-    setTimeout(() => {
-      el.value.classList.remove("animate__headShake");
-      res(true);
-    }, 500);
-  });
-};
-
-const drawBonus = ({ x, y }) => {
-  const id = Date.now();
-
-  bonuses.value.push({
-    id,
-    x: x - 20,
-    y: y - 60,
-  });
-
-  setTimeout(() => {
-    const idx = bonuses.value.findIndex((item) => item.id === id);
-    bonuses.value.splice(idx, 1);
-  }, 700);
-
-  return true;
-};
+const { bonuses, handleAnswer } = useBattle(defineCorrect, el);
 </script>

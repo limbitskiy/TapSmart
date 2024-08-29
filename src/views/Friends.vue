@@ -74,14 +74,14 @@
         </div>
       </div>
 
-      <template v-if="filteredFriends.length">
+      <template v-if="data.friendList.length">
         <div class="switches flex justify-start gap-3 mt-4">
           <Button class="!py-1 !px-3" :class="filters.online ? '' : 'bg-gray-500 text-white'" @click="onOnlineFilter">{{ locale["online"] }}</Button>
           <Button class="!py-1 !px-3" :class="filters.battles ? '' : 'bg-gray-500 text-white'" @click="onBattlesFilter">{{ locale["battles"] }}</Button>
         </div>
 
         <TransitionGroup class="friend-list flex flex-col gap-4 my-4" name="list" tag="div">
-          <FriendPill v-for="friend in filteredFriends" :key="friend.id" :data="friend" color="dark" :battles="filters.battles" />
+          <FriendPill v-for="friend in filteredFriends" :key="friend.id" :data="friend" color="light" :battles="filters.battles" />
         </TransitionGroup>
       </template>
       <div v-else class="empty-message my-4">
@@ -127,6 +127,8 @@ const { friends: locale } = storeToRefs(localeStore);
 
 const { showToast, fetchFriendsPage } = mainStore;
 
+console.log(data);
+
 await fetchFriendsPage();
 
 const filters = ref({
@@ -135,13 +137,11 @@ const filters = ref({
 });
 
 const filteredFriends = computed(() => {
-  const friendsData = data["friends"];
-
-  if (!friendsData) {
+  if (!data.value.friendList.length) {
     return [];
   }
 
-  let friendList = [...friendsData];
+  let friendList = [...data.value.friendList];
 
   if (filters.value.online) {
     friendList = friendList.filter((friend) => friend.isOnline);
@@ -174,7 +174,7 @@ const generateLink = () => {
 const onInviteFriend = () => {
   const link = generateLink();
   console.log(`link is: ${link}`);
-  tg.openTelegramLink(`https://t.me/share/url?url=${link}&text=Multiplayer language battles with more than 42 language choices.`);
+  tg.openTelegramLink(`https://t.me/share/url?url=${link}&text=${locale["inviteMessage"]}`);
 };
 
 const onCopyToClipboard = () => {

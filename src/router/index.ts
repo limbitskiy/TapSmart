@@ -3,7 +3,6 @@ import { createWebHistory, createRouter } from "vue-router";
 import Init from "@/views/Init.vue";
 import Tutorial from "@/views/Tutorial.vue";
 import Home from "@/views/Home.vue";
-// import Main from "@/views/Main.vue";
 import Battles from "@/views/Battles.vue";
 import Friends from "@/views/Friends.vue";
 import Tasks from "@/views/Tasks.vue";

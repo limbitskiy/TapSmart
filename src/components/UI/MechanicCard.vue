@@ -1,22 +1,32 @@
 <template>
-  <Pill class="flex flex-col justify-between outline-1 relative" :class="{ 'outline outline-2 outline-[var(--accent-color)]': battles.currentBattleType == mechId }" color="light">
-    <!-- league -->
-    <div v-if="battles.mechanics[mechName].league" class="league absolute top-2 left-2 flex gap-1 items-center rounded-full px-2 bg-[var(--grey-dark)]">
-      <img class="h-4" :src="getAsset('league')" />
-      <span class="text-sm exo-bold">: {{ battles.mechanics[mechName].league }}</span>
-    </div>
+  <Pill
+    class="flex flex-col gap-2 !p-2 justify-between outline-1 relative"
+    :class="{ 'outline outline-2 outline-[var(--accent-color)]': battles.currentBattleType == mechId }"
+    color="light"
+  >
+    <div class="pill-content">
+      <div class="pill-toolbar flex items-center justify-between min-h-[20px]">
+        <!-- league -->
+        <div v-if="battles.mechanics[mechName].league" class="league flex gap-1 items-center rounded-full px-2 bg-[var(--grey-dark)]">
+          <img class="h-4" :src="getAsset('league')" />
+          <span class="text-sm exo-bold">: {{ battles.mechanics[mechName].league }}</span>
+        </div>
 
-    <!-- bolts -->
-    <div v-if="battles.mechanics[mechName].bolts_bonus" class="bolts-bonus absolute top-2 right-2 flex gap-1 items-center rounded-full px-2 bg-[var(--grey-dark)]">
-      <span class="text-sm exo-bold">+{{ battles.mechanics[mechName].bolts_bonus }}%</span>
-      <img class="h-4" :src="getAsset('bolt')" />
-    </div>
-    <div class="content flex flex-col gap-2 items-center justify-between text-center">
-      <div class="pill-img mt-6 mb-4">
-        <slot name="image"></slot>
+        <!-- bolts -->
+        <div v-if="battles.mechanics[mechName].bolts_bonus" class="bolts-bonus flex gap-1 items-center rounded-full px-2 bg-[var(--grey-dark)]">
+          <span class="text-sm exo-bold">+{{ battles.mechanics[mechName].bolts_bonus }}%</span>
+          <img class="h-4" :src="getAsset('bolt')" />
+        </div>
       </div>
-      <span class="fira-semibold">{{ locale[`${mechName}_title`] }}</span>
-      <span class="fira-condensed text-[#838383] leading-5">{{ locale[`${mechName}_desc`] }}</span>
+
+      <!-- content -->
+      <div class="content flex flex-col gap-2 items-center justify-between text-center">
+        <div class="pill-img">
+          <slot name="image"></slot>
+        </div>
+        <span class="fira-semibold">{{ locale[`${mechName}_title`] }}</span>
+        <span class="fira-condensed text-[#838383] leading-5">{{ locale[`${mechName}_desc`] }}</span>
+      </div>
     </div>
     <!-- active -->
     <button v-if="battles.currentBattleType == mechId" class="w-full bg-[var(--accent-color)] text-black rounded-full fira-condensed-bold mt-2 py-1">
@@ -60,11 +70,11 @@ import { useLocaleStore } from "@/store/locale.ts";
 import Pill from "@/components/UI/Pill.vue";
 
 const props = defineProps<{
-  mechId: number;
+  mechId: string;
 }>();
 
 const emit = defineEmits<{
-  select: [mechId: number];
+  select: [mechId: string];
 }>();
 
 const dataStore = useDataStore();

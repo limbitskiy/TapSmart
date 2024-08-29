@@ -29,9 +29,9 @@
       <VolumeControl />
     </div>
     <RouterView v-slot="{ Component }">
-      <Transition name="fade" mode="out-in">
-        <component :is="Component" />
-      </Transition>
+      <!-- <Transition name="fade" mode="out-in"> -->
+      <component :is="Component" />
+      <!-- </Transition> -->
     </RouterView>
     <Teleport to="body">
       <Modal v-model:visible="isModalVisible">
