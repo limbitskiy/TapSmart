@@ -3,10 +3,10 @@
     <Transition name="toast-slide">
       <div
         v-if="notificationData.isShown"
-        class="notification flex flex-col text-lg fixed top-1 left-1 right-1 bg-[--grey-dark] p-4 rounded-2xl text-white transition-transform z-50 border border-white"
+        class="notification flex flex-col text-lg fixed top-1 left-1 right-1 bg-[--grey-light] p-4 rounded-2xl text-white transition-transform z-50 border border-[#b6b6b6]"
       >
-        <span class="font-bold text-xl">{{ notificationData.title }}</span>
-        <span class="">{{ notificationData.subtitle }}</span>
+        <span class="text-xl fira-condensed-bold">{{ notificationData.title }}</span>
+        <span class="fira-condensed text-base">{{ notificationData.subtitle }}</span>
         <div class="btns flex justify-end gap-4 mt-2">
           <button v-if="!notificationData.buttons.left.hidden" class="bg-[--red-color] px-4" @click="() => onBtn(notificationData.buttons.left)">
             {{ notificationData.buttons.left.label }}
