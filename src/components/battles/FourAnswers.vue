@@ -28,7 +28,6 @@
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
-import { useAnimate } from "@vueuse/core";
 
 // stores
 import { useDataStore } from "@/store/data.ts";
@@ -39,59 +38,49 @@ import Button from "@/components/UI/Button.vue";
 const dataStore = useDataStore();
 
 const { currentTask } = storeToRefs(dataStore.battles);
-const { onAnswer } = dataStore.battles;
+const { onAnswer, onVibrate } = dataStore.battles;
 
 const el = ref();
 const bonuses = ref([]);
 
-const handleAnswer = async (answer, { clientX, clientY }) => {
+const handleAnswer = async (answer: string, { clientX, clientY }) => {
   const correct = answer === currentTask.value.correct;
 
+  onAnswer({ isCorrect: correct, answerString: answer });
+
   if (correct) {
+    onVibrate("correct");
     await drawBonus({ x: clientX, y: clientY });
     await animateCorrect();
   } else {
+    onVibrate("wrong");
     await animateWrong();
   }
-
-  onAnswer({ isCorrect: correct, answerString: answer });
 };
 
-const animateCorrect = async () => {
-  const { animate } = await useAnimate(
-    el,
-    [
-      { color: "#21f435", offset: 0.1 },
-      { transform: "scale(1.5)", opacity: 0 },
-    ],
-    300
-  );
-  await animate.value.finished;
+const animateCorrect = () => {
+  return new Promise((res) => {
+    el.value.classList.add("animate__heartBeat");
+
+    setTimeout(() => {
+      el.value.classList.remove("animate__heartBeat");
+      res(true);
+    }, 500);
+  });
 };
 
-const animateWrong = async () => {
-  const { animate } = await useAnimate(
-    el,
-    [
-      { color: "red", offset: 0.05 },
-      { transform: "translateX(-5px)" },
-      { transform: "translateX(5px)" },
-      { transform: "translateX(-5px)" },
-      { transform: "translateX(5px)" },
-      { transform: "translateX(-5px)" },
-      { transform: "translateX(5px)" },
-      { transform: "translateX(-5px)" },
-      { transform: "translateX(5px)" },
-    ],
-    {
-      duration: 500,
-      easing: "linear",
-    }
-  );
-  await animate.value.finished;
+const animateWrong = () => {
+  return new Promise((res) => {
+    el.value.classList.add("animate__headShake");
+
+    setTimeout(() => {
+      el.value.classList.remove("animate__headShake");
+      res(true);
+    }, 500);
+  });
 };
 
-const drawBonus = ({ x, y }) => {
+const drawBonus = ({ x, y }: { x: number; y: number }) => {
   const id = Date.now();
 
   bonuses.value.push({

@@ -1,9 +1,9 @@
 <template>
   <div class="yes-no-battle flex-1 flex flex-col mb-[72px]">
     <div class="question flex-1 grid place-items-center font-black text-2xl">
-      <div ref="el" class="question-text flex flex-col items-center text-center">
-        <span class="fira-condensed-black text-[26px]">{{ currentTask.task.question }}</span>
-        <span class="fira-condensed-black text-[26px]">{{ currentTask.task.answer }}</span>
+      <div class="question-text flex flex-col items-center text-center">
+        <span class="fira-condensed-black text-gray-400" style="font-size: clamp(26px, 8vw, 42px)">{{ currentTask.task.question }}</span>
+        <span ref="el" class="fira-condensed-black" style="font-size: clamp(26px, 8vw, 42px)">{{ currentTask.task.answer }}</span>
       </div>
     </div>
 
@@ -49,12 +49,11 @@ import { useDataStore } from "@/store/data.ts";
 
 // components
 import Ripple from "../UI/Ripple.vue";
-import { transform } from "typescript";
 
 const dataStore = useDataStore();
 
 const { currentTask } = storeToRefs(dataStore.battles);
-const { onAnswer } = dataStore.battles;
+const { onAnswer, onVibrate } = dataStore.battles;
 
 const bonuses = ref([]);
 
@@ -65,9 +64,11 @@ const handleAnswer = async (answer, { clientX, clientY }) => {
     (answer === "yes" && currentTask.value.task.answer === currentTask.value.correct) || (answer === "no" && currentTask.value.task.answer !== currentTask.value.correct);
 
   if (correct) {
+    onVibrate("correct");
     await createBonus({ x: clientX, y: clientY });
     await animateCorrect();
   } else {
+    onVibrate("wrong");
     await animateWrong();
   }
 
@@ -83,24 +84,6 @@ const animateCorrect = () => {
       res(true);
     }, 500);
   });
-  // const { animate } = await useAnimate(
-  //   el,
-  //   [
-  //     { transform: "translate3d(-5px, 0, 0)" },
-  //     { transform: "translate3d(5px, 0, 0)" },
-  //     { transform: "translate3d(-5px, 0, 0)" },
-  //     { transform: "translate3d(5px, 0, 0)" },
-  //     { transform: "translate3d(-5px, 0, 0)" },
-  //     { transform: "translate3d(5px, 0, 0)" },
-  //     { transform: "translate3d(-5px, 0, 0)" },
-  //     { transform: "translate3d(5px, 0, 0)" },
-  //   ],
-  //   {
-  //     duration: 500,
-  //     // fill: "forwards",
-  //   }
-  // );
-  // await animate.value.finished;
 };
 
 const animateWrong = () => {
@@ -112,25 +95,6 @@ const animateWrong = () => {
       res(true);
     }, 500);
   });
-  // const { animate } = await useAnimate(
-  //   el,
-  //   [
-  //     { color: "red", offset: 0.05 },
-  //     { transform: "translateX(-5px)" },
-  //     { transform: "translateX(5px)" },
-  //     { transform: "translateX(-5px)" },
-  //     { transform: "translateX(5px)" },
-  //     { transform: "translateX(-5px)" },
-  //     { transform: "translateX(5px)" },
-  //     { transform: "translateX(-5px)" },
-  //     { transform: "translateX(5px)" },
-  //   ],
-  //   {
-  //     duration: 500,
-  //     easing: "linear",
-  //   }
-  // );
-  // await animate.value.finished;
 };
 
 const createBonus = ({ x, y }) => {

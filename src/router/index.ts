@@ -86,10 +86,10 @@ const router = createRouter({
 });
 
 // access only through /init
-// router.beforeEach((to, from) => {
-//   if (to.path !== "/init" && from.path === "/") {
-//     return { path: "/init" };
-//   }
-// });
+router.beforeEach((to, from) => {
+  if (to.path !== "/init" && from.path === "/") {
+    return { path: "/init" };
+  }
+});
 
 export default router;

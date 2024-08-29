@@ -27,11 +27,11 @@ const emit = defineEmits<{
   "update:visible": [value: boolean];
 }>();
 
-const emitCallback = () => {
-  emit("update:visible", false);
-};
+// const emitCallback = () => {
+//   emit("update:visible", false);
+// };
 
-const { show: showBackBtn, hide: hideBackBtn } = useBackButton(emitCallback);
+// const { show: showBackBtn, hide: hideBackBtn } = useBackButton(emitCallback);
 
 const onBackdropClick = (e) => {
   if (e.target.id === "modal-backdrop") {
@@ -39,11 +39,11 @@ const onBackdropClick = (e) => {
   }
 };
 
-watch(props, (val) => {
-  if (val.visible === true) {
-    showBackBtn();
-  } else {
-    hideBackBtn();
-  }
-});
+// watch(props, (val) => {
+//   if (val.visible === true) {
+//     showBackBtn();
+//   } else {
+//     hideBackBtn();
+//   }
+// });
 </script>

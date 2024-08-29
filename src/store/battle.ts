@@ -125,18 +125,10 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const onCorrectAnswer = () => {
-    if (dataStore.settings) {
-      navigator.vibrate(300);
-    }
-
     dataStore.addBolts(2);
   };
 
   const onWrongAnswer = () => {
-    if (dataStore.settings) {
-      navigator.vibrate([100, 10, 100, 10, 100]);
-    }
-
     energy.value -= 100;
   };
 
@@ -154,6 +146,21 @@ export const useBattleStore = defineStore("battle", () => {
     console.log(`is not in focus`);
   };
 
+  const onVibrate = (type: string) => {
+    if (dataStore.settings.vibro) {
+      switch (type) {
+        case "correct": {
+          navigator.vibrate([100, 10, 100, 10, 100]);
+          break;
+        }
+        case "wrong": {
+          navigator.vibrate(300);
+          break;
+        }
+      }
+    }
+  };
+
   const changeMechanic = (mechId: number) => {
     userStore.useFetch({ key: "battle_init", data: { battle_type: +mechId } });
   };
@@ -162,5 +169,5 @@ export const useBattleStore = defineStore("battle", () => {
     return battleTypes[mechId];
   };
 
-  return { battleTypes, currentTask, energy, lastTaskId, answers, currentBattleType, mechanics, set, onAnswer, changeMechanic, expand, getMechanicName };
+  return { battleTypes, currentTask, energy, lastTaskId, answers, currentBattleType, mechanics, set, onAnswer, changeMechanic, expand, getMechanicName, onVibrate };
 });
