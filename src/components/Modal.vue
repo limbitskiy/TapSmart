@@ -27,7 +27,11 @@ const emit = defineEmits<{
   "update:visible": [value: boolean];
 }>();
 
-const { show: showBackBtn, hide: hideBackBtn } = useBackButton();
+const emitCallback = () => {
+  emit("update:visible", false);
+};
+
+const { show: showBackBtn, hide: hideBackBtn } = useBackButton(emitCallback);
 
 const onBackdropClick = (e) => {
   if (e.target.id === "modal-backdrop") {
