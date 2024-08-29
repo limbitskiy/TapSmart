@@ -154,7 +154,9 @@ const filteredFriends = computed(() => {
   return friendList;
 });
 
-const onRefreshFriends = () => {};
+const onRefreshFriends = () => {
+  fetchFriendsPage();
+};
 
 const onOnlineFilter = () => {
   filters.value.online = !filters.value.online;
