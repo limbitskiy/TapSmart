@@ -31,14 +31,15 @@ import { getAsset } from "@/utils";
 import { useAnimate } from "@vueuse/core";
 
 // stores
-import { useBattleStore } from "@/store/battle.ts";
+import { useDataStore } from "@/store/data.ts";
 
 // components
 import Button from "@/components/UI/Button.vue";
 
-const battleStore = useBattleStore();
-const { currentTask } = storeToRefs(battleStore);
-const { onAnswer } = battleStore;
+const dataStore = useDataStore();
+
+const { currentTask } = storeToRefs(dataStore.battles);
+const { onAnswer } = dataStore.battles;
 
 const el = ref();
 const bonuses = ref([]);
@@ -47,13 +48,13 @@ const handleAnswer = async (answer, { clientX, clientY }) => {
   const correct = answer === currentTask.value.correct;
 
   if (correct) {
-    await createBonus({ x: clientX, y: clientY });
+    await drawBonus({ x: clientX, y: clientY });
     await animateCorrect();
   } else {
     await animateWrong();
   }
 
-  onAnswer(answer);
+  onAnswer({ isCorrect: correct, answerString: answer });
 };
 
 const animateCorrect = async () => {
@@ -90,7 +91,7 @@ const animateWrong = async () => {
   await animate.value.finished;
 };
 
-const createBonus = ({ x, y }) => {
+const drawBonus = ({ x, y }) => {
   const id = Date.now();
 
   bonuses.value.push({

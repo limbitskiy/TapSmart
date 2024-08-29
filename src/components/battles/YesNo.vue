@@ -50,12 +50,10 @@ import { useDataStore } from "@/store/data.ts";
 // components
 import Ripple from "../UI/Ripple.vue";
 
-const battleStore = useBattleStore();
 const dataStore = useDataStore();
-const { currentTask } = storeToRefs(battleStore);
-const { onAnswer } = battleStore;
 
-const { settings } = storeToRefs(dataStore);
+const { currentTask } = storeToRefs(dataStore.battles);
+const { onAnswer } = dataStore.battles;
 
 const bonuses = ref([]);
 
@@ -66,19 +64,13 @@ const handleAnswer = async (answer, { clientX, clientY }) => {
     (answer === "yes" && currentTask.value.task.answer === currentTask.value.correct) || (answer === "no" && currentTask.value.task.answer !== currentTask.value.correct);
 
   if (correct) {
-    if (settings.value.vibro) {
-      navigator.vibrate(300);
-    }
     await createBonus({ x: clientX, y: clientY });
     await animateCorrect();
   } else {
-    if (settings.value.vibro) {
-      navigator.vibrate([100, 10, 100, 10, 100]);
-    }
     await animateWrong();
   }
 
-  onAnswer(answer);
+  onAnswer({ isCorrect: correct, answerString: answer });
 };
 
 const animateCorrect = async () => {

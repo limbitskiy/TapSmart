@@ -1,13 +1,19 @@
-import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import { useBattleStore } from "@/store/battle.ts";
-import { useMainStore } from "@/store/main.ts";
+import { defineStore } from "pinia";
+import { useMainStore } from "./main.ts";
+import { LocaleSections } from "../types";
 
 export const useLocaleStore = defineStore("locale", () => {
-  const battleStore = useBattleStore();
-  const userStore = useMainStore();
+  const mainStore = useMainStore();
 
-  const state = ref({});
+  const state = ref({
+    tutorial: {},
+    profile: {},
+    menu: {},
+    friends: {},
+    battles: {},
+    "required-settings": {},
+  });
 
   const tutorial = computed(() => state.value.tutorial);
   const profile = computed(() => state.value.profile);
@@ -15,7 +21,7 @@ export const useLocaleStore = defineStore("locale", () => {
   const friends = computed(() => state.value.friends);
   const battles = computed(() => state.value.battles);
 
-  const set = (section, data) => {
+  const set = (section: LocaleSections, data: {}) => {
     if (!state.value[section]) {
       state.value[section] = data;
       return;

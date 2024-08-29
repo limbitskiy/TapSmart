@@ -42,7 +42,7 @@ import { useDataStore } from "@/store/data.ts";
 
 const dataStore = useDataStore();
 
-const { settings } = storeToRefs(dataStore);
+const { setSettings } = dataStore;
 
 const validSettings = {
   1: "all",
@@ -56,9 +56,9 @@ const onChange = () => {
   currentSetting.value = validSettings[currentSetting.value + 1] ? currentSetting.value + 1 : 1;
 
   if (currentSetting.value === 1 || currentSetting.value === 2) {
-    settings.value.vibro = true;
+    setSettings("vibro", true);
   } else if (currentSetting.value === 3) {
-    settings.value.vibro = false;
+    setSettings("vibro", false);
   }
 };
 </script>

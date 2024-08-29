@@ -85,7 +85,7 @@ export const useBattleStore = defineStore("battle", () => {
     });
   };
 
-  const onAnswer = (answer) => {
+  const onAnswer = ({ isCorrect, answerString }) => {
     const currentDataItem = state.value.data[taskIndex.value];
 
     // set lastTaskId
@@ -95,34 +95,19 @@ export const useBattleStore = defineStore("battle", () => {
     const foundIdx = answers.value.findIndex((answer) => answer.id === currentDataItem.id);
 
     if (foundIdx !== -1) {
-      answers.value[foundIdx] = { id: currentDataItem.id, answer };
+      answers.value[foundIdx] = { id: currentDataItem.id, answer: answerString };
     } else {
-      answers.value.push({ id: currentDataItem.id, answer });
-    }
-
-    switch (state.value.battle_type) {
-      // yes-no battle logic
-      case 1: {
-        if ((currentDataItem.task.answer === currentDataItem.correct && answer === "yes") || (currentDataItem.task.answer !== currentDataItem.correct && answer === "no")) {
-          onCorrect();
-        } else {
-          onWrong();
-        }
-        break;
-      }
-
-      case 2: {
-        if (answer === currentDataItem.correct) {
-          onCorrect();
-        } else {
-          onWrong();
-        }
-        break;
-      }
+      answers.value.push({ id: currentDataItem.id, answer: answerString });
     }
 
     if (currentDataItem.api) {
       callApi(currentDataItem.api);
+    }
+
+    if (isCorrect) {
+      onCorrectAnswer();
+    } else {
+      onWrongAnswer();
     }
 
     incrementTaskIndex();
@@ -139,17 +124,23 @@ export const useBattleStore = defineStore("battle", () => {
     }
   };
 
-  const onCorrect = () => {
-    // console.log(`correct`);
+  const onCorrectAnswer = () => {
+    if (dataStore.settings) {
+      navigator.vibrate(300);
+    }
+
     dataStore.addBolts(2);
   };
 
-  const onWrong = () => {
-    // console.log(`not correct`);
+  const onWrongAnswer = () => {
+    if (dataStore.settings) {
+      navigator.vibrate([100, 10, 100, 10, 100]);
+    }
+
     energy.value -= 100;
   };
 
-  const callApi = (apiName) => {
+  const callApi = (apiName: string) => {
     userStore.useFetch({ key: apiName });
   };
 

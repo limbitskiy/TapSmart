@@ -11,13 +11,15 @@
 </template>
 
 <script setup lang="ts">
+import { watch } from "vue";
+
 // composables
 import { useBackButton } from "@/composables/useBackButton";
 
 // components
 import BackgroundPill from "@/components/UI/BackgroundPill.vue";
 
-defineProps<{
+const props = defineProps<{
   visible: boolean;
 }>();
 
@@ -25,11 +27,19 @@ const emit = defineEmits<{
   "update:visible": [value: boolean];
 }>();
 
-useBackButton();
+const { show: showBackBtn, hide: hideBackBtn } = useBackButton();
 
 const onBackdropClick = (e) => {
   if (e.target.id === "modal-backdrop") {
     emit("update:visible", false);
   }
 };
+
+watch(props, (val) => {
+  if (val.visible === true) {
+    showBackBtn();
+  } else {
+    hideBackBtn();
+  }
+});
 </script>

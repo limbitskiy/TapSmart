@@ -85,7 +85,7 @@
         <button
           v-else
           class="w-full bg-[var(--accent-color)] text-black rounded-full fira-condensed-bold mt-2 py-1"
-          :class="{ 'bg-transparent border border-gray-500 text-gray-400': battles.mechanics['4answers'].disabled }"
+          :class="{ 'bg-transparent border border-gray-500 text-gray-200': battles.mechanics['4answers'].disabled }"
           @click="() => onMechSelect(2)"
         >
           {{ locale["button_4answers"] }}
@@ -128,7 +128,7 @@
         </button>
         <button
           class="w-full bg-[var(--accent-color)] text-black rounded-full fira-condensed-bold mt-2 py-1"
-          :class="{ 'bg-transparent border border-gray-500 text-gray-400': battles.mechanics['bubble_pairs'].disabled }"
+          :class="{ 'bg-transparent border border-gray-500 text-gray-200': battles.mechanics['bubble_pairs'].disabled }"
           @click="() => onMechSelect(3)"
         >
           {{ locale["button_bubble_pairs"] }}
@@ -171,7 +171,7 @@
         </button>
         <button
           class="w-full bg-[var(--accent-color)] text-black rounded-full fira-condensed-bold mt-2 py-1"
-          :class="{ 'bg-transparent border border-gray-500 text-gray-400': battles.mechanics['audio_question'].disabled }"
+          :class="{ 'bg-transparent border border-gray-500 text-gray-200': battles.mechanics['audio_question'].disabled }"
           @click="() => onMechSelect(4)"
         >
           {{ locale["button_audio_question"] }}

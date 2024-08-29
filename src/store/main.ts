@@ -1,9 +1,10 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
-import { useDataStore } from "@/store/data.ts";
-import { useBattleStore } from "@/store/battle.ts";
-import { makeRequest } from "@/api/server";
+import { useDataStore } from "./data.ts";
+import { useBattleStore } from "./battle.ts";
+import { makeRequest } from "../api/server";
+import { ResponseData, NotificationProps } from "../types";
 
 export const useMainStore = defineStore("main", () => {
   const notification = ref({
@@ -30,8 +31,8 @@ export const useMainStore = defineStore("main", () => {
 
     Object.keys(response).forEach((key) => {
       if (key === "data") {
-        Object.keys(response["data"]).forEach((section) => {
-          const sectionData = response["data"][section];
+        Object.keys(response.data).forEach((section) => {
+          const sectionData = response.data[section];
 
           if (section === "notification") {
             showNotification(sectionData);
