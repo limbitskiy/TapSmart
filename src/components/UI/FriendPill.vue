@@ -15,7 +15,7 @@
             <span class="text-sm text-[var(--accent-color)]">{{ data.title }}</span>
             <div class="money flex items-center gap-1">
               <img :src="getAsset('bolt')" />
-              <span class="text-[var(--accent-color)]">{{ data.money }}</span>
+              <span class="text-[var(--accent-color)]">{{ data.money || 0 }}</span>
             </div>
           </div>
         </div>
@@ -24,11 +24,11 @@
       <slot name="end"> -->
       <div v-show="battles" class="battles-played flex items-center gap-2">
         <img class="h-6" src="/swords.png" />
-        <span class="text-xl font-bold">{{ data.bolts }}</span>
+        <span class="text-xl font-bold">{{ data.bolts || 0 }}</span>
       </div>
       <div v-show="!battles" class="money-earned flex items-center gap-2">
         <img :src="getAsset('bolt')" />
-        <span class="text-xl font-bold text-[var(--accent-color)]">{{ data.moneyEarned }}</span>
+        <span class="text-xl font-bold text-[var(--accent-color)]">{{ data.moneyEarned || 0 }}</span>
       </div>
       <!-- </slot> -->
     </div>

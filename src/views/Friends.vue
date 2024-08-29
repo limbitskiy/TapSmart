@@ -127,8 +127,6 @@ const { friends: locale } = storeToRefs(localeStore);
 
 const { showToast, fetchFriendsPage } = mainStore;
 
-console.log(data);
-
 await fetchFriendsPage();
 
 const filters = ref({
@@ -168,13 +166,15 @@ const onBattlesFilter = () => {
 
 const generateLink = () => {
   const userId = getUserId();
+  console.log(userId);
+
   return `https://t.me/${import.meta.env.VITE_BOT_NAME}/${import.meta.env.VITE_APP_NAME}?startapp=fr${userId}`;
 };
 
 const onInviteFriend = () => {
   const link = generateLink();
   console.log(`link is: ${link}`);
-  tg.openTelegramLink(`https://t.me/share/url?url=${link}&text=${locale["inviteMessage"]}`);
+  tg.openTelegramLink(`https://t.me/share/url?url=${link}&text=${locale.value["inviteMessage"]}`);
 };
 
 const onCopyToClipboard = () => {
