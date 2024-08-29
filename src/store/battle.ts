@@ -150,11 +150,11 @@ export const useBattleStore = defineStore("battle", () => {
     if (dataStore.settings.vibro) {
       switch (type) {
         case "correct": {
-          navigator.vibrate([100, 10, 100, 10, 100]);
+          navigator.vibrate(300);
           break;
         }
         case "wrong": {
-          navigator.vibrate(300);
+          navigator.vibrate([100, 10, 100, 10, 100]);
           break;
         }
       }

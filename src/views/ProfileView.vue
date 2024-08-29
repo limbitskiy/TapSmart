@@ -5,30 +5,30 @@
       <div class="page-subtitle">{{ locale["subtitle"] }}</div>
     </div>
 
-    <Pill class="py-8" color="dark">
-      <span class="pill-title">{{ locale["stats_title"] }}</span>
+    <Pill class="py-8 mb-12" color="dark">
+      <span class="bg-pill-title">{{ locale["stats_title"] }}</span>
 
-      <div class="pill-grid grid grid-cols-2 gap-4">
-        <Pill class="mt-4" color="light" ripple>
-          <div class="content flex flex-col gap-2 items-center justify-between text-center">
-            <span class="text-xl font-semibold text-gray-300">{{ locale["coins_earned"] }}</span>
-            <div class="price flex gap-2 items-center">
-              <img class="h-6" src="/coin.png" />
-              <span class="text-xl font-bold text-[var(--accent-color)]">{{ data["coins"] }}</span>
-            </div>
+      <!-- <div class="pill-grid grid grid-cols-2 gap-4"> -->
+      <Pill class="mt-4" color="light" ripple>
+        <div class="content flex flex-col gap-2 items-center justify-between text-center">
+          <span class="text-xl font-semibold text-gray-300">{{ locale["bolts"] }}</span>
+          <div class="price flex gap-2 items-center">
+            <img class="h-4" :src="getAsset('bolt')" />
+            <span class="text-xl font-bold exo-bold">{{ data["bolts"] }}</span>
           </div>
-        </Pill>
+        </div>
+      </Pill>
 
-        <Pill class="mt-4" color="light" ripple>
-          <div class="content flex flex-col gap-2 items-center justify-between text-center">
-            <span class="text-xl font-semibold text-gray-300">{{ locale["points_earned"] }}</span>
-            <div class="price flex gap-2 items-center">
-              <img class="h-6" src="/point.png" />
-              <span class="text-xl font-bold text-purple-500">{{ data["points"] }}</span>
-            </div>
+      <Pill class="mt-4" color="light" ripple>
+        <div class="content flex flex-col gap-2 items-center justify-between text-center">
+          <span class="text-xl font-semibold text-gray-300">{{ locale["nuts"] }}</span>
+          <div class="price flex gap-2 items-center">
+            <img class="h-4" :src="getAsset('nut')" />
+            <span class="text-xl font-bold exo-bold">{{ data["nuts"] }}</span>
           </div>
-        </Pill>
-      </div>
+        </div>
+      </Pill>
+      <!-- </div> -->
 
       <Pill class="mt-4" color="light" ripple>
         <div class="content flex gap-2 items-center justify-between">
@@ -60,6 +60,7 @@ import { computed, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { tg } from "@/api/telegram";
 import { storeToRefs } from "pinia";
+import { getAsset } from "@/utils";
 
 // store
 import { useMainStore } from "@/store/main.ts";

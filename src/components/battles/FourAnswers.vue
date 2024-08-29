@@ -2,7 +2,7 @@
   <div class="4-answers-battle flex-1 flex flex-col mb-[72px]">
     <div class="question flex-1 grid place-items-center font-black text-2xl">
       <div class="question-text flex flex-col gap-2 items-center">
-        <span class="fira-condensed-black text-[26px]" ref="el">{{ currentTask.task.question }}</span>
+        <span class="fira-condensed-black" ref="el" style="font-size: clamp(30px, 9vw, 46px)">{{ currentTask.task.question }}</span>
       </div>
     </div>
 

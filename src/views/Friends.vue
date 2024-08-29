@@ -41,8 +41,8 @@
         <div class="content flex flex-col items-center gap-2 justify-between">
           <span class="text-xl font-semibold">{{ locale["total_income"] }}</span>
           <div class="price flex gap-2 items-center">
-            <img class="h-6" :src="getAsset('coin')" />
-            <span class="text-xl font-bold text-[var(--accent-color)]">{{ data["income"] }}</span>
+            <img class="h-4" :src="getAsset('bolt')" />
+            <span class="text-xl font-bold exo-bold">{{ data["income"] || 0 }}</span>
           </div>
         </div>
       </Pill>
@@ -50,23 +50,23 @@
       <Pill class="mt-4" color="light" ripple>
         <div class="content flex justify-between">
           <span class="text-xl font-semibold">{{ locale["battles_played"] }}</span>
-          <span class="text-xl font-bold text-[var(--accent-color)]">{{ data["battles"] }}</span>
+          <span class="text-xl font-bold exo-bold">{{ data["battles"] || 0 }}</span>
         </div>
       </Pill>
 
       <Pill class="mt-4" color="light" ripple>
         <div class="content flex justify-between">
           <span class="text-xl font-semibold">{{ locale["points_earned"] }}</span>
-          <span class="text-xl font-bold text-[var(--accent-color)]">{{ data["points"] }}</span>
+          <span class="text-xl font-bold exo-bold">{{ data["points"] || 0 }}</span>
         </div>
       </Pill>
     </BackgroundPill>
 
     <!-- friends -->
-    <Pill class="py-8 mt-12 mb-32 relative" color="darker">
+    <BackgroundPill class="py-8 mt-12 mb-32 relative">
       <div class="header flex items-center justify-between">
         <div class="title flex gap-2">
-          <span class="pill-title">{{ locale["friends_title"] }}</span>
+          <span class="bg-pill-title">{{ locale["friends_title"] }}</span>
           <div class="counter bg-[var(--grey-dark)] py-1 px-2 rounded flex items-center h-7 font-semibold">{{ filteredFriends.length }}</div>
         </div>
         <div class="refresh-friends mr-4" @click="onRefreshFriends">
@@ -74,15 +74,20 @@
         </div>
       </div>
 
-      <div class="switches flex justify-start gap-3 mt-4">
-        <Button class="!py-1 !px-3" :class="filters.online ? '' : 'bg-gray-500 text-white'" @click="onOnlineFilter">{{ locale["online"] }}</Button>
-        <Button class="!py-1 !px-3" :class="filters.battles ? '' : 'bg-gray-500 text-white'" @click="onBattlesFilter">{{ locale["battles"] }}</Button>
-      </div>
+      <template v-if="filteredFriends.length">
+        <div class="switches flex justify-start gap-3 mt-4">
+          <Button class="!py-1 !px-3" :class="filters.online ? '' : 'bg-gray-500 text-white'" @click="onOnlineFilter">{{ locale["online"] }}</Button>
+          <Button class="!py-1 !px-3" :class="filters.battles ? '' : 'bg-gray-500 text-white'" @click="onBattlesFilter">{{ locale["battles"] }}</Button>
+        </div>
 
-      <TransitionGroup class="friend-list flex flex-col gap-4 my-4" name="list" tag="div">
-        <FriendPill v-for="friend in filteredFriends" :key="friend.id" :data="friend" color="dark" :battles="filters.battles" />
-      </TransitionGroup>
-    </Pill>
+        <TransitionGroup class="friend-list flex flex-col gap-4 my-4" name="list" tag="div">
+          <FriendPill v-for="friend in filteredFriends" :key="friend.id" :data="friend" color="dark" :battles="filters.battles" />
+        </TransitionGroup>
+      </template>
+      <div v-else class="empty-message my-4">
+        <span class="text-gray-300">У вас пока нету друзей</span>
+      </div>
+    </BackgroundPill>
 
     <!-- invite buttons -->
     <div class="invite-btn-cnt fixed bottom-16 w-full p-4 flex justify-between gap-3 z-10">
@@ -90,7 +95,7 @@
         <span class="text-xl">{{ locale["invite_a_friend"] }}</span>
         <img :src="getAsset('paw')" />
       </Button>
-      <Button class="px-4 py-2" black @click="onCopyToClipboard"><img :src="getAsset('copy')" /></Button>
+      <Button class="px-4 py-2 border border-gray-800" black @click="onCopyToClipboard"><img :src="getAsset('copy')" /></Button>
     </div>
   </div>
 </template>
@@ -175,7 +180,7 @@ const onInviteFriend = () => {
 const onCopyToClipboard = () => {
   const link = generateLink();
   navigator.clipboard.writeText(link);
-  showToast("Link has been copied to clipboard");
+  // showToast("Link has been copied to clipboard");
 };
 
 onMounted(() => {});
