@@ -56,19 +56,18 @@ body {
   @apply inline-block max-w-[80%];
 }
 
-.pill-title {
-  @apply text-lg leading-5 font-bold;
-
-  font-family: "FiraSansBold", sans-serif;
-  font-weight: 700;
-  font-style: normal;
-}
-
 .bg-pill-title {
   @apply text-[22px] leading-5 font-bold;
 
   font-family: "FiraSansCondensedBlack", sans-serif;
   font-weight: 900;
+}
+
+.bg-pill-subtitle {
+  @apply text-[18px] text-gray-300 mt-4;
+
+  font-family: "FiraSansCondensedRegular", sans-serif;
+  font-weight: 400;
 }
 
 .triangle-down {

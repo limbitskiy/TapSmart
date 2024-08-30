@@ -67,6 +67,12 @@
       </Pill>
     </BackgroundPill>
 
+    <!-- activity -->
+    <BackgroundPill class="py-8 mt-12 flex flex-col">
+      <span class="bg-pill-title">{{ locale["activity_title"] }}</span>
+      <span class="bg-pill-subtitle">{{ locale["activity_subtitle"] }}</span>
+    </BackgroundPill>
+
     <Settings class="mt-12" @change="onSettingsChange" />
   </div>
 </template>

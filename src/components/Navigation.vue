@@ -3,9 +3,9 @@
     <ul class="flex items-center justify-around bg-black text-white py-1">
       <!-- <span>{{ Object.keys(route) }}</span>
       <span>{{ route.path }}</span> -->
-      <RouterLink v-for="menuItem in data.items" :to="menuItem.link" class="w-16 h-16 rounded-xl grayscale">
-        <div class="nav-item flex flex-col items-center justify-center gap-1 p-2">
-          <img :src="'/' + menuItem.icon + '.png'" class="h-6 object-contain" />
+      <RouterLink v-for="menuItem in data.items" :to="menuItem.link" class="w-16 h-16 rounded-xl">
+        <div class="nav-item flex flex-col items-center justify-center gap-1 p-1">
+          <img :src="'/' + menuItem.icon + '.png'" class="h-8 object-contain" />
           <span class="fira-condensed-bold text-sm">{{ menuItem.title }}</span>
         </div>
       </RouterLink>
