@@ -46,7 +46,7 @@
         </div>
       </div>
     </button>
-    <!-- disabled -->
+    <!-- normal / disabled -->
     <button
       v-else
       class="w-full bg-[var(--green-color)] text-white rounded-full fira-condensed-bold mt- py-1"

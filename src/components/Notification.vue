@@ -29,14 +29,16 @@
 </template>
 
 <script setup lang="ts">
-import { useMainStore } from "@/store/main.ts";
 import { storeToRefs } from "pinia";
+
+// store
+import { useMainStore } from "@/store/main.ts";
 
 const userStore = useMainStore();
 const { notificationData } = storeToRefs(userStore);
 const { hideNotification, notificationAction } = userStore;
 
-const onBtn = (btn) => {
+const onBtn = (btn: { api: string; data: string; isClose: boolean }) => {
   if (btn.isClose) {
     hideNotification();
     return;
@@ -47,6 +49,4 @@ const onBtn = (btn) => {
     hideNotification();
   }
 };
-
-console.log(notificationData);
 </script>

@@ -15,13 +15,17 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from "vue";
+import { storeToRefs } from "pinia";
+import { tg, getUserId } from "@/api/telegram";
+import { useRouter } from "vue-router";
+
+// stores
 import { useDataStore } from "@/store/data.ts";
 import { useMainStore } from "@/store/main.ts";
 import { useLocaleStore } from "@/store/locale.ts";
-import { storeToRefs } from "pinia";
+
+// components
 import Button from "@/components/UI/Button.vue";
-import { tg, getUserId } from "@/api/telegram";
-import { useRouter } from "vue-router";
 import Settings from "@/components/Settings.vue";
 
 const dataStore = useDataStore();
@@ -35,18 +39,11 @@ const { setLanguages } = mainStore;
 
 const router = useRouter();
 
-const languagesChanged = {};
-
 const onSettingsChange = ({ setting, value }) => {
-  languagesChanged[setting] = value;
+  setLanguages({ [setting]: value });
 };
 
 const onNext = () => {
-  if (Object.keys(languagesChanged)) {
-    const { native_language, target_language } = languagesChanged;
-    setLanguages({ native_language, target_language });
-  }
-
   router.push("/home/battles");
 };
 </script>

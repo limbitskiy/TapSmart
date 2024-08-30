@@ -241,6 +241,8 @@ const onClick = () => {
 
 tg?.ready();
 
+tg?.disableVerticalSwipes();
+
 console.log("tg:", tg);
 
 Promise.allSettled([

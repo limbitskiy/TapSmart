@@ -14,6 +14,13 @@ export const useMainStore = defineStore("main", () => {
     isShown: false,
   });
 
+  const tooltip = ref({
+    text: null,
+    // coords: { x: null, y: null },
+    parent: null,
+    isShown: false,
+  });
+
   const state = ref({
     service: {},
     entryPoint: null,
@@ -60,7 +67,7 @@ export const useMainStore = defineStore("main", () => {
     notification.value.title = title;
     notification.value.subtitle = subtitle;
     notification.value.buttons = buttons;
-    notification.value.isShown = true;
+    // notification.value.isShown = true;
 
     // console.log(`notification: `, notification.value);
 
@@ -77,6 +84,26 @@ export const useMainStore = defineStore("main", () => {
     notification.value.subtitle = null;
     notification.value.buttons = {};
     notification.value.isShown = false;
+  };
+
+  const showTooltip = ({ parent, text }) => {
+    if (parent === tooltip.value.parent) {
+      return;
+    }
+
+    hideTooltip();
+
+    setTimeout(() => {
+      tooltip.value.text = text;
+      tooltip.value.parent = parent;
+      tooltip.value.isShown = true;
+    }, 100);
+  };
+
+  const hideTooltip = () => {
+    tooltip.value.text = null;
+    tooltip.value.parent = null;
+    tooltip.value.isShown = false;
   };
 
   const notificationAction = ({ api, data }) => {
@@ -123,6 +150,7 @@ export const useMainStore = defineStore("main", () => {
 
   return {
     notificationData,
+    tooltip,
     startApp,
     fetchFriendsPage,
     fetchBattlesPage,
@@ -132,5 +160,7 @@ export const useMainStore = defineStore("main", () => {
     showNotification,
     hideNotification,
     notificationAction,
+    showTooltip,
+    hideTooltip,
   };
 });

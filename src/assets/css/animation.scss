@@ -106,6 +106,18 @@
   animation: bonus-float-up 1s ease-out;
 }
 
+// tooltip
+.tooltip-enter-active,
+.tooltip-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.tooltip-enter-from,
+.tooltip-leave-to {
+  opacity: 0;
+  // transform: translateY(20%);
+}
+
 @keyframes bonus-float-up {
   100% {
     opacity: 0;

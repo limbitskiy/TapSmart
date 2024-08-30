@@ -1,5 +1,5 @@
 <template>
-  <div :class="`pill px-4 pb-4 pt-8 rounded-2xl bg-[var(--grey-dark)] select-none ${outlined ? 'border' : ''}`">
+  <div :class="`pill px-4 pb-4 pt-6 rounded-3xl bg-[var(--grey-dark)] select-none ${outlined ? 'border' : ''}`">
     <slot></slot>
   </div>
 </template>

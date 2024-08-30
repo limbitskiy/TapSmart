@@ -5,53 +5,69 @@
       <div class="page-subtitle">{{ locale["subtitle"] }}</div>
     </div>
 
-    <Pill class="py-8 mb-12" color="dark">
+    <BackgroundPill class="py-8">
       <span class="bg-pill-title">{{ locale["stats_title"] }}</span>
 
-      <!-- <div class="pill-grid grid grid-cols-2 gap-4"> -->
-      <Pill class="mt-4" color="light" ripple>
-        <div class="content flex flex-col gap-2 items-center justify-between text-center">
-          <span class="text-xl font-semibold text-gray-300">{{ locale["bolts"] }}</span>
-          <div class="price flex gap-2 items-center">
-            <img class="h-4" :src="getAsset('bolt')" />
-            <span class="text-xl font-bold exo-bold">{{ data["bolts"] }}</span>
+      <!-- bolts -->
+      <Pill class="mt-4" color="light" ripple :tooltip="locale['tooltip_bolts']">
+        <div class="content flex items-center justify-between">
+          <span class="text-xl font-semibold text-gray-300">{{ locale["bolts"] || "Bolts" }}</span>
+          <div class="flex gap-2 items-center">
+            <img class="h-4 scale-150" :src="getAsset('bolt')" />
+            <span class="text-xl exo-black">{{ showFormattedNumber(data["bolts"]) }}</span>
           </div>
         </div>
       </Pill>
 
-      <Pill class="mt-4" color="light" ripple>
-        <div class="content flex flex-col gap-2 items-center justify-between text-center">
-          <span class="text-xl font-semibold text-gray-300">{{ locale["nuts"] }}</span>
-          <div class="price flex gap-2 items-center">
-            <img class="h-4" :src="getAsset('nut')" />
-            <span class="text-xl font-bold exo-bold">{{ data["nuts"] }}</span>
+      <!-- nuts -->
+      <Pill class="mt-4" color="light" ripple :tooltip="locale['tooltip_nuts']">
+        <div class="content flex items-center justify-between">
+          <span class="text-xl font-semibold text-gray-300">{{ locale["nuts"] || "Nuts" }}</span>
+          <div class="flex gap-2 items-center">
+            <img class="h-4 scale-150" :src="getAsset('nut')" />
+            <span class="text-xl exo-black">{{ showFormattedNumber(data["nuts"]) }}</span>
           </div>
         </div>
       </Pill>
-      <!-- </div> -->
 
+      <!-- level -->
+      <Pill class="mt-4" color="light" ripple>
+        <div class="content flex gap-2 flex-col">
+          <div class="level flex gap-2 items-center justify-between">
+            <span class="text-xl font-semibold text-gray-300">{{ locale["level"] || "Level" }}</span>
+            <div class="flex gap-2 items-center">
+              <img class="h-5" src="/level-arrow.png" />
+              <span class="text-xl exo-black">{{ data["level"] }}</span>
+            </div>
+          </div>
+          <ProgressBar :value="data['progress']" />
+        </div>
+      </Pill>
+
+      <!-- battles -->
       <Pill class="mt-4" color="light" ripple>
         <div class="content flex gap-2 items-center justify-between">
-          <span class="text-xl font-semibold text-gray-300">{{ locale["battles_played"] }}</span>
-          <div class="price flex gap-2 items-center">
+          <span class="text-xl font-semibold text-gray-300">{{ locale["battles_played"] || "Battles" }}</span>
+          <div class="flex gap-2 items-center">
             <img class="h-6" src="/swords.png" />
-            <span class="text-xl font-bold">{{ data["battles"] }}</span>
+            <span class="text-xl exo-black">{{ data["battles"] }}</span>
           </div>
         </div>
       </Pill>
 
+      <!-- words learned -->
       <Pill class="mt-4" color="light" ripple>
         <div class="content flex gap-2 items-center justify-between">
-          <span class="text-xl font-semibold text-gray-300">{{ locale["words_learned"] }}</span>
-          <div class="price flex gap-2 items-center">
+          <span class="text-xl font-semibold text-gray-300">{{ locale["words_learned"] || "Words learned" }}</span>
+          <div class="flex gap-2 items-center">
             <img class="h-6" src="/book.png" />
-            <span class="text-xl font-bold">{{ data["learned"] }}</span>
+            <span class="text-xl exo-black">{{ data["learned"] }}</span>
           </div>
         </div>
       </Pill>
-    </Pill>
+    </BackgroundPill>
 
-    <Settings @change="onSettingsChange" />
+    <Settings class="mt-12" @change="onSettingsChange" />
   </div>
 </template>
 
@@ -60,7 +76,7 @@ import { computed, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { tg } from "@/api/telegram";
 import { storeToRefs } from "pinia";
-import { getAsset } from "@/utils";
+import { getAsset, showFormattedNumber } from "@/utils";
 
 // store
 import { useMainStore } from "@/store/main.ts";
@@ -69,7 +85,9 @@ import { useLocaleStore } from "@/store/locale.ts";
 
 // components
 import Pill from "@/components/UI/Pill.vue";
+import BackgroundPill from "@/components/UI/BackgroundPill.vue";
 import Settings from "@/components/Settings.vue";
+import ProgressBar from "@/components/UI/ProgressBar.vue";
 
 const mainStore = useMainStore();
 const dataStore = useDataStore();

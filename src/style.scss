@@ -24,6 +24,10 @@
   // --grey-darker: #0f0f0f;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 #app {
   height: 100dvh;
 }
@@ -65,6 +69,24 @@
 
   font-family: "FiraSansCondensedBlack", sans-serif;
   font-weight: 900;
+}
+
+.triangle-down {
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 8px 5px 0 5px;
+  border-color: #535353 transparent transparent transparent;
+  transform: rotate(0deg);
+}
+
+.triangle-up {
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 0 5px 8px 5px;
+  border-color: transparent transparent #535353 transparent;
+  transform: rotate(0deg);
 }
 
 // navigation

@@ -1,8 +1,8 @@
 <template>
   <div
-    :class="`pill p-4 rounded-2xl select-none ${outlined ? 'border' : ''}`"
+    :class="`pill p-4 rounded-2xl relative select-none ${outlined ? 'border' : ''}`"
     ref="container"
-    @mousedown="addRipple"
+    @mousedown="onMouseDown"
     class="ripple-outer"
     :style="`background-color: var(--grey-${color})`"
   >
@@ -27,27 +27,54 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from "vue";
 
+// store
+import { useMainStore } from "@/store/main.ts";
+
+const mainStore = useMainStore();
+
+const { showTooltip } = mainStore;
+
+interface Ripple {
+  width: string;
+  height: string;
+  left: string;
+  top: string;
+  id: number;
+}
+
 const props = defineProps<{
   color: "light" | "dark" | "darker";
   outlined?: boolean;
   ripple?: boolean;
+  tooltip?: string;
 }>();
 
-const ripples = ref([]);
-const container = ref(null);
+const ripples = ref<Ripple[]>([]);
+const container = ref<HTMLDivElement | null>(null);
 let rippleWidth = 0;
 let halfRippleWidth = 0;
 
-const addRipple = (e) => {
+const onMouseDown = (event: MouseEvent) => {
+  if (props.tooltip?.length) {
+    showTooltip({
+      parent: container.value,
+      text: props.tooltip,
+    });
+  }
+
+  // addRipple(event);
+};
+
+const addRipple = (event: MouseEvent) => {
   if (!props.ripple) return;
 
-  const { left, top } = container.value?.getBoundingClientRect();
+  const { left, top } = container.value!.getBoundingClientRect();
   const rippleId = Date.now();
   ripples.value.push({
     width: `${rippleWidth}px`,
     height: `${rippleWidth}px`,
-    left: `${e.clientX - left - halfRippleWidth}px`,
-    top: `${e.clientY - top - halfRippleWidth}px`,
+    left: `${event.clientX - left - halfRippleWidth}px`,
+    top: `${event.clientY - top - halfRippleWidth}px`,
     id: rippleId,
   });
 };
@@ -57,8 +84,8 @@ const purgeRipples = () => {
 };
 
 onMounted(() => {
-  const width = container.value?.offsetWidth;
-  const height = container.value?.offsetHeight;
+  const width = container.value!.offsetWidth;
+  const height = container.value!.offsetHeight;
   rippleWidth = width > height ? width : height;
   halfRippleWidth = rippleWidth / 2;
 

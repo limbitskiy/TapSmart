@@ -13,3 +13,7 @@ export const getAsset = (name) => {
 export const getAssetURL = (url) => {
   return new URL(`../${url}`, import.meta.url).href;
 };
+
+export const showFormattedNumber = (number) => {
+  return new Intl.NumberFormat("en-US", { style: "decimal" }).format(number);
+};

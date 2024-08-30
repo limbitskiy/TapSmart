@@ -1,30 +1,6 @@
 <template>
-  <Pill class="py-8 mt-4" color="dark">
+  <BackgroundPill class="py-8" color="dark">
     <span class="bg-pill-title">{{ locale["settings_title"] }}</span>
-
-    <PillButton class="mt-4" color="light" ripple>
-      <template #name>
-        <span class="text-lg font-semibold text-gray-300">{{ locale["native_language"] }}</span>
-      </template>
-      <template #value>{{ data["native_language_list"].find((item) => item.id === nativeLang).label }}</template>
-      <template #modal="{ closeModal }">
-        <div>
-          <span class="pill-title">{{ locale["modal_language_title"] }}</span>
-          <PillRadioGroup
-            class="mt-2"
-            color="light"
-            :data="data['native_language_list']"
-            :selected="data['native_language']"
-            ripple
-            @select="
-              (lang) => {
-                onNativeSelect(lang, closeModal);
-              }
-            "
-          />
-        </div>
-      </template>
-    </PillButton>
 
     <PillButton class="mt-4" color="light" ripple>
       <template #name>
@@ -49,7 +25,31 @@
         </div>
       </template>
     </PillButton>
-  </Pill>
+
+    <PillButton class="mt-4" color="light" ripple>
+      <template #name>
+        <span class="text-lg font-semibold text-gray-300">{{ locale["native_language"] }}</span>
+      </template>
+      <template #value>{{ data["native_language_list"].find((item) => item.id === nativeLang).label }}</template>
+      <template #modal="{ closeModal }">
+        <div>
+          <span class="pill-title">{{ locale["modal_language_title"] }}</span>
+          <PillRadioGroup
+            class="mt-2"
+            color="light"
+            :data="data['native_language_list']"
+            :selected="data['native_language']"
+            ripple
+            @select="
+              (lang) => {
+                onNativeSelect(lang, closeModal);
+              }
+            "
+          />
+        </div>
+      </template>
+    </PillButton>
+  </BackgroundPill>
 </template>
 
 <script setup lang="ts">
@@ -62,7 +62,7 @@ import { useDataStore } from "@/store/data.ts";
 import { useLocaleStore } from "@/store/locale.ts";
 
 // components
-import Pill from "@/components/UI/Pill.vue";
+import BackgroundPill from "@/components/UI/BackgroundPill.vue";
 import PillButton from "@/components/UI/PillButton.vue";
 import PillRadioGroup from "@/components/UI/PillRadioGroup.vue";
 

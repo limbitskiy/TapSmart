@@ -13,7 +13,7 @@
           <template #end>
             <div class="flex flex-col gap-1">
               <span class="text-lg pill-title">{{ locale["tg_pill_title"] }}</span>
-              <span class="text-gray-400" v-html="locale['tg_pill_subtitle']"></span>
+              <span class="text-gray-400 exo-bold" v-html="locale['tg_pill_subtitle']"></span>
             </div>
           </template>
         </IconPill>
@@ -26,19 +26,19 @@
           <template #end>
             <div class="flex flex-col gap-1">
               <span class="text-lg pill-title">{{ locale["premium_pill_title"] }}</span>
-              <span class="text-gray-400" v-html="locale['premium_pill_subtitle']"></span>
+              <span class="text-gray-400 exo-bold" v-html="locale['premium_pill_subtitle']"></span>
             </div>
           </template>
         </IconPill>
       </div>
     </div>
 
-    <!-- income -->
+    <!-- stats -->
     <BackgroundPill class="py-8">
       <span class="bg-pill-title">{{ locale["income_title"] }}</span>
 
-      <Pill class="mt-4" color="light" ripple>
-        <div class="content flex flex-col items-center gap-2 justify-between">
+      <Pill class="mt-4" color="light" ripple tooltip>
+        <div class="content flex flex-col items-center">
           <span class="text-xl font-semibold">{{ locale["total_income"] }}</span>
           <div class="price flex gap-2 items-center">
             <img class="h-4" :src="getAsset('bolt')" />
@@ -63,11 +63,11 @@
     </BackgroundPill>
 
     <!-- friends -->
-    <BackgroundPill class="py-8 mt-12 mb-32 relative">
+    <BackgroundPill class="py-8 mt-12 mb-[150px] relative">
       <div class="header flex items-center justify-between">
         <div class="title flex items-center gap-2">
           <span class="bg-pill-title">{{ locale["friends_title"] }}</span>
-          <div class="counter bg-[var(--grey-light)] py-1 px-2 rounded flex items-center h-7 exo-black">{{ filteredFriends.length }}</div>
+          <div class="counter bg-[var(--grey-light)] py-1 px-2 rounded flex items-center h-7 exo-black">{{ data.friendList.length }}</div>
         </div>
         <div ref="el" class="refresh-friends mr-4" @click="onRefreshFriends">
           <img :src="getAsset('refresh')" />
