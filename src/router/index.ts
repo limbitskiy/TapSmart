@@ -14,6 +14,10 @@ import ProfileView from "@/views/ProfileView.vue";
 import YesNo from "@/components/battles/YesNo.vue";
 import FourAnswers from "@/components/battles/FourAnswers.vue";
 
+// stores
+import { useDataStore } from "@/store/data.ts";
+import { useMainStore } from "@/store/main.ts";
+
 const routes = [
   { path: "/:pathMatch(.*)*", component: NotFound },
   { path: "/", redirect: "/init" },
@@ -86,8 +90,26 @@ const router = createRouter({
 
 // access only through /init
 router.beforeEach((to, from) => {
+  const dataStore = useDataStore();
+  const mainStore = useMainStore();
+  const { battles } = dataStore;
+
+  mainStore.hideTooltip();
+
   if (to.path !== "/init" && from.path === "/") {
     return { path: "/init" };
+  }
+
+  if (to.path === "/home/battles") {
+    battles.startTaskTimeout();
+    battles.startBpInterval();
+    // console.log(`turning timer on from Routes`);
+  }
+
+  if (from.path.includes("/home/battles/") && !to.path.includes("/home/battles/")) {
+    battles.stopTaskTimeout();
+    battles.stopBpInterval();
+    // console.log(`turning timer OFF from Routes`);
   }
 });
 

@@ -4,7 +4,14 @@
       <!-- <span>{{ Object.keys(route) }}</span>
       <span>{{ route.path }}</span> -->
       <RouterLink v-for="menuItem in data.items" :to="menuItem.link" class="w-16 h-16 rounded-xl">
-        <div class="nav-item flex flex-col items-center justify-center gap-1 p-1">
+        <div class="nav-item flex flex-col items-center justify-center gap-1 p-1 relative">
+          <div
+            v-if="getBadge(menuItem.id)"
+            class="badge absolute px-[5px] py-1 h-4 rounded-full bg-[var(--accent-color)] text-[10px] text-black exo-black top-1 right-1"
+            style="line-height: 8px"
+          >
+            {{ getBadge(menuItem.id).value }}
+          </div>
           <img :src="'/' + menuItem.icon + '.png'" class="h-8 object-contain" />
           <span class="fira-condensed-bold text-sm">{{ menuItem.title }}</span>
         </div>
@@ -26,4 +33,8 @@ const route = useRoute();
 const dataStore = useDataStore();
 
 const { menu: data } = storeToRefs(dataStore);
+
+const getBadge = (menuItemId) => {
+  return data.value.badges?.find((badge) => badge.id == menuItemId);
+};
 </script>

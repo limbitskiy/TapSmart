@@ -1,6 +1,12 @@
-import { defineStore } from "pinia";
-import { computed, ref } from "vue";
+import { computed, ref, shallowRef, watch } from "vue";
 import { useRouter } from "vue-router";
+import { defineStore } from "pinia";
+
+// composables
+import { useTaskTimeout } from "@/composables/useTaskTimeout";
+import { useBpInterval } from "@/composables/useBpInterval";
+
+// stores
 import { useDataStore } from "@/store/data.ts";
 import { useMainStore } from "@/store/main.ts";
 
@@ -9,6 +15,20 @@ export const useBattleStore = defineStore("battle", () => {
   const dataStore = useDataStore();
   const userStore = useMainStore();
 
+  const taskTimeoutCb = () => {
+    onAnswer({ isCorrect: false, answerString: "", subtractEnergyAmount: 0 });
+  };
+
+  const breakpointCb = () => {
+    if (document.hasFocus()) {
+      console.log(`is in focus`);
+      userStore.useFetch({ key: "battle_breakpoint" });
+      return;
+    }
+
+    console.log(`is not in focus`);
+  };
+
   const battleTypes = {
     1: "yesno",
     2: "4answers",
@@ -16,22 +36,38 @@ export const useBattleStore = defineStore("battle", () => {
     4: "audio_question",
   };
 
-  let breakpointInterval = null;
-  const taskIndex = ref(0);
-  const lastTaskId = ref(null);
+  const taskIndex = shallowRef(0);
+  const lastTaskId = shallowRef(null);
 
   const state = ref({
     data: [],
     mechanics: null,
+    battle_button_challenge: null,
+    energy: 0,
+    multiplicator: null,
+    calc_value: null,
   });
 
+  const correctStreak = shallowRef(1);
+
   const answers = ref([]);
-  const energy = ref(1500);
 
   const currentTask = computed(() => state.value.data[taskIndex.value]);
   const mechanics = computed(() => state.value.mechanics);
+  const energy = computed(() => state.value.energy);
+  const challengeButton = computed(() => state.value.battle_button_challenge);
+  const currentMechanic = computed(() => state.value.mechanics?.[getMechanicName(currentBattleType.value)]);
 
-  const currentBattleType = ref(1);
+  const currentBattleType = ref(null);
+
+  const { start: startTaskTimeout, stop: stopTaskTimeout, setTime: setTaskTimeout } = useTaskTimeout(currentMechanic, taskTimeoutCb);
+  const { start: startBpInterval, stop: stopBpInterval, setTime: setBpInterval, time: bpTime } = useBpInterval(breakpointCb);
+
+  watch(currentBattleType, (val, oldVal) => {
+    if (val === oldVal) return;
+    setTaskTimeout(currentMechanic.value.timeout);
+    startTaskTimeout();
+  });
 
   const set = (data) => {
     Object.keys(data).forEach((key) => {
@@ -46,15 +82,14 @@ export const useBattleStore = defineStore("battle", () => {
       }
 
       // breakpoint logic
-      if (key === "breakpoint" && breakpointInterval !== data["breakpoint"]) {
-        if (breakpointInterval) {
-          clearInterval(breakpointInterval);
+      if (key === "breakpoint" && data.breakpoint !== bpTime) {
+        if (data.breakpoint === 0) {
+          stopBpInterval();
+          return;
         }
 
-        breakpointInterval = setInterval(() => {
-          // console.log(`breakpoint!`);
-          breakpointCall();
-        }, data["breakpoint"]);
+        setBpInterval(data.breakpoint);
+        startBpInterval();
       }
 
       if (state.value[key]) {
@@ -85,7 +120,8 @@ export const useBattleStore = defineStore("battle", () => {
     });
   };
 
-  const onAnswer = ({ isCorrect, answerString }) => {
+  const onAnswer = ({ isCorrect, answerString, subtractEnergyAmount = 5 }) => {
+    startTaskTimeout();
     const currentDataItem = state.value.data[taskIndex.value];
 
     // set lastTaskId
@@ -107,6 +143,9 @@ export const useBattleStore = defineStore("battle", () => {
     if (isCorrect) {
       onCorrectAnswer();
     } else {
+      if (subtractEnergyAmount) {
+        subtractEnergy(5);
+      }
       onWrongAnswer();
     }
 
@@ -125,25 +164,16 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const onCorrectAnswer = () => {
-    dataStore.addBolts(2);
+    dataStore.addBolts(calculateBoltsAmount());
+    correctStreak.value += 1;
   };
 
   const onWrongAnswer = () => {
-    energy.value -= 100;
+    correctStreak.value = 1;
   };
 
   const callApi = (apiName: string) => {
     userStore.useFetch({ key: apiName });
-  };
-
-  const breakpointCall = () => {
-    if (document.hasFocus()) {
-      console.log(`is in focus`);
-      userStore.useFetch({ key: "battle_breakpoint" });
-      return;
-    }
-
-    console.log(`is not in focus`);
   };
 
   const onVibrate = (type: string) => {
@@ -169,5 +199,34 @@ export const useBattleStore = defineStore("battle", () => {
     return battleTypes[mechId];
   };
 
-  return { battleTypes, currentTask, energy, lastTaskId, answers, currentBattleType, mechanics, set, onAnswer, changeMechanic, expand, getMechanicName, onVibrate };
+  const subtractEnergy = (value: number) => {
+    state.value.energy -= value;
+  };
+
+  const calculateBoltsAmount = () => {
+    if (state.value.multiplicator && state.value.calc_points.length) {
+      return state.value.multiplicator * state.value.calc_points[correctStreak.value];
+    }
+  };
+
+  return {
+    battleTypes,
+    currentTask,
+    energy,
+    lastTaskId,
+    answers,
+    currentBattleType,
+    mechanics,
+    challengeButton,
+    set,
+    onAnswer,
+    changeMechanic,
+    expand,
+    getMechanicName,
+    onVibrate,
+    startTaskTimeout,
+    stopTaskTimeout,
+    startBpInterval,
+    stopBpInterval,
+  };
 });

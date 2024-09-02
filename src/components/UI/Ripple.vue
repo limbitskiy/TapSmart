@@ -1,5 +1,5 @@
 <template>
-  <div ref="container" @mousedown="addRipple" class="ripple-outer">
+  <div ref="container rounded-2xl" @mousedown="addRipple" class="ripple-outer">
     <transition-group class="ripples" name="grow" tag="div">
       <div
         class="ripple"
@@ -21,19 +21,27 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from "vue";
 
-const ripples = ref([]);
-const container = ref(null);
+interface Ripple {
+  width: string;
+  height: string;
+  left: string;
+  top: string;
+  id: number;
+}
+
+const ripples = ref<Ripple[]>([]);
+const container = ref<HTMLDivElement | null>(null);
 let rippleWidth = 0;
 let halfRippleWidth = 0;
 
-const addRipple = (e) => {
-  const { left, top } = container.value?.getBoundingClientRect();
+const addRipple = (event: MouseEvent) => {
+  const { left, top } = container.value!.getBoundingClientRect();
   const rippleId = Date.now();
   ripples.value.push({
     width: `${rippleWidth}px`,
     height: `${rippleWidth}px`,
-    left: `${e.clientX - left - halfRippleWidth}px`,
-    top: `${e.clientY - top - halfRippleWidth}px`,
+    left: `${event.clientX - left - halfRippleWidth}px`,
+    top: `${event.clientY - top - halfRippleWidth}px`,
     id: rippleId,
   });
 };
@@ -43,8 +51,8 @@ const purgeRipples = () => {
 };
 
 onMounted(() => {
-  const width = container.value?.offsetWidth;
-  const height = container.value?.offsetHeight;
+  const width = container.value!.offsetWidth;
+  const height = container.value!.offsetHeight;
   rippleWidth = width > height ? width : height;
   halfRippleWidth = rippleWidth / 2;
 

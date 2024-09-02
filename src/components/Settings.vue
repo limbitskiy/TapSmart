@@ -2,7 +2,7 @@
   <BackgroundPill class="py-8" color="dark">
     <span class="bg-pill-title">{{ locale["settings_title"] }}</span>
 
-    <PillButton class="mt-4" color="light" ripple>
+    <PillButton class="mt-4" color="light">
       <template #name>
         <span class="text-lg font-semibold text-gray-300">{{ locale["target_language"] }}</span>
       </template>
@@ -26,7 +26,7 @@
       </template>
     </PillButton>
 
-    <PillButton class="mt-4" color="light" ripple>
+    <PillButton class="mt-4" color="light">
       <template #name>
         <span class="text-lg font-semibold text-gray-300">{{ locale["native_language"] }}</span>
       </template>

@@ -1,9 +1,8 @@
 <template>
   <div
-    ref="el"
+    ref="tooltipRef"
     class="tooltip absolute z-[5] bg-[#535353] border border-[#4b4b4b] p-4 rounded-xl text-sm w-max"
-    :style="{ top: `${params.y}px`, left: `${params.x}px` }"
-    style="transform: translateX(-50%); max-width: 70vw"
+    :style="{ top: `${params.y}px`, left: `${params.x}px`, maxWidth: `${params.width}px` }"
     @click="onClick"
   >
     <div v-if="params.position === 'bottom'" class="triangle-up absolute -top-[8px]" :style="{ left: params.center - 5 + 'px' }"></div>
@@ -24,15 +23,16 @@ const mainStore = useMainStore();
 const { tooltip } = storeToRefs(mainStore);
 const { hideTooltip } = mainStore;
 
-const el = ref();
+const tooltipRef = ref();
 
-const { left: parentLeft, width: parentWidth, height: parentHeight } = tooltip.value.parent.getBoundingClientRect();
+const { left: elementLeft, width: elementWidth, height: elementHeight, top: elementTop, right: elementRight } = tooltip.value.element.getBoundingClientRect();
 
 const params = ref({
-  x: parentLeft + parentWidth / 2,
-  y: tooltip.value.parent.offsetTop,
-  center: 0,
+  x: elementLeft,
+  y: elementTop + window.scrollY,
+  center: elementWidth / 2,
   position: tooltip.value.position || "top",
+  width: elementWidth,
 });
 
 const onClick = () => {
@@ -40,15 +40,13 @@ const onClick = () => {
 };
 
 onMounted(() => {
-  const { height, width } = el.value.getBoundingClientRect();
+  const { height, width, right } = tooltipRef.value.getBoundingClientRect();
 
   if (params.value.y - height < window.scrollY) {
-    params.value.y = params.value.y + parentHeight + 10;
+    params.value.y = params.value.y + elementHeight + 10;
     params.value.position = "bottom";
   } else {
     params.value.y = params.value.y - height - 10;
   }
-
-  params.value.center = width / 2;
 });
 </script>

@@ -47,14 +47,11 @@ export const useDataStore = defineStore("data", () => {
 
       if (!state.value[section]) {
         state.value[section] = data.store;
+        console.log(state.value);
         return;
       }
 
       state.value[section] = { ...state.value[section], ...data.store };
-
-      // Object.keys(data.store).forEach((storeKey) => {
-      //   state.value[section].store[storeKey] = data.store[storeKey];
-      // });
     }
 
     if (data.expand) {

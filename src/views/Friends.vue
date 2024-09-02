@@ -2,22 +2,9 @@
   <div id="friends" class="flex-1">
     <div class="top-part p-5">
       <div class="page-title mb-2">{{ locale["title"] }}</div>
-      <div class="page-subtitle text-gray-200">{{ locale["subtitle"] }}</div>
+      <div class="page-subtitle text-gray-200" v-html="locale['subtitle']"></div>
 
       <div class="pills flex flex-col gap-4 my-4">
-        <IconPill color="dark">
-          <template #start>
-            <img class="h-[39px]" :src="getAsset('telegram')" />
-          </template>
-
-          <template #end>
-            <div class="flex flex-col gap-1">
-              <span class="text-lg pill-title">{{ locale["tg_pill_title"] }}</span>
-              <span class="text-gray-400 exo-bold" v-html="locale['tg_pill_subtitle']"></span>
-            </div>
-          </template>
-        </IconPill>
-
         <IconPill color="dark">
           <template #start>
             <img class="h-[39px]" :src="getAsset('telegram-premium')" />
@@ -26,7 +13,26 @@
           <template #end>
             <div class="flex flex-col gap-1">
               <span class="text-lg pill-title">{{ locale["premium_pill_title"] }}</span>
-              <span class="text-gray-400 exo-bold" v-html="locale['premium_pill_subtitle']"></span>
+              <div class="flex items-center gap-2">
+                <img class="h-4 scale-150" :src="getAsset('bolt')" />
+                <span class="text-gray-400 exo-bold" v-html="locale['premium_pill_subtitle']"></span>
+              </div>
+            </div>
+          </template>
+        </IconPill>
+
+        <IconPill color="dark">
+          <template #start>
+            <img class="h-[39px]" :src="getAsset('telegram')" />
+          </template>
+
+          <template #end>
+            <div class="flex flex-col gap-1">
+              <span class="text-lg pill-title">{{ locale["tg_pill_title"] }}</span>
+              <div class="flex items-center gap-2">
+                <img class="h-4 scale-150" :src="getAsset('bolt')" />
+                <span class="text-gray-400 exo-bold" v-html="locale['tg_pill_subtitle']"></span>
+              </div>
             </div>
           </template>
         </IconPill>
@@ -37,26 +43,26 @@
     <BackgroundPill class="py-8">
       <span class="bg-pill-title">{{ locale["income_title"] }}</span>
 
-      <Pill class="mt-4" color="light" ripple tooltip>
-        <div class="content flex flex-col items-center">
-          <span class="text-xl font-semibold">{{ locale["total_income"] }}</span>
+      <Pill class="mt-4" color="light" :tooltip="locale['tooltip_total_income']">
+        <div class="content flex items-center justify-between">
+          <span class="text-xl font-semibold text-gray-300">{{ locale["total_income"] || "Total income" }}</span>
           <div class="price flex gap-2 items-center">
-            <img class="h-4" :src="getAsset('bolt')" />
+            <img class="h-4 scale-150" :src="getAsset('bolt')" />
             <span class="text-xl font-bold exo-bold">{{ data["income"] || 0 }}</span>
           </div>
         </div>
       </Pill>
 
-      <Pill class="mt-4" color="light" ripple>
+      <Pill class="mt-4" color="light" :tooltip="locale['tooltip_battles_played']">
         <div class="content flex justify-between">
-          <span class="text-xl font-semibold">{{ locale["battles_played"] }}</span>
+          <span class="text-xl font-semibold text-gray-300">{{ locale["battles_played"] || "Battles played" }}</span>
           <span class="text-xl font-bold exo-bold">{{ data["battles"] || 0 }}</span>
         </div>
       </Pill>
 
-      <Pill class="mt-4" color="light" ripple>
+      <Pill class="mt-4" color="light" :tooltip="locale['tooltip_bolts_earned']">
         <div class="content flex justify-between">
-          <span class="text-xl font-semibold">{{ locale["points_earned"] }}</span>
+          <span class="text-xl font-semibold text-gray-300">{{ locale["bolts_earned"] || "Bolts earned" }}</span>
           <span class="text-xl font-bold exo-bold">{{ data["points"] || 0 }}</span>
         </div>
       </Pill>

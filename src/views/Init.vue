@@ -212,16 +212,21 @@
       <ul v-if="errors.length" class="text-red-400 text-center max-h-[50dvh] overflow-auto">
         <li v-for="error in errors" :key="error">{{ error }}</li>
       </ul>
-      <span v-else-if="loading" class="text-xl font-bold text-[var(--accent-color)]">Loading...</span>
-      <span v-else class="text-xl font-bold animate-pulse">Please tap screen</span>
+      <!-- <span v-else-if="loading" class="text-xl font-bold text-[var(--accent-color)]">Loading...</span> -->
+      <!-- <span v-else class="text-xl font-bold animate-pulse">Please tap screen</span> -->
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { waitFor } from "@/utils";
+import { tg } from "@/api/telegram";
+
+// composables
 import preloadAssets from "@/composables/preloadAssets.ts";
-import { tg } from "../api/telegram";
+
+// stores
 import { useMainStore } from "@/store/main.ts";
 import { useSoundStore } from "@/store/sound.ts";
 
@@ -257,6 +262,7 @@ Promise.allSettled([
     },
   }),
   preloadAssets({ addSound }),
+  waitFor(2000),
 ]).then((data) => {
   const preloadErrors = [data[0], ...data[1].value].filter((p) => p.status === "rejected");
 
@@ -266,6 +272,8 @@ Promise.allSettled([
   }
 
   loading.value = false;
+
+  startApp();
   // playSound("soundtrack");
 });
 </script>

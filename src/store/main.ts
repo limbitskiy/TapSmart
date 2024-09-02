@@ -17,7 +17,7 @@ export const useMainStore = defineStore("main", () => {
   const tooltip = ref({
     text: null,
     // coords: { x: null, y: null },
-    parent: null,
+    element: null,
     isShown: false,
   });
 
@@ -41,15 +41,17 @@ export const useMainStore = defineStore("main", () => {
         Object.keys(response.data).forEach((section) => {
           const sectionData = response.data[section];
 
+          if (sectionData === null) return;
+
           if (section === "notification") {
             showNotification(sectionData);
           } else {
             dataStore.set(section, sectionData);
           }
         });
+      } else {
+        state.value[key] = response[key];
       }
-
-      state.value[key] = response[key];
     });
   };
 
@@ -86,8 +88,8 @@ export const useMainStore = defineStore("main", () => {
     notification.value.isShown = false;
   };
 
-  const showTooltip = ({ parent, text }) => {
-    if (parent === tooltip.value.parent) {
+  const showTooltip = ({ element, text }) => {
+    if (element === tooltip.value.element) {
       return;
     }
 
@@ -95,14 +97,14 @@ export const useMainStore = defineStore("main", () => {
 
     setTimeout(() => {
       tooltip.value.text = text;
-      tooltip.value.parent = parent;
+      tooltip.value.element = element;
       tooltip.value.isShown = true;
     }, 100);
   };
 
   const hideTooltip = () => {
     tooltip.value.text = null;
-    tooltip.value.parent = null;
+    tooltip.value.element = null;
     tooltip.value.isShown = false;
   };
 

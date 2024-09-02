@@ -17,3 +17,11 @@ export const getAssetURL = (url) => {
 export const showFormattedNumber = (number) => {
   return new Intl.NumberFormat("en-US", { style: "decimal" }).format(number);
 };
+
+export const waitFor = (ms: number) => {
+  return new Promise((res) => {
+    setTimeout(() => {
+      res(true);
+    }, ms);
+  });
+};
