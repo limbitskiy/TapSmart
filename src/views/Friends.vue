@@ -7,7 +7,7 @@
       <div class="pills flex flex-col gap-4 my-4">
         <IconPill color="dark">
           <template #start>
-            <img class="h-[39px]" :src="getAsset('telegram-premium')" />
+            <img class="h-[39px]" :src="getAsset('telegram')" />
           </template>
 
           <template #end>
@@ -23,7 +23,7 @@
 
         <IconPill color="dark">
           <template #start>
-            <img class="h-[39px]" :src="getAsset('telegram')" />
+            <img class="h-[39px]" :src="getAsset('telegram-premium')" />
           </template>
 
           <template #end>
