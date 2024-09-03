@@ -42,13 +42,10 @@ export const useDataStore = defineStore("data", () => {
     if (data.store) {
       if (section === "battles") {
         battles.set(data.store);
-        return;
       }
 
       if (!state.value[section]) {
         state.value[section] = data.store;
-        console.log(state.value);
-        return;
       }
 
       state.value[section] = { ...state.value[section], ...data.store };
@@ -57,7 +54,6 @@ export const useDataStore = defineStore("data", () => {
     if (data.expand) {
       if (section === "battles") {
         battles.expand(data.expand);
-        return;
       }
     }
   };

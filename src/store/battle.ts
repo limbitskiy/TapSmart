@@ -46,6 +46,7 @@ export const useBattleStore = defineStore("battle", () => {
     energy: 0,
     multiplicator: null,
     calc_value: null,
+    questions_left: null,
   });
 
   const correctStreak = shallowRef(1);
@@ -55,6 +56,7 @@ export const useBattleStore = defineStore("battle", () => {
   const currentTask = computed(() => state.value.data[taskIndex.value]);
   const mechanics = computed(() => state.value.mechanics);
   const energy = computed(() => state.value.energy);
+  const questions_left = computed(() => state.value.questions_left);
   const challengeButton = computed(() => state.value.battle_button_challenge);
   const currentMechanic = computed(() => state.value.mechanics?.[getMechanicName(currentBattleType.value)]);
 
@@ -99,10 +101,24 @@ export const useBattleStore = defineStore("battle", () => {
       state.value[key] = data[key];
     });
 
+    if (state.value.data.length) {
+      state.value.data.sort((a, b) => a.id - b.id);
+    }
+
+    taskIndex.value = 0;
+
+    lastTaskId.value = null;
+
+    answers.value = [];
+
     // console.log("battle store:", state.value);
   };
 
   const expand = (data) => {
+    // console.log(`expand`);
+
+    const _currentId = currentTask.value.id;
+
     Object.keys(data).forEach((key) => {
       if (state.value[key] && Array.isArray(state.value[key])) {
         data[key].forEach((item) => {
@@ -118,9 +134,12 @@ export const useBattleStore = defineStore("battle", () => {
         console.error(`Error trying to expand battle store`);
       }
     });
+
+    state.value.data.sort((a, b) => a.id - b.id);
+    taskIndex.value = state.value.data.findIndex((task) => task.id === _currentId);
   };
 
-  const onAnswer = ({ isCorrect, answerString, subtractEnergyAmount = 5 }) => {
+  const onAnswer = ({ isCorrect, answerString, subtractEnergyAmount = 1 }) => {
     if (energy.value === 0) return;
 
     startTaskTimeout();
@@ -133,9 +152,9 @@ export const useBattleStore = defineStore("battle", () => {
     const foundIdx = answers.value.findIndex((answer) => answer.id === currentDataItem.id);
 
     if (foundIdx !== -1) {
-      answers.value[foundIdx] = { id: currentDataItem.id, answer: answerString };
+      answers.value[foundIdx] = { id: currentDataItem.id, key: currentDataItem.key, answer: answerString };
     } else {
-      answers.value.push({ id: currentDataItem.id, answer: answerString });
+      answers.value.push({ id: currentDataItem.id, key: currentDataItem.key, answer: answerString });
     }
 
     if (currentDataItem.api) {
@@ -146,7 +165,7 @@ export const useBattleStore = defineStore("battle", () => {
       onCorrectAnswer();
     } else {
       if (subtractEnergyAmount) {
-        subtractEnergy(50);
+        changeEnergy(-subtractEnergyAmount);
       }
       onWrongAnswer();
     }
@@ -158,10 +177,15 @@ export const useBattleStore = defineStore("battle", () => {
 
   const incrementTaskIndex = () => {
     const newIdx = taskIndex.value + 1;
+
     if (state.value.data[newIdx]) {
       taskIndex.value = newIdx;
     } else {
       taskIndex.value = 0;
+    }
+
+    if (state.value.questions_left > 0) {
+      state.value.questions_left -= 1;
     }
   };
 
@@ -201,10 +225,10 @@ export const useBattleStore = defineStore("battle", () => {
     return battleTypes[mechId];
   };
 
-  const subtractEnergy = (value: number) => {
-    state.value.energy -= value;
+  const changeEnergy = (value: number) => {
+    state.value.energy += value;
 
-    if (energy.value <= 0) {
+    if (energy.value < 0) {
       state.value.energy = 0;
     }
   };
@@ -224,6 +248,7 @@ export const useBattleStore = defineStore("battle", () => {
     currentBattleType,
     mechanics,
     challengeButton,
+    questions_left,
     set,
     onAnswer,
     changeMechanic,
