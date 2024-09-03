@@ -1,7 +1,7 @@
 <template>
   <div
     ref="tooltipRef"
-    class="tooltip absolute z-[5] bg-[#535353] border border-[#4b4b4b] p-4 rounded-xl text-sm w-max"
+    class="tooltip absolute z-[100] bg-[#535353] border border-[#4b4b4b] p-4 rounded-xl text-sm w-max"
     :style="{ top: `${params.y}px`, left: `${params.x}px`, maxWidth: `${params.width}px` }"
     @click="onClick"
   >
@@ -27,12 +27,16 @@ const tooltipRef = ref();
 
 const { left: elementLeft, width: elementWidth, height: elementHeight, top: elementTop, right: elementRight } = tooltip.value.element.getBoundingClientRect();
 
+const calculatedElementWidth = (elementWidth: number) => {
+  return elementWidth > 150 ? elementWidth : 150;
+};
+
 const params = ref({
   x: elementLeft,
   y: elementTop + window.scrollY,
   center: elementWidth / 2,
   position: tooltip.value.position || "top",
-  width: elementWidth,
+  width: calculatedElementWidth(elementWidth),
 });
 
 const onClick = () => {
@@ -40,13 +44,24 @@ const onClick = () => {
 };
 
 onMounted(() => {
-  const { height, width, right } = tooltipRef.value.getBoundingClientRect();
+  const { height: tooltipHeight, width: tooltipWidth, right: tooltipRight, left: tooltipLeft } = tooltipRef.value.getBoundingClientRect();
 
-  if (params.value.y - height < window.scrollY) {
+  // check for Y overflowing
+  if (params.value.y - tooltipHeight < window.scrollY) {
     params.value.y = params.value.y + elementHeight + 10;
     params.value.position = "bottom";
   } else {
-    params.value.y = params.value.y - height - 10;
+    params.value.y = params.value.y - tooltipHeight - 10;
   }
+
+  // check for X overflowing
+  if (tooltipRight > window.innerWidth) {
+    const delta = tooltipRight - window.innerWidth;
+    params.value.x -= delta;
+  }
+
+  const triangleDeltaX = elementLeft - params.value.x;
+
+  params.value.center = triangleDeltaX + elementWidth / 2;
 });
 </script>

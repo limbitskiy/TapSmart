@@ -121,6 +121,8 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const onAnswer = ({ isCorrect, answerString, subtractEnergyAmount = 5 }) => {
+    if (energy.value === 0) return;
+
     startTaskTimeout();
     const currentDataItem = state.value.data[taskIndex.value];
 
@@ -144,7 +146,7 @@ export const useBattleStore = defineStore("battle", () => {
       onCorrectAnswer();
     } else {
       if (subtractEnergyAmount) {
-        subtractEnergy(5);
+        subtractEnergy(50);
       }
       onWrongAnswer();
     }
@@ -201,6 +203,10 @@ export const useBattleStore = defineStore("battle", () => {
 
   const subtractEnergy = (value: number) => {
     state.value.energy -= value;
+
+    if (energy.value <= 0) {
+      state.value.energy = 0;
+    }
   };
 
   const calculateBoltsAmount = () => {

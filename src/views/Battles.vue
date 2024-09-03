@@ -12,7 +12,7 @@
               <rect x="13.1611" y="13.1613" width="10.8387" height="10.8387" rx="2" fill="white" />
             </svg>
           </div>
-          <span>{{ locale["button_change_mech"] }}</span>
+          <span class="text-base leading-4">{{ locale["button_change_mech"] }}</span>
           <div class="chevron">
             <svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M9 10L0 1.22807L1.26 0L9 7.54386L16.74 0L18 1.22807L9 10Z" fill="white" />
@@ -20,12 +20,7 @@
           </div>
         </div>
       </Button>
-      <Button ref="challengeBtnRef" class="flex-1 py-3 px-5" :class="{ 'bg-gray-300 text-gray-400': data.challengeButton?.disabled }" @click="onChallengeBtnClick"
-        ><div class="flex justify-center gap-1">
-          <span>{{ locale["button_challenge"] }}</span>
-          <div class="counter text-sm bg-green-500 rounded-md h-4 px-1 grid place-items-center leading-3 exo-bold">{{ data.challengeButton?.badge || 0 }}</div>
-        </div>
-      </Button>
+      <ChallengeButton />
       <VolumeControl />
     </div>
     <RouterView v-slot="{ Component }">
@@ -34,8 +29,13 @@
       <!-- </Transition> -->
     </RouterView>
     <Teleport to="body">
-      <Modal v-model:visible="isModalVisible">
+      <Modal v-model:visible="isChangeMechModalVisible">
         <ChangeMechanic @close="closeModal" />
+      </Modal>
+    </Teleport>
+    <Teleport to="body">
+      <Modal v-model:visible="isNoEnergyModalVisible">
+        <NoEnergyModal />
       </Modal>
     </Teleport>
   </div>
@@ -60,46 +60,48 @@ import Button from "@/components/UI/Button.vue";
 import Modal from "@/components/Modal.vue";
 import ChangeMechanic from "@/components/ChangeMechanic.vue";
 import VolumeControl from "@/components/VolumeControl.vue";
+import NoEnergyModal from "@/components/UI/NoEnergyModal.vue";
+import ChallengeButton from "@/components/UI/ChallengeButton.vue";
 
 const dataStore = useDataStore();
 const mainStore = useMainStore();
 const localeStore = useLocaleStore();
 
 const { showTooltip } = mainStore;
-const { battles: data } = dataStore;
+const { battles: data } = storeToRefs(dataStore);
 const { battles: locale } = storeToRefs(localeStore);
 const { fetchBattlesPage } = mainStore;
 
-const isModalVisible = ref(false);
+const isChangeMechModalVisible = ref(false);
+const isNoEnergyModalVisible = ref(false);
 
-const challengeBtnRef = ref();
-
-watch(isModalVisible, (val) => {
+watch(isChangeMechModalVisible, (val) => {
   if (val) {
-    data.stopTaskTimeout();
+    data.value.stopTaskTimeout();
   } else {
-    data.startTaskTimeout();
+    data.value.startTaskTimeout();
   }
 });
+
+watch(
+  () => data.value.energy,
+  (val) => {
+    if (val === 0) {
+      data.value.stopTaskTimeout();
+      isNoEnergyModalVisible.value = true;
+    }
+  }
+);
 
 const { width } = useWindowSize();
 
 await fetchBattlesPage();
 
 const onChangeMech = () => {
-  isModalVisible.value = true;
+  isChangeMechModalVisible.value = true;
 };
 
 const closeModal = () => {
-  isModalVisible.value = false;
-};
-
-const onChallengeBtnClick = () => {
-  if (data.challengeButton?.disabled) {
-    showTooltip({
-      element: challengeBtnRef.value.ref,
-      text: locale.value["button_challenge_tooltip"],
-    });
-  }
+  isChangeMechModalVisible.value = false;
 };
 </script>

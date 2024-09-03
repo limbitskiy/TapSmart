@@ -7,13 +7,13 @@
     <div class="pill-content">
       <div class="pill-toolbar flex items-center justify-between min-h-[20px]">
         <!-- league -->
-        <div v-if="battles.mechanics[mechName].league" class="league flex gap-1 items-center rounded-full px-2 bg-[var(--grey-dark)]">
+        <div v-if="battles.mechanics[mechName].league" ref="leagueRef" class="league flex gap-1 items-center rounded-full px-2 bg-[var(--grey-dark)]" @click="onLeagueClick">
           <img class="h-4" :src="getAsset('league')" />
           <span class="text-sm exo-bold">: {{ battles.mechanics[mechName].league }}</span>
         </div>
 
         <!-- bolts -->
-        <div v-if="battles.mechanics[mechName].bolts_bonus" class="bolts-bonus flex gap-1 items-center rounded-full px-2 bg-[var(--grey-dark)]">
+        <div v-if="battles.mechanics[mechName].bolts_bonus" ref="boltsRef" class="bolts-bonus flex gap-1 items-center rounded-full px-2 bg-[var(--grey-dark)]" @click="onBoltClick">
           <span class="text-sm exo-bold">+{{ battles.mechanics[mechName].bolts_bonus }}%</span>
           <img class="h-4" :src="getAsset('bolt')" />
         </div>
@@ -29,16 +29,16 @@
       </div>
     </div>
     <!-- active -->
-    <button v-if="battles.currentBattleType == mechId" class="w-full bg-[var(--accent-color)] text-black rounded-full fira-condensed-bold mt-2 py-1">
+    <button v-if="battles.currentBattleType == mechId" class="px-2 w-full bg-[var(--accent-color)] text-black rounded-full fira-condensed-bold mt-2 py-1">
       {{ locale["button_active"] || "Active" }}
     </button>
     <!-- trial message -->
     <button
       v-else-if="battles.mechanics[mechName].nuts"
-      class="w-full bg-[var(--green-color)] text-white rounded-full fira-condensed-bold mt-2 py-1"
+      class="px-2 w-full bg-[var(--green-color)] text-white rounded-full fira-condensed-bold mt-2 py-1"
       @click="() => emit('select', mechId)"
     >
-      <div class="btn-content flex items-center justify-center gap-1">
+      <div class="btn-content flex items-center justify-center gap-3">
         {{ locale["button_trial_message"] }}
         <div class="bolts flex items-center gap-1">
           <img class="h-4" :src="getAsset('nut')" />
@@ -49,7 +49,7 @@
     <!-- normal / disabled -->
     <button
       v-else
-      class="w-full bg-[var(--green-color)] text-white rounded-full fira-condensed-bold mt- py-1"
+      class="px-2 w-full bg-[var(--green-color)] text-white rounded-full fira-condensed-bold mt- py-1"
       :class="{ 'bg-transparent border border-gray-500 text-gray-200': battles.mechanics[mechName].disabled }"
       @click="() => emit('select', mechId)"
     >
@@ -59,12 +59,14 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 
 // stores
 import { useDataStore } from "@/store/data.ts";
 import { useLocaleStore } from "@/store/locale.ts";
+import { useMainStore } from "@/store/main.ts";
 
 // components
 import Pill from "@/components/UI/Pill.vue";
@@ -77,11 +79,30 @@ const emit = defineEmits<{
   select: [mechId: string];
 }>();
 
+const leagueRef = ref();
+const boltsRef = ref();
+
 const dataStore = useDataStore();
 const localeStore = useLocaleStore();
+const mainStore = useMainStore();
 
 const { battles: locale } = storeToRefs(localeStore);
 const { battles } = dataStore;
+const { showTooltip } = mainStore;
 
 const mechName = battles.getMechanicName(props.mechId);
+
+const onLeagueClick = () => {
+  showTooltip({
+    element: leagueRef.value,
+    text: locale.value["tooltip_league"],
+  });
+};
+
+const onBoltClick = () => {
+  showTooltip({
+    element: boltsRef.value,
+    text: locale.value["tooltip_bonus"],
+  });
+};
 </script>

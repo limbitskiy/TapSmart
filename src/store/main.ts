@@ -16,7 +16,6 @@ export const useMainStore = defineStore("main", () => {
 
   const tooltip = ref({
     text: null,
-    // coords: { x: null, y: null },
     element: null,
     isShown: false,
   });

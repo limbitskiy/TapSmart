@@ -1,7 +1,7 @@
 <template>
   <div class="modal">
-    <div v-if="visible" id="modal-backdrop" class="modal-backdrop fixed inset-1 bg-black bg-opacity-50 z-40" @click="onBackdropClick"></div>
-    <div v-if="visible" class="close absolute top-4 right-4 z-50" @click="onCloseClick">
+    <div v-if="visible" id="modal-backdrop" class="modal-backdrop fixed inset-0 bg-black bg-opacity-50 z-40" @click="onBackdropClick"></div>
+    <div v-if="visible && !sticky" class="close absolute top-4 right-4 z-50" @click="onCloseClick">
       <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect width="36" height="36" rx="10" fill="#FEAC3E" />
         <path
@@ -30,6 +30,7 @@ import BackgroundPill from "@/components/UI/BackgroundPill.vue";
 
 const props = defineProps<{
   visible: boolean;
+  sticky?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -37,7 +38,7 @@ const emit = defineEmits<{
 }>();
 
 const onBackdropClick = (e) => {
-  if (e.target.id === "modal-backdrop") {
+  if (e.target.id === "modal-backdrop" && !props.sticky) {
     emit("update:visible", false);
   }
 };
