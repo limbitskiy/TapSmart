@@ -24,6 +24,10 @@ import { useDataStore } from "@/store/data";
 import { useLocaleStore } from "@/store/locale";
 import { useMainStore } from "@/store/main";
 
+const emit = defineEmits<{
+  challenge: [];
+}>();
+
 const dataStore = useDataStore();
 const mainStore = useMainStore();
 const localeStore = useLocaleStore();
@@ -40,6 +44,8 @@ const onClick = () => {
       element: challengeBtnRef.value.ref,
       text: locale.value["button_challenge_tooltip"],
     });
+  } else {
+    emit("challenge");
   }
 };
 </script>

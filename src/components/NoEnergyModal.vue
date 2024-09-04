@@ -20,11 +20,17 @@ import { storeToRefs } from "pinia";
 import Button from "@/components/UI/Button.vue";
 
 // stores
-import { useLocaleStore } from "@/store/locale.ts";
+import { useLocaleStore } from "@/store/locale";
+
+const emit = defineEmits<{
+  challenge: [];
+}>();
 
 const localeStore = useLocaleStore();
 
 const { battles: locale } = storeToRefs(localeStore);
 
-const onClick = () => {};
+const onClick = () => {
+  emit("challenge");
+};
 </script>

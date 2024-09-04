@@ -1,4 +1,4 @@
-import { computed, ref, shallowRef, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { defineStore } from "pinia";
 
@@ -25,9 +25,9 @@ export const useBattleStore = defineStore("battle", () => {
     4: "audio_question",
   };
 
-  const taskIndex = shallowRef(0);
-  const lastTaskId = shallowRef(null);
-  const correctStreak = shallowRef(1);
+  const taskIndex = ref(0);
+  const lastTaskId = ref(null);
+  const correctStreak = ref(1);
   const answers = ref([]);
   const currentBattleType = ref(0);
 
@@ -36,6 +36,7 @@ export const useBattleStore = defineStore("battle", () => {
   // getters
   const currentTask = computed(() => state.value.data?.[taskIndex.value]);
   const mechanics = computed(() => state.value.mechanics);
+  const boosters = computed(() => state.value.boosters);
   const energy = computed(() => state.value.energy);
   const questions_left = computed(() => state.value.questions_left);
   const challengeButton = computed(() => state.value.battle_button_challenge);
@@ -244,6 +245,7 @@ export const useBattleStore = defineStore("battle", () => {
     mechanics,
     challengeButton,
     questions_left,
+    boosters,
     set,
     onAnswer,
     changeMechanic,

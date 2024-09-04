@@ -20,7 +20,7 @@
           </div>
         </div>
       </Button>
-      <ChallengeButton />
+      <ChallengeButton @challenge="openBoosterModal" />
       <VolumeControl />
     </div>
     <RouterView v-slot="{ Component }">
@@ -28,14 +28,25 @@
       <component :is="Component" />
       <!-- </Transition> -->
     </RouterView>
+
+    <!-- mechanic change modal -->
     <Teleport to="body">
       <Modal v-model:visible="isChangeMechModalVisible">
         <ChangeMechanic @close="closeModal" />
       </Modal>
     </Teleport>
+
+    <!-- no energy modal -->
     <Teleport to="body">
       <Modal v-model:visible="isNoEnergyModalVisible">
-        <NoEnergyModal />
+        <NoEnergyModal @challenge="openBoosterModal" />
+      </Modal>
+    </Teleport>
+
+    <!-- select booster modal -->
+    <Teleport to="body">
+      <Modal v-model:visible="isBoostersModalVisible" height="90dvh">
+        <BoosterSelect />
       </Modal>
     </Teleport>
   </div>
@@ -49,9 +60,9 @@ import { tg, getUserName } from "@/api/telegram";
 import { useWindowSize } from "@vueuse/core";
 
 // stores
-import { useDataStore } from "@/store/data.ts";
-import { useMainStore } from "@/store/main.ts";
-import { useLocaleStore } from "@/store/locale.ts";
+import { useDataStore } from "@/store/data";
+import { useMainStore } from "@/store/main";
+import { useLocaleStore } from "@/store/locale";
 
 // components
 import Pill from "@/components/UI/Pill.vue";
@@ -60,8 +71,9 @@ import Button from "@/components/UI/Button.vue";
 import Modal from "@/components/Modal.vue";
 import ChangeMechanic from "@/components/ChangeMechanic.vue";
 import VolumeControl from "@/components/VolumeControl.vue";
-import NoEnergyModal from "@/components/UI/NoEnergyModal.vue";
+import NoEnergyModal from "@/components/NoEnergyModal.vue";
 import ChallengeButton from "@/components/UI/ChallengeButton.vue";
+import BoosterSelect from "@/components/BoosterSelect.vue";
 
 const dataStore = useDataStore();
 const mainStore = useMainStore();
@@ -74,6 +86,7 @@ const { fetchBattlesPage } = mainStore;
 
 const isChangeMechModalVisible = ref(false);
 const isNoEnergyModalVisible = ref(false);
+const isBoostersModalVisible = ref(false);
 
 watch(isChangeMechModalVisible, (val) => {
   if (val) {
@@ -103,5 +116,9 @@ const onChangeMech = () => {
 
 const closeModal = () => {
   isChangeMechModalVisible.value = false;
+};
+
+const openBoosterModal = () => {
+  isBoostersModalVisible.value = true;
 };
 </script>

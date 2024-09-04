@@ -1,7 +1,7 @@
 <template>
   <div id="change-mechanic" class="flex-1 px-[2px]">
     <div class="pill-header flex items-center justify-between">
-      <span class="bg-pill-title">{{ locale["select_mechanic"] }}</span>
+      <span class="bg-pill-title">{{ locale["select_mechanic_title"] || "Select mechanic" }}</span>
       <div class="nuts flex items-center gap-1">
         <img class="h-4" :src="getAsset('nut')" />
         <span class="exo-black">{{ showFormattedNumber(profile["nuts"]) }}</span>
@@ -119,7 +119,7 @@ const { battles: locale } = storeToRefs(localeStore);
 const { battles } = dataStore;
 const { profile } = storeToRefs(dataStore);
 
-const onMechSelect = (mechId: number) => {
+const onMechSelect = (mechId: string) => {
   const mechName = battles.getMechanicName(mechId);
 
   if (battles.mechanics[mechName].disabled) {

@@ -64,9 +64,9 @@ import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 
 // stores
-import { useDataStore } from "@/store/data.ts";
-import { useLocaleStore } from "@/store/locale.ts";
-import { useMainStore } from "@/store/main.ts";
+import { useDataStore } from "@/store/data";
+import { useLocaleStore } from "@/store/locale";
+import { useMainStore } from "@/store/main";
 
 // components
 import Pill from "@/components/UI/Pill.vue";

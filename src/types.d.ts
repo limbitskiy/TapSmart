@@ -36,8 +36,11 @@ export interface BattleState {
   mechanics?: {
     [key: string]: Mechanic;
   };
+  boosters?: {
+    [key: string]: Booster;
+  };
   battle_button_challenge?: {};
-  energy: number;
+  energy?: number;
   multiplicator?: number;
   calc_points?: number[];
   questions_left?: number;
@@ -85,4 +88,8 @@ export type Mechanic = {
   league: number;
   nuts: number;
   timeout: number;
+};
+
+export type Booster = {
+  price: number;
 };

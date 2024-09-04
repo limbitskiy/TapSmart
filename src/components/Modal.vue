@@ -11,7 +11,12 @@
       </svg>
     </div>
     <Transition name="modal-slide-up">
-      <BackgroundPill v-if="visible" class="fixed bottom-0 w-full z-50 flex flex-col max-h-[85dvh] rounded-bl-none rounded-br-none py-4" color="dark">
+      <BackgroundPill
+        v-if="visible"
+        class="fixed bottom-0 w-full z-50 flex flex-col max-h-[85dvh] rounded-bl-none rounded-br-none py-4"
+        color="dark"
+        :style="{ maxHeight: height }"
+      >
         <div class="w-8 h-1 bg-gray-500 rounded-full m-auto relative -top-4"></div>
         <div class="modal-scroll overflow-y-scroll">
           <slot></slot>
@@ -31,14 +36,15 @@ import BackgroundPill from "@/components/UI/BackgroundPill.vue";
 const props = defineProps<{
   visible: boolean;
   sticky?: boolean;
+  height?: string;
 }>();
 
 const emit = defineEmits<{
   "update:visible": [value: boolean];
 }>();
 
-const onBackdropClick = (e) => {
-  if (e.target.id === "modal-backdrop" && !props.sticky) {
+const onBackdropClick = (event: MouseEvent) => {
+  if (event.target?.id === "modal-backdrop" && !props.sticky) {
     emit("update:visible", false);
   }
 };
