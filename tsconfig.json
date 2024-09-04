@@ -1,16 +1,27 @@
-{ "compilerOptions": {
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "esnext",
+    "strict": true,
+    "esModuleInterop": true,
+    // "skipLibCheck": true,
+    // "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    // "resolveJsonModule": true,
+    "outDir": "dist",
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     },
-  },
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.node.json"
-    }
-  ]
+    "types": ["node"]
+  }
+  // "files": []
+  // "references": [
+  //   {
+  //     "path": "./tsconfig.app.json"
+  //   },
+  //   {
+  //     "path": "./tsconfig.node.json"
+  //   }
+  // ]
 }

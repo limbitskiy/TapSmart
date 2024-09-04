@@ -1,23 +1,20 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import { useBattleStore } from "./battle.ts";
-import { useMainStore } from "./main.ts";
-import { useLocaleStore } from "./locale.ts";
-import { SettingsKeys, DataSections } from "../types";
+
+// stores
+import { useMainStore } from "@/store/main";
+import { useBattleStore } from "@/store/battle";
+import { useLocaleStore } from "@/store/locale";
+
+// types
+import { SettingsKeys, DataSections, DataState } from "@/types";
 
 export const useDataStore = defineStore("data", () => {
   const battles = useBattleStore();
   const mainStore = useMainStore();
   const locale = useLocaleStore();
 
-  const state = ref({
-    tutorial: {},
-    profile: <{ bolts?: number }>{},
-    menu: {},
-    friends: {},
-    tasks: {},
-    leaders: {},
-    market: {},
+  const state = ref<DataState>({
     settings: {
       sound: false,
       music: false,
@@ -59,9 +56,14 @@ export const useDataStore = defineStore("data", () => {
   };
 
   const addBolts = (amount: number) => {
-    if (!state.value.profile.bolts) {
-      state.value.profile.bolts = 0;
+    if (!state.value.profile) {
+      state.value.profile = {};
     }
+
+    if (!state.value.profile?.bolts) {
+      state.value.profile!.bolts = 0;
+    }
+
     state.value.profile.bolts += amount;
   };
 

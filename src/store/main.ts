@@ -1,13 +1,19 @@
-import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
-import { useDataStore } from "./data.ts";
-import { useBattleStore } from "./battle.ts";
-import { makeRequest } from "../api/server";
-import { ResponseData, NotificationProps } from "../types";
+import { defineStore } from "pinia";
+
+// stores
+import { useDataStore } from "@/store/data";
+import { useBattleStore } from "@/store/battle";
+
+// types
+import { NotificationProps, ResponseObject, ResponseData, MainState } from "@/types";
+
+// api
+import { makeRequest } from "@/api/server";
 
 export const useMainStore = defineStore("main", () => {
-  const notification = ref({
+  const notification = ref<NotificationProps>({
     title: null,
     subtitle: null,
     buttons: {},
@@ -15,16 +21,12 @@ export const useMainStore = defineStore("main", () => {
   });
 
   const tooltip = ref({
-    text: null,
-    element: null,
+    text: <null | string>null,
+    element: <null | HTMLElement>null,
     isShown: false,
   });
 
-  const state = ref({
-    service: {},
-    entryPoint: null,
-    apiUrl: null,
-  });
+  const state = ref<MainState>({});
 
   const router = useRouter();
   const dataStore = useDataStore();
@@ -32,18 +34,16 @@ export const useMainStore = defineStore("main", () => {
 
   const notificationData = computed(() => notification.value);
 
-  const parseResponse = (response) => {
-    // console.log(`Setting stores: `, response);
-
-    Object.keys(response).forEach((key) => {
+  const parseResponse = (response: ResponseObject) => {
+    (Object.keys(response) as Array<keyof ResponseObject>).forEach((key) => {
       if (key === "data") {
-        Object.keys(response.data).forEach((section) => {
+        (Object.keys(response.data) as Array<keyof ResponseData>).forEach((section) => {
           const sectionData = response.data[section];
 
           if (sectionData === null) return;
 
           if (section === "notification") {
-            showNotification(sectionData);
+            showNotification(sectionData as NotificationProps);
           } else {
             dataStore.set(section, sectionData);
           }
@@ -62,7 +62,7 @@ export const useMainStore = defineStore("main", () => {
     }
   };
 
-  const showNotification = ({ title, subtitle, buttons, timeout }) => {
+  const showNotification = ({ title, subtitle, buttons, timeout }: NotificationProps) => {
     if (notification.value.isShown) return;
 
     notification.value.title = title;
@@ -87,7 +87,7 @@ export const useMainStore = defineStore("main", () => {
     notification.value.isShown = false;
   };
 
-  const showTooltip = ({ element, text }) => {
+  const showTooltip = ({ element, text }: { element: HTMLElement; text: string }) => {
     if (element === tooltip.value.element) {
       return;
     }
@@ -107,11 +107,11 @@ export const useMainStore = defineStore("main", () => {
     tooltip.value.isShown = false;
   };
 
-  const notificationAction = ({ api, data }) => {
+  const notificationAction = ({ api, data }: { api: string; data: unknown }) => {
     useFetch({ key: api, data });
   };
 
-  const initialFetch = async (data) => {
+  const initialFetch = async (data: unknown) => {
     return await useFetch({ data });
   };
 
@@ -123,11 +123,11 @@ export const useMainStore = defineStore("main", () => {
     return await useFetch({ key: "battle_init" });
   };
 
-  const setLanguages = async (data) => {
+  const setLanguages = async (data: unknown) => {
     return await useFetch({ key: "profile_set", data });
   };
 
-  const useFetch = async ({ key, data }) => {
+  const useFetch = async ({ key, data }: { key?: string; data?: unknown }) => {
     const result = await makeRequest({
       apiUrl: state.value.apiUrl,
       payload: {

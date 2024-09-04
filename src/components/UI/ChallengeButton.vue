@@ -20,9 +20,9 @@ import { storeToRefs } from "pinia";
 import Button from "@/components/UI/Button.vue";
 
 // stores
-import { useDataStore } from "@/store/data.ts";
-import { useLocaleStore } from "@/store/locale.ts";
-import { useMainStore } from "@/store/main.ts";
+import { useDataStore } from "@/store/data";
+import { useLocaleStore } from "@/store/locale";
+import { useMainStore } from "@/store/main";
 
 const dataStore = useDataStore();
 const mainStore = useMainStore();
@@ -31,8 +31,6 @@ const localeStore = useLocaleStore();
 const { showTooltip } = mainStore;
 const { battles: data } = storeToRefs(dataStore);
 const { battles: locale } = storeToRefs(localeStore);
-
-console.log(data.value);
 
 const challengeBtnRef = ref();
 

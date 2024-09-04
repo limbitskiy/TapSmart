@@ -7,13 +7,39 @@ import { useTaskTimeout } from "@/composables/useTaskTimeout";
 import { useBpInterval } from "@/composables/useBpInterval";
 
 // stores
-import { useDataStore } from "@/store/data.ts";
-import { useMainStore } from "@/store/main.ts";
+import { useDataStore } from "@/store/data";
+import { useMainStore } from "@/store/main";
+
+// types
+import { BattleTypes, BattleState } from "@/types";
 
 export const useBattleStore = defineStore("battle", () => {
   const router = useRouter();
   const dataStore = useDataStore();
   const userStore = useMainStore();
+
+  const battleTypes: BattleTypes = {
+    1: "yesno",
+    2: "4answers",
+    3: "bubble_pairs",
+    4: "audio_question",
+  };
+
+  const taskIndex = shallowRef(0);
+  const lastTaskId = shallowRef(null);
+  const correctStreak = shallowRef(1);
+  const answers = ref([]);
+  const currentBattleType = ref(0);
+
+  const state = ref<BattleState>({});
+
+  // getters
+  const currentTask = computed(() => state.value.data?.[taskIndex.value]);
+  const mechanics = computed(() => state.value.mechanics);
+  const energy = computed(() => state.value.energy);
+  const questions_left = computed(() => state.value.questions_left);
+  const challengeButton = computed(() => state.value.battle_button_challenge);
+  const currentMechanic = computed(() => state.value.mechanics?.[getMechanicName(currentBattleType.value)]);
 
   const taskTimeoutCb = () => {
     onAnswer({ isCorrect: false, answerString: "", subtractEnergyAmount: 0 });
@@ -29,45 +55,14 @@ export const useBattleStore = defineStore("battle", () => {
     console.log(`is not in focus`);
   };
 
-  const battleTypes = {
-    1: "yesno",
-    2: "4answers",
-    3: "bubble_pairs",
-    4: "audio_question",
-  };
-
-  const taskIndex = shallowRef(0);
-  const lastTaskId = shallowRef(null);
-
-  const state = ref({
-    data: [],
-    mechanics: null,
-    battle_button_challenge: null,
-    energy: 0,
-    multiplicator: null,
-    calc_value: null,
-    questions_left: null,
-  });
-
-  const correctStreak = shallowRef(1);
-
-  const answers = ref([]);
-
-  const currentTask = computed(() => state.value.data[taskIndex.value]);
-  const mechanics = computed(() => state.value.mechanics);
-  const energy = computed(() => state.value.energy);
-  const questions_left = computed(() => state.value.questions_left);
-  const challengeButton = computed(() => state.value.battle_button_challenge);
-  const currentMechanic = computed(() => state.value.mechanics?.[getMechanicName(currentBattleType.value)]);
-
-  const currentBattleType = ref(null);
-
+  // composables
   const { start: startTaskTimeout, stop: stopTaskTimeout, setTime: setTaskTimeout } = useTaskTimeout(currentMechanic, taskTimeoutCb);
   const { start: startBpInterval, stop: stopBpInterval, setTime: setBpInterval, time: bpTime } = useBpInterval(breakpointCb);
 
   watch(currentBattleType, (val, oldVal) => {
     if (val === oldVal) return;
-    setTaskTimeout(currentMechanic.value.timeout);
+
+    setTaskTimeout(currentMechanic.value?.timeout);
     startTaskTimeout();
   });
 
@@ -101,7 +96,7 @@ export const useBattleStore = defineStore("battle", () => {
       state.value[key] = data[key];
     });
 
-    if (state.value.data.length) {
+    if (state.value.data?.length) {
       state.value.data.sort((a, b) => a.id - b.id);
     }
 
@@ -221,7 +216,7 @@ export const useBattleStore = defineStore("battle", () => {
     userStore.useFetch({ key: "battle_init", data: { battle_type: +mechId } });
   };
 
-  const getMechanicName = (mechId: string) => {
+  const getMechanicName = (mechId: number) => {
     return battleTypes[mechId];
   };
 
@@ -234,13 +229,13 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const calculateBoltsAmount = () => {
-    if (state.value.multiplicator && state.value.calc_points.length) {
+    if (state.value.multiplicator && state.value.calc_points?.length) {
       return state.value.multiplicator * state.value.calc_points[correctStreak.value];
     }
+    return 0;
   };
 
   return {
-    battleTypes,
     currentTask,
     energy,
     lastTaskId,

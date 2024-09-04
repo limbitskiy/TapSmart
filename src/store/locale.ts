@@ -1,7 +1,11 @@
 import { computed, ref } from "vue";
 import { defineStore } from "pinia";
-import { useMainStore } from "./main.ts";
-import { LocaleSections } from "../types";
+
+// stores
+import { useMainStore } from "@/store/main";
+
+// types
+import { LocaleSections } from "@/types";
 
 export const useLocaleStore = defineStore("locale", () => {
   const mainStore = useMainStore();

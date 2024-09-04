@@ -224,15 +224,15 @@ import { waitFor } from "@/utils";
 import { tg } from "@/api/telegram";
 
 // composables
-import preloadAssets from "@/composables/preloadAssets.ts";
+import preloadAssets from "@/composables/preloadAssets";
 
 // stores
-import { useMainStore } from "@/store/main.ts";
-import { useSoundStore } from "@/store/sound.ts";
+import { useMainStore } from "@/store/main";
+import { useSoundStore } from "@/store/sound";
 
-const userStore = useMainStore();
+const mainStore = useMainStore();
 const soundStore = useSoundStore();
-const { startApp, initialFetch } = userStore;
+const { startApp, initialFetch } = mainStore;
 const { addSound, playSound } = soundStore;
 
 const loading = ref(true);

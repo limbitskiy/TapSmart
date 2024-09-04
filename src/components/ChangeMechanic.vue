@@ -99,11 +99,11 @@
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { getAsset, showFormattedNumber } from "@/utils";
+import { getAsset, showFormattedNumber } from "@/utils/index";
 
 // stores
-import { useDataStore } from "@/store/data.ts";
-import { useLocaleStore } from "@/store/locale.ts";
+import { useDataStore } from "@/store/data";
+import { useLocaleStore } from "@/store/locale";
 
 // components
 import MechanicCard from "@/components/UI/MechanicCard.vue";
