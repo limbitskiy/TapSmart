@@ -1,14 +1,16 @@
 <template>
   <div id="required-settings" class="flex-1">
     <div class="top-part p-5 mb-4">
-      <div class="page-title mb-2">{{ locale["title"] }}</div>
-      <div class="page-subtitle">{{ locale["subtitle"] }}</div>
+      <div class="page-title mb-2">{{ locale?.["title"] }}</div>
+      <div class="page-subtitle">{{ locale?.["subtitle"] }}</div>
     </div>
 
     <Settings @change="onSettingsChange" />
 
     <div class="bnt-cnt flex justify-between absolute bottom-0 w-full">
-      <Button class="w-full py-4" label="Next" @click="onNext">{{ locale["button_next"] }}</Button>
+      <Button class="w-full py-3" label="Next" @click="onNext">
+        <span class="text-xl leading-4">{{ locale?.["button_next"] || "Next" }}</span>
+      </Button>
     </div>
   </div>
 </template>
@@ -20,9 +22,9 @@ import { tg, getUserId } from "@/api/telegram";
 import { useRouter } from "vue-router";
 
 // stores
-import { useDataStore } from "@/store/data.ts";
-import { useMainStore } from "@/store/main.ts";
-import { useLocaleStore } from "@/store/locale.ts";
+import { useDataStore } from "@/store/data";
+import { useMainStore } from "@/store/main";
+import { useLocaleStore } from "@/store/locale";
 
 // components
 import Button from "@/components/UI/Button.vue";
@@ -39,7 +41,7 @@ const { setLanguages } = mainStore;
 
 const router = useRouter();
 
-const onSettingsChange = ({ setting, value }) => {
+const onSettingsChange = ({ setting, value }: { setting: string; value: number }) => {
   setLanguages({ [setting]: value });
 };
 

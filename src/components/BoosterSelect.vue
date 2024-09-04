@@ -1,20 +1,22 @@
 <template>
   <div id="booster-select" class="flex-1 px-[2px] flex flex-col gap-4">
     <div class="pill-header flex items-center justify-between">
-      <span class="bg-pill-title">{{ locale["booster_select_title"] || "Challenge" }}</span>
+      <span class="bg-pill-title">{{ locale?.["booster_select_title"] || "Challenge" }}</span>
     </div>
 
     <div class="filters">
       <button class="border rounded-full text-sm py-1 px-3 border-[var(--accent-color)] fira-semibold">
         <div class="flex relative">
-          <span>{{ locale["friends_only"] || "Friends only" }}</span>
-          <div class="badge text-sm text-black bg-[var(--accent-color)] rounded-md h-4 px-1 grid place-items-center leading-3 exo-bold absolute left-full -top-2">231</div>
+          <span>{{ locale?.["friends_only"] || "Friends only" }}</span>
+          <div class="badge text-sm text-black bg-[var(--accent-color)] rounded-md h-4 px-1 grid place-items-center leading-3 exo-bold absolute left-full -top-2">
+            {{ data["friends_only_badge"] || 0 }}
+          </div>
         </div>
       </button>
     </div>
 
     <div class="boosters flex flex-col gap-4 flex-1">
-      <span class="fira-bold text-lg">{{ locale["available_boosters"] || "Available boosters" }}</span>
+      <span class="fira-bold text-lg">{{ locale?.["available_boosters"] || "Available boosters" }}</span>
       <div class="boosters-content">
         <!-- extra mistake -->
         <Pill color="light" id="extra-mistake" :class="{ 'outline outline-2 outline-[var(--accent-color)]': pickedBonuses['mistake'] }">
@@ -28,8 +30,8 @@
               </svg>
             </div>
             <div class="text flex flex-col">
-              <span class="fira-semibold">{{ locale["extra_mistake_title"] || "Extra mistake" }}</span>
-              <p class="text-gray-300">{{ locale["extra_mistake_text"] || "Extra mistake text" }}</p>
+              <span class="fira-semibold">{{ locale?.["extra_mistake_title"] || "Extra mistake" }}</span>
+              <p class="text-gray-300">{{ locale?.["extra_mistake_text"] || "Extra mistake text" }}</p>
             </div>
           </div>
           <div class="end flex justify-end">
@@ -38,7 +40,7 @@
               class="px-5 bg-[var(--accent-color)] text-black rounded-full fira-condensed-bold mt-2 py-1 flex items-center gap-2"
               @click="pickedBonuses['mistake'] = false"
             >
-              {{ locale["button_active"] }}
+              {{ locale?.["button_active"] }}
             </button>
             <button v-else class="px-5 bg-[var(--green-color)] rounded-full fira-condensed-bold mt-2 py-1 flex items-center gap-2" @click="pickedBonuses['mistake'] = true">
               <img class="h-4 scale-125" :src="getAsset('bolt')" />
@@ -60,8 +62,8 @@
               </svg>
             </div>
             <div class="text flex flex-col">
-              <span class="fira-semibold">{{ locale["extra_battle_time_title"] || "Extra time" }}</span>
-              <p class="text-gray-300">{{ locale["extra_battle_time_text"] || "Extra time text" }}</p>
+              <span class="fira-semibold">{{ locale?.["extra_battle_time_title"] || "Extra time" }}</span>
+              <p class="text-gray-300">{{ locale?.["extra_battle_time_text"] || "Extra time text" }}</p>
             </div>
           </div>
           <div class="end flex justify-end">
@@ -70,7 +72,7 @@
               class="px-5 bg-[var(--accent-color)] text-black rounded-full fira-condensed-bold mt-2 py-1 flex items-center gap-2"
               @click="pickedBonuses['time'] = false"
             >
-              {{ locale["button_active"] }}
+              {{ locale?.["button_active"] }}
             </button>
             <button v-else class="px-5 bg-[var(--green-color)] rounded-full fira-condensed-bold mt-2 py-1 flex items-center gap-2" @click="pickedBonuses['time'] = true">
               <img class="h-4 scale-125" :src="getAsset('bolt')" />
@@ -81,9 +83,9 @@
       </div>
     </div>
 
-    <Button class="flex-1 py-4 px-5 rounded-lg" @click="onClick">
+    <Button class="flex-1 py-4 rounded-lg" @click="onClick">
       <div class="flex justify-center gap-1">
-        <span class="text-xl leading-4">{{ locale["button_booster_select"] || "Challenge" }}</span>
+        <span class="text-xl leading-4">{{ locale?.["button_booster_select"] || "Challenge" }}</span>
       </div>
     </Button>
   </div>

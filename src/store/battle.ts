@@ -39,6 +39,7 @@ export const useBattleStore = defineStore("battle", () => {
   const boosters = computed(() => state.value.boosters);
   const energy = computed(() => state.value.energy);
   const questions_left = computed(() => state.value.questions_left);
+  const friends_only_badge = computed(() => state.value.friends_only_badge);
   const challengeButton = computed(() => state.value.battle_button_challenge);
   const currentMechanic = computed(() => state.value.mechanics?.[getMechanicName(currentBattleType.value)]);
 
@@ -57,7 +58,7 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   // composables
-  const { start: startTaskTimeout, stop: stopTaskTimeout, setTime: setTaskTimeout } = useTaskTimeout(currentMechanic, taskTimeoutCb);
+  const { start: startTaskTimeout, stop: stopTaskTimeout, setTime: setTaskTimeout, reset: resetTaskTimeout } = useTaskTimeout(taskTimeoutCb);
   const { start: startBpInterval, stop: stopBpInterval, setTime: setBpInterval, time: bpTime } = useBpInterval(breakpointCb);
 
   watch(currentBattleType, (val, oldVal) => {
@@ -138,7 +139,7 @@ export const useBattleStore = defineStore("battle", () => {
   const onAnswer = ({ isCorrect, answerString, subtractEnergyAmount = 1 }) => {
     if (energy.value === 0) return;
 
-    startTaskTimeout();
+    resetTaskTimeout();
     const currentDataItem = state.value.data[taskIndex.value];
 
     // set lastTaskId
@@ -246,6 +247,7 @@ export const useBattleStore = defineStore("battle", () => {
     challengeButton,
     questions_left,
     boosters,
+    friends_only_badge,
     set,
     onAnswer,
     changeMechanic,

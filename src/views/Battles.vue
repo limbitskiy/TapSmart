@@ -12,7 +12,7 @@
               <rect x="13.1611" y="13.1613" width="10.8387" height="10.8387" rx="2" fill="white" />
             </svg>
           </div>
-          <span class="text-base leading-4">{{ locale["button_change_mech"] }}</span>
+          <span class="text-base leading-4">{{ locale?.["button_change_mech"] }}</span>
           <div class="chevron">
             <svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M9 10L0 1.22807L1.26 0L9 7.54386L16.74 0L18 1.22807L9 10Z" fill="white" />
@@ -65,7 +65,6 @@ import { useMainStore } from "@/store/main";
 import { useLocaleStore } from "@/store/locale";
 
 // components
-import Pill from "@/components/UI/Pill.vue";
 import Profile from "@/components/Profile.vue";
 import Button from "@/components/UI/Button.vue";
 import Modal from "@/components/Modal.vue";
@@ -79,7 +78,6 @@ const dataStore = useDataStore();
 const mainStore = useMainStore();
 const localeStore = useLocaleStore();
 
-const { showTooltip } = mainStore;
 const { battles: data } = storeToRefs(dataStore);
 const { battles: locale } = storeToRefs(localeStore);
 const { fetchBattlesPage } = mainStore;
@@ -88,10 +86,12 @@ const isChangeMechModalVisible = ref(false);
 const isNoEnergyModalVisible = ref(false);
 const isBoostersModalVisible = ref(false);
 
-watch(isChangeMechModalVisible, (val) => {
-  if (val) {
+watch([isChangeMechModalVisible, isNoEnergyModalVisible, isBoostersModalVisible], (val) => {
+  if (val.some((modal) => modal)) {
+    console.log(`stop`);
     data.value.stopTaskTimeout();
   } else {
+    console.log(`start`);
     data.value.startTaskTimeout();
   }
 });

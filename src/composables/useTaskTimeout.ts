@@ -1,25 +1,24 @@
 import { ref, shallowRef, watch } from "vue";
 
-export const useTaskTimeout = (currentMechanic, cb) => {
-  let timeout = null;
-  const started = shallowRef(false);
-  let timer = null;
+export const useTaskTimeout = (cb: () => void) => {
+  let timeout: number | null = null;
+  let started = false;
+  let timer: ReturnType<typeof setTimeout> | null = null;
+  let lastCb = false;
 
   const start = () => {
     // console.log(`starting timeout`);
 
-    clear();
-
-    started.value = true;
-
     if (!timeout) return;
 
-    timer = setTimeout(() => {
-      started.value = false;
-      timer = null;
+    clear();
 
+    started = true;
+
+    timer = setTimeout(() => {
+      clear();
       cb();
-      start();
+      lastCb = false;
     }, timeout);
   };
 
@@ -31,14 +30,80 @@ export const useTaskTimeout = (currentMechanic, cb) => {
     }
   };
 
-  const stop = () => {
+  const reset = () => {
+    if (!timeout) return;
+
     clear();
-    started.value = false;
+
+    timer = setTimeout(() => {
+      if (started) {
+        clear();
+        cb();
+        lastCb = false;
+      } else if (!started && !lastCb) {
+        clear();
+        cb();
+        lastCb = true;
+      } else {
+        clear();
+      }
+    }, timeout);
   };
 
-  const setTime = (value) => {
+  const stop = () => {
+    // clear();
+    started = false;
+  };
+
+  const setTime = (value: number) => {
     timeout = value;
   };
 
-  return { start, stop, setTime };
+  return { start, stop, setTime, reset };
 };
+
+// export const useTaskTimeout = (cb: () => void) => {
+//   let timeout: number | null = null;
+//   let timer: ReturnType<typeof setTimeout> | null = null;
+//   let started = false;
+
+//   const clear = () => {
+//     if (timer !== null) {
+//       clearTimeout(timer);
+//       timer = null;
+//     }
+//   };
+
+//   const start = () => {
+//     if (timeout === null || started) return;
+
+//     started = true;
+//     timer = setTimeout(() => {
+//       cb();
+//       clear();
+//     }, timeout);
+//   };
+
+//   const reset = () => {
+//     if (timeout === null) return;
+
+//     clear();
+//     timer = setTimeout(() => {
+//       if (started) {
+//         cb();
+//       }
+//       clear();
+//     }, timeout);
+//   };
+
+//   const stop = () => {
+//     started = false;
+//     clear();
+//   };
+
+//   const setTime = (value: number) => {
+//     timeout = value;
+//   };
+
+//   return { start, stop, setTime, reset };
+// };

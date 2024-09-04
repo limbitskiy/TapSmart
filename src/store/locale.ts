@@ -5,22 +5,12 @@ import { defineStore } from "pinia";
 import { useMainStore } from "@/store/main";
 
 // types
-import { LocaleSections } from "@/types";
+import { LocaleSections, LocaleState } from "@/types";
 
 export const useLocaleStore = defineStore("locale", () => {
   const mainStore = useMainStore();
 
-  const state = ref({
-    tutorial: {},
-    profile: {},
-    menu: {},
-    friends: {},
-    battles: {},
-    "required-settings": {},
-    tasks: {},
-    leaders: {},
-    market: {},
-  });
+  const state = ref<LocaleState>({});
 
   const tutorial = computed(() => state.value.tutorial);
   const profile = computed(() => state.value.profile);

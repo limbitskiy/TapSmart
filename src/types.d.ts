@@ -31,6 +31,18 @@ export interface DataState {
   settings: Settings;
 }
 
+export interface LocaleState {
+  tutorial?: LocaleEntry;
+  profile?: LocaleEntry;
+  menu?: LocaleEntry;
+  friends?: LocaleEntry;
+  battles?: LocaleEntry;
+  "required-settings"?: LocaleEntry;
+  tasks?: LocaleEntry;
+  leaders?: LocaleEntry;
+  market?: LocaleEntry;
+}
+
 export interface BattleState {
   data?: Task[];
   mechanics?: {
@@ -44,6 +56,9 @@ export interface BattleState {
   multiplicator?: number;
   calc_points?: number[];
   questions_left?: number;
+  friends_only_badge?: number;
+  battle_type?: number;
+  breakpoint?: number;
 }
 
 export interface NotificationProps {
@@ -59,16 +74,6 @@ export interface Settings {
   music: boolean;
   vibro: boolean;
 }
-
-export type LocaleSections = "tutorial" | "profile" | "battles" | "menu" | "friends" | "required-settings" | "leaders" | "market" | "tasks";
-
-export type SettingsKeys = "sound" | "music" | "vibro";
-
-export type DataSections = "tutorial" | "profile" | "battles" | "menu" | "friends" | "leaders" | "market" | "tasks";
-
-export type BattleTypes = {
-  readonly [x: number]: "yesno" | "4answers" | "bubble_pairs" | "audio_question";
-};
 
 export type Task = {
   correct: string;
@@ -92,4 +97,18 @@ export type Mechanic = {
 
 export type Booster = {
   price: number;
+};
+
+export type LocaleEntry = {
+  [key: string]: string;
+};
+
+export type LocaleSections = "tutorial" | "profile" | "battles" | "menu" | "friends" | "required-settings" | "leaders" | "market" | "tasks";
+
+export type SettingsKeys = "sound" | "music" | "vibro";
+
+export type DataSections = "tutorial" | "profile" | "battles" | "menu" | "friends" | "leaders" | "market" | "tasks";
+
+export type BattleTypes = {
+  readonly [x: number]: "yesno" | "4answers" | "bubble_pairs" | "audio_question";
 };
