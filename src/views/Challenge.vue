@@ -46,5 +46,5 @@ const { width } = useWindowSize();
 
 await fetchChallengePage();
 
-const isWaitingModalVisible = ref(false);
+const isWaitingModalVisible = ref(true);
 </script>
