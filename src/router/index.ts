@@ -117,9 +117,9 @@ router.beforeEach((to, from) => {
   mainStore.hideTooltip();
 
   // init is the only entrypoint
-  // if (to.path !== "/init" && from.path === "/") {
-  //   return { path: "/init" };
-  // }
+  if (to.path !== "/init" && from.path === "/") {
+    return { path: "/init" };
+  }
 
   if (to.path === "/home/battles") {
     battles.startTaskTimeout();
