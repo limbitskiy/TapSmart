@@ -1,5 +1,5 @@
 <template>
-  <div class="home-main flex-1 overflow-auto flex flex-col gap-2">
+  <div class="home-main flex-1 overflow-auto flex flex-col gap-2 mb-[72px]">
     <Profile />
     <div class="top-btns flex gap-4 w-full px-4 relative">
       <Button class="flex-1 bg-black text-white border fira-condensed-bold !text-sm leading-4 px-4 py-2" @click="onChangeMech">
@@ -46,7 +46,7 @@
     <!-- select booster modal -->
     <Teleport to="body">
       <Modal v-model:visible="isBoostersModalVisible" height="90dvh">
-        <BoosterSelect />
+        <BoosterSelect @startBattle="$router.push('/challenge/yesno')" />
       </Modal>
     </Teleport>
   </div>

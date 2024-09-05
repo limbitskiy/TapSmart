@@ -105,7 +105,7 @@ import { useDataStore } from "@/store/data";
 import { useLocaleStore } from "@/store/locale";
 
 const emit = defineEmits<{
-  click: [];
+  startBattle: [];
 }>();
 
 const pickedBonuses = ref({
@@ -120,6 +120,6 @@ const { battles: locale } = storeToRefs(localeStore);
 const { battles: data } = storeToRefs(dataStore);
 
 const onClick = () => {
-  emit("click");
+  emit("startBattle");
 };
 </script>

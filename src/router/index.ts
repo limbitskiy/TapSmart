@@ -1,5 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router";
 
+// views
 import Init from "@/views/Init.vue";
 import Tutorial from "@/views/Tutorial.vue";
 import Home from "@/views/Home.vue";
@@ -11,6 +12,9 @@ import Market from "@/views/Market.vue";
 import NotFound from "@/views/NotFound.vue";
 import RequiredSettings from "@/views/RequiredSettings.vue";
 import ProfileView from "@/views/ProfileView.vue";
+import Challenge from "@/views/Challenge.vue";
+
+// battles
 import YesNo from "@/components/battles/YesNo.vue";
 import FourAnswers from "@/components/battles/FourAnswers.vue";
 
@@ -81,6 +85,22 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/challenge",
+    component: Challenge,
+    children: [
+      {
+        id: 21,
+        path: "yesno",
+        component: YesNo,
+      },
+      {
+        id: 22,
+        path: "4answers",
+        component: FourAnswers,
+      },
+    ],
+  },
 ];
 
 const router = createRouter({
@@ -96,9 +116,10 @@ router.beforeEach((to, from) => {
 
   mainStore.hideTooltip();
 
-  if (to.path !== "/init" && from.path === "/") {
-    return { path: "/init" };
-  }
+  // init is the only entrypoint
+  // if (to.path !== "/init" && from.path === "/") {
+  //   return { path: "/init" };
+  // }
 
   if (to.path === "/home/battles") {
     battles.startTaskTimeout();

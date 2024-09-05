@@ -108,7 +108,7 @@ export const useBattleStore = defineStore("battle", () => {
 
     answers.value = [];
 
-    console.log("battle store:", state.value);
+    // console.log("battle store:", state.value);
   };
 
   const expand = (data) => {
@@ -216,6 +216,10 @@ export const useBattleStore = defineStore("battle", () => {
 
     incrementTaskIndex();
 
+    if (state.value.questions_left > 0) {
+      state.value.questions_left -= 1;
+    }
+
     startTaskTimeout();
 
     // console.log(answers.value);
@@ -228,10 +232,6 @@ export const useBattleStore = defineStore("battle", () => {
       taskIndex.value = newIdx;
     } else {
       taskIndex.value = 0;
-    }
-
-    if (state.value.questions_left > 0) {
-      state.value.questions_left -= 1;
     }
   };
 

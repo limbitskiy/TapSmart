@@ -123,6 +123,10 @@ export const useMainStore = defineStore("main", () => {
     return await useFetch({ key: "battle_init" });
   };
 
+  const fetchChallengePage = async () => {
+    return await useFetch({ key: "challenge_init" });
+  };
+
   const setLanguages = async (data: unknown) => {
     return await useFetch({ key: "profile_set", data });
   };
@@ -153,6 +157,7 @@ export const useMainStore = defineStore("main", () => {
     startApp,
     fetchFriendsPage,
     fetchBattlesPage,
+    fetchChallengePage,
     setLanguages,
     initialFetch,
     useFetch,
