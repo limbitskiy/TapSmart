@@ -127,24 +127,22 @@ export const useMainStore = defineStore("main", () => {
     return await useFetch({ key: "profile_set", data });
   };
 
-  const useFetch = async ({ key, data }: { key?: string; data?: unknown }) => {
+  const useFetch = async ({ key, data }: { key?: string; data?: {} }) => {
     const result = await makeRequest({
       apiUrl: state.value.apiUrl,
       payload: {
         key,
-        data,
+        data: { ...data, answers: battleStore.answers, lastTaskId: battleStore.lastTaskId },
         service: state.value.service,
-        answers: battleStore.answers,
-        lastTaskId: battleStore.lastTaskId,
       },
     });
+
     parseResponse(result.data);
 
     const redirectLocation = result.data.redirect;
 
     if (redirectLocation) {
       console.log(`redirecting to ${redirectLocation}`);
-
       router.push(redirectLocation);
     }
   };

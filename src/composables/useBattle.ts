@@ -1,25 +1,29 @@
-import { ref } from "vue";
+import { Ref, ref } from "vue";
 import { storeToRefs } from "pinia";
 
 // stores
-import { useDataStore } from "@/store/data.ts";
+import { useDataStore } from "@/store/data";
 
-export const useBattle = (defineCorrect, el?) => {
+// types
+import { Task, Bonus } from "@/types";
+
+export const useBattle = (defineCorrect: (answer: string, currentTask: Task, options?: {}) => boolean, el?: Ref<HTMLElement>) => {
   const dataStore = useDataStore();
 
   const { currentTask } = storeToRefs(dataStore.battles);
-  const { onAnswer, onVibrate } = dataStore.battles;
+  const { onAnswer, onVibrate, onAnswerNew, fullStopTaskTimeout } = dataStore.battles;
 
-  const bonuses = ref([]);
+  const bonuses = ref<Bonus[]>([]);
   let answerInProgress = false;
 
-  const handleAnswer = async (answer: string, { clientX, clientY }) => {
+  const handleAnswer = async (answer: string, { clientX, clientY }: MouseEvent, options?: { [key: string]: any }) => {
     if (answerInProgress) return;
+
+    fullStopTaskTimeout();
 
     answerInProgress = true;
 
-    // const correct = answer === currentTask.value.correct;
-    const correct = defineCorrect(answer, currentTask.value);
+    const correct = defineCorrect(answer, currentTask.value!, options);
 
     if (correct) {
       onVibrate("correct");
@@ -30,7 +34,7 @@ export const useBattle = (defineCorrect, el?) => {
       await animateWrong();
     }
 
-    onAnswer({ isCorrect: correct, answerString: answer });
+    onAnswerNew({ isCorrect: correct, answerString: answer });
 
     answerInProgress = false;
   };

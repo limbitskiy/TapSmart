@@ -11,7 +11,7 @@ import { useDataStore } from "@/store/data";
 import { useMainStore } from "@/store/main";
 
 // types
-import { BattleTypes, BattleState } from "@/types";
+import { BattleTypes, BattleState, AnswerProps, Answer } from "@/types";
 
 export const useBattleStore = defineStore("battle", () => {
   const router = useRouter();
@@ -26,9 +26,9 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const taskIndex = ref(0);
-  const lastTaskId = ref(null);
+  const lastTaskId = ref<number | null>(null);
   const correctStreak = ref(1);
-  const answers = ref([]);
+  const answers = ref<Answer[]>([]);
   const currentBattleType = ref(0);
 
   const state = ref<BattleState>({});
@@ -58,7 +58,7 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   // composables
-  const { start: startTaskTimeout, stop: stopTaskTimeout, setTime: setTaskTimeout, reset: resetTaskTimeout } = useTaskTimeout(taskTimeoutCb);
+  const { start: startTaskTimeout, stop: stopTaskTimeout, setTime: setTaskTimeout, reset: resetTaskTimeout, fullStop: fullStopTaskTimeout } = useTaskTimeout(taskTimeoutCb);
   const { start: startBpInterval, stop: stopBpInterval, setTime: setBpInterval, time: bpTime } = useBpInterval(breakpointCb);
 
   watch(currentBattleType, (val, oldVal) => {
@@ -108,7 +108,7 @@ export const useBattleStore = defineStore("battle", () => {
 
     answers.value = [];
 
-    // console.log("battle store:", state.value);
+    console.log("battle store:", state.value);
   };
 
   const expand = (data) => {
@@ -136,17 +136,22 @@ export const useBattleStore = defineStore("battle", () => {
     taskIndex.value = state.value.data.findIndex((task) => task.id === _currentId);
   };
 
-  const onAnswer = ({ isCorrect, answerString, subtractEnergyAmount = 1 }) => {
+  const onAnswer = ({ isCorrect, answerString, subtractEnergyAmount = 1 }: AnswerProps) => {
     if (energy.value === 0) return;
 
     resetTaskTimeout();
-    const currentDataItem = state.value.data[taskIndex.value];
+    const currentDataItem = state.value.data?.[taskIndex.value];
+
+    if (!currentDataItem) {
+      console.error(`Could not find current item`);
+      return;
+    }
 
     // set lastTaskId
-    lastTaskId.value = currentDataItem.id;
+    lastTaskId.value = currentDataItem!.id;
 
     // store answer
-    const foundIdx = answers.value.findIndex((answer) => answer.id === currentDataItem.id);
+    const foundIdx = answers.value.findIndex((answer) => answer.id === currentDataItem!.id);
 
     if (foundIdx !== -1) {
       answers.value[foundIdx] = { id: currentDataItem.id, key: currentDataItem.key, answer: answerString };
@@ -154,6 +159,7 @@ export const useBattleStore = defineStore("battle", () => {
       answers.value.push({ id: currentDataItem.id, key: currentDataItem.key, answer: answerString });
     }
 
+    // call api
     if (currentDataItem.api) {
       callApi(currentDataItem.api);
     }
@@ -168,6 +174,49 @@ export const useBattleStore = defineStore("battle", () => {
     }
 
     incrementTaskIndex();
+
+    // console.log(answers.value);
+  };
+
+  const onAnswerNew = ({ isCorrect, answerString, subtractEnergyAmount = 1 }: AnswerProps) => {
+    if (energy.value === 0) return;
+
+    const currentDataItem = state.value.data?.[taskIndex.value];
+
+    if (!currentDataItem) {
+      console.error(`Could not find current item`);
+      return;
+    }
+
+    // set lastTaskId
+    lastTaskId.value = currentDataItem!.id;
+
+    // store answer
+    const foundIdx = answers.value.findIndex((answer) => answer.id === currentDataItem!.id);
+
+    if (foundIdx !== -1) {
+      answers.value[foundIdx] = { id: currentDataItem.id, key: currentDataItem.key, answer: answerString };
+    } else {
+      answers.value.push({ id: currentDataItem.id, key: currentDataItem.key, answer: answerString });
+    }
+
+    // call api
+    if (currentDataItem.api) {
+      callApi(currentDataItem.api);
+    }
+
+    if (isCorrect) {
+      onCorrectAnswer();
+    } else {
+      if (subtractEnergyAmount) {
+        changeEnergy(-subtractEnergyAmount);
+      }
+      onWrongAnswer();
+    }
+
+    incrementTaskIndex();
+
+    startTaskTimeout();
 
     // console.log(answers.value);
   };
@@ -256,7 +305,9 @@ export const useBattleStore = defineStore("battle", () => {
     onVibrate,
     startTaskTimeout,
     stopTaskTimeout,
+    fullStopTaskTimeout,
     startBpInterval,
     stopBpInterval,
+    onAnswerNew,
   };
 });

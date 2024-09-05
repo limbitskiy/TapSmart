@@ -51,7 +51,11 @@ export const useTaskTimeout = (cb: () => void) => {
   };
 
   const stop = () => {
-    // clear();
+    started = false;
+  };
+
+  const fullStop = () => {
+    clear();
     started = false;
   };
 
@@ -59,7 +63,7 @@ export const useTaskTimeout = (cb: () => void) => {
     timeout = value;
   };
 
-  return { start, stop, setTime, reset };
+  return { start, stop, setTime, reset, fullStop };
 };
 
 // export const useTaskTimeout = (cb: () => void) => {

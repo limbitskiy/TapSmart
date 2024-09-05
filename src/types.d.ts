@@ -84,6 +84,7 @@ export type Task = {
     question: string;
     variants: string[];
   };
+  api?: string;
 };
 
 export type Mechanic = {
@@ -102,6 +103,23 @@ export type Booster = {
 export type LocaleEntry = {
   [key: string]: string;
 };
+export interface AnswerProps {
+  isCorrect: boolean;
+  answerString: string;
+  subtractEnergyAmount?: number;
+}
+
+export interface Answer {
+  id: number;
+  key: string | number;
+  answer: string;
+}
+
+export interface Bonus {
+  id: number;
+  x: number;
+  y: number;
+}
 
 export type LocaleSections = "tutorial" | "profile" | "battles" | "menu" | "friends" | "required-settings" | "leaders" | "market" | "tasks";
 

@@ -1,8 +1,8 @@
 <template>
   <div class="4-answers-battle flex-1 flex flex-col mb-[72px]">
     <div class="question flex-1 grid place-items-center font-black text-2xl">
-      <div class="question-text flex flex-col gap-2 items-center">
-        <span class="fira-condensed-black" ref="el" style="font-size: clamp(30px, 9vw, 46px)">{{ currentTask.task.question }}</span>
+      <div ref="el" class="question-text flex flex-col gap-2 items-center text-center w-full px-8 overflow-x-hidden text-ellipsis">
+        <span class="fira-condensed-black" style="font-size: clamp(30px, 9vw, 46px)">{{ currentTask.task.question }}</span>
       </div>
     </div>
 
