@@ -1,5 +1,5 @@
 import { computed, ref, watch } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { defineStore } from "pinia";
 
 // composables
@@ -15,6 +15,7 @@ import { BattleTypes, BattleState, AnswerProps, Answer } from "@/types";
 
 export const useBattleStore = defineStore("battle", () => {
   const router = useRouter();
+  const route = useRoute();
   const dataStore = useDataStore();
   const userStore = useMainStore();
 
@@ -43,9 +44,7 @@ export const useBattleStore = defineStore("battle", () => {
   const players_waiting = computed(() => state.value.players_waiting);
   const waiting_timer = computed(() => state.value.waiting_timer);
   const challengeButton = computed(() => state.value.battle_button_challenge);
-  const currentMechanic = computed(
-    () => state.value.mechanics?.[getMechanicName(currentBattleType.value)]
-  );
+  const currentMechanic = computed(() => state.value.mechanics?.[getMechanicName(currentBattleType.value)]);
 
   const taskTimeoutCb = () => {
     onAnswer({ isCorrect: false, answerString: "", subtractEnergyAmount: 0 });
@@ -62,19 +61,8 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   // composables
-  const {
-    start: startTaskTimeout,
-    stop: stopTaskTimeout,
-    setTime: setTaskTimeout,
-    reset: resetTaskTimeout,
-    fullStop: fullStopTaskTimeout,
-  } = useTaskTimeout(taskTimeoutCb);
-  const {
-    start: startBpInterval,
-    stop: stopBpInterval,
-    setTime: setBpInterval,
-    time: bpTime,
-  } = useBpInterval(breakpointCb);
+  const { start: startTaskTimeout, stop: stopTaskTimeout, setTime: setTaskTimeout, reset: resetTaskTimeout, fullStop: fullStopTaskTimeout } = useTaskTimeout(taskTimeoutCb);
+  const { start: startBpInterval, stop: stopBpInterval, setTime: setBpInterval, time: bpTime } = useBpInterval(breakpointCb);
 
   watch(currentBattleType, (val, oldVal) => {
     if (val === oldVal) return;
@@ -134,9 +122,7 @@ export const useBattleStore = defineStore("battle", () => {
     Object.keys(data).forEach((key) => {
       if (state.value[key] && Array.isArray(state.value[key])) {
         data[key].forEach((item) => {
-          const foundIdx = state.value[key].findIndex(
-            (storeItem) => storeItem.id === item.id
-          );
+          const foundIdx = state.value[key].findIndex((storeItem) => storeItem.id === item.id);
 
           if (foundIdx != -1) {
             state.value[key].splice(foundIdx, 1);
@@ -150,72 +136,60 @@ export const useBattleStore = defineStore("battle", () => {
     });
 
     state.value.data.sort((a, b) => a.id - b.id);
-    taskIndex.value = state.value.data.findIndex(
-      (task) => task.id === _currentId
-    );
+    taskIndex.value = state.value.data.findIndex((task) => task.id === _currentId);
   };
 
-  const onAnswer = ({
-    isCorrect,
-    answerString,
-    subtractEnergyAmount = 1,
-  }: AnswerProps) => {
-    if (energy.value === 0) return;
+  // const onAnswer = ({ isCorrect, answerString, subtractEnergyAmount = 1 }: AnswerProps) => {
+  //   if (energy.value === 0) return;
 
-    resetTaskTimeout();
-    const currentDataItem = state.value.data?.[taskIndex.value];
+  //   resetTaskTimeout();
+  //   const currentDataItem = state.value.data?.[taskIndex.value];
 
-    if (!currentDataItem) {
-      console.error(`Could not find current item`);
-      return;
-    }
+  //   if (!currentDataItem) {
+  //     console.error(`Could not find current item`);
+  //     return;
+  //   }
 
-    // set lastTaskId
-    lastTaskId.value = currentDataItem!.id;
+  //   // set lastTaskId
+  //   lastTaskId.value = currentDataItem!.id;
 
-    // store answer
-    const foundIdx = answers.value.findIndex(
-      (answer) => answer.id === currentDataItem!.id
-    );
+  //   // store answer
+  //   const foundIdx = answers.value.findIndex((answer) => answer.id === currentDataItem!.id);
 
-    if (foundIdx !== -1) {
-      answers.value[foundIdx] = {
-        id: currentDataItem.id,
-        key: currentDataItem.key,
-        answer: answerString,
-      };
-    } else {
-      answers.value.push({
-        id: currentDataItem.id,
-        key: currentDataItem.key,
-        answer: answerString,
-      });
-    }
+  //   if (foundIdx !== -1) {
+  //     answers.value[foundIdx] = {
+  //       id: currentDataItem.id,
+  //       key: currentDataItem.key,
+  //       answer: answerString,
+  //     };
+  //   } else {
+  //     answers.value.push({
+  //       id: currentDataItem.id,
+  //       key: currentDataItem.key,
+  //       answer: answerString,
+  //     });
+  //   }
 
-    // call api
-    if (currentDataItem.api) {
-      callApi(currentDataItem.api);
-    }
+  //   // call api
+  //   if (currentDataItem.api) {
+  //     callApi(currentDataItem.api);
+  //   }
 
-    if (isCorrect) {
-      onCorrectAnswer();
-    } else {
-      if (subtractEnergyAmount) {
-        changeEnergy(-subtractEnergyAmount);
-      }
-      onWrongAnswer();
-    }
+  //   if (isCorrect) {
+  //     onCorrectAnswer();
+  //   } else {
+  //     if (subtractEnergyAmount) {
+  //       changeEnergy(-subtractEnergyAmount);
+  //     }
+  //     onWrongAnswer();
+  //   }
 
-    incrementTaskIndex();
+  //   incrementTaskIndex();
 
-    // console.log(answers.value);
-  };
+  //   // console.log(answers.value);
+  // };
 
-  const onAnswerNew = ({
-    isCorrect,
-    answerString,
-    subtractEnergyAmount = 1,
-  }: AnswerProps) => {
+  const onAnswer = ({ isCorrect, answerString, subtractEnergyAmount = 1 }: AnswerProps) => {
     if (energy.value === 0) return;
 
     const currentDataItem = state.value.data?.[taskIndex.value];
@@ -229,9 +203,7 @@ export const useBattleStore = defineStore("battle", () => {
     lastTaskId.value = currentDataItem!.id;
 
     // store answer
-    const foundIdx = answers.value.findIndex(
-      (answer) => answer.id === currentDataItem!.id
-    );
+    const foundIdx = answers.value.findIndex((answer) => answer.id === currentDataItem!.id);
 
     if (foundIdx !== -1) {
       answers.value[foundIdx] = {
@@ -267,9 +239,45 @@ export const useBattleStore = defineStore("battle", () => {
       state.value.questions_left -= 1;
     }
 
-    startTaskTimeout();
+    resetTaskTimeout();
 
     // console.log(answers.value);
+  };
+
+  const onChallengeAnswer = ({ answerString }: AnswerProps) => {
+    const currentDataItem = state.value.data?.[taskIndex.value];
+
+    if (!currentDataItem) {
+      console.error(`Could not find current item`);
+      return;
+    }
+
+    // set lastTaskId
+    lastTaskId.value = currentDataItem!.id;
+
+    // store answer
+    const foundIdx = answers.value.findIndex((answer) => answer.id === currentDataItem!.id);
+
+    if (foundIdx !== -1) {
+      answers.value[foundIdx] = {
+        id: currentDataItem.id,
+        key: currentDataItem.key,
+        answer: answerString,
+      };
+    } else {
+      answers.value.push({
+        id: currentDataItem.id,
+        key: currentDataItem.key,
+        answer: answerString,
+      });
+    }
+
+    // call api
+    if (currentDataItem.api) {
+      callApi(currentDataItem.api);
+    }
+
+    incrementTaskIndex();
   };
 
   const incrementTaskIndex = () => {
@@ -328,9 +336,7 @@ export const useBattleStore = defineStore("battle", () => {
 
   const calculateBoltsAmount = () => {
     if (state.value.multiplicator && state.value.calc_points?.length) {
-      return (
-        state.value.multiplicator * state.value.calc_points[correctStreak.value]
-      );
+      return state.value.multiplicator * state.value.calc_points[correctStreak.value];
     }
     return 0;
   };
@@ -350,6 +356,7 @@ export const useBattleStore = defineStore("battle", () => {
     waiting_timer,
     set,
     onAnswer,
+    onChallengeAnswer,
     changeMechanic,
     expand,
     getMechanicName,
@@ -359,6 +366,5 @@ export const useBattleStore = defineStore("battle", () => {
     fullStopTaskTimeout,
     startBpInterval,
     stopBpInterval,
-    onAnswerNew,
   };
 });

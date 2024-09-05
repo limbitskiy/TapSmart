@@ -7,7 +7,7 @@ export const useTaskTimeout = (cb: () => void) => {
   let lastCb = false;
 
   const start = () => {
-    // console.log(`starting timeout`);
+    console.log(`starting timeout`);
 
     if (!timeout) return;
 
@@ -51,10 +51,14 @@ export const useTaskTimeout = (cb: () => void) => {
   };
 
   const stop = () => {
+    console.log(`stopping timeout`);
+
     started = false;
   };
 
   const fullStop = () => {
+    console.log(`stopping timeout`);
+
     clear();
     started = false;
   };

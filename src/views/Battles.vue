@@ -1,5 +1,6 @@
 <template>
   <div class="home-main flex-1 overflow-auto flex flex-col gap-2 mb-[72px]">
+    <Backlight color="green" />
     <Profile />
     <div class="top-btns flex gap-4 w-full px-4 relative">
       <Button class="flex-1 bg-black text-white border fira-condensed-bold !text-sm leading-4 px-4 py-2" @click="onChangeMech">
@@ -46,7 +47,7 @@
     <!-- select booster modal -->
     <Teleport to="body">
       <Modal v-model:visible="isBoostersModalVisible" height="90dvh">
-        <BoosterSelect @startBattle="$router.push('/challenge/yesno')" />
+        <BoosterSelect @startBattle="onStartChallenge" />
       </Modal>
     </Teleport>
   </div>
@@ -58,6 +59,7 @@ import { storeToRefs } from "pinia";
 import { getAsset } from "../utils";
 import { tg, getUserName } from "@/api/telegram";
 import { useWindowSize } from "@vueuse/core";
+import { useRouter } from "vue-router";
 
 // stores
 import { useDataStore } from "@/store/data";
@@ -65,6 +67,7 @@ import { useMainStore } from "@/store/main";
 import { useLocaleStore } from "@/store/locale";
 
 // components
+import Backlight from "@/components/UI/Backlight.vue";
 import Profile from "@/components/Profile.vue";
 import Button from "@/components/UI/Button.vue";
 import Modal from "@/components/Modal.vue";
@@ -73,6 +76,8 @@ import VolumeControl from "@/components/VolumeControl.vue";
 import NoEnergyModal from "@/components/NoEnergyModal.vue";
 import ChallengeButton from "@/components/UI/ChallengeButton.vue";
 import BoosterSelect from "@/components/BoosterSelect.vue";
+
+const router = useRouter();
 
 const dataStore = useDataStore();
 const mainStore = useMainStore();
@@ -88,10 +93,10 @@ const isBoostersModalVisible = ref(false);
 
 watch([isChangeMechModalVisible, isNoEnergyModalVisible, isBoostersModalVisible], (val) => {
   if (val.some((modal) => modal)) {
-    console.log(`stop`);
+    // console.log(`stop`);
     data.value.stopTaskTimeout();
   } else {
-    console.log(`start`);
+    // console.log(`start`);
     data.value.startTaskTimeout();
   }
 });
@@ -120,5 +125,12 @@ const closeModal = () => {
 
 const openBoosterModal = () => {
   isBoostersModalVisible.value = true;
+};
+
+const onStartChallenge = () => {
+  isBoostersModalVisible.value = false;
+  setTimeout(() => {
+    router.push("/challenge/yesno");
+  }, 300);
 };
 </script>

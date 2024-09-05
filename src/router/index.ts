@@ -19,8 +19,8 @@ import YesNo from "@/components/battles/YesNo.vue";
 import FourAnswers from "@/components/battles/FourAnswers.vue";
 
 // stores
-import { useDataStore } from "@/store/data.ts";
-import { useMainStore } from "@/store/main.ts";
+import { useDataStore } from "@/store/data";
+import { useMainStore } from "@/store/main";
 
 const routes = [
   { path: "/:pathMatch(.*)*", component: NotFound },
@@ -128,7 +128,7 @@ router.beforeEach((to, from) => {
   }
 
   if (from.path.includes("/home/battles/") && !to.path.includes("/home/battles/")) {
-    battles.stopTaskTimeout();
+    battles.fullStopTaskTimeout();
     battles.stopBpInterval();
     // console.log(`turning timer OFF from Routes`);
   }

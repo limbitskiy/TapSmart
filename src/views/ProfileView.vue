@@ -1,17 +1,17 @@
 <template>
   <div id="profile" class="flex-1">
     <div class="top-part p-5 mb-4">
-      <div class="page-title mb-4">{{ locale["title"] }}</div>
-      <div class="page-subtitle" v-html="locale['subtitle']"></div>
+      <div class="page-title mb-4">{{ locale?.["title"] }}</div>
+      <div class="page-subtitle" v-html="locale?.['subtitle']"></div>
     </div>
 
     <BackgroundPill class="py-8">
-      <span class="bg-pill-title">{{ locale["stats_title"] }}</span>
+      <span class="bg-pill-title">{{ locale?.["stats_title"] }}</span>
 
       <!-- bolts -->
-      <Pill class="mt-4" color="light" :tooltip="locale['tooltip_bolts']">
+      <Pill class="mt-4" color="light" :tooltip="locale?.['tooltip_bolts']">
         <div class="content flex items-center justify-between">
-          <span class="text-xl font-semibold text-gray-300">{{ locale["bolts"] || "Bolts" }}</span>
+          <span class="text-xl font-semibold text-gray-300">{{ locale?.["bolts"] || "Bolts" }}</span>
           <div class="flex gap-2 items-center">
             <img class="h-4 scale-150" :src="getAsset('bolt')" />
             <span class="text-xl exo-black">{{ showFormattedNumber(data["bolts"]) }}</span>
@@ -20,9 +20,9 @@
       </Pill>
 
       <!-- nuts -->
-      <Pill class="mt-4" color="light" :tooltip="locale['tooltip_nuts']">
+      <Pill class="mt-4" color="light" :tooltip="locale?.['tooltip_nuts']">
         <div class="content flex items-center justify-between">
-          <span class="text-xl font-semibold text-gray-300">{{ locale["nuts"] || "Nuts" }}</span>
+          <span class="text-xl font-semibold text-gray-300">{{ locale?.["nuts"] || "Nuts" }}</span>
           <div class="flex gap-2 items-center">
             <img class="h-4 scale-150" :src="getAsset('nut')" />
             <span class="text-xl exo-black">{{ showFormattedNumber(data["nuts"]) }}</span>
@@ -31,10 +31,10 @@
       </Pill>
 
       <!-- level -->
-      <Pill class="mt-4" color="light" :tooltip="locale['tooltip_level']">
+      <Pill class="mt-4" color="light" :tooltip="locale?.['tooltip_level']">
         <div class="content flex gap-2 flex-col">
           <div class="level flex gap-2 items-center justify-between">
-            <span class="text-xl font-semibold text-gray-300">{{ locale["level"] || "Level" }}</span>
+            <span class="text-xl font-semibold text-gray-300">{{ locale?.["level"] || "Level" }}</span>
             <div class="flex gap-2 items-center">
               <img class="h-5" src="/level-arrow.png" />
               <span class="text-xl exo-black">{{ data["level"] }}</span>
@@ -45,9 +45,9 @@
       </Pill>
 
       <!-- battles -->
-      <Pill class="mt-4" color="light" :tooltip="locale['tooltip_battles_played']">
+      <Pill class="mt-4" color="light" :tooltip="locale?.['tooltip_battles_played']">
         <div class="content flex gap-2 items-center justify-between">
-          <span class="text-xl font-semibold text-gray-300">{{ locale["battles_played"] || "Battles" }}</span>
+          <span class="text-xl font-semibold text-gray-300">{{ locale?.["battles_played"] || "Battles" }}</span>
           <div class="flex gap-2 items-center">
             <img class="h-6" src="/swords.png" />
             <span class="text-xl exo-black">{{ data["battles"] }}</span>
@@ -56,9 +56,9 @@
       </Pill>
 
       <!-- words learned -->
-      <Pill class="mt-4" color="light" :tooltip="locale['tooltip_words_learned']">
+      <Pill class="mt-4" color="light" :tooltip="locale?.['tooltip_words_learned']">
         <div class="content flex gap-2 items-center justify-between">
-          <span class="text-xl font-semibold text-gray-300">{{ locale["words_learned"] || "Words learned" }}</span>
+          <span class="text-xl font-semibold text-gray-300">{{ locale?.["words_learned"] || "Words learned" }}</span>
           <div class="flex gap-2 items-center">
             <img class="h-6" src="/book.png" />
             <span class="text-xl exo-black">{{ data["learned"] }}</span>
@@ -69,8 +69,8 @@
 
     <!-- activity -->
     <BackgroundPill class="py-8 mt-12 flex flex-col">
-      <span class="bg-pill-title">{{ locale["activity_title"] }}</span>
-      <span class="bg-pill-subtitle">{{ locale["activity_subtitle"] }}</span>
+      <span class="bg-pill-title">{{ locale?.["activity_title"] }}</span>
+      <span class="bg-pill-subtitle">{{ locale?.["activity_subtitle"] }}</span>
     </BackgroundPill>
 
     <Settings class="mt-12" @change="onSettingsChange" />

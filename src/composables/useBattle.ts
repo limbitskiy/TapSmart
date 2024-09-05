@@ -1,5 +1,6 @@
 import { Ref, ref } from "vue";
 import { storeToRefs } from "pinia";
+import { useRoute } from "vue-router";
 
 // stores
 import { useDataStore } from "@/store/data";
@@ -9,9 +10,10 @@ import { Task, Bonus } from "@/types";
 
 export const useBattle = (defineCorrect: (answer: string, currentTask: Task, options?: {}) => boolean, el?: Ref<HTMLElement>) => {
   const dataStore = useDataStore();
+  const route = useRoute();
 
   const { currentTask } = storeToRefs(dataStore.battles);
-  const { onAnswer, onVibrate, onAnswerNew, fullStopTaskTimeout } = dataStore.battles;
+  const { onAnswer, onChallengeAnswer, onVibrate, fullStopTaskTimeout } = dataStore.battles;
 
   const bonuses = ref<Bonus[]>([]);
   let answerInProgress = false;
@@ -34,7 +36,11 @@ export const useBattle = (defineCorrect: (answer: string, currentTask: Task, opt
       await animateWrong();
     }
 
-    onAnswerNew({ isCorrect: correct, answerString: answer });
+    if (route.path.includes("battles")) {
+      onAnswer({ isCorrect: correct, answerString: answer });
+    } else if (route.path.includes("challenge")) {
+      onChallengeAnswer({ isCorrect: correct, answerString: answer });
+    }
 
     answerInProgress = false;
   };
