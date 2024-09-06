@@ -1,15 +1,26 @@
 <template>
   <div class="challenge-main flex-1 overflow-auto flex flex-col gap-2">
     <Backlight color="red" />
-    <RouterView v-if="isBattle" v-slot="{ Component }">
-      <!-- <Transition name="fade" mode="out-in"> -->
-      <component :is="Component" />
-      <!-- </Transition> -->
-    </RouterView>
+
+    <template v-if="isBattle">
+      <div class="challenge-stats relative z-10 flex flex-col gap-4 mt-2">
+        <ChallengeStatus @timeEnd="onEndBattle" />
+
+        <div class="wrap px-8">
+          <ProgressBar />
+        </div>
+      </div>
+
+      <RouterView v-slot="{ Component }">
+        <!-- <Transition name="fade" mode="out-in"> -->
+        <component :is="Component" />
+        <!-- </Transition> -->
+      </RouterView>
+    </template>
 
     <!-- waiting modal -->
     <Teleport to="body">
-      <Modal v-model:visible="isWaitingModalVisible">
+      <Modal v-model:visible="isWaitingModalVisible" sticky>
         <WaitingModal @countdownComplete="onStartBattle" />
       </Modal>
     </Teleport>
@@ -34,6 +45,8 @@ import Modal from "@/components/Modal.vue";
 import VolumeControl from "@/components/VolumeControl.vue";
 import WaitingModal from "@/components/WaitingModal.vue";
 import Backlight from "@/components/UI/Backlight.vue";
+import ChallengeStatus from "@/components/ChallengeStatus.vue";
+import ProgressBar from "@/components/ProgressBar.vue";
 
 const dataStore = useDataStore();
 const mainStore = useMainStore();
@@ -58,6 +71,8 @@ const onStartBattle = () => {
     isBattle.value = true;
   }, 300);
 };
+
+const onEndBattle = () => {};
 
 onMounted(() => {
   isWaitingModalVisible.value = true;

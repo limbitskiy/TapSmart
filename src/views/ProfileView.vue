@@ -14,7 +14,7 @@
           <span class="text-xl font-semibold text-gray-300">{{ locale?.["bolts"] || "Bolts" }}</span>
           <div class="flex gap-2 items-center">
             <img class="h-4 scale-150" :src="getAsset('bolt')" />
-            <span class="text-xl exo-black">{{ showFormattedNumber(data["bolts"]) }}</span>
+            <span class="text-xl exo-black">{{ showFormattedNumber(data?.["bolts"]) }}</span>
           </div>
         </div>
       </Pill>
@@ -85,15 +85,14 @@ import { storeToRefs } from "pinia";
 import { getAsset, showFormattedNumber } from "@/utils";
 
 // store
-import { useMainStore } from "@/store/main.ts";
-import { useDataStore } from "@/store/data.ts";
-import { useLocaleStore } from "@/store/locale.ts";
+import { useMainStore } from "@/store/main";
+import { useDataStore } from "@/store/data";
+import { useLocaleStore } from "@/store/locale";
 
 // components
 import Pill from "@/components/UI/Pill.vue";
 import BackgroundPill from "@/components/UI/BackgroundPill.vue";
 import Settings from "@/components/Settings.vue";
-import ProgressBar from "@/components/UI/ProgressBar.vue";
 
 const mainStore = useMainStore();
 const dataStore = useDataStore();

@@ -16,6 +16,7 @@ export const images = {
   avatar1: "/profile-avatar-placeholder.png",
   energy: "/energy.png",
   level: "/level-arrow.png",
+  cup: "/cup.png",
 };
 
 // assets folder
@@ -27,6 +28,8 @@ export const assets = {
   refresh: "assets/icons/refresh.svg",
   paw: "assets/images/paw.svg",
   "chevron-right": "assets/icons/chevron-right.svg",
+  "enemy-marker": "assets/icons/enemy-marker.svg",
+  "player-marker": "assets/icons/player-marker.png",
 };
 
 export const sounds = {
