@@ -7,7 +7,7 @@
       </Pill>
     </div>
 
-    <ul class="players h-[30dvh] overflow-y-scroll flex flex-col gap-2">
+    <ul class="players h-[55dvh] overflow-y-scroll flex flex-col gap-2">
       <li v-for="player in data['players_waiting'] || []" :key="player.id">
         <Pill class="flex items-center gap-4" color="light">
           <span class="league exo-black text-xl">{{ player.league }}</span>

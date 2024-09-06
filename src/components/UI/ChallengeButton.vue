@@ -1,11 +1,14 @@
 <template>
-  <Button ref="challengeBtnRef" class="flex-1 py-3 px-5" :class="{ 'bg-gray-300 text-gray-400': data.challengeButton?.disabled }" @click="onClick"
+  <Button ref="challengeBtnRef" class="flex-1 py-3 px-5 relative" :class="{ 'bg-gray-300 text-gray-400': data.challengeButton?.disabled }" @click="onClick"
     ><div class="flex justify-center gap-1">
-      <span class="text-base leading-4">{{ locale["button_challenge"] }}</span>
-      <div v-if="data.questions_left > 0" class="counter text-sm bg-green-500 rounded-md h-4 px-1 grid place-items-center leading-3 exo-bold">
+      <span v-bind="$attrs" class="text-base leading-4">{{ locale["button_challenge"] }}</span>
+      <div
+        v-if="data.questions_left > 0"
+        class="counter text-sm bg-[#333] text-white border border-[var(--accent-color)] rounded-md h-4 px-1 grid place-items-center leading-3 exo-bold absolute top-1 left-[85%]"
+      >
         {{ data.questions_left }}
       </div>
-      <div v-else class="counter relative bottom-1 text-sm bg-[#222] text-white rounded-md h-4 px-1 grid place-items-center leading-3 exo-bold">
+      <div v-else class="counter bottom-1 text-sm bg-[#222] text-white rounded-md h-4 px-1 grid place-items-center leading-3 exo-bold absolute top-1 left-[85%]">
         {{ data.challengeButton?.badge || 0 }}
       </div>
     </div>

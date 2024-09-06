@@ -37,8 +37,6 @@ const props = defineProps<{
   initialTimerValue: number;
 }>();
 
-// components
-
 const colors = {
   0: "F01515",
   1: "519A58",
@@ -66,20 +64,6 @@ const highestScore = computed(() => data.value["player_progress"]?.sort((a, b) =
 
 const progressPercent = computed(() => ((props.initialTimerValue - props.timer) * 100) / props.initialTimerValue);
 
-const playerPosition = computed(() => {
-  const score = data.value["player_progress"]?.find((player) => player.isPlayer).score;
-
-  const progressBarWidth = progressRef.value?.getBoundingClientRect().width;
-
-  if (score === highestScore.value) {
-    return progressBarWidth;
-  }
-
-  const percent = (score * 100) / highestScore.value;
-
-  return (percent * progressBarWidth) / 100;
-});
-
 const calculateMarkerPosition = (score) => {
   const progressBarWidth = progressRef.value?.getBoundingClientRect().width;
 
@@ -95,6 +79,4 @@ const calculateMarkerPosition = (score) => {
 const getMarkerColor = (id: string) => {
   return "#" + colors[+id];
 };
-
-const value = ref(50);
 </script>

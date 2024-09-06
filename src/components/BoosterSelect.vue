@@ -5,10 +5,17 @@
     </div>
 
     <div class="filters">
-      <button class="border rounded-full text-sm py-1 px-3 border-[var(--accent-color)] fira-semibold">
+      <button
+        class="border rounded-full text-sm py-1 px-3 border-[var(--accent-color)] fira-semibold"
+        :class="{ 'bg-[var(--accent-color)] text-[#333]': friendsOnly }"
+        @click="onFriendsOnly"
+      >
         <div class="flex relative">
           <span>{{ locale?.["friends_only"] || "Friends only" }}</span>
-          <div class="badge text-sm text-black bg-[var(--accent-color)] rounded-md h-4 px-1 grid place-items-center leading-3 exo-bold absolute left-full -top-2">
+          <div
+            class="badge text-sm text-black bg-[var(--accent-color)] rounded-md h-4 px-1 grid place-items-center leading-3 exo-bold absolute left-full -top-2"
+            :class="{ 'bg-[#333] text-white border border-[var(--accent-color)]': friendsOnly }"
+          >
             {{ data["friends_only_badge"] || 0 }}
           </div>
         </div>
@@ -83,7 +90,7 @@
       </div>
     </div>
 
-    <Button class="flex-1 py-4 rounded-lg" @click="onClick">
+    <Button class="flex-1 py-4 rounded-lg" @click="onStartBattle">
       <div class="flex justify-center gap-1">
         <span class="text-xl leading-4">{{ locale?.["button_booster_select"] || "Challenge" }}</span>
       </div>
@@ -113,13 +120,19 @@ const pickedBonuses = ref({
   time: false,
 });
 
+const friendsOnly = ref(false);
+
 const dataStore = useDataStore();
 const localeStore = useLocaleStore();
 
 const { battles: locale } = storeToRefs(localeStore);
 const { battles: data } = storeToRefs(dataStore);
 
-const onClick = () => {
+const onStartBattle = () => {
   emit("startBattle");
+};
+
+const onFriendsOnly = () => {
+  friendsOnly.value = !friendsOnly.value;
 };
 </script>

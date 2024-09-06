@@ -64,13 +64,7 @@ export const useDataStore = defineStore("data", () => {
       state.value.profile!.bolts = 0;
     }
 
-    console.log(`adding bolts`);
-    console.log(`before`, state.value.profile.bolts);
-    console.log(`amount`, amount);
-
     state.value.profile.bolts += amount;
-
-    console.log(`after`, state.value.profile.bolts);
   };
 
   const setSettings = (key: SettingsKeys, value: boolean) => {

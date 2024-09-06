@@ -75,6 +75,17 @@ export const useBattleStore = defineStore("battle", () => {
 
   const set = (data) => {
     Object.keys(data).forEach((key) => {
+      if (key === "cleanAnswers" && data["cleanAnswers"]) {
+        lastTaskId.value = null;
+        answers.value = [];
+      }
+
+      if (key === "data") {
+        console.log(`hello, data`);
+
+        taskIndex.value = 0;
+      }
+
       if (key === "battle_type") {
         currentBattleType.value = data["battle_type"];
 
@@ -107,12 +118,6 @@ export const useBattleStore = defineStore("battle", () => {
       state.value.data.sort((a, b) => a.id - b.id);
     }
 
-    taskIndex.value = 0;
-
-    lastTaskId.value = null;
-
-    answers.value = [];
-
     // console.log("battle store:", state.value);
   };
 
@@ -140,56 +145,6 @@ export const useBattleStore = defineStore("battle", () => {
     state.value.data.sort((a, b) => a.id - b.id);
     taskIndex.value = state.value.data.findIndex((task) => task.id === _currentId);
   };
-
-  // const onAnswer = ({ isCorrect, answerString, subtractEnergyAmount = 1 }: AnswerProps) => {
-  //   if (energy.value === 0) return;
-
-  //   resetTaskTimeout();
-  //   const currentDataItem = state.value.data?.[taskIndex.value];
-
-  //   if (!currentDataItem) {
-  //     console.error(`Could not find current item`);
-  //     return;
-  //   }
-
-  //   // set lastTaskId
-  //   lastTaskId.value = currentDataItem!.id;
-
-  //   // store answer
-  //   const foundIdx = answers.value.findIndex((answer) => answer.id === currentDataItem!.id);
-
-  //   if (foundIdx !== -1) {
-  //     answers.value[foundIdx] = {
-  //       id: currentDataItem.id,
-  //       key: currentDataItem.key,
-  //       answer: answerString,
-  //     };
-  //   } else {
-  //     answers.value.push({
-  //       id: currentDataItem.id,
-  //       key: currentDataItem.key,
-  //       answer: answerString,
-  //     });
-  //   }
-
-  //   // call api
-  //   if (currentDataItem.api) {
-  //     callApi(currentDataItem.api);
-  //   }
-
-  //   if (isCorrect) {
-  //     onCorrectAnswer();
-  //   } else {
-  //     if (subtractEnergyAmount) {
-  //       changeEnergy(-subtractEnergyAmount);
-  //     }
-  //     onWrongAnswer();
-  //   }
-
-  //   incrementTaskIndex();
-
-  //   // console.log(answers.value);
-  // };
 
   const onAnswer = ({ isCorrect, answerString, subtractEnergyAmount = 1 }: AnswerProps) => {
     if (energy.value === 0) return;
@@ -338,6 +293,12 @@ export const useBattleStore = defineStore("battle", () => {
 
   const calculateBoltsAmount = () => {
     if (state.value.multiplicator && state.value.calc_points?.length) {
+      const idx = correctStreak.value;
+
+      if (!state.value.calc_points[idx]) {
+        return state.value.multiplicator * state.value.calc_points[state.value.calc_points.length - 1];
+      }
+
       return state.value.multiplicator * state.value.calc_points[correctStreak.value];
     }
     return 0;

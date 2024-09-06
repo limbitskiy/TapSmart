@@ -13,7 +13,7 @@
               <rect x="13.1611" y="13.1613" width="10.8387" height="10.8387" rx="2" fill="white" />
             </svg>
           </div>
-          <span class="text-base leading-4">{{ locale?.["button_change_mech"] }}</span>
+          <span class="text-sm leading-4">{{ locale?.["button_change_mech"] }}</span>
           <div class="chevron">
             <svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M9 10L0 1.22807L1.26 0L9 7.54386L16.74 0L18 1.22807L9 10Z" fill="white" />
@@ -21,7 +21,7 @@
           </div>
         </div>
       </Button>
-      <ChallengeButton @challenge="openBoosterModal" />
+      <ChallengeButton class="text-sm" @challenge="openBoosterModal" />
       <VolumeControl />
     </div>
     <RouterView v-slot="{ Component }">
