@@ -29,7 +29,7 @@ export const assets = {
   paw: "assets/images/paw.svg",
   "chevron-right": "assets/icons/chevron-right.svg",
   "enemy-marker": "assets/icons/enemy-marker.svg",
-  "player-marker": "assets/icons/player-marker.png",
+  "player-marker": "assets/icons/player-marker.svg",
 };
 
 export const sounds = {
