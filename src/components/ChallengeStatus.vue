@@ -4,8 +4,11 @@
       <img class="h-4" :src="getAsset('bolt')" />
       <span class="text-lg">{{ boltsEarned || 203 }}</span>
     </div>
-    <div class="timer w-[125px] flex justify-center px-4 py-1 bg-[var(--accent-color)] text-[#444] text-[32px] rounded-full z-[5]">
-      <CountdownTimer class="" :initValue="60000" />
+    <div class="timer w-[125px] flex px-4 py-1 bg-[var(--accent-color)] text-[#444] text-[32px] rounded-full z-[5]">
+      <div class="timer">
+        <span>{{ "00:" + formattedTime }}</span>
+      </div>
+      <!-- <CountdownTimer :initValue="60000" /> -->
     </div>
     <div class="place flex items-center gap-2 px-4 bg-[var(--grey-light)] rounded-r-full py-1 relative -left-2 z-[2]">
       <img class="h-4 scale-150" :src="getAsset('cup')" />
@@ -15,12 +18,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { getAsset } from "@/utils";
 
 // components
 import CountdownTimer from "@/components/CountdownTimer.vue";
 
+const props = defineProps<{
+  timer: number;
+  initialTimerValue: number;
+}>();
+
 const boltsEarned = ref(0);
 const place = ref(2);
+
+console.log(props.timer);
+
+const formattedTime = computed(() => {
+  if (props.timer > 9000) {
+    return props.timer / 1000;
+  } else {
+    return "0" + props.timer / 1000;
+  }
+});
 </script>

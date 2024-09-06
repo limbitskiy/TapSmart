@@ -42,7 +42,9 @@ export const useBattleStore = defineStore("battle", () => {
   const questions_left = computed(() => state.value.questions_left);
   const friends_only_badge = computed(() => state.value.friends_only_badge);
   const players_waiting = computed(() => state.value.players_waiting);
+  const player_progress = computed(() => state.value.player_progress);
   const waiting_timer = computed(() => state.value.waiting_timer);
+  const battle_duration = computed(() => state.value.battle_duration);
   const challengeButton = computed(() => state.value.battle_button_challenge);
   const currentMechanic = computed(() => state.value.mechanics?.[getMechanicName(currentBattleType.value)]);
 
@@ -354,6 +356,8 @@ export const useBattleStore = defineStore("battle", () => {
     friends_only_badge,
     players_waiting,
     waiting_timer,
+    player_progress,
+    battle_duration,
     set,
     onAnswer,
     onChallengeAnswer,

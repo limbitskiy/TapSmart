@@ -59,6 +59,10 @@ export interface BattleState {
   friends_only_badge?: number;
   battle_type?: number;
   breakpoint?: number;
+  players_waiting?: [];
+  waiting_timer?: number;
+  player_progress?: [];
+  battle_duration?: number;
 }
 
 export interface NotificationProps {

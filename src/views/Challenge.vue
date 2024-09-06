@@ -4,10 +4,10 @@
 
     <template v-if="isBattle">
       <div class="challenge-stats relative z-10 flex flex-col gap-4 mt-2">
-        <ChallengeStatus @timeEnd="onEndBattle" />
+        <ChallengeStatus :timer="timer!" :initialTimerValue="data['battle_duration']!" @timeEnd="onEndBattle" />
 
         <div class="wrap px-8">
-          <ProgressBar />
+          <ProgressBar :timer="timer!" :initialTimerValue="data['battle_duration']!" />
         </div>
       </div>
 
@@ -63,12 +63,23 @@ await fetchChallengePage();
 
 const isWaitingModalVisible = ref(false);
 const isBattle = ref(false);
+const timer = ref(data.value.battle_duration);
+let interval = null;
 
 const onStartBattle = () => {
   isWaitingModalVisible.value = false;
 
   setTimeout(() => {
     isBattle.value = true;
+
+    interval = setInterval(() => {
+      if (timer.value === 0) {
+        clearInterval(interval);
+        return;
+      }
+
+      timer.value -= 1000;
+    }, 1000);
   }, 300);
 };
 
