@@ -7,7 +7,12 @@ import { useDataStore } from "@/store/data";
 import { useBattleStore } from "@/store/battle";
 
 // types
-import { NotificationProps, ResponseObject, ResponseData, MainState } from "@/types";
+import {
+  NotificationProps,
+  ResponseObject,
+  ResponseData,
+  MainState,
+} from "@/types";
 
 // api
 import { makeRequest } from "@/api/server";
@@ -51,17 +56,19 @@ export const useMainStore = defineStore("main", () => {
   const parseResponse = (response: ResponseObject) => {
     (Object.keys(response) as Array<keyof ResponseObject>).forEach((key) => {
       if (key === "data") {
-        (Object.keys(response.data) as Array<keyof ResponseData>).forEach((section) => {
-          const sectionData = response.data[section];
+        (Object.keys(response.data) as Array<keyof ResponseData>).forEach(
+          (section) => {
+            const sectionData = response.data[section];
 
-          if (sectionData === null) return;
+            if (sectionData === null) return;
 
-          if (section === "notification") {
-            showNotification(sectionData as NotificationProps);
-          } else {
-            dataStore.set(section, sectionData);
+            if (section === "notification") {
+              showNotification(sectionData as NotificationProps);
+            } else {
+              dataStore.set(section, sectionData);
+            }
           }
-        });
+        );
       } else {
         state.value[key] = response[key];
       }
@@ -76,7 +83,12 @@ export const useMainStore = defineStore("main", () => {
     }
   };
 
-  const showNotification = ({ title, subtitle, buttons, timeout }: NotificationProps) => {
+  const showNotification = ({
+    title,
+    subtitle,
+    buttons,
+    timeout,
+  }: NotificationProps) => {
     if (notification.value.isShown) return;
 
     notification.value.title = title;
@@ -101,7 +113,13 @@ export const useMainStore = defineStore("main", () => {
     notification.value.isShown = false;
   };
 
-  const showTooltip = ({ element, text }: { element: HTMLElement; text: string }) => {
+  const showTooltip = ({
+    element,
+    text,
+  }: {
+    element: HTMLElement;
+    text: string;
+  }) => {
     if (element === tooltip.value.element) {
       return;
     }
@@ -121,7 +139,13 @@ export const useMainStore = defineStore("main", () => {
     tooltip.value.isShown = false;
   };
 
-  const notificationAction = ({ api, data }: { api: string; data: unknown }) => {
+  const notificationAction = ({
+    api,
+    data,
+  }: {
+    api: string;
+    data: unknown;
+  }) => {
     useFetch({ key: api, data });
   };
 
@@ -149,14 +173,18 @@ export const useMainStore = defineStore("main", () => {
     if (requestQueue.value.length > 3) return;
 
     return new Promise((res, rej) => {
-      console.log(requestQueue.value.length);
+      // console.log(requestQueue.value.length);
 
       requestQueue.value.push(async () => {
         const result = await makeRequest({
           apiUrl: state.value.apiUrl,
           payload: {
             key,
-            data: { ...data, answers: battleStore.answers, lastTaskId: battleStore.lastTaskId },
+            data: {
+              ...data,
+              answers: battleStore.answers,
+              lastTaskId: battleStore.lastTaskId,
+            },
             service: state.value.service,
           },
         });
