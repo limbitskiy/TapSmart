@@ -1,4 +1,4 @@
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { defineStore } from "pinia";
 
@@ -11,6 +11,7 @@ import { NotificationProps, ResponseObject, ResponseData, MainState } from "@/ty
 
 // api
 import { makeRequest } from "@/api/server";
+import { log } from "console";
 
 export const useMainStore = defineStore("main", () => {
   const notification = ref<NotificationProps>({
@@ -33,6 +34,19 @@ export const useMainStore = defineStore("main", () => {
   const battleStore = useBattleStore();
 
   const notificationData = computed(() => notification.value);
+
+  const requestPending = ref(false);
+  const requestQueue = ref([]);
+
+  watch(
+    requestQueue,
+    (queue) => {
+      if (queue.length) {
+        processRequestQueue();
+      }
+    },
+    { deep: true }
+  );
 
   const parseResponse = (response: ResponseObject) => {
     (Object.keys(response) as Array<keyof ResponseObject>).forEach((key) => {
@@ -131,24 +145,48 @@ export const useMainStore = defineStore("main", () => {
     return await useFetch({ key: "profile_set", data });
   };
 
-  const useFetch = async ({ key, data }: { key?: string; data?: {} }) => {
-    const result = await makeRequest({
-      apiUrl: state.value.apiUrl,
-      payload: {
-        key,
-        data: { ...data, answers: battleStore.answers, lastTaskId: battleStore.lastTaskId },
-        service: state.value.service,
-      },
+  const useFetch = ({ key, data }: { key?: string; data?: {} }) => {
+    if (requestQueue.value.length > 3) return;
+
+    return new Promise((res, rej) => {
+      console.log(requestQueue.value.length);
+
+      requestQueue.value.push(async () => {
+        const result = await makeRequest({
+          apiUrl: state.value.apiUrl,
+          payload: {
+            key,
+            data: { ...data, answers: battleStore.answers, lastTaskId: battleStore.lastTaskId },
+            service: state.value.service,
+          },
+        });
+
+        parseResponse(result.data);
+
+        res(true);
+
+        const redirectLocation = result.data.redirect;
+
+        if (redirectLocation) {
+          console.log(`redirecting to ${redirectLocation}`);
+          router.push(redirectLocation);
+        }
+      });
     });
+  };
 
-    parseResponse(result.data);
+  const processRequestQueue = async () => {
+    if (requestPending.value) return;
 
-    const redirectLocation = result.data.redirect;
+    requestPending.value = true;
+    const currentRequest = requestQueue.value[0];
 
-    if (redirectLocation) {
-      console.log(`redirecting to ${redirectLocation}`);
-      router.push(redirectLocation);
+    if (currentRequest) {
+      await currentRequest();
     }
+
+    requestPending.value = false;
+    requestQueue.value.shift();
   };
 
   return {

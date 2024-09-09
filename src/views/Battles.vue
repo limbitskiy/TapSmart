@@ -24,10 +24,16 @@
       <ChallengeButton class="text-sm" @challenge="openBoosterModal" />
       <VolumeControl />
     </div>
+
     <RouterView v-slot="{ Component }">
-      <!-- <Transition name="fade" mode="out-in"> -->
-      <component :is="Component" />
-      <!-- </Transition> -->
+      <template v-if="Component">
+        <Transition name="fade" mode="out-in">
+          <Suspense suspensible>
+            <component :is="Component" />
+            <template #fallback> Loading... </template>
+          </Suspense>
+        </Transition>
+      </template>
     </RouterView>
 
     <!-- mechanic change modal -->

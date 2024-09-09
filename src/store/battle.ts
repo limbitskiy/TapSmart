@@ -81,8 +81,6 @@ export const useBattleStore = defineStore("battle", () => {
       }
 
       if (key === "data") {
-        console.log(`hello, data`);
-
         taskIndex.value = 0;
       }
 

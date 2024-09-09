@@ -1,13 +1,18 @@
 <template>
   <div class="home-page flex-1 flex">
     <RouterView v-slot="{ Component }">
-      <Suspense>
+      <template v-if="Component">
         <Transition name="fade" mode="out-in">
-          <div class="home-page-content flex-1 flex flex-col relative">
+          <Suspense suspensible timeout="1000">
+            <!-- <div class="home-page-content flex-1 flex flex-col relative"> -->
             <component :is="Component" />
-          </div>
+            <template #fallback>
+              <Loader />
+            </template>
+            <!-- </div> -->
+          </Suspense>
         </Transition>
-      </Suspense>
+      </template>
     </RouterView>
     <Navigation />
   </div>
@@ -16,4 +21,5 @@
 <script setup lang="ts">
 // components
 import Navigation from "@/components/Navigation.vue";
+import Loader from "@/components/UI/Loader.vue";
 </script>

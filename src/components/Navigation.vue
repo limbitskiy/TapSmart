@@ -25,7 +25,7 @@ import { useRouter, useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
 
 // stores
-import { useDataStore } from "@/store/data.ts";
+import { useDataStore } from "@/store/data";
 
 const router = useRouter();
 const route = useRoute();

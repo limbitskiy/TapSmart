@@ -17,6 +17,7 @@ export const images = {
   energy: "/energy.png",
   level: "/level-arrow.png",
   cup: "/cup.png",
+  loader: "/loader.svg",
 };
 
 // assets folder

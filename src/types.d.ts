@@ -1,3 +1,11 @@
+export interface RequestParams {
+  apiUrl: string;
+  payload: {
+    data: {};
+    service: {};
+  };
+}
+
 export interface ResponseData {
   battles: {};
   profile: {};

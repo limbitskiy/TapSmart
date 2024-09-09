@@ -1,8 +1,8 @@
 <template>
   <div id="friends" class="flex-1">
     <div class="top-part p-5">
-      <div class="page-title mb-2">{{ locale["title"] }}</div>
-      <div class="page-subtitle text-gray-200" v-html="locale['subtitle']"></div>
+      <div class="page-title mb-2">{{ locale?.["title"] }}</div>
+      <div class="page-subtitle text-gray-200" v-html="locale?.['subtitle']"></div>
 
       <div class="pills flex flex-col gap-4 my-4">
         <IconPill color="dark">
@@ -12,10 +12,10 @@
 
           <template #end>
             <div class="flex flex-col gap-1">
-              <span class="text-lg pill-title">{{ locale["premium_pill_title"] }}</span>
+              <span class="text-lg pill-title">{{ locale?.["premium_pill_title"] }}</span>
               <div class="flex items-center gap-2">
                 <img class="h-4 scale-150" :src="getAsset('bolt')" />
-                <span class="text-gray-400 exo-bold" v-html="locale['premium_pill_subtitle']"></span>
+                <span class="text-gray-400 exo-bold" v-html="locale?.['premium_pill_subtitle']"></span>
               </div>
             </div>
           </template>
@@ -28,10 +28,10 @@
 
           <template #end>
             <div class="flex flex-col gap-1">
-              <span class="text-lg pill-title">{{ locale["tg_pill_title"] }}</span>
+              <span class="text-lg pill-title">{{ locale?.["tg_pill_title"] }}</span>
               <div class="flex items-center gap-2">
                 <img class="h-4 scale-150" :src="getAsset('bolt')" />
-                <span class="text-gray-400 exo-bold" v-html="locale['tg_pill_subtitle']"></span>
+                <span class="text-gray-400 exo-bold" v-html="locale?.['tg_pill_subtitle']"></span>
               </div>
             </div>
           </template>
@@ -41,29 +41,29 @@
 
     <!-- stats -->
     <BackgroundPill class="py-8">
-      <span class="bg-pill-title">{{ locale["income_title"] }}</span>
+      <span class="bg-pill-title">{{ locale?.["income_title"] }}</span>
 
-      <Pill class="mt-4" color="light" :tooltip="locale['tooltip_bolts_earned']">
+      <Pill class="mt-4" color="light" :tooltip="locale?.['tooltip_bolts_earned']">
         <div class="content flex items-center justify-between">
-          <span class="text-xl font-semibold text-gray-300">{{ locale["bolts_earned"] || "Bolts earned" }}</span>
+          <span class="text-xl font-semibold text-gray-300">{{ locale?.["bolts_earned"] || "Bolts earned" }}</span>
           <div class="price flex gap-2 items-center">
             <img class="h-4 scale-150" :src="getAsset('bolt')" />
-            <span class="text-xl font-bold exo-bold">{{ data["income"] || 0 }}</span>
+            <span class="text-xl font-bold exo-bold">{{ data?.["income"] || 0 }}</span>
           </div>
         </div>
       </Pill>
 
-      <Pill class="mt-4" color="light" :tooltip="locale['tooltip_battles_played']">
+      <Pill class="mt-4" color="light" :tooltip="locale?.['tooltip_battles_played']">
         <div class="content flex justify-between">
-          <span class="text-xl font-semibold text-gray-300">{{ locale["battles_played"] || "Battles played" }}</span>
-          <span class="text-xl font-bold exo-bold">{{ data["battles"] || 0 }}</span>
+          <span class="text-xl font-semibold text-gray-300">{{ locale?.["battles_played"] || "Battles played" }}</span>
+          <span class="text-xl font-bold exo-bold">{{ data?.["battles"] || 0 }}</span>
         </div>
       </Pill>
 
-      <Pill class="mt-4" color="light" :tooltip="locale['tooltip_points_earned']">
+      <Pill class="mt-4" color="light" :tooltip="locale?.['tooltip_points_earned']">
         <div class="content flex justify-between">
-          <span class="text-xl font-semibold text-gray-300">{{ locale["points_earned"] || "Points earned" }}</span>
-          <span class="text-xl font-bold exo-bold">{{ data["points"] || 0 }}</span>
+          <span class="text-xl font-semibold text-gray-300">{{ locale?.["points_earned"] || "Points earned" }}</span>
+          <span class="text-xl font-bold exo-bold">{{ data?.["points"] || 0 }}</span>
         </div>
       </Pill>
     </BackgroundPill>
@@ -72,18 +72,18 @@
     <BackgroundPill class="py-8 mt-12 mb-[150px] relative">
       <div class="header flex items-center justify-between">
         <div class="title flex items-center gap-2">
-          <span class="bg-pill-title">{{ locale["friends_title"] }}</span>
-          <div class="counter bg-[var(--grey-light)] py-1 px-2 rounded flex items-center h-7 exo-black">{{ data.friendList.length }}</div>
+          <span class="bg-pill-title">{{ locale?.["friends_title"] }}</span>
+          <div class="counter bg-[var(--grey-light)] py-1 px-2 rounded flex items-center h-7 exo-black">{{ data?.friendList?.length }}</div>
         </div>
         <div ref="el" class="refresh-friends mr-4" @click="onRefreshFriends">
           <img :src="getAsset('refresh')" />
         </div>
       </div>
 
-      <template v-if="data.friendList.length">
+      <template v-if="data?.friendList?.length">
         <div class="switches flex justify-start gap-3 mt-4">
-          <Button class="!py-1 !px-3" :class="filters.online ? '' : 'bg-gray-500 text-white'" @click="onOnlineFilter">{{ locale["online"] }}</Button>
-          <Button class="!py-1 !px-3" :class="filters.battles ? '' : 'bg-gray-500 text-white'" @click="onBattlesFilter">{{ locale["battles"] }}</Button>
+          <Button class="!py-1 !px-3" :class="filters.online ? '' : 'bg-gray-500 text-white'" @click="onOnlineFilter">{{ locale?.["online"] }}</Button>
+          <Button class="!py-1 !px-3" :class="filters.battles ? '' : 'bg-gray-500 text-white'" @click="onBattlesFilter">{{ locale?.["battles"] }}</Button>
         </div>
 
         <TransitionGroup class="friend-list flex flex-col gap-4 my-4" name="list" tag="div">
@@ -98,7 +98,7 @@
     <!-- invite buttons -->
     <div class="invite-btn-cnt fixed bottom-16 w-full p-4 flex justify-between gap-3 z-10">
       <Button class="flex items-center justify-between flex-1 px-4 py-2" @click="onInviteFriend">
-        <span class="text-xl">{{ locale["invite_a_friend"] }}</span>
+        <span class="text-xl">{{ locale?.["invite_a_friend"] }}</span>
         <img :src="getAsset('paw')" />
       </Button>
       <Button class="px-4 py-2 border border-gray-800" black @click="onCopyToClipboard"><img :src="getAsset('copy')" /></Button>
@@ -113,9 +113,9 @@ import { getAsset } from "@/utils";
 import { storeToRefs } from "pinia";
 
 // store
-import { useMainStore } from "@/store/main.ts";
-import { useDataStore } from "@/store/data.ts";
-import { useLocaleStore } from "@/store/locale.ts";
+import { useMainStore } from "@/store/main";
+import { useDataStore } from "@/store/data";
+import { useLocaleStore } from "@/store/locale";
 
 // components
 import Button from "@/components/UI/Button.vue";
@@ -131,7 +131,7 @@ const localeStore = useLocaleStore();
 const { friends: data } = storeToRefs(dataStore);
 const { friends: locale } = storeToRefs(localeStore);
 
-const { showToast, fetchFriendsPage } = mainStore;
+const { fetchFriendsPage } = mainStore;
 
 const el = ref();
 
@@ -191,7 +191,6 @@ const onInviteFriend = () => {
 const onCopyToClipboard = () => {
   const link = generateLink();
   navigator.clipboard.writeText(link);
-  // showToast("Link has been copied to clipboard");
 };
 
 onMounted(() => {});
