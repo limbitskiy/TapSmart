@@ -5,7 +5,7 @@
         <Transition :name="route.meta.transition || 'fade'" mode="out-in">
           <Suspense>
             <component :is="Component" />
-            <template #fallback> Loading... </template>
+            <template #fallback><Loader /></template>
           </Suspense>
         </Transition>
       </template>
@@ -60,19 +60,23 @@ import { useMainStore } from "@/store/main";
 import Notification from "@/components/Notification.vue";
 import Tooltip from "@/components/Tooltip.vue";
 import Modal from "@/components/Modal.vue";
+import Loader from "@/components/UI/Loader.vue";
 
 const mainStore = useMainStore();
 const { tooltip, modal } = storeToRefs(mainStore);
+const { hideModal, notificationAction } = mainStore;
 
 const onModalButton = (btn: { api: string; data: string; isClose: boolean }) => {
+  console.log(btn);
+
   if (btn.isClose) {
-    // hideNotification();
+    hideModal();
     return;
   }
 
   if (btn.api && btn.data) {
-    // notificationAction({ api: btn.api, data: btn.data });
-    // hideNotification();
+    notificationAction({ api: btn.api, data: btn.data });
+    hideModal();
   }
 };
 </script>

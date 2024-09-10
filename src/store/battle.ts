@@ -28,6 +28,8 @@ export const useBattleStore = defineStore("battle", () => {
     2: "4answers",
     3: "bubble_pairs",
     4: "audio_question",
+    5: "match_pairs",
+    6: "work_on_mistakes",
   };
 
   const taskIndex = ref(0);
@@ -346,8 +348,8 @@ export const useBattleStore = defineStore("battle", () => {
     }
   };
 
-  const changeMechanic = (mechId: string) => {
-    userStore.useFetch({ key: "battle_init", data: { battle_type: +mechId } });
+  const changeMechanic = (mechId: number) => {
+    userStore.useFetch({ key: "battle_init", data: { battle_type: mechId } });
   };
 
   const getMechanicName = (mechId: number) => {

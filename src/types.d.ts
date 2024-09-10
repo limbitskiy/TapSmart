@@ -120,6 +120,7 @@ export type Mechanic = {
   league: number;
   nuts: number;
   timeout: number;
+  order: number;
 };
 
 export type Booster = {
@@ -154,5 +155,5 @@ export type SettingsKeys = "sound" | "music" | "vibro";
 export type DataSections = "tutorial" | "profile" | "battles" | "menu" | "friends" | "leaders" | "market" | "tasks";
 
 export type BattleTypes = {
-  readonly [x: number]: "yesno" | "4answers" | "bubble_pairs" | "audio_question";
+  readonly [x: number]: "yesno" | "4answers" | "bubble_pairs" | "audio_question" | "match_pairs" | "work_on_mistakes";
 };

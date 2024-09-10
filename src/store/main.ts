@@ -148,11 +148,11 @@ export const useMainStore = defineStore("main", () => {
     modal.value.isShown = false;
   };
 
-  const notificationAction = ({ api, data }: { api: string; data: unknown }) => {
+  const notificationAction = ({ api, data }: { api: string; data: {} }) => {
     useFetch({ key: api, data });
   };
 
-  const initialFetch = async (data: unknown) => {
+  const initialFetch = async (data: {}) => {
     return await useFetch({ data });
   };
 
@@ -164,11 +164,11 @@ export const useMainStore = defineStore("main", () => {
     return await useFetch({ key: "battle_init" });
   };
 
-  const fetchChallengePage = async (data) => {
+  const fetchChallengePage = async (data: {}) => {
     return await useFetch({ key: "challenge_init", data });
   };
 
-  const setLanguages = async (data: unknown) => {
+  const setLanguages = async (data: {}) => {
     return await useFetch({ key: "profile_set", data });
   };
 
@@ -236,5 +236,6 @@ export const useMainStore = defineStore("main", () => {
     notificationAction,
     showTooltip,
     hideTooltip,
+    hideModal,
   };
 });

@@ -7,14 +7,19 @@
     <div class="pill-content">
       <div class="pill-toolbar flex items-center justify-between min-h-[20px]">
         <!-- league -->
-        <div v-if="battles.mechanics[mechName].league" ref="leagueRef" class="league flex gap-1 items-center rounded-full px-2 bg-[var(--grey-dark)]" @click="onLeagueClick">
+        <div v-if="battles.mechanics?.[mechName].league" ref="leagueRef" class="league flex gap-1 items-center rounded-full px-2 bg-[var(--grey-dark)]" @click="onLeagueClick">
           <img class="h-4" :src="getAsset('league')" />
-          <span class="text-sm exo-bold">: {{ battles.mechanics[mechName].league }}</span>
+          <span class="text-sm exo-bold">: {{ battles.mechanics?.[mechName].league }}</span>
         </div>
 
         <!-- bolts -->
-        <div v-if="battles.mechanics[mechName].bolts_bonus" ref="boltsRef" class="bolts-bonus flex gap-1 items-center rounded-full px-2 bg-[var(--grey-dark)]" @click="onBoltClick">
-          <span class="text-sm exo-bold">+{{ battles.mechanics[mechName].bolts_bonus }}%</span>
+        <div
+          v-if="battles.mechanics?.[mechName].bolts_bonus"
+          ref="boltsRef"
+          class="bolts-bonus flex gap-1 items-center rounded-full px-2 bg-[var(--grey-dark)]"
+          @click="onBoltClick"
+        >
+          <span class="text-sm exo-bold">+{{ battles.mechanics?.[mechName].bolts_bonus }}%</span>
           <img class="h-4" :src="getAsset('bolt')" />
         </div>
       </div>
@@ -24,25 +29,25 @@
         <div class="pill-img">
           <slot name="image"></slot>
         </div>
-        <span class="fira-semibold">{{ locale[`${mechName}_title`] }}</span>
-        <span class="fira-condensed text-[#838383] leading-5">{{ locale[`${mechName}_desc`] }}</span>
+        <span class="fira-semibold">{{ locale?.[`${mechName}_title`] }}</span>
+        <span class="fira-condensed text-[#838383] leading-5">{{ locale?.[`${mechName}_desc`] }}</span>
       </div>
     </div>
     <!-- active -->
     <button v-if="battles.currentBattleType == mechId" class="px-2 w-full bg-[var(--accent-color)] text-black rounded-full fira-condensed-bold mt-2 py-1">
-      {{ locale["button_active"] || "Active" }}
+      {{ locale?.["button_active"] || "Active" }}
     </button>
     <!-- trial message -->
     <button
-      v-else-if="battles.mechanics[mechName].nuts"
+      v-else-if="battles.mechanics?.[mechName].nuts"
       class="px-2 w-full bg-[var(--green-color)] text-white rounded-full fira-condensed-bold mt-2 py-1"
       @click="() => emit('select', mechId)"
     >
       <div class="btn-content flex items-center justify-center gap-3">
-        {{ locale["button_trial_message"] }}
+        {{ locale?.["button_trial_message"] }}
         <div class="bolts flex items-center gap-1">
           <img class="h-4" :src="getAsset('nut')" />
-          <span class="exo-black">{{ battles.mechanics[mechName].nuts }}</span>
+          <span class="exo-black">{{ battles.mechanics?.[mechName].nuts }}</span>
         </div>
       </div>
     </button>
@@ -50,16 +55,16 @@
     <button
       v-else
       class="px-2 w-full bg-[var(--green-color)] text-white rounded-full fira-condensed-bold mt- py-1"
-      :class="{ 'bg-transparent border border-gray-500 text-gray-200': battles.mechanics[mechName].disabled }"
+      :class="{ 'bg-transparent border border-gray-500 text-gray-200': battles.mechanics?.[mechName].disabled }"
       @click="() => emit('select', mechId)"
     >
-      {{ locale[`button_${mechName}`] }}
+      {{ buttonLabel }}
     </button>
   </Pill>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 
@@ -72,11 +77,11 @@ import { useMainStore } from "@/store/main";
 import Pill from "@/components/UI/Pill.vue";
 
 const props = defineProps<{
-  mechId: string;
+  mechId: number;
 }>();
 
 const emit = defineEmits<{
-  select: [mechId: string];
+  select: [mechId: number];
 }>();
 
 const leagueRef = ref();
@@ -87,22 +92,30 @@ const localeStore = useLocaleStore();
 const mainStore = useMainStore();
 
 const { battles: locale } = storeToRefs(localeStore);
-const { battles } = dataStore;
+const { battles } = storeToRefs(dataStore);
 const { showTooltip } = mainStore;
 
-const mechName = battles.getMechanicName(props.mechId);
+const mechName = battles.value.getMechanicName(props.mechId);
+
+const buttonLabel = computed(() => {
+  if (battles.value.mechanics?.[mechName].disabled) {
+    return locale.value?.["button_coming_soon"] ?? "Coming soon";
+  }
+
+  return locale.value?.["button_mechanic_select"] ?? "Select";
+});
 
 const onLeagueClick = () => {
   showTooltip({
     element: leagueRef.value,
-    text: locale.value["tooltip_league"],
+    text: locale.value?.["tooltip_league"] ?? "",
   });
 };
 
 const onBoltClick = () => {
   showTooltip({
     element: boltsRef.value,
-    text: locale.value["tooltip_bonus"],
+    text: locale.value?.["tooltip_bonus"] ?? "",
   });
 };
 </script>
