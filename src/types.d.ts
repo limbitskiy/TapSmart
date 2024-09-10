@@ -81,6 +81,19 @@ export interface NotificationProps {
   isShown: boolean;
 }
 
+export interface TooltipProps {
+  text: null | string;
+  element: null | HTMLElement;
+  isShown: boolean;
+}
+
+export interface ModalProps {
+  title: string | null;
+  subtitle: string | null;
+  buttons: {};
+  isShown: boolean;
+}
+
 export interface Settings {
   sound: boolean;
   music: boolean;

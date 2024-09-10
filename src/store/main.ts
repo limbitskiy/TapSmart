@@ -7,7 +7,7 @@ import { useDataStore } from "@/store/data";
 import { useBattleStore } from "@/store/battle";
 
 // types
-import { NotificationProps, ResponseObject, ResponseData, MainState } from "@/types";
+import { NotificationProps, ResponseObject, ResponseData, MainState, TooltipProps, ModalProps } from "@/types";
 
 // api
 import { makeRequest } from "@/api/server";
@@ -21,9 +21,16 @@ export const useMainStore = defineStore("main", () => {
     isShown: false,
   });
 
-  const tooltip = ref({
-    text: <null | string>null,
-    element: <null | HTMLElement>null,
+  const tooltip = ref<TooltipProps>({
+    text: null,
+    element: null,
+    isShown: false,
+  });
+
+  const modal = ref<ModalProps>({
+    title: null,
+    subtitle: null,
+    buttons: {},
     isShown: false,
   });
 
@@ -121,6 +128,24 @@ export const useMainStore = defineStore("main", () => {
     tooltip.value.isShown = false;
   };
 
+  const showModal = ({ title, subtitle, buttons }: ModalProps) => {
+    if (modal.value.isShown) return;
+
+    modal.value.title = title;
+    modal.value.subtitle = subtitle;
+    modal.value.buttons = buttons;
+    modal.value.isShown = true;
+
+    // console.log(`modal: `, modal.value);
+  };
+
+  const hideModal = () => {
+    modal.value.title = null;
+    modal.value.subtitle = null;
+    modal.value.buttons = {};
+    modal.value.isShown = false;
+  };
+
   const notificationAction = ({ api, data }: { api: string; data: unknown }) => {
     useFetch({ key: api, data });
   };
@@ -196,6 +221,7 @@ export const useMainStore = defineStore("main", () => {
   return {
     notificationData,
     tooltip,
+    modal,
     startApp,
     fetchFriendsPage,
     fetchBattlesPage,
