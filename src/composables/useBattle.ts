@@ -13,7 +13,7 @@ export const useBattle = (defineCorrect: (answer: string, currentTask: Task, opt
   const route = useRoute();
 
   const { currentTask } = storeToRefs(dataStore.battles);
-  const { onAnswer, onChallengeAnswer, onVibrate, fullStopTaskTimeout } = dataStore.battles;
+  const { handleRelaxAnswer, handleChallengeAnswer, onVibrate, fullStopTaskTimeout } = dataStore.battles;
 
   const bonuses = ref<Bonus[]>([]);
   let answerInProgress = false;
@@ -37,9 +37,9 @@ export const useBattle = (defineCorrect: (answer: string, currentTask: Task, opt
     }
 
     if (route.path.includes("battles")) {
-      onAnswer({ isCorrect: correct, answerString: answer });
+      handleRelaxAnswer({ isCorrect: correct, answerString: answer });
     } else if (route.path.includes("challenge")) {
-      onChallengeAnswer({ isCorrect: correct, answerString: answer });
+      handleChallengeAnswer({ isCorrect: correct, answerString: answer });
     }
 
     answerInProgress = false;
