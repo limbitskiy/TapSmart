@@ -28,5 +28,7 @@ export const makeRequest = async ({ apiUrl, payload }: RequestParams) => {
     // console.timeEnd(`timeout`);
   }
 
+  lastCall = Date.now();
+
   return await axios.post(`${apiUrl ?? defaultApiUrl}/main`, payload);
 };

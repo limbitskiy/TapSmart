@@ -24,9 +24,7 @@
     <Teleport to="body">
       <Modal v-model:visible="modal.isShown" sticky>
         <div class="modal-content flex flex-col gap-2">
-          <span class="text-xl fira-condensed-bold text-gray-100">{{
-            modal.title
-          }}</span>
+          <span class="text-xl fira-condensed-bold text-gray-100">{{ modal.title }}</span>
           <span class="fira-condensed text-base">{{ modal.subtitle }}</span>
           <div class="btns flex justify-end gap-4 mt-2">
             <button
@@ -71,7 +69,6 @@ const { hideModal, callApi } = mainStore;
 const onModalButton = (btn: { api: string; data: {} }) => {
   if (btn.api) {
     callApi({ api: btn.api, data: btn.data });
-    return;
   }
 
   hideModal();

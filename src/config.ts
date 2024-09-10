@@ -18,6 +18,12 @@ export const images = {
   level: "/level-arrow.png",
   cup: "/cup.png",
   loader: "/loader.svg",
+  mech_1: "/mechanic_1.svg",
+  mech_2: "/mechanic_2.svg",
+  mech_3: "/mechanic_3.svg",
+  mech_4: "/mechanic_4.svg",
+  mech_5: "/mechanic_5.svg",
+  mech_6: "/mechanic_6.svg",
 };
 
 // assets folder

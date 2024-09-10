@@ -122,12 +122,12 @@ router.beforeEach((to, from) => {
   }
 
   if (to.path === "/home/battles") {
-    battles.startTaskTimeout();
+    // battles.startTaskTimeout();
     // console.log(`turning timer on from Routes`);
   }
 
   if (from.path.includes("/home/battles/") && !to.path.includes("/home/battles/")) {
-    battles.fullStopTaskTimeout();
+    // battles.fullStopTaskTimeout();
     // console.log(`turning timer OFF from Routes`);
   }
 });

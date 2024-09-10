@@ -4,16 +4,19 @@ import { useRoute } from "vue-router";
 
 // stores
 import { useDataStore } from "@/store/data";
+import { useMainStore } from "@/store/main";
 
 // types
 import { Task, Bonus } from "@/types";
 
 export const useBattle = (defineCorrect: (answer: string, currentTask: Task, options?: {}) => boolean, el?: Ref<HTMLElement>) => {
   const dataStore = useDataStore();
+  const mainStore = useMainStore();
   const route = useRoute();
 
   const { currentTask } = storeToRefs(dataStore.battles);
-  const { handleRelaxAnswer, handleChallengeAnswer, onVibrate, fullStopTaskTimeout } = dataStore.battles;
+  const { onVibrate } = mainStore;
+  const { handleRelaxAnswer, handleChallengeAnswer, stopTaskTimeout } = dataStore.battles;
 
   const bonuses = ref<Bonus[]>([]);
   let answerInProgress = false;
@@ -21,7 +24,7 @@ export const useBattle = (defineCorrect: (answer: string, currentTask: Task, opt
   const handleAnswer = async (answer: string, { clientX, clientY }: MouseEvent, options?: { [key: string]: any }) => {
     if (answerInProgress) return;
 
-    fullStopTaskTimeout();
+    stopTaskTimeout();
 
     answerInProgress = true;
 

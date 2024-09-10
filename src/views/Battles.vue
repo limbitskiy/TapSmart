@@ -91,8 +91,8 @@ const localeStore = useLocaleStore();
 
 const { battles: data } = storeToRefs(dataStore);
 const { battles: locale } = storeToRefs(localeStore);
-const { startTaskTimeout, stopTaskTimeout, startBreakpoint, stopBreakpoint } = data.value;
-const { fetchBattlesPage } = mainStore;
+const { startBreakpoint, stopBreakpoint, startTaskTimeout, stopTaskTimeout, getMechanicName, setTaskTimeoutCounter } = dataStore.battles;
+const { fetchBattlesPage, redirectTo } = mainStore;
 
 const isChangeMechModalVisible = ref(false);
 const isNoEnergyModalVisible = ref(false);
@@ -100,10 +100,9 @@ const isBoostersModalVisible = ref(false);
 
 watch([isChangeMechModalVisible, isNoEnergyModalVisible, isBoostersModalVisible], (val) => {
   if (val.some((modal) => modal)) {
-    // console.log(`stop`);
-    stopTaskTimeout();
+    setTaskTimeoutCounter(1);
   } else {
-    // console.log(`start`);
+    setTaskTimeoutCounter(null);
     startTaskTimeout();
   }
 });
@@ -134,7 +133,7 @@ const openBoosterModal = () => {
   isBoostersModalVisible.value = true;
 };
 
-const onStartChallenge = ({ extra_mistake, extra_time, friends_only }) => {
+const onStartChallenge = ({ extra_mistake, extra_time, friends_only }: { [key: string]: string }) => {
   isBoostersModalVisible.value = false;
   setTimeout(() => {
     router.push(`/challenge/yesno?extra_mistake=${extra_mistake}&extra_time=${extra_time}&friends_only=${friends_only}`);
@@ -143,9 +142,12 @@ const onStartChallenge = ({ extra_mistake, extra_time, friends_only }) => {
 
 onMounted(() => {
   startBreakpoint("battle");
+  setTaskTimeoutCounter(null);
+  startTaskTimeout();
 });
 
 onBeforeUnmount(() => {
   stopBreakpoint();
+  setTaskTimeoutCounter(1);
 });
 </script>

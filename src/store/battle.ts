@@ -1,12 +1,10 @@
 import { computed, ref, watch } from "vue";
-import { useRouter, useRoute } from "vue-router";
 import { defineStore } from "pinia";
 
 // common
-import { BreakpointInterval } from "@/common/interval";
+import { Interval as BreakpointInterval, Timer as TaskTimer } from "@/common/interval";
 
 // composables
-import { useTaskTimeout } from "@/composables/useTaskTimeout";
 
 // stores
 import { useDataStore } from "@/store/data";
@@ -16,9 +14,6 @@ import { useMainStore } from "@/store/main";
 import { BattleTypes, BattleState, AnswerProps, Answer } from "@/types";
 
 export const useBattleStore = defineStore("battle", () => {
-  const router = useRouter();
-  const route = useRoute();
-
   const dataStore = useDataStore();
   const mainStore = useMainStore();
 
@@ -31,12 +26,14 @@ export const useBattleStore = defineStore("battle", () => {
     6: "work_on_mistakes",
   };
 
-  const taskIndex = ref(0);
+  const taskIndex = ref<number | null>(null);
   const lastTaskId = ref<number | null>(null);
   const correctStreak = ref(1);
   const answers = ref<Answer[]>([]);
-  const currentBattleType = ref(0);
-  const currentBreakpointInterval = ref(null);
+
+  let currentBreakpointInterval: BreakpointInterval | null = null;
+  let currentTaskTimeout: TaskTimer | null = null;
+  let taskTimeoutCounter: number | null = null;
 
   const state = ref<BattleState>({});
 
@@ -52,26 +49,41 @@ export const useBattleStore = defineStore("battle", () => {
   const waiting_timer = computed(() => state.value.waiting_timer);
   const battle_duration = computed(() => state.value.battle_duration);
   const challengeButton = computed(() => state.value.battle_button_challenge);
+  const currentBattleType = computed(() => state.value.battle_type);
   const currentMechanic = computed(() => state.value.mechanics?.[getMechanicName(currentBattleType.value)]);
-
-  const taskTimeoutCb = () => {
-    handleRelaxAnswer({ isCorrect: false, answerString: "", subtractEnergyAmount: 0 });
-  };
-
-  // composables
-  const { start: startTaskTimeout, stop: stopTaskTimeout, setTime: setTaskTimeout, reset: resetTaskTimeout, fullStop: fullStopTaskTimeout } = useTaskTimeout(taskTimeoutCb);
-
-  watch(currentBattleType, (val, oldVal) => {
-    if (val === oldVal) return;
-
-    setTaskTimeout(currentMechanic.value?.timeout);
-    startTaskTimeout();
-  });
 
   const decreaseWaitingTimer = () => {
     if (state.value.waiting_timer) {
       state.value.waiting_timer -= 1000;
     }
+  };
+
+  const startTaskTimeout = () => {
+    if (!currentMechanic.value?.timeout || currentTaskTimeout || taskTimeoutCounter === 0) return;
+
+    const callback = () => {
+      stopTaskTimeout();
+      handleRelaxAnswer({ isCorrect: false, answerString: "", subtractEnergyAmount: 0 });
+    };
+
+    const taskTimeout = new TaskTimer(currentMechanic.value?.timeout, callback);
+    currentTaskTimeout = taskTimeout;
+    currentTaskTimeout.start();
+  };
+
+  const stopTaskTimeout = () => {
+    if (currentTaskTimeout) {
+      currentTaskTimeout.stop();
+      currentTaskTimeout = null;
+
+      if (taskTimeoutCounter) {
+        taskTimeoutCounter -= 1;
+      }
+    }
+  };
+
+  const setTaskTimeoutCounter = (value: number | null) => {
+    taskTimeoutCounter = value;
   };
 
   const startBreakpoint = (type: string) => {
@@ -132,13 +144,13 @@ export const useBattleStore = defineStore("battle", () => {
 
     const breakpointInterval = new BreakpointInterval(interval, callback);
 
-    currentBreakpointInterval.value = breakpointInterval;
+    currentBreakpointInterval = breakpointInterval;
     breakpointInterval.start();
   };
 
   const stopBreakpoint = () => {
-    if (currentBreakpointInterval.value) {
-      currentBreakpointInterval.value.stop();
+    if (currentBreakpointInterval) {
+      currentBreakpointInterval.stop();
     }
   };
 
@@ -154,29 +166,29 @@ export const useBattleStore = defineStore("battle", () => {
       }
 
       // battle type
-      if (key === "battle_type") {
-        currentBattleType.value = data["battle_type"];
+      // if (key === "battle_type") {
+      // currentBattleType.value = data["battle_type"];
 
-        if (!currentBattleType.value) {
-          console.error(`No such battle type`);
-        }
+      // if (!currentBattleType.value) {
+      //   console.error(`No such battle type`);
+      // }
 
-        mainStore.redirectTo(`/home/battles/${battleTypes[currentBattleType.value]}`);
-      }
+      // mainStore.redirectTo(`/home/battles/${battleTypes[data["battle_type"]]}`);
+      // }
 
       // battle mode
       if (key === "battle_mode") {
         if (data["battle_mode"] === "relax") {
-          mainStore.redirectTo(`/home/battles/${battleTypes[currentBattleType.value]}`);
+          mainStore.redirectTo(`/home/battles/${battleTypes[data["battle_type"]]}`);
         } else if (data["battle_mode"] === "challenge") {
-          mainStore.redirectTo(`/home/challenge/${battleTypes[currentBattleType.value]}`);
+          mainStore.redirectTo(`/home/challenge/${battleTypes[data["battle_type"]]}`);
         }
       }
-
+      // if no such key - create an empty object
       if (state.value[key]) {
-        state.value[key] = {};
+        state.value[key] = null;
       }
-
+      // copy data to the key
       state.value[key] = data[key];
     });
 
@@ -262,7 +274,7 @@ export const useBattleStore = defineStore("battle", () => {
       state.value.questions_left -= 1;
     }
 
-    resetTaskTimeout();
+    startTaskTimeout();
 
     // console.log(answers.value);
   };
@@ -322,21 +334,6 @@ export const useBattleStore = defineStore("battle", () => {
     correctStreak.value = 1;
   };
 
-  const onVibrate = (type: string) => {
-    if (dataStore.settings.vibro) {
-      switch (type) {
-        case "correct": {
-          navigator.vibrate(300);
-          break;
-        }
-        case "wrong": {
-          navigator.vibrate([100, 10, 100, 10, 100]);
-          break;
-        }
-      }
-    }
-  };
-
   const changeMechanic = (mechId: number) => {
     mainStore.callApi({ api: "battle_init", data: { battle_type: mechId } });
   };
@@ -387,10 +384,9 @@ export const useBattleStore = defineStore("battle", () => {
     changeMechanic,
     expand,
     getMechanicName,
-    onVibrate,
     startTaskTimeout,
     stopTaskTimeout,
-    fullStopTaskTimeout,
+    setTaskTimeoutCounter,
     startBreakpoint,
     stopBreakpoint,
     decreaseWaitingTimer,

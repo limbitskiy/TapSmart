@@ -74,8 +74,6 @@ const props = defineProps<{
   data: Mechanic;
 }>();
 
-console.log(props);
-
 const emit = defineEmits<{
   select: [mechId: number];
 }>();

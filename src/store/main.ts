@@ -1,5 +1,5 @@
 import { computed, ref, watch } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { defineStore } from "pinia";
 
 // stores
@@ -36,6 +36,7 @@ export const useMainStore = defineStore("main", () => {
   const state = ref<MainState>({});
 
   const router = useRouter();
+  const route = useRoute();
   const dataStore = useDataStore();
   const battleStore = useBattleStore();
 
@@ -151,6 +152,21 @@ export const useMainStore = defineStore("main", () => {
     useFetch({ key: api, data });
   };
 
+  const onVibrate = (type: string) => {
+    if (dataStore.settings.vibro) {
+      switch (type) {
+        case "correct": {
+          navigator.vibrate(300);
+          break;
+        }
+        case "wrong": {
+          navigator.vibrate([100, 10, 100, 10, 100]);
+          break;
+        }
+      }
+    }
+  };
+
   const initialFetch = async (data: {}) => {
     return await useFetch({ data });
   };
@@ -160,11 +176,15 @@ export const useMainStore = defineStore("main", () => {
   };
 
   const fetchBattlesPage = async () => {
-    return await useFetch({ key: "battle_init" });
+    await useFetch({ key: "battle_init" });
+    redirectTo(`/home/battles/${battleStore.getMechanicName(battleStore.currentBattleType)}`);
+    return;
   };
 
   const fetchChallengePage = async (data: {}) => {
-    return await useFetch({ key: "challenge_init", data });
+    await useFetch({ key: "challenge_init", data });
+    redirectTo(`/home/battles/${battleStore.getMechanicName(battleStore.currentBattleType)}`);
+    return;
   };
 
   const setLanguages = async (data: {}) => {
@@ -220,6 +240,8 @@ export const useMainStore = defineStore("main", () => {
   };
 
   const redirectTo = (location: string) => {
+    if (route.path === location) return;
+
     router.push(location);
   };
 
@@ -241,5 +263,6 @@ export const useMainStore = defineStore("main", () => {
     hideTooltip,
     hideModal,
     redirectTo,
+    onVibrate,
   };
 });

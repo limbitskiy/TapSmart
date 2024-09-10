@@ -4,17 +4,10 @@
 
     <template v-if="isBattle">
       <div class="challenge-stats relative z-10 flex flex-col gap-4 mt-2">
-        <ChallengeStatus
-          :timer="timer!"
-          :initialTimerValue="data['battle_duration']!"
-          @timeEnd="onEndBattle"
-        />
+        <ChallengeStatus :timer="timer!" :initialTimerValue="data['battle_duration']!" @timeEnd="onEndBattle" />
 
         <div class="wrap px-8">
-          <ProgressBar
-            :timer="timer!"
-            :initialTimerValue="data['battle_duration']!"
-          />
+          <ProgressBar :timer="timer!" :initialTimerValue="data['battle_duration']!" />
         </div>
       </div>
 
