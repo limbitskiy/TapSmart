@@ -65,6 +65,8 @@ export const useMainStore = defineStore("main", () => {
 
           if (section === "notification") {
             showNotification(sectionData as NotificationProps);
+          } else if (section === "modal") {
+            showModal(sectionData as ModalProps);
           } else {
             dataStore.set(section, sectionData);
           }

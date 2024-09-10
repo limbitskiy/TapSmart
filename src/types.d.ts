@@ -11,6 +11,7 @@ export interface ResponseData {
   profile: {};
   tutorial: {};
   notification: NotificationProps;
+  modal: ModalProps;
 }
 
 export interface ResponseObject {
