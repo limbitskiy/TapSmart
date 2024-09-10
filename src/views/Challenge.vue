@@ -20,7 +20,7 @@
 
     <!-- waiting modal -->
     <Teleport to="body">
-      <Modal v-model:visible="isWaitingModalVisible" sticky>
+      <Modal v-model:visible="isWaiting" sticky>
         <WaitingModal @countdownComplete="onStartBattle" />
       </Modal>
     </Teleport>
@@ -28,11 +28,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from "vue";
+import { ref, watch, onMounted, onBeforeUnmount } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "../utils";
 import { tg, getUserName } from "@/api/telegram";
-import { useWindowSize } from "@vueuse/core";
+import { useRoute } from "vue-router";
 
 // stores
 import { useDataStore } from "@/store/data";
@@ -48,6 +48,8 @@ import Backlight from "@/components/UI/Backlight.vue";
 import ChallengeStatus from "@/components/ChallengeStatus.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 
+const route = useRoute();
+
 const dataStore = useDataStore();
 const mainStore = useMainStore();
 const localeStore = useLocaleStore();
@@ -55,22 +57,29 @@ const localeStore = useLocaleStore();
 const { battles: data } = storeToRefs(dataStore);
 const { battles: locale } = storeToRefs(localeStore);
 
+const { startBreakpoint, stopBreakpoint } = data.value;
+
 const { fetchChallengePage } = mainStore;
 
-const { width } = useWindowSize();
+const challengeParams = {};
 
-await fetchChallengePage();
+Object.keys(route.query).forEach((key) => {
+  challengeParams[key] = +route.query[key];
+});
 
-const isWaitingModalVisible = ref(false);
+await fetchChallengePage(challengeParams);
+
+const isWaiting = ref(false);
 const isBattle = ref(false);
 const timer = ref(data.value.battle_duration);
 let interval = null;
 
 const onStartBattle = () => {
-  isWaitingModalVisible.value = false;
+  isWaiting.value = false;
 
   setTimeout(() => {
     isBattle.value = true;
+    startBreakpoint("challenge");
 
     interval = setInterval(() => {
       if (timer.value === 0) {
@@ -86,6 +95,10 @@ const onStartBattle = () => {
 const onEndBattle = () => {};
 
 onMounted(() => {
-  isWaitingModalVisible.value = true;
+  isWaiting.value = true;
+});
+
+onBeforeUnmount(() => {
+  stopBreakpoint();
 });
 </script>

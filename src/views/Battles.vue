@@ -60,7 +60,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { onMounted, ref, watch, onBeforeUnmount } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "../utils";
 import { tg, getUserName } from "@/api/telegram";
@@ -91,6 +91,7 @@ const localeStore = useLocaleStore();
 
 const { battles: data } = storeToRefs(dataStore);
 const { battles: locale } = storeToRefs(localeStore);
+const { startTaskTimeout, stopTaskTimeout, startBreakpoint, stopBreakpoint } = data.value;
 const { fetchBattlesPage } = mainStore;
 
 const isChangeMechModalVisible = ref(false);
@@ -100,10 +101,10 @@ const isBoostersModalVisible = ref(false);
 watch([isChangeMechModalVisible, isNoEnergyModalVisible, isBoostersModalVisible], (val) => {
   if (val.some((modal) => modal)) {
     // console.log(`stop`);
-    data.value.stopTaskTimeout();
+    stopTaskTimeout();
   } else {
     // console.log(`start`);
-    data.value.startTaskTimeout();
+    startTaskTimeout();
   }
 });
 
@@ -111,7 +112,7 @@ watch(
   () => data.value.energy,
   (val) => {
     if (val === 0) {
-      data.value.stopTaskTimeout();
+      stopTaskTimeout();
       isNoEnergyModalVisible.value = true;
     }
   }
@@ -133,10 +134,18 @@ const openBoosterModal = () => {
   isBoostersModalVisible.value = true;
 };
 
-const onStartChallenge = () => {
+const onStartChallenge = ({ extra_mistake, extra_time, friends_only }) => {
   isBoostersModalVisible.value = false;
   setTimeout(() => {
-    router.push("/challenge/yesno");
+    router.push(`/challenge/yesno?extra_mistake=${extra_mistake}&extra_time=${extra_time}&friends_only=${friends_only}`);
   }, 300);
 };
+
+onMounted(() => {
+  startBreakpoint("battle");
+});
+
+onBeforeUnmount(() => {
+  stopBreakpoint();
+});
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div id="friends" class="flex-1">
+  <div id="friends" class="mb-[150px]">
     <div class="top-part p-5">
       <div class="page-title mb-2">{{ locale?.["title"] }}</div>
       <div class="page-subtitle text-gray-200" v-html="locale?.['subtitle']"></div>
@@ -69,7 +69,7 @@
     </BackgroundPill>
 
     <!-- friends -->
-    <BackgroundPill class="py-8 mt-12 mb-[150px] relative">
+    <BackgroundPill class="py-8 mt-12 relative">
       <div class="header flex items-center justify-between">
         <div class="title flex items-center gap-2">
           <span class="bg-pill-title">{{ locale?.["friends_title"] }}</span>

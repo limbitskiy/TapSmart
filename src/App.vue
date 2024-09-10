@@ -1,5 +1,5 @@
 <template>
-  <div class="main-page flex w-full h-[100dvh] relative">
+  <div class="main-page flex w-full min-h-[100dvh] relative">
     <RouterView v-slot="{ Component, route }">
       <template v-if="Component">
         <Transition :name="route.meta.transition || 'fade'" mode="out-in">
@@ -27,7 +27,7 @@ import { onMounted } from "vue";
 import { RouterView } from "vue-router";
 
 // store
-import { useMainStore } from "@/store/main.ts";
+import { useMainStore } from "@/store/main";
 
 // components
 import Notification from "@/components/Notification.vue";

@@ -2,6 +2,9 @@ import { computed, ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { defineStore } from "pinia";
 
+// common
+import { BreakpointInterval } from "@/common/interval";
+
 // composables
 import { useTaskTimeout } from "@/composables/useTaskTimeout";
 import { useBpInterval } from "@/composables/useBpInterval";
@@ -16,6 +19,7 @@ import { BattleTypes, BattleState, AnswerProps, Answer } from "@/types";
 export const useBattleStore = defineStore("battle", () => {
   const router = useRouter();
   const route = useRoute();
+
   const dataStore = useDataStore();
   const userStore = useMainStore();
 
@@ -31,6 +35,7 @@ export const useBattleStore = defineStore("battle", () => {
   const correctStreak = ref(1);
   const answers = ref<Answer[]>([]);
   const currentBattleType = ref(0);
+  const currentBreakpointInterval = ref(null);
 
   const state = ref<BattleState>({});
 
@@ -73,6 +78,74 @@ export const useBattleStore = defineStore("battle", () => {
     startTaskTimeout();
   });
 
+  const startBreakpoint = (type: string) => {
+    stopBreakpoint();
+
+    const breakpointCb = () => {
+      if (document.hasFocus()) {
+        console.log(`is in focus`);
+        userStore.useFetch({ key: "battle_breakpoint" });
+        return;
+      }
+
+      console.log(`is not in focus`);
+    };
+
+    const challengeCb = () => {
+      if (document.hasFocus()) {
+        console.log(`is in focus`);
+        userStore.useFetch({ key: "challenge_breakpoint" });
+        return;
+      }
+
+      console.log(`is not in focus`);
+    };
+
+    const waitingCb = () => {
+      if (document.hasFocus()) {
+        console.log(`is in focus`);
+        userStore.useFetch({ key: "waiting_breakpoint" });
+        return;
+      }
+
+      console.log(`is not in focus`);
+    };
+
+    let interval;
+    let callback;
+
+    switch (type) {
+      case "battle": {
+        interval = state.value.breakpoint;
+        callback = breakpointCb;
+        break;
+      }
+      case "challenge": {
+        interval = state.value.challenge_breakpoint;
+        callback = challengeCb;
+        break;
+      }
+      case "waiting": {
+        interval = state.value.waiting_breakpoint;
+        callback = waitingCb;
+        break;
+      }
+    }
+
+    if (!interval || !callback) return;
+
+    const breakpointInterval = new BreakpointInterval(interval, callback);
+
+    currentBreakpointInterval.value = breakpointInterval;
+    breakpointInterval.start();
+  };
+
+  const stopBreakpoint = () => {
+    if (currentBreakpointInterval.value) {
+      currentBreakpointInterval.value.stop();
+    }
+  };
+
   const set = (data) => {
     Object.keys(data).forEach((key) => {
       if (key === "cleanAnswers" && data["cleanAnswers"]) {
@@ -95,15 +168,15 @@ export const useBattleStore = defineStore("battle", () => {
       }
 
       // breakpoint logic
-      if (key === "breakpoint" && data.breakpoint !== bpTime) {
-        if (data.breakpoint === 0) {
-          stopBpInterval();
-          return;
-        }
+      // if ((key === "breakpoint" && data.breakpoint !== bpTime) || (key === "challenge_breakpoint" && data["challenge_breakpoint"] !== bpTime)) {
+      //   if (data.breakpoint === 0) {
+      //     stopBpInterval();
+      //     return;
+      //   }
 
-        setBpInterval(data.breakpoint);
-        startBpInterval();
-      }
+      //   setBpInterval(data.breakpoint);
+      //   startBpInterval();
+      // }
 
       if (state.value[key]) {
         state.value[key] = {};
@@ -329,5 +402,7 @@ export const useBattleStore = defineStore("battle", () => {
     fullStopTaskTimeout,
     startBpInterval,
     stopBpInterval,
+    startBreakpoint,
+    stopBreakpoint,
   };
 });
