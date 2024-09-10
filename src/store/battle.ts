@@ -53,7 +53,9 @@ export const useBattleStore = defineStore("battle", () => {
   const waiting_timer = computed(() => state.value.waiting_timer);
   const battle_duration = computed(() => state.value.battle_duration);
   const challengeButton = computed(() => state.value.battle_button_challenge);
-  const currentMechanic = computed(() => state.value.mechanics?.[getMechanicName(currentBattleType.value)]);
+  const currentMechanic = computed(
+    () => state.value.mechanics?.[getMechanicName(currentBattleType.value)]
+  );
 
   const taskTimeoutCb = () => {
     onAnswer({ isCorrect: false, answerString: "", subtractEnergyAmount: 0 });
@@ -70,8 +72,19 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   // composables
-  const { start: startTaskTimeout, stop: stopTaskTimeout, setTime: setTaskTimeout, reset: resetTaskTimeout, fullStop: fullStopTaskTimeout } = useTaskTimeout(taskTimeoutCb);
-  const { start: startBpInterval, stop: stopBpInterval, setTime: setBpInterval, time: bpTime } = useBpInterval(breakpointCb);
+  const {
+    start: startTaskTimeout,
+    stop: stopTaskTimeout,
+    setTime: setTaskTimeout,
+    reset: resetTaskTimeout,
+    fullStop: fullStopTaskTimeout,
+  } = useTaskTimeout(taskTimeoutCb);
+  const {
+    start: startBpInterval,
+    stop: stopBpInterval,
+    setTime: setBpInterval,
+    time: bpTime,
+  } = useBpInterval(breakpointCb);
 
   watch(currentBattleType, (val, oldVal) => {
     if (val === oldVal) return;
@@ -79,6 +92,12 @@ export const useBattleStore = defineStore("battle", () => {
     setTaskTimeout(currentMechanic.value?.timeout);
     startTaskTimeout();
   });
+
+  const decreaseWaitingTimer = () => {
+    if (state.value.waiting_timer) {
+      state.value.waiting_timer -= 1000;
+    }
+  };
 
   const startBreakpoint = (type: string) => {
     stopBreakpoint();
@@ -202,7 +221,9 @@ export const useBattleStore = defineStore("battle", () => {
     Object.keys(data).forEach((key) => {
       if (state.value[key] && Array.isArray(state.value[key])) {
         data[key].forEach((item) => {
-          const foundIdx = state.value[key].findIndex((storeItem) => storeItem.id === item.id);
+          const foundIdx = state.value[key].findIndex(
+            (storeItem) => storeItem.id === item.id
+          );
 
           if (foundIdx != -1) {
             state.value[key].splice(foundIdx, 1);
@@ -216,10 +237,16 @@ export const useBattleStore = defineStore("battle", () => {
     });
 
     state.value.data.sort((a, b) => a.id - b.id);
-    taskIndex.value = state.value.data.findIndex((task) => task.id === _currentId);
+    taskIndex.value = state.value.data.findIndex(
+      (task) => task.id === _currentId
+    );
   };
 
-  const onAnswer = ({ isCorrect, answerString, subtractEnergyAmount = 1 }: AnswerProps) => {
+  const onAnswer = ({
+    isCorrect,
+    answerString,
+    subtractEnergyAmount = 1,
+  }: AnswerProps) => {
     if (energy.value === 0) return;
 
     const currentDataItem = state.value.data?.[taskIndex.value];
@@ -233,7 +260,9 @@ export const useBattleStore = defineStore("battle", () => {
     lastTaskId.value = currentDataItem!.id;
 
     // store answer
-    const foundIdx = answers.value.findIndex((answer) => answer.id === currentDataItem!.id);
+    const foundIdx = answers.value.findIndex(
+      (answer) => answer.id === currentDataItem!.id
+    );
 
     if (foundIdx !== -1) {
       answers.value[foundIdx] = {
@@ -286,7 +315,9 @@ export const useBattleStore = defineStore("battle", () => {
     lastTaskId.value = currentDataItem!.id;
 
     // store answer
-    const foundIdx = answers.value.findIndex((answer) => answer.id === currentDataItem!.id);
+    const foundIdx = answers.value.findIndex(
+      (answer) => answer.id === currentDataItem!.id
+    );
 
     if (foundIdx !== -1) {
       answers.value[foundIdx] = {
@@ -369,10 +400,15 @@ export const useBattleStore = defineStore("battle", () => {
       const idx = correctStreak.value;
 
       if (!state.value.calc_points[idx]) {
-        return state.value.multiplicator * state.value.calc_points[state.value.calc_points.length - 1];
+        return (
+          state.value.multiplicator *
+          state.value.calc_points[state.value.calc_points.length - 1]
+        );
       }
 
-      return state.value.multiplicator * state.value.calc_points[correctStreak.value];
+      return (
+        state.value.multiplicator * state.value.calc_points[correctStreak.value]
+      );
     }
     return 0;
   };
@@ -406,5 +442,6 @@ export const useBattleStore = defineStore("battle", () => {
     stopBpInterval,
     startBreakpoint,
     stopBreakpoint,
+    decreaseWaitingTimer,
   };
 });

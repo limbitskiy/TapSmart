@@ -7,7 +7,14 @@ import { useDataStore } from "@/store/data";
 import { useBattleStore } from "@/store/battle";
 
 // types
-import { NotificationProps, ResponseObject, ResponseData, MainState, TooltipProps, ModalProps } from "@/types";
+import {
+  NotificationProps,
+  ResponseObject,
+  ResponseData,
+  MainState,
+  TooltipProps,
+  ModalProps,
+} from "@/types";
 
 // api
 import { makeRequest } from "@/api/server";
@@ -58,19 +65,21 @@ export const useMainStore = defineStore("main", () => {
   const parseResponse = (response: ResponseObject) => {
     (Object.keys(response) as Array<keyof ResponseObject>).forEach((key) => {
       if (key === "data") {
-        (Object.keys(response.data) as Array<keyof ResponseData>).forEach((section) => {
-          const sectionData = response.data[section];
+        (Object.keys(response.data) as Array<keyof ResponseData>).forEach(
+          (section) => {
+            const sectionData = response.data[section];
 
-          if (sectionData === null) return;
+            if (sectionData === null) return;
 
-          if (section === "notification") {
-            showNotification(sectionData as NotificationProps);
-          } else if (section === "modal") {
-            showModal(sectionData as ModalProps);
-          } else {
-            dataStore.set(section, sectionData);
+            if (section === "notification") {
+              showNotification(sectionData as NotificationProps);
+            } else if (section === "modal") {
+              showModal(sectionData as ModalProps);
+            } else {
+              dataStore.set(section, sectionData);
+            }
           }
-        });
+        );
       } else {
         state.value[key] = response[key];
       }
@@ -85,7 +94,12 @@ export const useMainStore = defineStore("main", () => {
     }
   };
 
-  const showNotification = ({ title, subtitle, buttons, timeout }: NotificationProps) => {
+  const showNotification = ({
+    title,
+    subtitle,
+    buttons,
+    timeout,
+  }: NotificationProps) => {
     if (notification.value.isShown) return;
 
     notification.value.title = title;
@@ -110,7 +124,13 @@ export const useMainStore = defineStore("main", () => {
     notification.value.isShown = false;
   };
 
-  const showTooltip = ({ element, text }: { element: HTMLElement; text: string }) => {
+  const showTooltip = ({
+    element,
+    text,
+  }: {
+    element: HTMLElement;
+    text: string;
+  }) => {
     if (element === tooltip.value.element) {
       return;
     }
@@ -148,7 +168,7 @@ export const useMainStore = defineStore("main", () => {
     modal.value.isShown = false;
   };
 
-  const notificationAction = ({ api, data }: { api: string; data: {} }) => {
+  const callApi = ({ api, data }: { api: string; data?: {} }) => {
     useFetch({ key: api, data });
   };
 
@@ -233,7 +253,7 @@ export const useMainStore = defineStore("main", () => {
     useFetch,
     showNotification,
     hideNotification,
-    notificationAction,
+    callApi,
     showTooltip,
     hideTooltip,
     hideModal,
