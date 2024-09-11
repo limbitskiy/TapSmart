@@ -15,7 +15,7 @@
       <div ref="progressRef" class="gauge-value h-2 bg-[var(--accent-color)] rounded-full" :style="{ width: progressPercent + '%' }"></div>
     </div>
     <div class="player-marker mt-2">
-      <div class="marker w-[14px]" :style="{ transform: `translateX(${calculateMarkerPosition(player.score)}px)` }">
+      <div class="marker w-[14px]" :style="{ transform: `translateX(${calculateMarkerPosition(player?.score)}px)` }">
         <img class="h-4 scale-[2]" :src="getAsset('player-marker')" />
       </div>
     </div>
@@ -64,7 +64,9 @@ const highestScore = computed(() => data.value["player_progress"]?.sort((a, b) =
 
 const progressPercent = computed(() => ((props.initialTimerValue - props.timer) * 100) / props.initialTimerValue);
 
-const calculateMarkerPosition = (score) => {
+const calculateMarkerPosition = (score: number) => {
+  if (!score) return 0;
+
   const progressBarWidth = progressRef.value?.getBoundingClientRect().width;
 
   if (score === highestScore.value) {

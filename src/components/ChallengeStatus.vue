@@ -25,20 +25,17 @@ import { getAsset } from "@/utils";
 import CountdownTimer from "@/components/CountdownTimer.vue";
 
 const props = defineProps<{
-  timer: number;
-  initialTimerValue: number;
+  time: number;
 }>();
 
 const boltsEarned = ref(0);
 const place = ref(2);
 
-console.log(props.timer);
-
 const formattedTime = computed(() => {
-  if (props.timer > 9000) {
-    return props.timer / 1000;
+  if (props.time > 9000) {
+    return props.time / 1000;
   } else {
-    return "0" + props.timer / 1000;
+    return "0" + props.time / 1000;
   }
 });
 </script>

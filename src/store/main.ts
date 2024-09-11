@@ -183,7 +183,7 @@ export const useMainStore = defineStore("main", () => {
 
   const fetchChallengePage = async (data: {}) => {
     await useFetch({ key: "challenge_init", data });
-    redirectTo(`/home/battles/${battleStore.getMechanicName(battleStore.currentBattleType)}`);
+    redirectTo(`/challenge/${battleStore.getMechanicName(battleStore.currentBattleType)}`);
     return;
   };
 

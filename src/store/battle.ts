@@ -53,7 +53,7 @@ export const useBattleStore = defineStore("battle", () => {
   const currentMechanic = computed(() => state.value.mechanics?.[getMechanicName(currentBattleType.value)]);
 
   const decreaseWaitingTimer = () => {
-    if (state.value.waiting_timer) {
+    if (state.value.waiting_timer > 0) {
       state.value.waiting_timer -= 1000;
     }
   };
@@ -87,6 +87,8 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const startBreakpoint = (type: string) => {
+    console.log(`starting breakpoint`);
+
     stopBreakpoint();
 
     const breakpointCb = () => {
@@ -137,6 +139,9 @@ export const useBattleStore = defineStore("battle", () => {
         interval = state.value.waiting_breakpoint;
         callback = waitingCb;
         break;
+      }
+      default: {
+        console.error(`Unknown type of battle breakpoint`);
       }
     }
 

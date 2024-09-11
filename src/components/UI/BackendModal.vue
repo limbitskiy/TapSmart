@@ -34,7 +34,7 @@ const mainStore = useMainStore();
 const dataStore = useDataStore();
 
 const { modal } = storeToRefs(mainStore);
-const { startTaskTimeout, setTaskTimeoutCounter } = dataStore.battles;
+const { startTaskTimeout, setTaskTimeoutCounter, startBreakpoint, stopBreakpoint } = dataStore.battles;
 const { hideModal, callApi } = mainStore;
 
 const onModalButton = (btn: { api: string; data: {} }) => {
@@ -48,9 +48,11 @@ const onModalButton = (btn: { api: string; data: {} }) => {
 onMounted(() => {
   setTaskTimeoutCounter(null);
   startTaskTimeout();
+  stopBreakpoint();
 });
 
 onBeforeUnmount(() => {
   setTaskTimeoutCounter(1);
+  startBreakpoint("battle");
 });
 </script>

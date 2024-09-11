@@ -1,10 +1,10 @@
 <template>
-  <div class="challenge-main flex-1 overflow-auto flex flex-col gap-2">
+  <div class="challenge-main flex-1 overflow-auto flex flex-col gap-2 relative">
     <Backlight color="red" />
 
     <template v-if="isBattle">
       <div class="challenge-stats relative z-10 flex flex-col gap-4 mt-2">
-        <ChallengeStatus :timer="timer!" :initialTimerValue="data['battle_duration']!" @timeEnd="onEndBattle" />
+        <ChallengeStatus :time="timer || 0" />
 
         <div class="wrap px-8">
           <ProgressBar :timer="timer!" :initialTimerValue="data['battle_duration']!" />
@@ -24,6 +24,13 @@
         <WaitingModal @countdownComplete="onStartBattle" />
       </Modal>
     </Teleport>
+
+    <!-- battle complete animation -->
+    <Transition name="fade">
+      <div v-if="isBattleCompleteAnimation" class="on-battle-complete-backdrop fixed inset-0 bg-black bg-opacity-80 z-20 grid place-items-center">
+        <div class="animation-cnt fira-bold text-2xl">Battle complete animation</div>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -57,6 +64,7 @@ const localeStore = useLocaleStore();
 const { battles: data } = storeToRefs(dataStore);
 const { battles: locale } = storeToRefs(localeStore);
 
+// ??
 const { startBreakpoint, stopBreakpoint } = data.value;
 
 const { fetchChallengePage, callApi } = mainStore;
@@ -71,6 +79,7 @@ await fetchChallengePage(challengeParams);
 
 const isWaiting = ref(false);
 const isBattle = ref(false);
+const isBattleCompleteAnimation = ref(false);
 const timer = ref(data.value.battle_duration);
 let interval = null;
 
@@ -93,7 +102,16 @@ const onStartBattle = () => {
   }, 300);
 };
 
-const onEndBattle = () => {};
+const onEndBattle = () => {
+  stopBreakpoint();
+  callApi({ api: "battle_result" });
+
+  isBattleCompleteAnimation.value = true;
+
+  setTimeout(() => {
+    isBattleCompleteAnimation.value = false;
+  }, 3000);
+};
 
 onMounted(() => {
   isWaiting.value = true;

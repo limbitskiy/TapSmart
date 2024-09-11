@@ -1,5 +1,5 @@
 <template>
-  <Pill v-bind="$attrs" @click="handleClick">
+  <Pill v-bind="$attrs" color="light" @click="handleClick">
     <div class="pill-content flex items-center justify-between gap-2">
       <div class="pill-start">
         <slot name="name"></slot>

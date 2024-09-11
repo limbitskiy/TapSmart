@@ -12,11 +12,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import { storeToRefs } from "pinia";
 
 // store
-import { useMainStore } from "@/store/main.ts";
+import { useMainStore } from "@/store/main";
 
 const mainStore = useMainStore();
 
@@ -43,6 +43,10 @@ const onClick = () => {
   hideTooltip();
 };
 
+const onScroll = () => {
+  hideTooltip();
+};
+
 onMounted(() => {
   const { height: tooltipHeight, width: tooltipWidth, right: tooltipRight, left: tooltipLeft } = tooltipRef.value.getBoundingClientRect();
 
@@ -63,5 +67,11 @@ onMounted(() => {
   const triangleDeltaX = elementLeft - params.value.x;
 
   params.value.center = triangleDeltaX + elementWidth / 2;
+
+  addEventListener("scroll", onScroll);
+});
+
+onBeforeUnmount(() => {
+  removeEventListener("scroll", onScroll);
 });
 </script>
