@@ -4,7 +4,7 @@
 
     <template v-if="isBattle">
       <div class="challenge-stats relative z-10 flex flex-col gap-4 mt-2">
-        <ChallengeStatus :time="timer || 0" />
+        <ChallengeStatus :time="timer || 0" :score="score" />
 
         <div class="wrap px-8">
           <ProgressBar :timer="timer!" :initialTimerValue="data['battle_duration']!" />
@@ -68,6 +68,8 @@ const { battles: locale } = storeToRefs(localeStore);
 const { startBreakpoint, stopBreakpoint } = data.value;
 
 const { fetchChallengePage, callApi } = mainStore;
+
+const score = ref(0);
 
 const challengeParams = {};
 

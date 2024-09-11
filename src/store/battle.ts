@@ -87,7 +87,7 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const startBreakpoint = (type: string) => {
-    console.log(`starting breakpoint`);
+    // console.log(`starting breakpoint`);
 
     stopBreakpoint();
 

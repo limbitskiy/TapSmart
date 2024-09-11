@@ -49,7 +49,6 @@ onMounted(() => {
   console.log(`mounted`);
 
   setTaskTimeoutCounter(1);
-
   stopBreakpoint();
 });
 
