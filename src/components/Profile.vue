@@ -13,8 +13,7 @@
         <div class="money flex gap-2 items-center">
           <div class="bolts flex gap-1 items-center">
             <img class="h-4" :src="getAsset('bolt')" />
-
-            <span class="text-md exo-black text-xl leading-3 text-[var(--accent-color)]">{{ showFormattedNumber(data["bolts"]) }}</span>
+            <span class="text-md exo-black text-xl leading-3 text-[var(--accent-color)]">{{ showFormattedNumber(data?.["bolts"]) || 0 }}</span>
           </div>
           <svg width="79" height="27" viewBox="0 0 79 27" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g filter="url(#filter0_b_223_2510)">
@@ -57,8 +56,8 @@ import { userName } from "@/api/telegram";
 import { getAsset, showFormattedNumber } from "@/utils";
 
 // stores
-import { useDataStore } from "@/store/data.ts";
-import { useLocaleStore } from "@/store/locale.ts";
+import { useDataStore } from "@/store/data";
+import { useLocaleStore } from "@/store/locale";
 
 // components
 import Pill from "@/components/UI/Pill.vue";

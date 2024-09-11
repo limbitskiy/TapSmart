@@ -23,26 +23,7 @@
     <!-- backend-controlled modal -->
     <Teleport to="body">
       <Modal v-model:visible="modal.isShown" sticky>
-        <div class="modal-content flex flex-col gap-2">
-          <span class="text-xl fira-condensed-bold text-gray-100">{{ modal.title }}</span>
-          <span class="fira-condensed text-base">{{ modal.subtitle }}</span>
-          <div class="btns flex justify-end gap-4 mt-2">
-            <button
-              v-if="modal.buttons?.left && !modal.buttons?.left?.hidden"
-              class="fira-condensed-bold rounded-lg bg-[--red-color] px-6 py-1 text-base"
-              @click="() => onModalButton(modal.buttons.left)"
-            >
-              {{ modal.buttons?.left?.label }}
-            </button>
-            <button
-              v-if="modal.buttons?.right && !modal.buttons?.right?.hidden"
-              class="fira-condensed-bold rounded-lg bg-[--green-color] px-6 py-1 text-base"
-              @click="() => onModalButton(modal.buttons.right)"
-            >
-              {{ modal.buttons?.right?.label }}
-            </button>
-          </div>
-        </div>
+        <BackendModal />
       </Modal>
     </Teleport>
   </div>
@@ -61,16 +42,8 @@ import Notification from "@/components/Notification.vue";
 import Tooltip from "@/components/Tooltip.vue";
 import Modal from "@/components/Modal.vue";
 import Loader from "@/components/UI/Loader.vue";
+import BackendModal from "@/components/UI/BackendModal.vue";
 
 const mainStore = useMainStore();
 const { tooltip, modal } = storeToRefs(mainStore);
-const { hideModal, callApi } = mainStore;
-
-const onModalButton = (btn: { api: string; data: {} }) => {
-  if (btn.api) {
-    callApi({ api: btn.api, data: btn.data });
-  }
-
-  hideModal();
-};
 </script>

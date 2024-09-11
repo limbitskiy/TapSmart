@@ -20,7 +20,7 @@ export const getAssetURL = (url) => {
 };
 
 export const showFormattedNumber = (number) => {
-  return new Intl.NumberFormat("en-US", { style: "decimal" }).format(number);
+  return new Intl.NumberFormat("en-US", { style: "decimal" }).format(Math.round(number));
 };
 
 export const waitFor = (ms: number) => {

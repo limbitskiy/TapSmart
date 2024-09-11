@@ -121,15 +121,15 @@ router.beforeEach((to, from) => {
     return { path: "/init" };
   }
 
-  if (to.path === "/home/battles") {
-    // battles.startTaskTimeout();
-    // console.log(`turning timer on from Routes`);
-  }
+  // if (to.path === "/home/battles") {
+  // battles.startTaskTimeout();
+  // console.log(`turning timer on from Routes`);
+  // }
 
-  if (from.path.includes("/home/battles/") && !to.path.includes("/home/battles/")) {
-    // battles.fullStopTaskTimeout();
-    // console.log(`turning timer OFF from Routes`);
-  }
+  // if (from.path.includes("/home/battles/") && !to.path.includes("/home/battles/")) {
+  // battles.fullStopTaskTimeout();
+  // console.log(`turning timer OFF from Routes`);
+  // }
 });
 
 export default router;
