@@ -46,13 +46,18 @@ const onModalButton = (btn: { api: string; data: {} }) => {
 };
 
 onMounted(() => {
-  setTaskTimeoutCounter(null);
-  startTaskTimeout();
+  console.log(`mounted`);
+
+  setTaskTimeoutCounter(1);
+
   stopBreakpoint();
 });
 
 onBeforeUnmount(() => {
-  setTaskTimeoutCounter(1);
+  console.log(`unmounted`);
+
+  setTaskTimeoutCounter(null);
+  startTaskTimeout();
   startBreakpoint("battle");
 });
 </script>
