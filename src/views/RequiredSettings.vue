@@ -19,7 +19,6 @@
 import { computed, ref, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { tg, getUserId } from "@/api/telegram";
-import { useRouter } from "vue-router";
 
 // stores
 import { useDataStore } from "@/store/data";
@@ -29,6 +28,7 @@ import { useLocaleStore } from "@/store/locale";
 // components
 import Button from "@/components/UI/Button.vue";
 import Settings from "@/components/Settings.vue";
+import BackendButton from "@/components/BackendButton.vue";
 
 const dataStore = useDataStore();
 const localeStore = useLocaleStore();
@@ -37,15 +37,13 @@ const mainStore = useMainStore();
 const { requiredSettings: data } = storeToRefs(dataStore);
 const { requiredSettings: locale } = storeToRefs(localeStore);
 
-const { setLanguages } = mainStore;
-
-const router = useRouter();
+const { setLanguages, redirectTo } = mainStore;
 
 const onSettingsChange = ({ setting, value }: { setting: string; value: number }) => {
   setLanguages({ [setting]: value });
 };
 
 const onNext = () => {
-  router.push("/home/relax");
+  redirectTo("/home/relax");
 };
 </script>

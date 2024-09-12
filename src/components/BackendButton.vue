@@ -1,19 +1,19 @@
 <template>
-  <button :class="dark ? 'bg-black' : 'bg-[var(--accent-color)] text-black'" class="rounded-xl font-bold fira-bold py-3 px-8 text-xl" @click="onClick">
-    <slot></slot>
-  </button>
+  <Button @click="onClick"><slot></slot></Button>
 </template>
 
 <script setup lang="ts">
 // stores
 import { useMainStore } from "@/store/main";
 
+// components
+import Button from "@/components/UI/Button.vue";
+
 const mainStore = useMainStore();
 
 const { redirectTo, callApi } = mainStore;
 
 const props = defineProps<{
-  dark?: boolean;
   data?: { route?: string; api?: string; data?: {} };
   defaultAction?: () => void;
 }>();

@@ -39,7 +39,7 @@
     <div class="ad flex flex-col items-center justify-center mt-8">
       <Ad image="x2" :text="locale?.['battle_complete_ad_text']" :tooltip="locale?.['tooltip_battle_complete_ad']" />
       <div class="ad-btns w-full flex gap-4 justify-between mt-8">
-        <Button class="flex-1 py-3 px-5 text-white bg-[var(--grey-light)]" @click="() => onBtnClick(data?.['button_claim'])">
+        <Button class="flex-1 py-3 px-5 text-white bg-[var(--grey-light)]" :data="data?.['button_claim']">
           <div class="flex flex-col gap-1 items-center">
             <div class="flex gap-1 items-baseline">
               <span class="text-base leading-4">{{ getBtnTextArr(locale?.["button_claim"] || "Claim<bolt>Without TON")[0]  }}</span>
@@ -48,7 +48,7 @@
             <span class="text-sm fira-regular !leading-3">{{ getBtnTextArr(locale?.["button_claim"] || "Claim<bolt>Without TON")[1]}}</span>
           </div>
         </Button>
-        <Button class="flex-1 py-3 px-5" @click="() => onBtnClick(data?.['button_claim_with_ton'])">
+        <Button class="flex-1 py-3 px-5" :data="data?.['button_claim_with_ton']">
           <div class="flex flex-col gap-1 items-center">
             <div class="flex gap-1 items-baseline">
               <span class="text-base leading-4">{{ getBtnTextArr(locale?.["button_claim_with_ton"] || "Claim<bolt>With TON")[0]  }}</span>
@@ -68,7 +68,6 @@ import { getAsset } from "@/utils";
 import { storeToRefs } from "pinia";
 
 // stores
-import { useMainStore } from "@/store/main";
 import { useDataStore } from "@/store/data";
 import { useLocaleStore } from "@/store/locale";
 
@@ -77,13 +76,11 @@ import Pill from "@/components/UI/Pill.vue";
 import Button from "@/components/UI/Button.vue";
 import Ad from "@/components/UI/Ad.vue";
 
-const mainStore = useMainStore();
 const localeStore = useLocaleStore();
 const dataStore = useDataStore();
 
 const { data } = storeToRefs(dataStore.battles);
 const { battles: locale } = storeToRefs(localeStore);
-const { callApi, redirectTo } = mainStore;
 
 const getBtnTextArr = (text: string) => text.split("<bolt>");
 
@@ -98,11 +95,5 @@ const calculatePlayerPlace = computed(() => {
 
   return `${playerIdx + 1}/${leaderboard.length}`
 })
-
-const onBtnClick = (btn: { api: string; data: {} }) => {
-  if (btn.api) {
-    callApi({ api: btn.api, data: btn.data });
-  }
-};
 
 </script>

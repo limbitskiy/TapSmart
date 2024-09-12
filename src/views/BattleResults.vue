@@ -20,10 +20,10 @@
       <div class="ad flex flex-col items-center justify-center mt-8">
         <Ad :image="data?.['battle_results_ad_image']" :text="locale?.['battle_results_ad_text']" :tooltip="locale?.['tooltip_battle_results_ad']" />
         <div class="ad-btns w-full flex gap-4 justify-between mt-8">
-          <Button v-if="data?.battle_results_buttons?.left" class="flex-1 py-3 px-5 text-white bg-[var(--grey-light)]" @click="() => onButton(data.battle_results_buttons.left)">
+          <Button v-if="data?.battle_results_buttons?.left" class="flex-1 py-3 px-5 text-white bg-[var(--grey-light)]" :data="data.battle_results_buttons.left">
             <span class="text-base">{{ data?.["battle_results_buttons"]?.left?.label }}</span>
           </Button>
-          <Button v-if="data?.battle_results_buttons?.right" class="flex-1 py-3 px-5" @click="() => onButton(data.battle_results_buttons.right)">
+          <Button v-if="data?.battle_results_buttons?.right" class="flex-1 py-3 px-5" :data="data.battle_results_buttons.right">
             <span class="text-base">{{ data?.["battle_results_buttons"]?.right?.label }}</span>
           </Button>
         </div>
@@ -37,7 +37,6 @@ import { getAsset } from "@/utils";
 import { storeToRefs } from "pinia";
 
 // stores
-import { useMainStore } from "@/store/main";
 import { useLocaleStore } from "@/store/locale";
 import { useDataStore } from "@/store/data";
 
@@ -49,13 +48,11 @@ import Profile from "@/components/Profile.vue";
 import Ad from "@/components/UI/Ad.vue";
 import { computed } from "vue";
 
-const mainStore = useMainStore();
 const localeStore = useLocaleStore();
 const dataStore = useDataStore();
 
 const { data } = storeToRefs(dataStore.battles);
 const { battles: locale } = storeToRefs(localeStore);
-const { callApi, redirectTo } = mainStore;
 
 const leaderboardSorted = computed(() => {
   if (!data.value.battle_results_leaderboard?.length) return [];
@@ -64,10 +61,4 @@ const leaderboardSorted = computed(() => {
 
   return clone.sort((a, b) => b.score - a.score);
 });
-
-const onButton = (btn: { api: string; data: {} }) => {
-  if (btn.api) {
-    callApi({ api: btn.api, data: btn.data });
-  }
-};
 </script>

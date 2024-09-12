@@ -29,7 +29,7 @@
       </button>
 
       <!-- invite friends button -->
-      <Button class="!text-base py-1 px-4">{{ locale?.["invite_friends"] || "Invite friends" }}</Button>
+      <Button class="!text-base !py-1 !px-4">{{ locale?.["invite_friends"] || "Invite friends" }}</Button>
     </div>
 
     <div class="boosters flex flex-col gap-4 flex-1">
