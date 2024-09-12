@@ -7,11 +7,11 @@
         <ChallengeStatus :time="timer || 0" :score="score" />
 
         <div class="wrap px-8">
-          <ProgressBar :timer="timer!" :initialTimerValue="data['battle_duration']!" />
+          <ProgressBar :timer="timer || 0" :initialTimerValue="data['battle_duration']!" />
         </div>
       </div>
 
-      <RouterView v-slot="{ Component }">
+      <RouterView v-slot="{ Component }" type="challenge" @answer="onAnswer">
         <!-- <Transition name="fade" mode="out-in"> -->
         <component :is="Component" />
         <!-- </Transition> -->
@@ -21,7 +21,14 @@
     <!-- waiting modal -->
     <Teleport to="body">
       <Modal v-model:visible="isWaiting" sticky>
-        <WaitingModal @countdownComplete="onStartBattle" />
+        <Waiting @countdownComplete="onStartBattle" />
+      </Modal>
+    </Teleport>
+
+    <!-- battle complete modal -->
+    <Teleport to="body">
+      <Modal v-model:visible="isCompletedModal" sticky>
+        <BattleComplete />
       </Modal>
     </Teleport>
 
@@ -37,7 +44,7 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onBeforeUnmount } from "vue";
 import { storeToRefs } from "pinia";
-import { getAsset } from "../utils";
+import { getAsset } from "@/utils";
 import { tg, getUserName } from "@/api/telegram";
 import { useRoute } from "vue-router";
 
@@ -50,10 +57,11 @@ import { useLocaleStore } from "@/store/locale";
 import Button from "@/components/UI/Button.vue";
 import Modal from "@/components/Modal.vue";
 import VolumeControl from "@/components/VolumeControl.vue";
-import WaitingModal from "@/components/WaitingModal.vue";
+import Waiting from "@/components/modals/Waiting.vue";
 import Backlight from "@/components/UI/Backlight.vue";
 import ChallengeStatus from "@/components/ChallengeStatus.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
+import BattleComplete from "@/components/modals/BattleComplete.vue";
 
 const route = useRoute();
 
@@ -67,7 +75,7 @@ const { battles: locale } = storeToRefs(localeStore);
 // ??
 const { startBreakpoint, stopBreakpoint } = data.value;
 
-const { fetchChallengePage, callApi } = mainStore;
+const { fetchChallengePageData, callApi, redirectTo } = mainStore;
 
 const score = ref(0);
 
@@ -77,11 +85,13 @@ Object.keys(route.query).forEach((key) => {
   challengeParams[key] = +route.query[key];
 });
 
-await fetchChallengePage(challengeParams);
+await fetchChallengePageData(challengeParams);
 
 const isWaiting = ref(false);
 const isBattle = ref(false);
 const isBattleCompleteAnimation = ref(false);
+const isCompletedModal = ref(false);
+
 const timer = ref(data.value.battle_duration);
 let interval = null;
 
@@ -96,6 +106,7 @@ const onStartBattle = () => {
     interval = setInterval(() => {
       if (timer.value === 0) {
         clearInterval(interval);
+        onEndBattle();
         return;
       }
 
@@ -105,6 +116,7 @@ const onStartBattle = () => {
 };
 
 const onEndBattle = () => {
+  isBattle.value = false;
   stopBreakpoint();
   callApi({ api: "battle_result" });
 
@@ -112,7 +124,14 @@ const onEndBattle = () => {
 
   setTimeout(() => {
     isBattleCompleteAnimation.value = false;
+    isCompletedModal.value = true;
   }, 3000);
+};
+
+const onAnswer = ({ correct }: { correct: boolean }) => {
+  if (correct) {
+    score.value += 10;
+  }
 };
 
 onMounted(() => {

@@ -15,10 +15,10 @@
 
     <div class="answers flex-1 grid place-items-center bg-[var(--grey-dark)] rounded-t-3xl">
       <div class="answer-buttons grid w-full grid-cols-2 grid-rows-2 gap-4 px-4 leading-5 py-4">
-        <Button class="four-answer-btn" @click="(event) => handleAnswer(currentTask.task.variants[0], event)">{{ currentTask.task.variants[0] }}</Button>
-        <Button class="four-answer-btn" @click="(event) => handleAnswer(currentTask.task.variants[1], event)">{{ currentTask.task.variants[1] }}</Button>
-        <Button class="four-answer-btn" @click="(event) => handleAnswer(currentTask.task.variants[2], event)">{{ currentTask.task.variants[2] }}</Button>
-        <Button class="four-answer-btn" @click="(event) => handleAnswer(currentTask.task.variants[3], event)">{{ currentTask.task.variants[3] }}</Button>
+        <Button class="four-answer-btn" @click="(event) => handleAnswer(currentTask.task.variants[0], currentTask, event)">{{ currentTask.task.variants[0] }}</Button>
+        <Button class="four-answer-btn" @click="(event) => handleAnswer(currentTask.task.variants[1], currentTask, event)">{{ currentTask.task.variants[1] }}</Button>
+        <Button class="four-answer-btn" @click="(event) => handleAnswer(currentTask.task.variants[2], currentTask, event)">{{ currentTask.task.variants[2] }}</Button>
+        <Button class="four-answer-btn" @click="(event) => handleAnswer(currentTask.task.variants[3], currentTask, event)">{{ currentTask.task.variants[3] }}</Button>
       </div>
     </div>
   </div>
@@ -38,6 +38,14 @@ import { useDataStore } from "@/store/data";
 // components
 import Button from "@/components/UI/Button.vue";
 
+const emit = defineEmits<{
+  answer: [data: { correct: boolean; answer: string }];
+}>();
+
+const props = defineProps<{
+  type: "relax" | "challenge";
+}>();
+
 const dataStore = useDataStore();
 
 const { currentTask } = storeToRefs(dataStore.battles);
@@ -48,5 +56,12 @@ const defineCorrect = (answer: string, currentTask: { correct: string }) => {
   return answer === currentTask.correct;
 };
 
-const { bonuses, handleAnswer } = useBattle(defineCorrect, el);
+const { bonuses, onAnswer } = useBattle(props.type, el);
+
+const handleAnswer = (answer, currentTask, event) => {
+  const correct = defineCorrect(answer, currentTask);
+
+  emit("answer", { correct, answer });
+  onAnswer(correct, event, answer);
+};
 </script>

@@ -4,7 +4,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import Init from "@/views/Init.vue";
 import Tutorial from "@/views/Tutorial.vue";
 import Home from "@/views/Home.vue";
-import Battles from "@/views/Battles.vue";
+import Relax from "@/views/Relax.vue";
 import Friends from "@/views/Friends.vue";
 import Tasks from "@/views/Tasks.vue";
 import Leaders from "@/views/Leaders.vue";
@@ -13,6 +13,7 @@ import NotFound from "@/views/NotFound.vue";
 import RequiredSettings from "@/views/RequiredSettings.vue";
 import ProfileView from "@/views/ProfileView.vue";
 import Challenge from "@/views/Challenge.vue";
+import BattleResults from "@/views/BattleResults.vue";
 
 // battles
 import YesNo from "@/components/battles/YesNo.vue";
@@ -48,8 +49,8 @@ const routes = [
     children: [
       {
         id: 1,
-        path: "battles",
-        component: Battles,
+        path: "relax",
+        component: Relax,
         children: [
           {
             id: 11,
@@ -101,6 +102,10 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/battle-results",
+    component: BattleResults,
+  },
 ];
 
 const router = createRouter({
@@ -120,16 +125,6 @@ router.beforeEach((to, from) => {
   if (to.path !== "/init" && from.path === "/") {
     return { path: "/init" };
   }
-
-  // if (to.path === "/home/battles") {
-  // battles.startTaskTimeout();
-  // console.log(`turning timer on from Routes`);
-  // }
-
-  // if (from.path.includes("/home/battles/") && !to.path.includes("/home/battles/")) {
-  // battles.fullStopTaskTimeout();
-  // console.log(`turning timer OFF from Routes`);
-  // }
 });
 
 export default router;

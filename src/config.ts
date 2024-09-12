@@ -25,6 +25,7 @@ export const images = {
   mech_5: "/mechanic_5.svg",
   mech_6: "/mechanic_6.svg",
   congrats: "/congrats.png",
+  x2: "/x2.png",
 };
 
 // assets folder

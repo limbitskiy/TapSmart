@@ -25,7 +25,7 @@
       <VolumeControl />
     </div>
 
-    <RouterView v-slot="{ Component }">
+    <RouterView v-slot="{ Component }" type="relax">
       <template v-if="Component">
         <Transition name="fade" mode="out-in">
           <Suspense suspensible>
@@ -45,8 +45,8 @@
 
     <!-- no energy modal -->
     <Teleport to="body">
-      <Modal v-model:visible="isNoEnergyModalVisible">
-        <NoEnergyModal @challenge="openBoosterModal" />
+      <Modal v-model:visible="isNoEnergyVisible">
+        <NoEnergy @challenge="openBoosterModal" />
       </Modal>
     </Teleport>
 
@@ -62,7 +62,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch, onBeforeUnmount } from "vue";
 import { storeToRefs } from "pinia";
-import { getAsset } from "../utils";
+import { getAsset } from "@/utils";
 import { tg, getUserName } from "@/api/telegram";
 import { useWindowSize } from "@vueuse/core";
 import { useRouter } from "vue-router";
@@ -77,11 +77,11 @@ import Backlight from "@/components/UI/Backlight.vue";
 import Profile from "@/components/Profile.vue";
 import Button from "@/components/UI/Button.vue";
 import Modal from "@/components/Modal.vue";
-import ChangeMechanic from "@/components/ChangeMechanic.vue";
+import ChangeMechanic from "@/components/modals/ChangeMechanic.vue";
 import VolumeControl from "@/components/VolumeControl.vue";
-import NoEnergyModal from "@/components/NoEnergyModal.vue";
+import NoEnergy from "@/components/modals/NoEnergy.vue";
 import ChallengeButton from "@/components/UI/ChallengeButton.vue";
-import BoosterSelect from "@/components/BoosterSelect.vue";
+import BoosterSelect from "@/components/modals/BoosterSelect.vue";
 
 const router = useRouter();
 
@@ -92,13 +92,13 @@ const localeStore = useLocaleStore();
 const { battles: data } = storeToRefs(dataStore);
 const { battles: locale } = storeToRefs(localeStore);
 const { startBreakpoint, stopBreakpoint, startTaskTimeout, stopTaskTimeout, getMechanicName, setTaskTimeoutCounter } = dataStore.battles;
-const { fetchBattlesPage, redirectTo } = mainStore;
+const { fetchRelaxPageData, redirectTo } = mainStore;
 
 const isChangeMechModalVisible = ref(false);
-const isNoEnergyModalVisible = ref(false);
+const isNoEnergyVisible = ref(false);
 const isBoostersModalVisible = ref(false);
 
-watch([isChangeMechModalVisible, isNoEnergyModalVisible, isBoostersModalVisible], (val) => {
+watch([isChangeMechModalVisible, isNoEnergyVisible, isBoostersModalVisible], (val) => {
   if (val.some((modal) => modal)) {
     setTaskTimeoutCounter(1);
   } else {
@@ -112,14 +112,14 @@ watch(
   (val) => {
     if (val === 0) {
       stopTaskTimeout();
-      isNoEnergyModalVisible.value = true;
+      isNoEnergyVisible.value = true;
     }
   }
 );
 
 const { width } = useWindowSize();
 
-await fetchBattlesPage();
+await fetchRelaxPageData();
 
 const onChangeMech = () => {
   isChangeMechModalVisible.value = true;

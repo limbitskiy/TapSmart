@@ -44,7 +44,7 @@
 <script setup lang="ts">
 import { ref, watch, computed, onMounted, onBeforeUnmount } from "vue";
 import { storeToRefs } from "pinia";
-import { getAsset } from "../utils";
+import { getAsset } from "@/utils";
 import { tg, getUserName } from "@/api/telegram";
 
 // stores

@@ -8,7 +8,7 @@
 import { ref } from "vue";
 
 // store
-import { useMainStore } from "@/store/main.ts";
+import { useMainStore } from "@/store/main";
 import Ripple from "./Ripple.vue";
 
 const mainStore = useMainStore();

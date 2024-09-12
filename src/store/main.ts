@@ -40,6 +40,8 @@ export const useMainStore = defineStore("main", () => {
   const dataStore = useDataStore();
   const battleStore = useBattleStore();
 
+  const isAppLoaded = ref(false);
+
   const notificationData = computed(() => notification.value);
 
   const requestPending = ref(false);
@@ -71,6 +73,8 @@ export const useMainStore = defineStore("main", () => {
             dataStore.set(section, sectionData);
           }
         });
+      } else if (key === "entryPoint" && isAppLoaded.value) {
+        redirectTo(response.entryPoint);
       } else {
         state.value[key] = response[key];
       }
@@ -78,10 +82,12 @@ export const useMainStore = defineStore("main", () => {
   };
 
   const startApp = () => {
-    if (state.value.entryPoint) {
-      router.push(state.value.entryPoint);
-    } else {
-      router.push("/home/main");
+    isAppLoaded.value = true;
+
+    const entryPoint = state.value.entryPoint;
+
+    if (entryPoint) {
+      redirectTo(entryPoint);
     }
   };
 
@@ -175,13 +181,13 @@ export const useMainStore = defineStore("main", () => {
     return await useFetch({ key: "friend_table_list" });
   };
 
-  const fetchBattlesPage = async () => {
+  const fetchRelaxPageData = async () => {
     await useFetch({ key: "battle_init" });
-    redirectTo(`/home/battles/${battleStore.getMechanicName(battleStore.currentBattleType)}`);
+    redirectTo(`/home/relax/${battleStore.getMechanicName(battleStore.currentBattleType)}`);
     return;
   };
 
-  const fetchChallengePage = async (data: {}) => {
+  const fetchChallengePageData = async (data: {}) => {
     await useFetch({ key: "challenge_init", data });
     redirectTo(`/challenge/${battleStore.getMechanicName(battleStore.currentBattleType)}`);
     return;
@@ -242,6 +248,8 @@ export const useMainStore = defineStore("main", () => {
   const redirectTo = (location: string) => {
     if (route.path === location) return;
 
+    console.log(`redirecting to ${location}...`);
+
     router.push(location);
   };
 
@@ -251,8 +259,8 @@ export const useMainStore = defineStore("main", () => {
     modal,
     startApp,
     fetchFriendsPage,
-    fetchBattlesPage,
-    fetchChallengePage,
+    fetchRelaxPageData,
+    fetchChallengePageData,
     setLanguages,
     initialFetch,
     useFetch,

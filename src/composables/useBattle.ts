@@ -1,6 +1,5 @@
 import { Ref, ref } from "vue";
 import { storeToRefs } from "pinia";
-import { useRoute } from "vue-router";
 
 // stores
 import { useDataStore } from "@/store/data";
@@ -9,28 +8,24 @@ import { useMainStore } from "@/store/main";
 // types
 import { Task, Bonus } from "@/types";
 
-export const useBattle = (defineCorrect: (answer: string, currentTask: Task, options?: {}) => boolean, el?: Ref<HTMLElement>) => {
+export const useBattle = (type: "relax" | "challenge", el?: Ref<HTMLElement>) => {
   const dataStore = useDataStore();
   const mainStore = useMainStore();
-  const route = useRoute();
 
-  const { currentTask } = storeToRefs(dataStore.battles);
   const { onVibrate } = mainStore;
   const { handleRelaxAnswer, handleChallengeAnswer, stopTaskTimeout } = dataStore.battles;
 
   const bonuses = ref<Bonus[]>([]);
   let answerInProgress = false;
 
-  const handleAnswer = async (answer: string, { clientX, clientY }: MouseEvent, options?: { [key: string]: any }) => {
+  const onAnswer = async (isCorrect: boolean, { clientX, clientY }: MouseEvent, answer: string) => {
     if (answerInProgress) return;
 
     stopTaskTimeout();
 
     answerInProgress = true;
 
-    const correct = defineCorrect(answer, currentTask.value!, options);
-
-    if (correct) {
+    if (isCorrect) {
       onVibrate("correct");
       await drawBonus({ x: clientX, y: clientY });
       await animateCorrect();
@@ -39,10 +34,10 @@ export const useBattle = (defineCorrect: (answer: string, currentTask: Task, opt
       await animateWrong();
     }
 
-    if (route.path.includes("battles")) {
-      handleRelaxAnswer({ isCorrect: correct, answerString: answer });
-    } else if (route.path.includes("challenge")) {
-      handleChallengeAnswer({ isCorrect: correct, answerString: answer });
+    if (type === "relax") {
+      handleRelaxAnswer({ isCorrect, answerString: answer });
+    } else if (type === "challenge") {
+      handleChallengeAnswer({ isCorrect, answerString: answer });
     }
 
     answerInProgress = false;
@@ -91,5 +86,5 @@ export const useBattle = (defineCorrect: (answer: string, currentTask: Task, opt
     return true;
   };
 
-  return { bonuses, handleAnswer };
+  return { bonuses, onAnswer };
 };

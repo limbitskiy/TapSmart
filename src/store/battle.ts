@@ -51,6 +51,7 @@ export const useBattleStore = defineStore("battle", () => {
   const challengeButton = computed(() => state.value.battle_button_challenge);
   const currentBattleType = computed(() => state.value.battle_type);
   const currentMechanic = computed(() => state.value.mechanics?.[getMechanicName(currentBattleType.value)]);
+  const battleResultButtons = computed(() => state.value.battle_results_buttons);
 
   const decreaseWaitingTimer = () => {
     if (state.value.waiting_timer > 0) {
@@ -104,7 +105,7 @@ export const useBattleStore = defineStore("battle", () => {
     const challengeCb = () => {
       if (document.hasFocus()) {
         console.log(`is in focus`);
-        mainStore.callApi({ api: "challenge_breakpoint" });
+        mainStore.callApi({ api: "battle_breakpoint" });
         return;
       }
 
@@ -170,21 +171,10 @@ export const useBattleStore = defineStore("battle", () => {
         taskIndex.value = 0;
       }
 
-      // battle type
-      // if (key === "battle_type") {
-      // currentBattleType.value = data["battle_type"];
-
-      // if (!currentBattleType.value) {
-      //   console.error(`No such battle type`);
-      // }
-
-      // mainStore.redirectTo(`/home/battles/${battleTypes[data["battle_type"]]}`);
-      // }
-
       // battle mode
       if (key === "battle_mode") {
         if (data["battle_mode"] === "relax") {
-          mainStore.redirectTo(`/home/battles/${battleTypes[data["battle_type"]]}`);
+          mainStore.redirectTo(`/home/relax/${battleTypes[data["battle_type"]]}`);
         } else if (data["battle_mode"] === "challenge") {
           mainStore.redirectTo(`/home/challenge/${battleTypes[data["battle_type"]]}`);
         }
@@ -340,7 +330,9 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const changeMechanic = (mechId: number) => {
+    stopTaskTimeout();
     mainStore.callApi({ api: "battle_init", data: { battle_type: mechId } });
+    startTaskTimeout();
   };
 
   const getMechanicName = (mechId: number) => {
@@ -383,6 +375,7 @@ export const useBattleStore = defineStore("battle", () => {
     waiting_timer,
     player_progress,
     battle_duration,
+    battleResultButtons,
     set,
     handleRelaxAnswer,
     handleChallengeAnswer,

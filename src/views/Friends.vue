@@ -45,7 +45,7 @@
 
       <Pill class="mt-4" color="light" :tooltip="locale?.['tooltip_bolts_earned']">
         <div class="content flex items-center justify-between">
-          <span class="text-xl font-semibold text-gray-300">{{ locale?.["bolts_earned"] || "Bolts earned" }}</span>
+          <span class="text-xl fira-bold text-gray-300">{{ locale?.["bolts_earned"] || "Bolts earned" }}</span>
           <div class="price flex gap-2 items-center">
             <img class="h-4 scale-150" :src="getAsset('bolt')" />
             <span class="text-xl font-bold exo-bold">{{ data?.["income"] || 0 }}</span>
@@ -55,14 +55,14 @@
 
       <Pill class="mt-4" color="light" :tooltip="locale?.['tooltip_battles_played']">
         <div class="content flex justify-between">
-          <span class="text-xl font-semibold text-gray-300">{{ locale?.["battles_played"] || "Battles played" }}</span>
+          <span class="text-xl fira-bold text-gray-300">{{ locale?.["battles_played"] || "Battles played" }}</span>
           <span class="text-xl font-bold exo-bold">{{ data?.["battles"] || 0 }}</span>
         </div>
       </Pill>
 
       <Pill class="mt-4" color="light" :tooltip="locale?.['tooltip_points_earned']">
         <div class="content flex justify-between">
-          <span class="text-xl font-semibold text-gray-300">{{ locale?.["points_earned"] || "Points earned" }}</span>
+          <span class="text-xl fira-bold text-gray-300">{{ locale?.["points_earned"] || "Points earned" }}</span>
           <span class="text-xl font-bold exo-bold">{{ data?.["points"] || 0 }}</span>
         </div>
       </Pill>

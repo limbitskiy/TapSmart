@@ -46,6 +46,6 @@ const onSettingsChange = ({ setting, value }: { setting: string; value: number }
 };
 
 const onNext = () => {
-  router.push("/home/battles");
+  router.push("/home/relax");
 };
 </script>

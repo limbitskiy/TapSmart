@@ -16,14 +16,14 @@
 
     <div class="answers flex-1 grid place-items-center bg-[var(--grey-dark)] rounded-t-3xl">
       <div class="answer-buttons flex w-full justify-evenly py-4">
-        <div class="no-btn bg-[var(--red-color)] border-b-4 border-[#6A3524]" @click="(event) => handleAnswer(currentTask?.task.variants[1]!, event, { button: 'no' })">
+        <div class="no-btn bg-[var(--red-color)] border-b-4 border-[#6A3524]" @click="(event) => handleAnswer(currentTask?.task.variants[1]!, currentTask, event, 'no')">
           <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M3.5 3.5L38.5 38.5" stroke="white" stroke-width="7" stroke-linecap="round" />
             <path d="M38.5 3.5L3.5 38.5" stroke="white" stroke-width="7" stroke-linecap="round" />
           </svg>
         </div>
 
-        <div class="yes-btn bg-[var(--green-color)] border-b-4 border-[#034E0A]" @click="(event) => handleAnswer(currentTask?.task.variants[0]!, event, { button: 'yes' })">
+        <div class="yes-btn bg-[var(--green-color)] border-b-4 border-[#034E0A]" @click="(event) => handleAnswer(currentTask?.task.variants[0]!, currentTask, event, 'yes')">
           <svg width="56" height="41" viewBox="0 0 56 41" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M4 20L19.5294 36L52 4" stroke="white" stroke-width="7" stroke-linecap="round" />
           </svg>
@@ -49,15 +49,30 @@ import { useDataStore } from "@/store/data";
 // types
 import { Task } from "@/types";
 
+const emit = defineEmits<{
+  answer: [data: { correct: boolean; answer: string }];
+}>();
+
+const props = defineProps<{
+  type: "relax" | "challenge";
+}>();
+
 const dataStore = useDataStore();
 
 const { currentTask } = storeToRefs(dataStore.battles);
 
 const el = ref();
 
-const defineCorrect = (answer: string, currentTask: Task, options: { button: string }) => {
-  return (options.button === "yes" && currentTask.task.answer === currentTask.correct) || (options.button === "no" && currentTask.task.answer !== currentTask.correct);
+const defineCorrect = (currentTask: Task, button: string) => {
+  return (button === "yes" && currentTask.task.answer === currentTask.correct) || (button === "no" && currentTask.task.answer !== currentTask.correct);
 };
 
-const { bonuses, handleAnswer } = useBattle(defineCorrect, el);
+const { bonuses, onAnswer } = useBattle(props.type, el);
+
+const handleAnswer = (answer, currentTask, event, button) => {
+  const correct = defineCorrect(currentTask, button);
+
+  emit("answer", { correct, answer });
+  onAnswer(correct, event, answer);
+};
 </script>

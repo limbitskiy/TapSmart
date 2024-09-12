@@ -38,6 +38,13 @@ body {
   border-color: linear-gradient(180deg, rgba(182, 182, 182, 40%) 0%, rgba(182, 182, 182, 10%) 100%);
 }
 
+.inline-svg {
+  svg {
+    display: inline !important;
+    vertical-align: initial !important;
+  }
+}
+
 .tutorial-bg {
   background-size: 55dvh;
   background-repeat: no-repeat;
