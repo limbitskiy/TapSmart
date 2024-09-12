@@ -35,27 +35,92 @@ export const useBattleStore = defineStore("battle", () => {
   let currentTaskTimeout: TaskTimer | null = null;
   let taskTimeoutCounter: number | null = null;
 
-  const state = ref<BattleState>({});
+  const state = ref<BattleState>({
+    battleData: {},
+  });
 
   // getters
-  const currentTask = computed(() => state.value.data?.[taskIndex.value]);
-  const mechanics = computed(() => state.value.mechanics);
-  const boosters = computed(() => state.value.boosters);
-  const energy = computed(() => state.value.energy);
-  const questions_left = computed(() => state.value.questions_left);
-  const friends_only_badge = computed(() => state.value.friends_only_badge);
-  const players_waiting = computed(() => state.value.players_waiting);
-  const player_progress = computed(() => state.value.player_progress);
-  const waiting_timer = computed(() => state.value.waiting_timer);
-  const battle_duration = computed(() => state.value.battle_duration);
-  const challengeButton = computed(() => state.value.battle_button_challenge);
-  const currentBattleType = computed(() => state.value.battle_type);
-  const currentMechanic = computed(() => state.value.mechanics?.[getMechanicName(currentBattleType.value)]);
-  const battleResultButtons = computed(() => state.value.battle_results_buttons);
+  const currentTask = computed(() => state.value.battleData.data?.[taskIndex.value]);
+  // const mechanics = computed(() => state.value.mechanics);
+  // const boosters = computed(() => state.value.boosters);
+  // const energy = computed(() => state.value.energy);
+  // const questions_left = computed(() => state.value.questions_left);
+  // const friends_only_badge = computed(() => state.value.friends_only_badge);
+  // const players_waiting = computed(() => state.value.players_waiting);
+  // const player_progress = computed(() => state.value.player_progress);
+  // const waiting_timer = computed(() => state.value.waiting_timer);
+  // const battle_duration = computed(() => state.value.battle_duration);
+  // const challengeButton = computed(() => state.value.battle_button_challenge);
+  // const currentBattleType = computed(() => state.value.battle_type);
+  const currentMechanic = computed(() => state.value.battleData.mechanics?.[getMechanicName(state.value.battleData.battle_type)]);
+  // const battleResultButtons = computed(() => state.value.battle_results_buttons);
+
+  const data = computed(() => state.value.battleData);
+
+  const set = (data) => {
+    Object.keys(data).forEach((key) => {
+      if (key === "cleanAnswers" && data["cleanAnswers"]) {
+        lastTaskId.value = null;
+        answers.value = [];
+      }
+
+      if (key === "data") {
+        taskIndex.value = 0;
+      }
+
+      // battle mode
+      if (key === "battle_mode") {
+        if (data["battle_mode"] === "relax") {
+          mainStore.redirectTo(`/home/relax/${battleTypes[data["battle_type"]]}`);
+        } else if (data["battle_mode"] === "challenge") {
+          mainStore.redirectTo(`/home/challenge/${battleTypes[data["battle_type"]]}`);
+        }
+      }
+      // if no such key - create an empty object
+      if (state.value.battleData[key]) {
+        state.value.battleData[key] = null;
+      }
+      // copy data to the key
+      state.value.battleData[key] = data[key];
+    });
+
+    if (state.value.battleData.data?.length) {
+      state.value.battleData.data.sort((a, b) => a.id - b.id);
+    }
+
+    console.log("set battle store:", state.value.battleData);
+  };
+
+  const expand = (data) => {
+    // console.log(`expand`);
+
+    const _currentId = currentTask.value.id;
+
+    Object.keys(data).forEach((key) => {
+      if (state.value.battleData[key] && Array.isArray(state.value.battleData[key])) {
+        data[key].forEach((item) => {
+          const foundIdx = state.value.battleData[key].findIndex((storeItem) => storeItem.id === item.id);
+
+          if (foundIdx != -1) {
+            state.value.battleData[key].splice(foundIdx, 1);
+          }
+
+          state.value.battleData[key].push(item);
+        });
+      } else {
+        console.error(`Error trying to expand battle store`);
+      }
+    });
+
+    state.value.battleData.data.sort((a, b) => a.id - b.id);
+    taskIndex.value = state.value.battleData.data.findIndex((task) => task.id === _currentId);
+
+    console.log("expanded battle store:", state.value.battleData);
+  };
 
   const decreaseWaitingTimer = () => {
-    if (state.value.waiting_timer > 0) {
-      state.value.waiting_timer -= 1000;
+    if (state.value.battleData.waiting_timer > 0) {
+      state.value.battleData.waiting_timer -= 1000;
     }
   };
 
@@ -127,17 +192,17 @@ export const useBattleStore = defineStore("battle", () => {
 
     switch (type) {
       case "battle": {
-        interval = state.value.breakpoint;
+        interval = state.value.battleData.breakpoint;
         callback = breakpointCb;
         break;
       }
       case "challenge": {
-        interval = state.value.challenge_breakpoint;
+        interval = state.value.battleData.challenge_breakpoint;
         callback = challengeCb;
         break;
       }
       case "waiting": {
-        interval = state.value.waiting_breakpoint;
+        interval = state.value.battleData.waiting_breakpoint;
         callback = waitingCb;
         break;
       }
@@ -160,98 +225,39 @@ export const useBattleStore = defineStore("battle", () => {
     }
   };
 
-  const set = (data) => {
-    Object.keys(data).forEach((key) => {
-      if (key === "cleanAnswers" && data["cleanAnswers"]) {
-        lastTaskId.value = null;
-        answers.value = [];
-      }
-
-      if (key === "data") {
-        taskIndex.value = 0;
-      }
-
-      // battle mode
-      if (key === "battle_mode") {
-        if (data["battle_mode"] === "relax") {
-          mainStore.redirectTo(`/home/relax/${battleTypes[data["battle_type"]]}`);
-        } else if (data["battle_mode"] === "challenge") {
-          mainStore.redirectTo(`/home/challenge/${battleTypes[data["battle_type"]]}`);
-        }
-      }
-      // if no such key - create an empty object
-      if (state.value[key]) {
-        state.value[key] = null;
-      }
-      // copy data to the key
-      state.value[key] = data[key];
-    });
-
-    if (state.value.data?.length) {
-      state.value.data.sort((a, b) => a.id - b.id);
-    }
-
-    // console.log("battle store:", state.value);
-  };
-
-  const expand = (data) => {
-    // console.log(`expand`);
-
-    const _currentId = currentTask.value.id;
-
-    Object.keys(data).forEach((key) => {
-      if (state.value[key] && Array.isArray(state.value[key])) {
-        data[key].forEach((item) => {
-          const foundIdx = state.value[key].findIndex((storeItem) => storeItem.id === item.id);
-
-          if (foundIdx != -1) {
-            state.value[key].splice(foundIdx, 1);
-          }
-
-          state.value[key].push(item);
-        });
-      } else {
-        console.error(`Error trying to expand battle store`);
-      }
-    });
-
-    state.value.data.sort((a, b) => a.id - b.id);
-    taskIndex.value = state.value.data.findIndex((task) => task.id === _currentId);
-  };
-
   const handleRelaxAnswer = ({ isCorrect, answerString, subtractEnergyAmount = 1 }: AnswerProps) => {
-    if (energy.value === 0) return;
+    if (state.value.battleData.energy === 0) return;
 
-    const currentDataItem = state.value.data?.[taskIndex.value];
+    // const currentDataItem = state.value.battleData.data?.[taskIndex.value];
 
-    if (!currentDataItem) {
+    if (!currentTask.value) {
       console.error(`Could not find current item`);
       return;
     }
 
     // set lastTaskId
-    lastTaskId.value = currentDataItem!.id;
+    lastTaskId.value = currentTask.value!.id;
 
     // store answer
-    const foundIdx = answers.value.findIndex((answer) => answer.id === currentDataItem!.id);
+    const foundIdx = answers.value.findIndex((answer) => answer.id === currentTask.value!.id);
 
     if (foundIdx !== -1) {
       answers.value[foundIdx] = {
-        id: currentDataItem.id,
-        key: currentDataItem.key,
+        id: currentTask.value.id,
+        key: currentTask.value.key,
         answer: answerString,
       };
     } else {
       answers.value.push({
-        id: currentDataItem.id,
-        key: currentDataItem.key,
+        id: currentTask.value.id,
+        key: currentTask.value.key,
         answer: answerString,
       });
     }
 
     // call api
-    if (currentDataItem.api) {
-      mainStore.callApi({ api: currentDataItem.api });
+    if (currentTask.value.api) {
+      mainStore.callApi({ api: currentTask.value.api });
     }
 
     if (isCorrect) {
@@ -265,8 +271,8 @@ export const useBattleStore = defineStore("battle", () => {
 
     incrementTaskIndex();
 
-    if (state.value.questions_left > 0) {
-      state.value.questions_left -= 1;
+    if (state.value.battleData.questions_left > 0) {
+      state.value.battleData.questions_left -= 1;
     }
 
     startTaskTimeout();
@@ -275,7 +281,7 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const handleChallengeAnswer = ({ answerString }: AnswerProps) => {
-    const currentDataItem = state.value.data?.[taskIndex.value];
+    const currentDataItem = state.value.battleData.data?.[taskIndex.value];
 
     if (!currentDataItem) {
       console.error(`Could not find current item`);
@@ -313,7 +319,7 @@ export const useBattleStore = defineStore("battle", () => {
   const incrementTaskIndex = () => {
     const newIdx = taskIndex.value + 1;
 
-    if (state.value.data[newIdx]) {
+    if (state.value.battleData.data[newIdx]) {
       taskIndex.value = newIdx;
     } else {
       taskIndex.value = 0;
@@ -340,42 +346,43 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const changeEnergy = (value: number) => {
-    state.value.energy += value;
+    state.value.battleData.energy += value;
 
-    if (energy.value < 0) {
-      state.value.energy = 0;
+    if (state.value.battleData.energy < 0) {
+      state.value.battleData.energy = 0;
     }
   };
 
   const calculateBoltsAmount = () => {
-    if (state.value.multiplicator && state.value.calc_points?.length) {
+    if (state.value.battleData.multiplicator && state.value.battleData.calc_points?.length) {
       const idx = correctStreak.value;
 
-      if (!state.value.calc_points[idx]) {
-        return state.value.multiplicator * state.value.calc_points[state.value.calc_points.length - 1];
+      if (!state.value.battleData.calc_points[idx]) {
+        return state.value.battleData.multiplicator * state.value.battleData.calc_points[state.value.battleData.calc_points.length - 1];
       }
 
-      return state.value.multiplicator * state.value.calc_points[correctStreak.value];
+      return state.value.battleData.multiplicator * state.value.battleData.calc_points[correctStreak.value];
     }
     return 0;
   };
 
   return {
+    data,
     currentTask,
-    energy,
+    // energy,
     lastTaskId,
     answers,
-    currentBattleType,
-    mechanics,
-    challengeButton,
-    questions_left,
-    boosters,
-    friends_only_badge,
-    players_waiting,
-    waiting_timer,
-    player_progress,
-    battle_duration,
-    battleResultButtons,
+    // currentBattleType,
+    // mechanics,
+    // challengeButton,
+    // questions_left,
+    // boosters,
+    // friends_only_badge,
+    // players_waiting,
+    // waiting_timer,
+    // player_progress,
+    // battle_duration,
+    // battleResultButtons,
     set,
     handleRelaxAnswer,
     handleChallengeAnswer,

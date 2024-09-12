@@ -65,11 +65,10 @@ const dataStore = useDataStore();
 const mainStore = useMainStore();
 const localeStore = useLocaleStore();
 
-const { battles: data } = storeToRefs(dataStore);
+const { data } = storeToRefs(dataStore.battles);
 const { battles: locale } = storeToRefs(localeStore);
-// const { callApi } = mainStore;
 
-const { startBreakpoint, stopBreakpoint, decreaseWaitingTimer } = data.value;
+const { startBreakpoint, stopBreakpoint, decreaseWaitingTimer } = dataStore.battles;
 
 let interval: ReturnType<typeof setInterval> | undefined;
 

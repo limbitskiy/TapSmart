@@ -9,7 +9,7 @@
     </div>
 
     <div class="pill-grid grid grid-cols-2 gap-4 pt-4">
-      <MechanicCard v-for="mech in battleMechanics" :key="mech!.id" :data="mech!" @select="onMechSelect">
+      <MechanicCard v-for="mech in battleMechanics" :key="mech!.id" :propData="mech!" @select="onMechSelect">
         <template #image>
           <svg width="116" height="60" viewBox="0 0 116 60" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="14.5" y="13.5" width="36" height="36" rx="2.5" stroke="white" stroke-dasharray="2 2" />
@@ -46,7 +46,9 @@ const dataStore = useDataStore();
 const localeStore = useLocaleStore();
 
 const { battles: locale } = storeToRefs(localeStore);
-const { battles, profile } = storeToRefs(dataStore);
+const { data: battles } = storeToRefs(dataStore.battles);
+const { getMechanicName, changeMechanic } = dataStore.battles;
+const { profile } = storeToRefs(dataStore);
 
 const battleMechanics = computed(() =>
   Object.keys(battles.value.mechanics ?? {})
@@ -55,13 +57,13 @@ const battleMechanics = computed(() =>
 );
 
 const onMechSelect = (mechId: number) => {
-  const mechName = battles.value.getMechanicName(mechId);
+  const mechName = getMechanicName(mechId);
 
   if (battles.value.mechanics?.[mechName].disabled) {
     return;
   }
 
-  battles.value.changeMechanic(mechId);
+  changeMechanic(mechId);
   emit("close");
 };
 </script>

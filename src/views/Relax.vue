@@ -89,10 +89,12 @@ const dataStore = useDataStore();
 const mainStore = useMainStore();
 const localeStore = useLocaleStore();
 
-const { battles: data } = storeToRefs(dataStore);
+const { data } = storeToRefs(dataStore.battles);
 const { battles: locale } = storeToRefs(localeStore);
 const { startBreakpoint, stopBreakpoint, startTaskTimeout, stopTaskTimeout, getMechanicName, setTaskTimeoutCounter } = dataStore.battles;
 const { fetchRelaxPageData, redirectTo } = mainStore;
+
+console.log(data);
 
 const isChangeMechModalVisible = ref(false);
 const isNoEnergyVisible = ref(false);

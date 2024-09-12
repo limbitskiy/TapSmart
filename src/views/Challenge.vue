@@ -69,11 +69,9 @@ const dataStore = useDataStore();
 const mainStore = useMainStore();
 const localeStore = useLocaleStore();
 
-const { battles: data } = storeToRefs(dataStore);
+const { data } = storeToRefs(dataStore.battles);
+const { startBreakpoint, stopBreakpoint } = dataStore.battles;
 const { battles: locale } = storeToRefs(localeStore);
-
-// ??
-const { startBreakpoint, stopBreakpoint } = data.value;
 
 const { fetchChallengePageData, callApi, redirectTo } = mainStore;
 

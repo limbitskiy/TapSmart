@@ -183,13 +183,13 @@ export const useMainStore = defineStore("main", () => {
 
   const fetchRelaxPageData = async () => {
     await useFetch({ key: "battle_init" });
-    redirectTo(`/home/relax/${battleStore.getMechanicName(battleStore.currentBattleType)}`);
+    redirectTo(`/home/relax/${battleStore.getMechanicName(battleStore.data.battle_type)}`);
     return;
   };
 
   const fetchChallengePageData = async (data: {}) => {
     await useFetch({ key: "challenge_init", data });
-    redirectTo(`/challenge/${battleStore.getMechanicName(battleStore.currentBattleType)}`);
+    redirectTo(`/challenge/${battleStore.getMechanicName(battleStore.data.battle_type)}`);
     return;
   };
 

@@ -9,8 +9,8 @@
         <div class="content flex gap-2 items-center justify-between">
           <span class="text-xl fira-bold text-gray-300">{{ locale?.["battle_complete_place"] || "Place" }}</span>
           <div class="flex gap-2 items-center">
-            <img class="h-4" :src="getAsset('cup')" />
-            <span class="text-xl exo-black">2/5</span>
+            <img class="h-4 scale-150" :src="getAsset('cup')" />
+            <span class="text-xl exo-black">{{calculatePlayerPlace}}</span>
           </div>
         </div>
       </Pill>
@@ -19,8 +19,8 @@
         <div class="content flex gap-2 items-center justify-between">
           <span class="text-xl fira-bold text-gray-300">{{ locale?.["battle_complete_bolts"] || "Bolts" }}</span>
           <div class="flex gap-2 items-center">
-            <img class="h-4" :src="getAsset('bolt')" />
-            <span class="text-xl exo-black">3500</span>
+            <img class="h-4 scale-150" :src="getAsset('bolt')" />
+            <span class="text-xl exo-black">{{ data['battle_complete_bolts'] || 0 }}</span>
           </div>
         </div>
       </Pill>
@@ -29,15 +29,15 @@
         <div class="content flex gap-2 items-center justify-between">
           <span class="text-xl fira-bold text-gray-300">{{ locale?.["battle_complete_nuts"] || "Nuts" }}</span>
           <div class="flex gap-2 items-center">
-            <img class="h-4" :src="getAsset('nut')" />
-            <span class="text-xl exo-black">300</span>
+            <img class="h-4 scale-150" :src="getAsset('nut')" />
+            <span class="text-xl exo-black">{{ data['battle_complete_nuts'] || 0 }}</span>
           </div>
         </div>
       </Pill>
     </div>
 
     <div class="ad flex flex-col items-center justify-center mt-8">
-      <Ad image="x2" :text="locale?.['battle_complete_ad_text']" />
+      <Ad image="x2" :text="locale?.['battle_complete_ad_text']" :tooltip="locale?.['tooltip_battle_complete_ad']" />
       <div class="ad-btns w-full flex gap-4 justify-between mt-8">
         <Button class="flex-1 py-3 px-5 text-white bg-[var(--grey-light)]" @click="onBtnClick">
           <div class="flex flex-col gap-1 items-center">
@@ -63,11 +63,13 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import { getAsset } from "@/utils";
 import { storeToRefs } from "pinia";
 
 // stores
 import { useMainStore } from "@/store/main";
+import { useDataStore } from "@/store/data";
 import { useLocaleStore } from "@/store/locale";
 
 // components
@@ -77,40 +79,27 @@ import Ad from "@/components/UI/Ad.vue";
 
 const mainStore = useMainStore();
 const localeStore = useLocaleStore();
+const dataStore = useDataStore();
 
+const { data } = storeToRefs(dataStore.battles);
 const { battles: locale } = storeToRefs(localeStore);
 const { redirectTo } = mainStore;
 
 const getBtnTextArr = (text: string) => text.split("<bolt>");
 
+const calculatePlayerPlace = computed(() => {
+  if (!data.value.battle_results_leaderboard) return '0/0'
+
+  const leaderboard = [...data.value.battle_results_leaderboard]
+
+  const sorted = leaderboard.sort((a, b) => b.score - a.score)
+
+  const playerIdx = sorted.findIndex(player => player.isPlayer)
+
+  return `${playerIdx + 1}/${leaderboard.length}`
+})
+
 const onBtnClick = () => {
   redirectTo("/battle-results");
 };
 </script>
-
-<!-- >locales:
-
-battle_complete_title
-battle_complete_place
-battle_complete_bolts
-battle_complete_nuts
-battle_complete_ad_text_1
-button_claim
-button_claim_with_ton
-battle_results_ad_text
-battle_results_ad_btn_left
-battle_results_ad_btn_right
-
----
-
-battle_results_title
-
->data:
-battle_complete_bolts
-battle_complete_nuts
-
----
-
-battle_results_ad_image
-battle_results_leaderboard
-battle_results_buttons -->

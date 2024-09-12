@@ -167,7 +167,8 @@ const dataStore = useDataStore();
 const localeStore = useLocaleStore();
 
 const { battles: locale } = storeToRefs(localeStore);
-const { battles: data, profile } = storeToRefs(dataStore);
+const { profile } = storeToRefs(dataStore);
+const { data } = storeToRefs(dataStore.battles);
 
 const onStartBattle = () => {
   const payloadObject = {
