@@ -60,12 +60,12 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch, onBeforeUnmount } from "vue";
+import { onMounted, ref, watch, onBeforeUnmount, onUpdated } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 import { tg, getUserName } from "@/api/telegram";
 import { useWindowSize } from "@vueuse/core";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
 // stores
 import { useDataStore } from "@/store/data";
@@ -84,6 +84,7 @@ import ChallengeButton from "@/components/UI/ChallengeButton.vue";
 import BoosterSelect from "@/components/modals/BoosterSelect.vue";
 
 const router = useRouter();
+const route = useRoute();
 
 const dataStore = useDataStore();
 const mainStore = useMainStore();

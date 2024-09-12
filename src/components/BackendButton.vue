@@ -19,14 +19,14 @@ const props = defineProps<{
 }>();
 
 const onClick = () => {
-  if (props.defaultAction) {
-    props.defaultAction();
-  }
-
   if (props.data?.route) {
     redirectTo(props.data.route);
   } else if (props.data?.api) {
     callApi({ api: props.data.api, data: props.data.data });
+  }
+
+  if (props.defaultAction) {
+    props.defaultAction();
   }
 };
 </script>
