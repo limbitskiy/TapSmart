@@ -116,7 +116,7 @@ const onStartBattle = () => {
 const onEndBattle = () => {
   isBattle.value = false;
   stopBreakpoint();
-  callApi({ api: "battle_result" });
+  callApi({ api: "battle_completed" });
 
   isBattleCompleteAnimation.value = true;
 

@@ -4,8 +4,8 @@
       <span class="bg-pill-title">{{ locale?.["battle_complete_title"] || "Battle complete!" }}</span>
     </div>
 
-    <div class="battle-stats">
-      <Pill class="mt-4" color="light">
+    <div class="battle-stats flex flex-col gap-2 pt-4">
+      <Pill color="light">
         <div class="content flex gap-2 items-center justify-between">
           <span class="text-xl fira-bold text-gray-300">{{ locale?.["battle_complete_place"] || "Place" }}</span>
           <div class="flex gap-2 items-center">
@@ -15,7 +15,7 @@
         </div>
       </Pill>
 
-      <Pill class="mt-4" color="light">
+      <Pill color="light">
         <div class="content flex gap-2 items-center justify-between">
           <span class="text-xl fira-bold text-gray-300">{{ locale?.["battle_complete_bolts"] || "Bolts" }}</span>
           <div class="flex gap-2 items-center">
@@ -25,7 +25,7 @@
         </div>
       </Pill>
 
-      <Pill class="mt-4" color="light">
+      <Pill color="light">
         <div class="content flex gap-2 items-center justify-between">
           <span class="text-xl fira-bold text-gray-300">{{ locale?.["battle_complete_nuts"] || "Nuts" }}</span>
           <div class="flex gap-2 items-center">
@@ -39,7 +39,7 @@
     <div class="ad flex flex-col items-center justify-center mt-8">
       <Ad image="x2" :text="locale?.['battle_complete_ad_text']" :tooltip="locale?.['tooltip_battle_complete_ad']" />
       <div class="ad-btns w-full flex gap-4 justify-between mt-8">
-        <Button class="flex-1 py-3 px-5 text-white bg-[var(--grey-light)]" @click="onBtnClick">
+        <Button class="flex-1 py-3 px-5 text-white bg-[var(--grey-light)]" @click="() => onBtnClick(data?.['button_claim'])">
           <div class="flex flex-col gap-1 items-center">
             <div class="flex gap-1 items-baseline">
               <span class="text-base leading-4">{{ getBtnTextArr(locale?.["button_claim"] || "Claim<bolt>Without TON")[0]  }}</span>
@@ -48,7 +48,7 @@
             <span class="text-sm fira-regular !leading-3">{{ getBtnTextArr(locale?.["button_claim"] || "Claim<bolt>Without TON")[1]}}</span>
           </div>
         </Button>
-        <Button class="flex-1 py-3 px-5" @click="onBtnClick">
+        <Button class="flex-1 py-3 px-5" @click="() => onBtnClick(data?.['button_claim_with_ton'])">
           <div class="flex flex-col gap-1 items-center">
             <div class="flex gap-1 items-baseline">
               <span class="text-base leading-4">{{ getBtnTextArr(locale?.["button_claim_with_ton"] || "Claim<bolt>With TON")[0]  }}</span>
@@ -83,7 +83,7 @@ const dataStore = useDataStore();
 
 const { data } = storeToRefs(dataStore.battles);
 const { battles: locale } = storeToRefs(localeStore);
-const { redirectTo } = mainStore;
+const { callApi, redirectTo } = mainStore;
 
 const getBtnTextArr = (text: string) => text.split("<bolt>");
 
@@ -99,7 +99,10 @@ const calculatePlayerPlace = computed(() => {
   return `${playerIdx + 1}/${leaderboard.length}`
 })
 
-const onBtnClick = () => {
-  redirectTo("/battle-results");
+const onBtnClick = (btn: { api: string; data: {} }) => {
+  if (btn.api) {
+    callApi({ api: btn.api, data: btn.data });
+  }
 };
+
 </script>

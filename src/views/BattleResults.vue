@@ -7,8 +7,8 @@
         <span class="bg-pill-title">{{ locale?.["battle_results_title"] || "Battle results:" }}</span>
       </div>
 
-      <div class="leaderboard">
-        <Pill v-for="(player, index) in leaderboardSorted" :key="player.id" class="mt-4 flex items-center justify-between gap-4" color="light">
+      <div class="leaderboard flex flex-col gap-2 pt-4">
+        <Pill v-for="(player, index) in leaderboardSorted" :key="player.id" class="py-2 flex items-center justify-between gap-4" color="light">
           <div class="player-meta leading-3 flex gap-4 items-center">
             <span class="league exo-black text-xl">{{ index + 1 }}</span>
             <span class="fira-bold text-lg max-w-1/2 text-ellipsis">{{ player.name }}</span>
@@ -58,6 +58,8 @@ const { battles: locale } = storeToRefs(localeStore);
 const { callApi, redirectTo } = mainStore;
 
 const leaderboardSorted = computed(() => {
+  if (!data.value.battle_results_leaderboard?.length) return [];
+
   const clone = [...data.value.battle_results_leaderboard];
 
   return clone.sort((a, b) => b.score - a.score);
@@ -67,7 +69,5 @@ const onButton = (btn: { api: string; data: {} }) => {
   if (btn.api) {
     callApi({ api: btn.api, data: btn.data });
   }
-
-  redirectTo("/home/relax");
 };
 </script>
