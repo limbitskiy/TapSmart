@@ -12,20 +12,18 @@
           notificationData.subtitle
         }}</span>
         <div class="btns flex justify-end gap-4 mt-2">
-          <button
-            v-if="!notificationData.buttons.left.hidden"
-            class="fira-condensed-bold rounded-lg bg-[--red-color] px-6 py-1 text-base"
-            @click="() => onBtn(notificationData.buttons.left)"
-          >
-            {{ notificationData.buttons.left.label }}
-          </button>
-          <button
-            v-if="!notificationData.buttons.right.hidden"
-            class="fira-condensed-bold rounded-lg bg-[--green-color] px-6 py-1 text-base"
-            @click="() => onBtn(notificationData.buttons.right)"
-          >
-            {{ notificationData.buttons.right.label }}
-          </button>
+          <Button
+            v-if="!notificationData.buttons?.left?.hidden"
+            class="!py-1 bg-[var(--red-color)]"
+            :data="notificationData.buttons.left"
+            :defaultAction="hideNotification"
+          ></Button>
+          <Button
+            v-if="!notificationData.buttons?.right?.hidden"
+            class="!py-1 bg-[var(--green-color)]"
+            :data="notificationData.buttons.right"
+            :defaultAction="hideNotification"
+          ></Button>
         </div>
       </div>
     </Transition>
@@ -38,15 +36,10 @@ import { storeToRefs } from "pinia";
 // store
 import { useMainStore } from "@/store/main";
 
+// components
+import Button from "@/components/UI/Button.vue";
+
 const userStore = useMainStore();
 const { notificationData } = storeToRefs(userStore);
-const { hideNotification, callApi } = userStore;
-
-const onBtn = (btn: { api: string; data: {} }) => {
-  if (btn.api) {
-    callApi({ api: btn.api, data: btn.data });
-  }
-
-  hideNotification();
-};
+const { hideNotification } = userStore;
 </script>

@@ -6,15 +6,21 @@
     </div>
 
     <BackgroundPill class="py-8">
-      <span class="bg-pill-title">{{ locale?.["stats_title"] || "Pill title" }}</span>
+      <span class="bg-pill-title">{{
+        locale?.["stats_title"] || "Pill title"
+      }}</span>
 
       <!-- bolts -->
       <Pill class="mt-4" color="light" :tooltip="locale?.['tooltip_bolts']">
         <div class="content flex items-center justify-between">
-          <span class="text-xl fira-bold text-gray-300">{{ locale?.["bolts"] || "Bolts" }}</span>
+          <span class="text-xl fira-bold text-gray-300">{{
+            locale?.["bolts"] || "Bolts"
+          }}</span>
           <div class="flex gap-2 items-center">
             <img class="h-4 scale-150" :src="getAsset('bolt')" />
-            <span class="text-xl exo-black">{{ showFormattedNumber(data?.["bolts"]) || 0 }}</span>
+            <span class="text-xl exo-black">{{
+              showFormattedNumber(data?.["bolts"]) || 0
+            }}</span>
           </div>
         </div>
       </Pill>
@@ -22,10 +28,14 @@
       <!-- nuts -->
       <Pill class="mt-4" color="light" :tooltip="locale?.['tooltip_nuts']">
         <div class="content flex items-center justify-between">
-          <span class="text-xl fira-bold text-gray-300">{{ locale?.["nuts"] || "Nuts" }}</span>
+          <span class="text-xl fira-bold text-gray-300">{{
+            locale?.["nuts"] || "Nuts"
+          }}</span>
           <div class="flex gap-2 items-center">
             <img class="h-4 scale-150" :src="getAsset('nut')" />
-            <span class="text-xl exo-black">{{ showFormattedNumber(data?.["nuts"]) || 0 }}</span>
+            <span class="text-xl exo-black">{{
+              showFormattedNumber(data?.["nuts"]) || 0
+            }}</span>
           </div>
         </div>
       </Pill>
@@ -34,20 +44,38 @@
       <Pill class="mt-4" color="light" :tooltip="locale?.['tooltip_level']">
         <div class="content flex gap-2 flex-col">
           <div class="level flex gap-2 items-center justify-between">
-            <span class="text-xl fira-bold text-gray-300">{{ locale?.["level"] || "Level" }}</span>
+            <span class="text-xl fira-bold text-gray-300">{{
+              locale?.["level"] || "Level"
+            }}</span>
             <div class="flex gap-2 items-center">
               <img class="h-5" src="/level-arrow.png" />
               <span class="text-xl exo-black">{{ data?.["level"] || 0 }}</span>
             </div>
           </div>
-          <ProgressBar :value="data?.['progress'] || 0" />
+          <span>{{ data.progress }}</span>
+          <div class="progressbar-cnt">
+            <div class="progress h-2">
+              <div
+                :class="`value rounded-full h-2 w-[${
+                  data.progress + 1
+                }%] bg-green-500`"
+              ></div>
+            </div>
+          </div>
+          <!-- <ProgressBar :value="data?.['progress'] || 0" /> -->
         </div>
       </Pill>
 
       <!-- battles -->
-      <Pill class="mt-4" color="light" :tooltip="locale?.['tooltip_battles_played']">
+      <Pill
+        class="mt-4"
+        color="light"
+        :tooltip="locale?.['tooltip_battles_played']"
+      >
         <div class="content flex gap-2 items-center justify-between">
-          <span class="text-xl fira-bold text-gray-300">{{ locale?.["battles_played"] || "Battles" }}</span>
+          <span class="text-xl fira-bold text-gray-300">{{
+            locale?.["battles_played"] || "Battles"
+          }}</span>
           <div class="flex gap-2 items-center">
             <img class="h-6" src="/swords.png" />
             <span class="text-xl exo-black">{{ data?.["battles"] || 0 }}</span>
@@ -56,9 +84,15 @@
       </Pill>
 
       <!-- words learned -->
-      <Pill class="mt-4" color="light" :tooltip="locale?.['tooltip_words_learned']">
+      <Pill
+        class="mt-4"
+        color="light"
+        :tooltip="locale?.['tooltip_words_learned']"
+      >
         <div class="content flex gap-2 items-center justify-between">
-          <span class="text-xl fira-bold text-gray-300">{{ locale?.["words_learned"] || "Words learned" }}</span>
+          <span class="text-xl fira-bold text-gray-300">{{
+            locale?.["words_learned"] || "Words learned"
+          }}</span>
           <div class="flex gap-2 items-center">
             <img class="h-6" src="/book.png" />
             <span class="text-xl exo-black">{{ data?.["learned"] || 0 }}</span>
@@ -69,8 +103,12 @@
 
     <!-- activity -->
     <BackgroundPill class="py-8 mt-12 flex flex-col">
-      <span class="bg-pill-title">{{ locale?.["activity_title"] || "Title" }}</span>
-      <span class="bg-pill-subtitle">{{ locale?.["activity_subtitle"] || "Subtitle" }}</span>
+      <span class="bg-pill-title">{{
+        locale?.["activity_title"] || "Title"
+      }}</span>
+      <span class="bg-pill-subtitle">{{
+        locale?.["activity_subtitle"] || "Subtitle"
+      }}</span>
     </BackgroundPill>
 
     <Settings class="mt-12" @change="onSettingsChange" />

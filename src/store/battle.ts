@@ -2,7 +2,10 @@ import { computed, ref, watch } from "vue";
 import { defineStore } from "pinia";
 
 // common
-import { Interval as BreakpointInterval, Timer as TaskTimer } from "@/common/interval";
+import {
+  Interval as BreakpointInterval,
+  Timer as TaskTimer,
+} from "@/common/interval";
 
 // composables
 
@@ -40,7 +43,9 @@ export const useBattleStore = defineStore("battle", () => {
   });
 
   // getters
-  const currentTask = computed(() => state.value.battleData.data?.[taskIndex.value]);
+  const currentTask = computed(
+    () => state.value.battleData.data?.[taskIndex.value]
+  );
   // const mechanics = computed(() => state.value.mechanics);
   // const boosters = computed(() => state.value.boosters);
   // const energy = computed(() => state.value.energy);
@@ -52,7 +57,12 @@ export const useBattleStore = defineStore("battle", () => {
   // const battle_duration = computed(() => state.value.battle_duration);
   // const challengeButton = computed(() => state.value.battle_button_challenge);
   // const currentBattleType = computed(() => state.value.battle_type);
-  const currentMechanic = computed(() => state.value.battleData.mechanics?.[getMechanicName(state.value.battleData.battle_type)]);
+  const currentMechanic = computed(
+    () =>
+      state.value.battleData.mechanics?.[
+        getMechanicName(state.value.battleData.battle_type)
+      ]
+  );
   // const battleResultButtons = computed(() => state.value.battle_results_buttons);
 
   const data = computed(() => state.value.battleData);
@@ -71,9 +81,13 @@ export const useBattleStore = defineStore("battle", () => {
       // battle mode
       if (key === "battle_mode") {
         if (data["battle_mode"] === "relax") {
-          mainStore.redirectTo(`/home/relax/${battleTypes[data["battle_type"]]}`);
+          mainStore.redirectTo(
+            `/home/relax/${battleTypes[data["battle_type"]]}`
+          );
         } else if (data["battle_mode"] === "challenge") {
-          mainStore.redirectTo(`/home/challenge/${battleTypes[data["battle_type"]]}`);
+          mainStore.redirectTo(
+            `/home/challenge/${battleTypes[data["battle_type"]]}`
+          );
         }
       }
       // if no such key - create an empty object
@@ -88,7 +102,7 @@ export const useBattleStore = defineStore("battle", () => {
       state.value.battleData.data.sort((a, b) => a.id - b.id);
     }
 
-    console.log("set battle store:", state.value.battleData);
+    // console.log("set battle store:", state.value.battleData);
   };
 
   const expand = (data) => {
@@ -97,9 +111,14 @@ export const useBattleStore = defineStore("battle", () => {
     const _currentId = currentTask.value.id;
 
     Object.keys(data).forEach((key) => {
-      if (state.value.battleData[key] && Array.isArray(state.value.battleData[key])) {
+      if (
+        state.value.battleData[key] &&
+        Array.isArray(state.value.battleData[key])
+      ) {
         data[key].forEach((item) => {
-          const foundIdx = state.value.battleData[key].findIndex((storeItem) => storeItem.id === item.id);
+          const foundIdx = state.value.battleData[key].findIndex(
+            (storeItem) => storeItem.id === item.id
+          );
 
           if (foundIdx != -1) {
             state.value.battleData[key].splice(foundIdx, 1);
@@ -113,9 +132,11 @@ export const useBattleStore = defineStore("battle", () => {
     });
 
     state.value.battleData.data.sort((a, b) => a.id - b.id);
-    taskIndex.value = state.value.battleData.data.findIndex((task) => task.id === _currentId);
+    taskIndex.value = state.value.battleData.data.findIndex(
+      (task) => task.id === _currentId
+    );
 
-    console.log("expanded battle store:", state.value.battleData);
+    // console.log("expanded battle store:", state.value.battleData);
   };
 
   const decreaseWaitingTimer = () => {
@@ -125,11 +146,20 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const startTaskTimeout = () => {
-    if (!currentMechanic.value?.timeout || currentTaskTimeout || taskTimeoutCounter === 0) return;
+    if (
+      !currentMechanic.value?.timeout ||
+      currentTaskTimeout ||
+      taskTimeoutCounter === 0
+    )
+      return;
 
     const callback = () => {
       stopTaskTimeout();
-      handleRelaxAnswer({ isCorrect: false, answerString: "", subtractEnergyAmount: 0 });
+      handleRelaxAnswer({
+        isCorrect: false,
+        answerString: "",
+        subtractEnergyAmount: 0,
+      });
     };
 
     const taskTimeout = new TaskTimer(currentMechanic.value?.timeout, callback);
@@ -225,7 +255,11 @@ export const useBattleStore = defineStore("battle", () => {
     }
   };
 
-  const handleRelaxAnswer = ({ isCorrect, answerString, subtractEnergyAmount = 1 }: AnswerProps) => {
+  const handleRelaxAnswer = ({
+    isCorrect,
+    answerString,
+    subtractEnergyAmount = 1,
+  }: AnswerProps) => {
     if (state.value.battleData.energy === 0) return;
 
     // const currentDataItem = state.value.battleData.data?.[taskIndex.value];
@@ -239,7 +273,9 @@ export const useBattleStore = defineStore("battle", () => {
     lastTaskId.value = currentTask.value!.id;
 
     // store answer
-    const foundIdx = answers.value.findIndex((answer) => answer.id === currentTask.value!.id);
+    const foundIdx = answers.value.findIndex(
+      (answer) => answer.id === currentTask.value!.id
+    );
 
     if (foundIdx !== -1) {
       answers.value[foundIdx] = {
@@ -292,7 +328,9 @@ export const useBattleStore = defineStore("battle", () => {
     lastTaskId.value = currentDataItem!.id;
 
     // store answer
-    const foundIdx = answers.value.findIndex((answer) => answer.id === currentDataItem!.id);
+    const foundIdx = answers.value.findIndex(
+      (answer) => answer.id === currentDataItem!.id
+    );
 
     if (foundIdx !== -1) {
       answers.value[foundIdx] = {
@@ -354,14 +392,25 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const calculateBoltsAmount = () => {
-    if (state.value.battleData.multiplicator && state.value.battleData.calc_points?.length) {
+    if (
+      state.value.battleData.multiplicator &&
+      state.value.battleData.calc_points?.length
+    ) {
       const idx = correctStreak.value;
 
       if (!state.value.battleData.calc_points[idx]) {
-        return state.value.battleData.multiplicator * state.value.battleData.calc_points[state.value.battleData.calc_points.length - 1];
+        return (
+          state.value.battleData.multiplicator *
+          state.value.battleData.calc_points[
+            state.value.battleData.calc_points.length - 1
+          ]
+        );
       }
 
-      return state.value.battleData.multiplicator * state.value.battleData.calc_points[correctStreak.value];
+      return (
+        state.value.battleData.multiplicator *
+        state.value.battleData.calc_points[correctStreak.value]
+      );
     }
     return 0;
   };
