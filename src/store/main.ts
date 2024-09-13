@@ -47,6 +47,7 @@ export const useMainStore = defineStore("main", () => {
   const requestPending = ref(false);
   const requestQueue = ref([]);
 
+  // process request queue
   watch(
     requestQueue,
     (queue) => {
@@ -250,6 +251,7 @@ export const useMainStore = defineStore("main", () => {
 
     if (route.path.match(/^\/home\/relax\/\w{1,}$/) && location.match(/^\/home\/relax\/?$/)) {
       router.push(`/home/relax/${battleStore.getMechanicName(battleStore.data.battle_type)}`);
+      battleStore.resetBattleStats();
       return;
     }
 

@@ -2,7 +2,7 @@
   <div class="4-answers-battle flex-1 flex flex-col">
     <div class="question flex-1 grid place-items-center font-black text-2xl overflow-hidden">
       <div ref="el" class="question-text flex flex-col gap-2 items-center text-center w-full px-8 py-4 overflow-x-hidden text-ellipsis">
-        <span class="fira-condensed-black" style="font-size: clamp(30px, 9vw, 46px)">{{ currentTask.task.question }}</span>
+        <span class="fira-condensed-black" style="font-size: clamp(30px, 9vw, 46px)">{{ currentTask?.task?.question || "Question not found" }}</span>
       </div>
     </div>
 

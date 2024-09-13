@@ -74,8 +74,6 @@ const props = defineProps<{
   propData: Mechanic;
 }>();
 
-console.log(props.propData);
-
 const emit = defineEmits<{
   select: [mechId: number];
 }>();

@@ -36,7 +36,7 @@ import { useLocaleStore } from "@/store/locale";
 
 // components
 import MechanicCard from "@/components/MechanicCard.vue";
-import { computed } from "vue";
+import { computed, onBeforeUnmount, onMounted } from "vue";
 
 const emit = defineEmits<{
   close: [];
@@ -46,24 +46,32 @@ const dataStore = useDataStore();
 const localeStore = useLocaleStore();
 
 const { battles: locale } = storeToRefs(localeStore);
-const { data: battles } = storeToRefs(dataStore.battles);
-const { getMechanicName, changeMechanic } = dataStore.battles;
+const { data } = storeToRefs(dataStore.battles);
+const { getMechanicName, changeMechanic, stopBreakpoint, startBreakpoint } = dataStore.battles;
 const { profile } = storeToRefs(dataStore);
 
 const battleMechanics = computed(() =>
-  Object.keys(battles.value.mechanics ?? {})
-    .map((key) => battles.value.mechanics?.[key])
+  Object.keys(data.value.mechanics ?? {})
+    .map((key) => data.value.mechanics?.[key])
     .sort((a, b) => a!.order - b!.order)
 );
 
 const onMechSelect = (mechId: number) => {
   const mechName = getMechanicName(mechId);
 
-  if (battles.value.mechanics?.[mechName].disabled) {
+  if (data.value.mechanics?.[mechName].disabled) {
     return;
   }
 
   changeMechanic(mechId);
   emit("close");
 };
+
+onMounted(() => {
+  stopBreakpoint();
+});
+
+onBeforeUnmount(() => {
+  startBreakpoint("battle");
+});
 </script>

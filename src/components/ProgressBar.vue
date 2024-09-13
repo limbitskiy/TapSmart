@@ -35,6 +35,7 @@ import { useLocaleStore } from "@/store/locale";
 const props = defineProps<{
   timer: number;
   initialTimerValue: number;
+  players: [];
 }>();
 
 const colors = {
@@ -51,16 +52,16 @@ const dataStore = useDataStore();
 const mainStore = useMainStore();
 const localeStore = useLocaleStore();
 
-const { battles: data } = storeToRefs(dataStore);
+const { data } = storeToRefs(dataStore.battles);
 const { battles: locale } = storeToRefs(localeStore);
 
 const progressRef = ref();
 
-const player = computed(() => data.value["player_progress"]?.find((player) => player.isPlayer));
+const player = computed(() => props.players?.find((player) => player.isPlayer));
 
-const enemies = computed(() => data.value["player_progress"]?.filter((player) => !player.isPlayer));
+const enemies = computed(() => props.players?.filter((player) => !player.isPlayer));
 
-const highestScore = computed(() => data.value["player_progress"]?.sort((a, b) => b.score - a.score)[0].score);
+const highestScore = computed(() => props.players?.sort((a, b) => b.score - a.score)[0].score);
 
 const progressPercent = computed(() => ((props.initialTimerValue - props.timer) * 100) / props.initialTimerValue);
 

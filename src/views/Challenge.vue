@@ -1,27 +1,37 @@
 <template>
-  <div class="challenge-main flex-1 overflow-auto flex flex-col gap-2 relative">
+  <div class="challenge-main flex-1 overflow-y-auto overflow-x-hidden flex flex-col gap-2 relative">
     <Backlight color="red" />
 
     <template v-if="isBattle">
       <div class="challenge-stats relative z-10 flex flex-col gap-4 mt-2">
-        <ChallengeStatus :time="timer || 0" :score="score" />
+        <!-- <button class="absolute z-[9999]" @click="onBonusUsed">get bonus</button> -->
+        <ChallengeStatus :time="timer || 0" :score="score" :multiplier="multiplier" :place="playerPosition" />
 
         <div class="wrap px-8">
-          <ProgressBar :timer="timer || 0" :initialTimerValue="data['battle_duration']!" />
+          <ProgressBar :timer="timer || 0" :initialTimerValue="data['battle_duration']!" :players="data?.['player_progress'] || []" />
         </div>
       </div>
 
-      <RouterView v-slot="{ Component }" type="challenge" @answer="onAnswer">
+      <RouterView v-slot="{ Component }" type="challenge">
         <!-- <Transition name="fade" mode="out-in"> -->
         <component :is="Component" />
         <!-- </Transition> -->
       </RouterView>
     </template>
 
+    <!-- bonuses -->
+    <Transition name="challenge-bonus-1">
+      <div v-if="bonusState.isShown" class="bonuses-cnt absolute top-[20dvh] left-0 right-0 grid place-items-center">
+        <div class="bonus">
+          <span class="text-[6vw] exo-black text-[#edaa38]">{{ bonusState.text }}</span>
+        </div>
+      </div>
+    </Transition>
+
     <!-- waiting modal -->
     <Teleport to="body">
       <Modal v-model:visible="isWaiting" sticky>
-        <Waiting @countdownComplete="onStartBattle" />
+        <Waiting @countdownComplete="onStartChallenge" />
       </Modal>
     </Teleport>
 
@@ -42,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, onBeforeUnmount } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 import { tg, getUserName } from "@/api/telegram";
@@ -62,6 +72,7 @@ import Backlight from "@/components/UI/Backlight.vue";
 import ChallengeStatus from "@/components/ChallengeStatus.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import BattleComplete from "@/components/modals/BattleComplete.vue";
+import { transform } from "typescript";
 
 const route = useRoute();
 
@@ -69,42 +80,73 @@ const dataStore = useDataStore();
 const mainStore = useMainStore();
 const localeStore = useLocaleStore();
 
-const { data } = storeToRefs(dataStore.battles);
-const { startBreakpoint, stopBreakpoint } = dataStore.battles;
+const { data, challengeScore: score, multiplier, bonusesUsedInBattle } = storeToRefs(dataStore.battles);
+const { startBreakpoint, stopBreakpoint, setChallengeScore, resetBattleStats, calculateBonusAmount } = dataStore.battles;
 const { battles: locale } = storeToRefs(localeStore);
 
 const { fetchChallengePageData, callApi, redirectTo } = mainStore;
-
-const score = ref(0);
-
-const challengeParams = {};
-
-Object.keys(route.query).forEach((key) => {
-  challengeParams[key] = +route.query[key];
-});
-
-await fetchChallengePageData(challengeParams);
 
 const isWaiting = ref(false);
 const isBattle = ref(false);
 const isBattleCompleteAnimation = ref(false);
 const isCompletedModal = ref(false);
 
-const timer = ref(data.value.battle_duration);
+const bonusState = ref({
+  text: "",
+  isShown: false,
+  used: {},
+});
+
+const challengeParams = {};
 let interval = null;
 
-const onStartBattle = () => {
+Object.keys(route.query).forEach((key) => {
+  challengeParams[key] = +route.query[key];
+});
+
+watch(
+  bonusesUsedInBattle,
+  (newVal, oldVal) => {
+    if (Object.keys(newVal).length) {
+      Object.keys(newVal).forEach((bonus) => {
+        if (!bonusState.value.used[bonus]) {
+          onBonusUsed(bonus);
+        }
+      });
+    }
+  },
+  {
+    deep: true,
+  }
+);
+
+await fetchChallengePageData(challengeParams);
+
+const timer = ref(data.value.battle_duration);
+
+const playerPosition = computed(() => {
+  if (!data.value?.["player_progress"]?.length) return [0, 0];
+
+  const clone = [...data.value["player_progress"]];
+
+  const playersSorted = clone?.sort((a, b) => b.score - a.score);
+
+  return [playersSorted?.findIndex((player) => player.isPlayer) + 1 ?? data.value["player_progress"].length, data.value["player_progress"].length];
+});
+
+const onStartChallenge = () => {
   isWaiting.value = false;
   callApi({ api: "battle_init" });
 
   setTimeout(() => {
     isBattle.value = true;
-    startBreakpoint("challenge");
+    resetBattleStats();
+    startBreakpoint("battle");
 
     interval = setInterval(() => {
       if (timer.value === 0) {
         clearInterval(interval);
-        onEndBattle();
+        onEndChallenge();
         return;
       }
 
@@ -113,23 +155,32 @@ const onStartBattle = () => {
   }, 300);
 };
 
-const onEndBattle = () => {
-  isBattle.value = false;
-  stopBreakpoint();
-  callApi({ api: "battle_completed" });
+const onBonusUsed = (bonusName: string) => {
+  const bonusMap = {
+    battle_extra_mistake: "Extra mistake",
+  };
 
-  isBattleCompleteAnimation.value = true;
+  bonusState.value.text = bonusMap[bonusName];
+  bonusState.value.isShown = true;
 
   setTimeout(() => {
+    bonusState.value.text = "";
+    bonusState.value.isShown = false;
+
+    bonusState.value.used[bonusName] = true;
+  }, 1000);
+};
+
+const onEndChallenge = () => {
+  isBattle.value = false;
+  stopBreakpoint();
+  callApi({ api: "battle_breakpoint", data: { final: 1 } });
+  isBattleCompleteAnimation.value = true;
+  setTimeout(() => {
+    callApi({ api: "battle_completed" });
     isBattleCompleteAnimation.value = false;
     isCompletedModal.value = true;
   }, 3000);
-};
-
-const onAnswer = ({ correct }: { correct: boolean }) => {
-  if (correct) {
-    score.value += 10;
-  }
 };
 
 onMounted(() => {

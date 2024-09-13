@@ -30,7 +30,7 @@
         <Transition name="fade" mode="out-in">
           <Suspense suspensible>
             <component :is="Component" />
-            <template #fallback> Loading... </template>
+            <template #fallback><Loader /></template>
           </Suspense>
         </Transition>
       </template>
@@ -65,7 +65,6 @@ import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 import { tg, getUserName } from "@/api/telegram";
 import { useWindowSize } from "@vueuse/core";
-import { useRouter, useRoute } from "vue-router";
 
 // stores
 import { useDataStore } from "@/store/data";
@@ -82,9 +81,7 @@ import VolumeControl from "@/components/VolumeControl.vue";
 import NoEnergy from "@/components/modals/NoEnergy.vue";
 import ChallengeButton from "@/components/UI/ChallengeButton.vue";
 import BoosterSelect from "@/components/modals/BoosterSelect.vue";
-
-const router = useRouter();
-const route = useRoute();
+import Loader from "@/components/UI/Loader.vue";
 
 const dataStore = useDataStore();
 const mainStore = useMainStore();
@@ -92,13 +89,14 @@ const localeStore = useLocaleStore();
 
 const { data } = storeToRefs(dataStore.battles);
 const { battles: locale } = storeToRefs(localeStore);
-const { startBreakpoint, stopBreakpoint, startTaskTimeout, stopTaskTimeout, getMechanicName, setTaskTimeoutCounter } = dataStore.battles;
+const { startBreakpoint, stopBreakpoint, startTaskTimeout, stopTaskTimeout, getMechanicName, setTaskTimeoutCounter, resetBattleStats } = dataStore.battles;
 const { fetchRelaxPageData, redirectTo } = mainStore;
 
 const isChangeMechModalVisible = ref(false);
 const isNoEnergyVisible = ref(false);
 const isBoostersModalVisible = ref(false);
 
+// stop questions when modals are open
 watch([isChangeMechModalVisible, isNoEnergyVisible, isBoostersModalVisible], (val) => {
   if (val.some((modal) => modal)) {
     setTaskTimeoutCounter(1);
@@ -108,6 +106,7 @@ watch([isChangeMechModalVisible, isNoEnergyVisible, isBoostersModalVisible], (va
   }
 });
 
+// watch energy
 watch(
   () => data.value.energy,
   (val) => {
@@ -137,7 +136,7 @@ const openBoosterModal = () => {
 const onStartChallenge = ({ extra_mistake, extra_time, friends_only }: { [key: string]: string }) => {
   isBoostersModalVisible.value = false;
   setTimeout(() => {
-    router.push(`/challenge/yesno?extra_mistake=${extra_mistake}&extra_time=${extra_time}&friends_only=${friends_only}`);
+    redirectTo(`/challenge/yesno?extra_mistake=${extra_mistake}&extra_time=${extra_time}&friends_only=${friends_only}`);
   }, 300);
 };
 
@@ -145,6 +144,7 @@ onMounted(() => {
   startBreakpoint("battle");
   setTaskTimeoutCounter(null);
   startTaskTimeout();
+  resetBattleStats();
 });
 
 onBeforeUnmount(() => {

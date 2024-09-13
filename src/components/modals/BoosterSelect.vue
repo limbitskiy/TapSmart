@@ -140,7 +140,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset, showFormattedNumber } from "@/utils";
 
@@ -169,6 +169,7 @@ const localeStore = useLocaleStore();
 const { battles: locale } = storeToRefs(localeStore);
 const { profile } = storeToRefs(dataStore);
 const { data } = storeToRefs(dataStore.battles);
+const { stopBreakpoint, startBreakpoint } = dataStore.battles;
 
 const onStartBattle = () => {
   const payloadObject = {
@@ -183,4 +184,12 @@ const onStartBattle = () => {
 const onFriendsOnly = () => {
   friendsOnly.value = !friendsOnly.value;
 };
+
+onMounted(() => {
+  startBreakpoint("challenge");
+});
+
+onBeforeUnmount(() => {
+  startBreakpoint("battle");
+});
 </script>
