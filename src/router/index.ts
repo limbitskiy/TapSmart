@@ -14,6 +14,7 @@ import RequiredSettings from "@/views/RequiredSettings.vue";
 import ProfileView from "@/views/ProfileView.vue";
 import Challenge from "@/views/Challenge.vue";
 import BattleResults from "@/views/BattleResults.vue";
+import BattleComplete from "@/views/BattleComplete.vue";
 
 // battles
 import YesNo from "@/components/battles/YesNo.vue";
@@ -101,6 +102,10 @@ const routes = [
         component: FourAnswers,
       },
     ],
+  },
+  {
+    path: "/battle-complete",
+    component: BattleComplete,
   },
   {
     path: "/battle-results",

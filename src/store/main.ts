@@ -102,12 +102,12 @@ export const useMainStore = defineStore("main", () => {
 
     // console.log(`notification: `, notification.value);
 
-    // setTimeout(() => {
-    //   notification.value.title = null;
-    //   notification.value.subtitle = null;
-    //   notification.value.buttons = {};
-    //   notification.value.isShown = false;
-    // }, timeout);
+    setTimeout(() => {
+      notification.value.title = null;
+      notification.value.subtitle = null;
+      notification.value.buttons = {};
+      notification.value.isShown = false;
+    }, timeout);
   };
 
   const hideNotification = () => {

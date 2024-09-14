@@ -265,7 +265,7 @@ export const useBattleStore = defineStore("battle", () => {
 
     if (isCorrect) {
       onCorrectAnswer();
-      dataStore.addBolts(calculateBonusAmount());
+      dataStore.addBolts(multiplier.value);
     } else {
       if (subtractEnergyAmount) {
         changeEnergy(-subtractEnergyAmount);
@@ -376,7 +376,7 @@ export const useBattleStore = defineStore("battle", () => {
     taskIndex.value = 0;
     lastTaskId.value = null;
     correctStreak.value = 1;
-    answers.value = [];
+    // answers.value = [];
     challengeScore.value = 0;
     bonusesUsedInBattle.value = {};
   };

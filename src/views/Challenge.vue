@@ -36,11 +36,11 @@
     </Teleport>
 
     <!-- battle complete modal -->
-    <Teleport to="body">
+    <!-- <Teleport to="body">
       <Modal v-model:visible="isCompletedModal" sticky>
         <BattleComplete />
       </Modal>
-    </Teleport>
+    </Teleport> -->
 
     <!-- battle complete animation -->
     <Transition name="fade">
@@ -89,7 +89,7 @@ const { fetchChallengePageData, callApi, redirectTo } = mainStore;
 const isWaiting = ref(false);
 const isBattle = ref(false);
 const isBattleCompleteAnimation = ref(false);
-const isCompletedModal = ref(false);
+// const isCompletedModal = ref(false);
 
 const bonusState = ref({
   text: "",
@@ -152,7 +152,7 @@ const onStartChallenge = () => {
 
       timer.value -= 1000;
     }, 1000);
-  }, 300);
+  }, 1000);
 };
 
 const onBonusUsed = (bonusName: string) => {
@@ -179,7 +179,8 @@ const onEndChallenge = () => {
   setTimeout(() => {
     callApi({ api: "battle_completed" });
     isBattleCompleteAnimation.value = false;
-    isCompletedModal.value = true;
+    redirectTo("/battle-complete");
+    // isCompletedModal.value = true;
   }, 3000);
 };
 

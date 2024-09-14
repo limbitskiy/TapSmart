@@ -21,10 +21,10 @@
         <Ad :image="data?.['battle_results_ad_image']" :text="locale?.['battle_results_ad_text']" :tooltip="locale?.['tooltip_battle_results_ad']" />
         <div class="ad-btns w-full flex gap-4 justify-between mt-8">
           <Button v-if="data?.battle_results_buttons?.left" class="flex-1 py-3 px-5 text-white bg-[var(--grey-light)]" :data="data.battle_results_buttons.left">
-            <span class="text-base">{{ data?.["battle_results_buttons"]?.left?.label }}</span>
+            <span class="text-xl inline-block leading-5">{{ data?.["battle_results_buttons"]?.left?.label }}</span>
           </Button>
           <Button v-if="data?.battle_results_buttons?.right" class="flex-1 py-3 px-5" :data="data.battle_results_buttons.right">
-            <span class="text-base">{{ data?.["battle_results_buttons"]?.right?.label }}</span>
+            <span class="text-xl inline-block leading-5">{{ data?.["battle_results_buttons"]?.right?.label }}</span>
           </Button>
         </div>
       </div>

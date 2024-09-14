@@ -97,11 +97,11 @@
 
     <!-- invite buttons -->
     <div class="invite-btn-cnt fixed bottom-16 w-full p-4 flex justify-between gap-3 z-10">
-      <Button class="flex items-center justify-between flex-1 px-4 py-2" @click="onInviteFriend">
+      <Button class="flex-1" @click="onInviteFriend">
         <span class="text-xl">{{ locale?.["invite_a_friend"] }}</span>
-        <img :src="getAsset('paw')" />
+        <!-- <img :src="getAsset('paw')" /> -->
       </Button>
-      <Button class="px-4 py-2 border border-gray-800" black @click="onCopyToClipboard"><img :src="getAsset('copy')" /></Button>
+      <Button class="!px-5 border border-gray-800" dark @click="onCopyToClipboard"><img :src="getAsset('copy')" /></Button>
     </div>
   </div>
 </template>

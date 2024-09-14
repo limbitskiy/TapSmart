@@ -27,6 +27,9 @@ export const images = {
   congrats: "/congrats.png",
   x2: "/x2.png",
   winner_token: "/winner_token.png",
+  invite_friends: "/invite_friends.png",
+  repetition: "/repetition.png",
+  stories: "/stories.png",
 };
 
 // assets folder
