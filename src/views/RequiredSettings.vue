@@ -44,6 +44,6 @@ const onSettingsChange = ({ setting, value }: { setting: string; value: number }
 };
 
 const onNext = () => {
-  redirectTo("/home/relax");
+  redirectTo("/start-relax");
 };
 </script>
