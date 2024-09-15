@@ -1,7 +1,7 @@
 <template>
   <Button ref="challengeBtnRef" class="flex-1 py-3 px-5 relative" :class="{ 'bg-gray-300 text-gray-400': data.challengeButton?.disabled }" @click="onClick"
     ><div class="flex justify-center gap-1">
-      <span v-bind="$attrs" class="text-base leading-4">{{ locale["button_challenge"] }}</span>
+      <span v-bind="$attrs" class="text-base leading-4">{{ locale?.["button_challenge"] }}</span>
       <div
         v-if="data.questions_left > 0"
         class="counter text-sm bg-[#333] text-white border border-[var(--accent-color)] rounded-md h-4 px-1 grid place-items-center leading-3 exo-bold absolute top-1 left-[85%]"
@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { storeToRefs } from "pinia";
 
 // components
@@ -36,7 +36,7 @@ const mainStore = useMainStore();
 const localeStore = useLocaleStore();
 
 const { showTooltip } = mainStore;
-const { battles: data } = storeToRefs(dataStore);
+const { data } = storeToRefs(dataStore.battles);
 const { battles: locale } = storeToRefs(localeStore);
 
 const challengeBtnRef = ref();

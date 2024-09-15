@@ -35,8 +35,8 @@ export const useBattleStore = defineStore("battle", () => {
   let currentTaskTimeout: TaskTimer | null = null;
   let taskTimeoutCounter: number | null = null;
 
-  const state = ref<BattleState>({
-    battleData: {},
+  const state = ref({
+    battleData: <BattleState>{},
   });
 
   // getters
