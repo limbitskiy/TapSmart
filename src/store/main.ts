@@ -249,12 +249,6 @@ export const useMainStore = defineStore("main", () => {
   const redirectTo = (location: string) => {
     if (route.path === location) return;
 
-    if (route.path.match(/^\/home\/relax\/\w{1,}$/) && location.match(/^\/home\/relax\/?$/)) {
-      router.push(`/home/relax/${battleStore.getMechanicName(battleStore.data.battle_type)}`);
-      battleStore.resetBattleStats();
-      return;
-    }
-
     router.push(location);
   };
 

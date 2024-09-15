@@ -119,8 +119,6 @@ watch(
 
 const { width } = useWindowSize();
 
-await fetchRelaxPageData();
-
 const onChangeMech = () => {
   isChangeMechModalVisible.value = true;
 };
