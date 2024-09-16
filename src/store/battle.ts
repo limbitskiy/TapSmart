@@ -186,7 +186,7 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const startBreakpoint = (type: string) => {
-    // console.log(`starting breakpoint`);
+    console.log(`starting breakpoint`);
 
     stopBreakpoint();
 
@@ -214,6 +214,8 @@ export const useBattleStore = defineStore("battle", () => {
       }
     }
 
+    console.log(interval);
+    console.log(callback);
     if (!interval || !callback) return;
 
     const breakpointInterval = new BreakpointInterval(interval, callback);
