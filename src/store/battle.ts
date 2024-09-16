@@ -24,6 +24,38 @@ export const useBattleStore = defineStore("battle", () => {
     6: "work_on_mistakes",
   };
 
+  // callbacks
+  const breakpointCb = () => {
+    if (document.hasFocus()) {
+      console.log(`is in focus`);
+      const score = Math.round(challengeScore.value) || undefined;
+      mainStore.callApi({ api: "battle_breakpoint", data: { score } });
+      return;
+    }
+
+    console.log(`is not in focus`);
+  };
+
+  const challengeCb = () => {
+    if (document.hasFocus()) {
+      console.log(`is in focus`);
+      mainStore.callApi({ api: "challenge_breakpoint" });
+      return;
+    }
+
+    console.log(`is not in focus`);
+  };
+
+  const waitingCb = () => {
+    if (document.hasFocus()) {
+      console.log(`is in focus`);
+      mainStore.callApi({ api: "waiting_breakpoint" });
+      return;
+    }
+
+    console.log(`is not in focus`);
+  };
+
   const taskIndex = ref<number | null>(null);
   const lastTaskId = ref<number | null>(null);
   const correctStreak = ref(1);
@@ -158,37 +190,6 @@ export const useBattleStore = defineStore("battle", () => {
 
     stopBreakpoint();
 
-    const breakpointCb = () => {
-      if (document.hasFocus()) {
-        console.log(`is in focus`);
-        const score = challengeScore.value || undefined;
-        mainStore.callApi({ api: "battle_breakpoint", data: { score } });
-        return;
-      }
-
-      console.log(`is not in focus`);
-    };
-
-    const challengeCb = () => {
-      if (document.hasFocus()) {
-        console.log(`is in focus`);
-        mainStore.callApi({ api: "challenge_breakpoint" });
-        return;
-      }
-
-      console.log(`is not in focus`);
-    };
-
-    const waitingCb = () => {
-      if (document.hasFocus()) {
-        console.log(`is in focus`);
-        mainStore.callApi({ api: "waiting_breakpoint" });
-        return;
-      }
-
-      console.log(`is not in focus`);
-    };
-
     let interval;
     let callback;
 
@@ -229,7 +230,7 @@ export const useBattleStore = defineStore("battle", () => {
 
   // answer handlers
   const handleRelaxAnswer = ({ isCorrect, answerString, subtractEnergyAmount = 1 }: AnswerProps) => {
-    if (state.value.battleData.energy === 0) return;
+    if (data.value.energy === 0) return;
 
     // const currentDataItem = state.value.battleData.data?.[taskIndex.value];
 
@@ -337,8 +338,8 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const onWrongChallengeAnswer = () => {
-    if (!bonusesUsedInBattle.value["battle_extra_mistake"]) {
-      bonusesUsedInBattle.value["battle_extra_mistake"] = true;
+    if (!bonusesUsedInBattle.value["extra_mistake"]) {
+      bonusesUsedInBattle.value["extra_mistake"] = true;
     } else {
       correctStreak.value = 1;
     }

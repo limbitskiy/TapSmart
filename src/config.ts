@@ -36,6 +36,7 @@ export const images = {
 export const assets = {
   copy: "assets/icons/copy.svg",
   bolt: "assets/icons/bolt.svg",
+  "bolt-dark": "assets/icons/bolt-dark.svg",
   nut: "assets/icons/nut.svg",
   league: "assets/icons/league.svg",
   refresh: "assets/icons/refresh.svg",

@@ -44,8 +44,8 @@
       <!-- ad -->
       <div class="ad flex flex-col items-center justify-center mt-8">
         <Ad image="x2" :text="locale?.['battle_complete_ad_text']" :tooltip="locale?.['tooltip_battle_complete_ad']" />
-        <div class="ad-btns w-full flex gap-4 justify-between mt-8">
-          <Button class="flex-1 py-3 px-5 text-white bg-[var(--grey-light)]" :data="data?.['button_claim']">
+        <div class="ad-btns w-full flex gap-4 mt-8">
+          <Button class="flex-1 py-3 !px-0 text-white bg-[var(--grey-light)]" :data="data?.['button_claim']">
             <div class="flex flex-col gap-1 items-center">
               <div class="flex gap-1 items-baseline">
                 <span class="text-base leading-4">{{ getBtnTextArr(locale?.["button_claim"] || "Claim<bolt>Without TON")[0]  }}</span>
@@ -54,11 +54,11 @@
               <span class="text-sm fira-regular !leading-3">{{ getBtnTextArr(locale?.["button_claim"] || "Claim<bolt>Without TON")[1]}}</span>
             </div>
           </Button>
-          <Button class="flex-1 py-3 px-5" :data="data?.['button_claim_with_ton']">
+          <Button class="flex-1 py-3 !px-0" :data="data?.['button_claim_with_ton']">
             <div class="flex flex-col gap-1 items-center">
               <div class="flex gap-1 items-baseline">
                 <span class="text-base leading-4">{{ getBtnTextArr(locale?.["button_claim_with_ton"] || "Claim<bolt>With TON")[0]  }}</span>
-                <img class="h-4" :src="getAsset('bolt')" />
+                <img class="h-4" :src="getAsset('bolt-dark')" />
               </div>
               <span class="text-sm fira-regular !leading-3">{{ getBtnTextArr(locale?.["button_claim_with_ton"] || "Claim<bolt>With TON")[1]}}</span>
             </div>
@@ -91,7 +91,7 @@ const dataStore = useDataStore();
 const { data } = storeToRefs(dataStore.battles);
 const { battles: locale } = storeToRefs(localeStore);
 
-const getBtnTextArr = (text: string) => text.split("<bolt>");
+const getBtnTextArr = (text: string) => text.split("<separate>");
 
 const calculatePlayerPlace = computed(() => {
   if (!data.value.battle_results_leaderboard) return '0/0'

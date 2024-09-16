@@ -28,7 +28,6 @@ import { useLocaleStore } from "@/store/locale";
 // components
 import Button from "@/components/UI/Button.vue";
 import Settings from "@/components/Settings.vue";
-import BackendButton from "@/components/BackendButton.vue";
 
 const dataStore = useDataStore();
 const localeStore = useLocaleStore();

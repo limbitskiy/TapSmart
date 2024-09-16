@@ -32,7 +32,10 @@ export interface DataState {
   profile?: {
     bolts?: number;
   };
-  menu?: {};
+  menu?: {
+    items: [{ id: number; title: string; icon: string; link: string }];
+    badges: [{ id: number; value: string }];
+  };
   friends?: {};
   tasks?: {};
   leaders?: {};

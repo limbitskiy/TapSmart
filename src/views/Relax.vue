@@ -2,8 +2,8 @@
   <div class="home-main flex-1 overflow-auto flex flex-col gap-2 mb-[72px]">
     <Backlight color="green" />
     <Profile />
-    <div class="top-btns flex gap-4 w-full px-4 relative">
-      <Button class="flex-1 bg-black text-white border fira-condensed-bold !text-sm leading-4 px-4 py-2" @click="onChangeMech">
+    <div class="top-btns grid grid-cols-2 gap-4 w-full px-4 relative">
+      <Button class="bg-black text-white border fira-condensed-bold leading-4 !px-4 py-2" @click="onChangeMech">
         <div class="flex gap-1 items-center justify-between">
           <div v-if="width > 410" class="icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -13,19 +13,17 @@
               <rect x="13.1611" y="13.1613" width="10.8387" height="10.8387" rx="2" fill="white" />
             </svg>
           </div>
-          <span class="text-sm leading-4">{{ locale?.["button_change_mech"] }}</span>
-          <div class="chevron">
-            <svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M9 10L0 1.22807L1.26 0L9 7.54386L16.74 0L18 1.22807L9 10Z" fill="white" />
-            </svg>
-          </div>
+          <span class="text-base leading-4">{{ locale?.["button_change_mech"] }}</span>
+          <svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 10L0 1.22807L1.26 0L9 7.54386L16.74 0L18 1.22807L9 10Z" fill="white" />
+          </svg>
         </div>
       </Button>
-      <ChallengeButton class="text-sm" @challenge="openBoosterModal" />
+      <ChallengeButton class="text-base" @challenge="openBoosterModal" />
       <VolumeControl />
     </div>
 
-    <RouterView v-slot="{ Component }" type="relax">
+    <RouterView v-slot="{ Component }" type="relax" @answer="onAnswer">
       <template v-if="Component">
         <Transition name="fade" mode="out-in">
           <Suspense suspensible>
@@ -39,14 +37,14 @@
     <!-- mechanic change modal -->
     <Teleport to="body">
       <Modal v-model:visible="isChangeMechModalVisible">
-        <ChangeMechanic @close="closeModal" />
+        <ChangeMechanic @close="() => closeModal('changeMechanic')" />
       </Modal>
     </Teleport>
 
     <!-- no energy modal -->
     <Teleport to="body">
-      <Modal v-model:visible="isNoEnergyVisible">
-        <NoEnergy @challenge="openBoosterModal" />
+      <Modal v-model:visible="isNoEnergyVisible" sticky>
+        <NoEnergy @challenge="openBoosterModal" @close="() => closeModal('noEnergy')" />
       </Modal>
     </Teleport>
 
@@ -90,7 +88,7 @@ const localeStore = useLocaleStore();
 const { data } = storeToRefs(dataStore.battles);
 const { battles: locale } = storeToRefs(localeStore);
 const { startBreakpoint, stopBreakpoint, startTaskTimeout, stopTaskTimeout, getMechanicName, setTaskTimeoutCounter, resetBattleStats } = dataStore.battles;
-const { fetchRelaxPageData, redirectTo } = mainStore;
+const { redirectTo } = mainStore;
 
 const isChangeMechModalVisible = ref(false);
 const isNoEnergyVisible = ref(false);
@@ -123,8 +121,13 @@ const onChangeMech = () => {
   isChangeMechModalVisible.value = true;
 };
 
-const closeModal = () => {
-  isChangeMechModalVisible.value = false;
+const closeModal = (modalName: string) => {
+  const modals = {
+    changeMechanic: isChangeMechModalVisible,
+    noEnergy: isNoEnergyVisible,
+  };
+
+  modals[modalName].value = false;
 };
 
 const openBoosterModal = () => {
@@ -136,6 +139,12 @@ const onStartChallenge = ({ extra_mistake, extra_time, friends_only }: { [key: s
   setTimeout(() => {
     redirectTo(`/challenge/yesno?extra_mistake=${extra_mistake}&extra_time=${extra_time}&friends_only=${friends_only}`);
   }, 300);
+};
+
+const onAnswer = () => {
+  if (data.value.energy === 0) {
+    isNoEnergyVisible.value = true;
+  }
 };
 
 onMounted(() => {

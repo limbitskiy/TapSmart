@@ -7,7 +7,7 @@
           <span class="text-xl font-bold fira-condensed-bold">{{ userName || "Unknown Tiger" }}</span>
           <div class="energy flex gap-1 items-center">
             <img class="h-4" :src="getAsset('energy')" />
-            <span class="text-md exo-bold">{{ battles.data["energy"] }}</span>
+            <span class="text-md exo-bold" :class="{ 'text-red-600': battles.data['energy'] === 0 }">{{ battles.data["energy"] }}</span>
           </div>
         </div>
         <div class="money flex gap-2 items-center">

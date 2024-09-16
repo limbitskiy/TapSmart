@@ -13,12 +13,14 @@ export const useBattle = (type: "relax" | "challenge", el?: Ref<HTMLElement>) =>
   const mainStore = useMainStore();
 
   const { onVibrate } = mainStore;
+  const { data } = storeToRefs(dataStore.battles);
   const { handleRelaxAnswer, handleChallengeAnswer, stopTaskTimeout } = dataStore.battles;
 
   const bonuses = ref<Bonus[]>([]);
   let answerInProgress = false;
 
   const onAnswer = async (isCorrect: boolean, { clientX, clientY }: MouseEvent, answer: string) => {
+    if (data.value.battle_mode === "relax" && data.value.energy == 0) return;
     if (answerInProgress) return;
 
     stopTaskTimeout();

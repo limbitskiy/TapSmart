@@ -1,5 +1,5 @@
 <template>
-  <div class="ad-card relative flex flex-col gap-2 items-center px-4 py-4 text-center w-[50vw] border-2 border-[var(--accent-color)] rounded-2xl bg-[var(--grey-light)]">
+  <div class="ad-card relative flex flex-col gap-2 items-center px-4 py-4 text-center w-[60vw] border-2 border-[var(--accent-color)] rounded-2xl bg-[var(--grey-light)]">
     <div ref="el" class="info-btn absolute top-2 right-2" @click="onTooltipClick">
       <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
@@ -12,8 +12,8 @@
         />
       </svg>
     </div>
-    <span class="fira-bold text-lg">{{ title }}</span>
     <img class="h-12 my-3" :src="getAsset(image)" />
+    <span class="fira-bold text-lg">{{ title }}</span>
     <span class="inline-svg" v-html="textWithSpecialSymbols || 'Ad text is located around here somewhere'"></span>
   </div>
 </template>

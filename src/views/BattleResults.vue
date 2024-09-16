@@ -18,12 +18,17 @@
       </div>
 
       <div class="ad flex flex-col items-center justify-center mt-8">
-        <Ad :image="data?.['battle_results_ad_image']" :text="locale?.['battle_results_ad_text']" :tooltip="locale?.['tooltip_battle_results_ad']" />
+        <Ad
+          :image="data?.['battle_results_ad_image']"
+          :title="locale?.['battle_results_ad_title']"
+          :text="locale?.['battle_results_ad_text']"
+          :tooltip="locale?.['tooltip_battle_results_ad']"
+        />
         <div class="ad-btns w-full flex gap-4 justify-between mt-8">
-          <Button v-if="data?.battle_results_buttons?.left" class="flex-1 py-3 px-5 text-white bg-[var(--grey-light)]" :data="data.battle_results_buttons.left">
+          <Button v-if="data?.battle_results_buttons?.left" class="flex-1 !py-2 px-5 text-white bg-[var(--grey-light)]" :data="data.battle_results_buttons.left">
             <span class="text-xl inline-block leading-5">{{ data?.["battle_results_buttons"]?.left?.label }}</span>
           </Button>
-          <Button v-if="data?.battle_results_buttons?.right" class="flex-1 py-3 px-5" :data="data.battle_results_buttons.right">
+          <Button v-if="data?.battle_results_buttons?.right" class="flex-1 !py-2 px-5" :data="data.battle_results_buttons.right">
             <span class="text-xl inline-block leading-5">{{ data?.["battle_results_buttons"]?.right?.label }}</span>
           </Button>
         </div>
@@ -35,6 +40,7 @@
 <script setup lang="ts">
 import { getAsset } from "@/utils";
 import { storeToRefs } from "pinia";
+import { inviteFriend } from "@/api/telegram";
 
 // stores
 import { useLocaleStore } from "@/store/locale";
@@ -61,4 +67,8 @@ const leaderboardSorted = computed(() => {
 
   return clone.sort((a, b) => b.score - a.score);
 });
+
+const onInviteFriend = () => {
+  inviteFriend(locale.value?.["invite_message"] || "Invite message");
+};
 </script>

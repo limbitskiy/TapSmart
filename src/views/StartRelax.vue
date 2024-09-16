@@ -8,7 +8,7 @@ import { useMainStore } from "@/store/main";
 
 const mainStore = useMainStore();
 
-const { fetchRelaxPageData, redirectTo } = mainStore;
+const { fetchRelaxPageData } = mainStore;
 
 await fetchRelaxPageData();
 </script>

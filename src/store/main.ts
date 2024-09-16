@@ -194,6 +194,11 @@ export const useMainStore = defineStore("main", () => {
     return;
   };
 
+  const fetchProfilePageData = async () => {
+    await useFetch({ key: "profile_get" });
+    return;
+  };
+
   const setLanguages = async (data: {}) => {
     return await useFetch({ key: "profile_set", data });
   };
@@ -260,6 +265,7 @@ export const useMainStore = defineStore("main", () => {
     fetchFriendsPage,
     fetchRelaxPageData,
     fetchChallengePageData,
+    fetchProfilePageData,
     setLanguages,
     initialFetch,
     useFetch,

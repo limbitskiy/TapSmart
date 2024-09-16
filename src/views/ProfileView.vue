@@ -105,14 +105,16 @@ const localeStore = useLocaleStore();
 const { profile: data } = storeToRefs(dataStore);
 const { profile: locale } = storeToRefs(localeStore);
 
-const { setLanguages } = mainStore;
+const { fetchProfilePageData, setLanguages } = mainStore;
+
+await fetchProfilePageData();
 
 const router = useRouter();
 
 tg.BackButton.show();
 tg.BackButton.onClick(() => {
   tg.BackButton.hide();
-  router.push("/home/relax");
+  router.back();
 });
 
 const onSettingsChange = ({ setting, value }) => {

@@ -29,7 +29,7 @@
       </button>
 
       <!-- invite friends button -->
-      <Button class="!text-base !py-1 !px-4">{{ locale?.["invite_friends"] || "Invite friends" }}</Button>
+      <Button class="!text-base !py-1 !px-4" @click="onInviteFriends">{{ locale?.["invite_friends"] || "Invite friends" }}</Button>
     </div>
 
     <div class="boosters flex flex-col gap-4 flex-1">
@@ -140,6 +140,7 @@
 </template>
 
 <script setup lang="ts">
+import { tg, inviteFriend } from "@/api/telegram";
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset, showFormattedNumber } from "@/utils";
@@ -183,6 +184,10 @@ const onStartBattle = () => {
 
 const onFriendsOnly = () => {
   friendsOnly.value = !friendsOnly.value;
+};
+
+const onInviteFriends = () => {
+  inviteFriend(locale.value?.["challenge_message"] || "Invite message");
 };
 
 onMounted(() => {

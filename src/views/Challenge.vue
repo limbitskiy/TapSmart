@@ -19,7 +19,7 @@
       </RouterView>
     </template>
 
-    <!-- bonuses -->
+    <!-- onscreen bonuses -->
     <Transition name="challenge-bonus-1">
       <div v-if="bonusState.isShown" class="bonuses-cnt absolute top-[20dvh] left-0 right-0 grid place-items-center">
         <div class="bonus">
@@ -34,13 +34,6 @@
         <Waiting @countdownComplete="onStartChallenge" />
       </Modal>
     </Teleport>
-
-    <!-- battle complete modal -->
-    <!-- <Teleport to="body">
-      <Modal v-model:visible="isCompletedModal" sticky>
-        <BattleComplete />
-      </Modal>
-    </Teleport> -->
 
     <!-- battle complete animation -->
     <Transition name="fade">
@@ -71,8 +64,6 @@ import Waiting from "@/components/modals/Waiting.vue";
 import Backlight from "@/components/UI/Backlight.vue";
 import ChallengeStatus from "@/components/ChallengeStatus.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
-import BattleComplete from "@/components/modals/BattleComplete.vue";
-import { transform } from "typescript";
 
 const route = useRoute();
 
@@ -81,7 +72,7 @@ const mainStore = useMainStore();
 const localeStore = useLocaleStore();
 
 const { data, challengeScore: score, multiplier, bonusesUsedInBattle } = storeToRefs(dataStore.battles);
-const { startBreakpoint, stopBreakpoint, setChallengeScore, resetBattleStats, calculateBonusAmount } = dataStore.battles;
+const { startBreakpoint, stopBreakpoint, resetBattleStats } = dataStore.battles;
 const { battles: locale } = storeToRefs(localeStore);
 
 const { fetchChallengePageData, callApi, redirectTo } = mainStore;
@@ -89,7 +80,6 @@ const { fetchChallengePageData, callApi, redirectTo } = mainStore;
 const isWaiting = ref(false);
 const isBattle = ref(false);
 const isBattleCompleteAnimation = ref(false);
-// const isCompletedModal = ref(false);
 
 const bonusState = ref({
   text: "",
@@ -131,7 +121,7 @@ const playerPosition = computed(() => {
 
   const playersSorted = clone?.sort((a, b) => b.score - a.score);
 
-  return [playersSorted?.findIndex((player) => player.isPlayer) + 1 ?? data.value["player_progress"].length, data.value["player_progress"].length];
+  return [playersSorted?.findIndex((player) => player.isPlayer) + 1 || data.value["player_progress"].length, data.value["player_progress"].length];
 });
 
 const onStartChallenge = () => {
@@ -156,11 +146,10 @@ const onStartChallenge = () => {
 };
 
 const onBonusUsed = (bonusName: string) => {
-  const bonusMap = {
-    battle_extra_mistake: "Extra mistake",
-  };
+  const bonusLocale = locale.value[`${bonusName}_title`];
+  console.log(bonusLocale);
 
-  bonusState.value.text = bonusMap[bonusName];
+  bonusState.value.text = bonusLocale;
   bonusState.value.isShown = true;
 
   setTimeout(() => {
@@ -176,11 +165,11 @@ const onEndChallenge = () => {
   stopBreakpoint();
   callApi({ api: "battle_breakpoint", data: { final: 1 } });
   isBattleCompleteAnimation.value = true;
+
   setTimeout(() => {
     callApi({ api: "battle_completed" });
     isBattleCompleteAnimation.value = false;
     redirectTo("/battle-complete");
-    // isCompletedModal.value = true;
   }, 3000);
 };
 

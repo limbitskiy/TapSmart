@@ -108,7 +108,7 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from "vue";
-import { tg, getUserId } from "@/api/telegram";
+import { generateShareLink, inviteFriend } from "@/api/telegram";
 import { getAsset } from "@/utils";
 import { storeToRefs } from "pinia";
 
@@ -175,21 +175,22 @@ const onBattlesFilter = () => {
   filters.value.battles = !filters.value.battles;
 };
 
-const generateLink = () => {
-  const userId = getUserId();
-  console.log(userId);
+// const generateLink = () => {
+//   const userId = getUserId();
+//   console.log(userId);
 
-  return `https://t.me/${import.meta.env.VITE_BOT_NAME}/${import.meta.env.VITE_APP_NAME}?startapp=fr${userId}`;
-};
+//   return `https://t.me/${import.meta.env.VITE_BOT_NAME}/${import.meta.env.VITE_APP_NAME}?startapp=fr${userId}`;
+// };
 
 const onInviteFriend = () => {
-  const link = generateLink();
-  console.log(`link is: ${link}`);
-  tg.openTelegramLink(`https://t.me/share/url?url=${link}&text=${locale.value["inviteMessage"]}`);
+  inviteFriend(locale.value?.["invite_message"] || "Invite message");
+  // const link = generateLink();
+  // console.log(`link is: ${link}`);
+  // tg.openTelegramLink(`https://t.me/share/url?url=${link}&text=${locale.value["inviteMessage"]}`);
 };
 
 const onCopyToClipboard = () => {
-  const link = generateLink();
+  const link = generateShareLink();
   navigator.clipboard.writeText(link);
 };
 

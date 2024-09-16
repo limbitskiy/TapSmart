@@ -135,14 +135,6 @@ router.beforeEach((to, from) => {
   if (to.path !== "/init" && from.path === "/") {
     return { path: "/init" };
   }
-
-  // if (to.path.match(/^\/home\/relax\/?$/) && from.path.match(/^\/home\/relax\/\w{1,}$/)) {
-  //   // router.push(`/home/relax/${battleStore.getMechanicName(battleStore.data.battle_type)}`);
-  //   // battleStore.resetBattleStats();
-  //   console.log(`poop`);
-
-  //   return { path: "/home/relax",  };
-  // }
 });
 
 export default router;
