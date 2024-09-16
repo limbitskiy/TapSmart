@@ -16,6 +16,7 @@ import Challenge from "@/views/Challenge.vue";
 import BattleResults from "@/views/BattleResults.vue";
 import BattleComplete from "@/views/BattleComplete.vue";
 import StartRelax from "@/views/StartRelax.vue";
+import InviteFriend from "@/views/InviteFriend.vue";
 
 // battles
 import YesNo from "@/components/battles/YesNo.vue";
@@ -115,6 +116,10 @@ const routes = [
   {
     path: "/battle-results",
     component: BattleResults,
+  },
+  {
+    path: "/invite",
+    component: InviteFriend,
   },
 ];
 

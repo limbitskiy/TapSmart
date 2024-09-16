@@ -46,7 +46,7 @@ export const useBattle = (type: "relax" | "challenge", el?: Ref<HTMLElement>) =>
   };
 
   const animateCorrect = () => {
-    if (!el) return;
+    if (!el?.value) return;
 
     return new Promise((res) => {
       el.value.classList.add("animate__heartBeat");

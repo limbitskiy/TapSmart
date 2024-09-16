@@ -5,7 +5,7 @@
     <template v-if="isBattle">
       <div class="challenge-stats relative z-10 flex flex-col gap-4 mt-2">
         <!-- <button class="absolute z-[9999]" @click="onBonusUsed">get bonus</button> -->
-        <ChallengeStatus :time="timer || 0" :score="score" :multiplier="multiplier" :place="playerPosition" />
+        <ChallengeStatus :time="timer || 0" :score="score" :multiplier="currentCalcPoint" :place="playerPosition" />
 
         <div class="wrap px-8">
           <ProgressBar :timer="timer || 0" :initialTimerValue="data['battle_duration']!" :players="data?.['player_progress'] || []" />
@@ -71,7 +71,7 @@ const dataStore = useDataStore();
 const mainStore = useMainStore();
 const localeStore = useLocaleStore();
 
-const { data, challengeScore: score, multiplier, bonusesUsedInBattle } = storeToRefs(dataStore.battles);
+const { data, challengeScore: score, bonusesUsedInBattle, currentCalcPoint } = storeToRefs(dataStore.battles);
 const { startBreakpoint, stopBreakpoint, resetBattleStats } = dataStore.battles;
 const { battles: locale } = storeToRefs(localeStore);
 
@@ -94,6 +94,7 @@ Object.keys(route.query).forEach((key) => {
   challengeParams[key] = +route.query[key];
 });
 
+// watch bonuses
 watch(
   bonusesUsedInBattle,
   (newVal, oldVal) => {
@@ -124,7 +125,7 @@ const playerPosition = computed(() => {
   return [playersSorted?.findIndex((player) => player.isPlayer) + 1 || data.value["player_progress"].length, data.value["player_progress"].length];
 });
 
-const onStartChallenge = () => {
+const onStartChallenge = async () => {
   isWaiting.value = false;
   callApi({ api: "battle_init" });
 

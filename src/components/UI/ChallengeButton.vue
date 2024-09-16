@@ -3,13 +3,13 @@
     ><div class="flex justify-center gap-1">
       <span v-bind="$attrs" class="text-base leading-4">{{ locale?.["button_challenge"] }}</span>
       <div
-        v-if="data.questions_left > 0"
+        v-if="data?.questions_left > 0"
         class="counter text-sm bg-[#333] text-white border border-[var(--accent-color)] rounded-md h-4 px-1 grid place-items-center leading-3 exo-bold absolute top-1 left-[85%]"
       >
         {{ data.questions_left }}
       </div>
       <div v-else class="counter bottom-1 text-sm bg-[#222] text-white rounded-md h-4 px-1 grid place-items-center leading-3 exo-bold absolute top-1 left-[85%]">
-        {{ data.challengeButton?.badge || 0 }}
+        {{ data.battle_button_challenge?.badge || 0 }}
       </div>
     </div>
   </Button>
@@ -42,7 +42,7 @@ const { battles: locale } = storeToRefs(localeStore);
 const challengeBtnRef = ref();
 
 const onClick = () => {
-  if (data.value.challengeButton?.disabled) {
+  if (data.value.battle_button_challenge?.disabled) {
     showTooltip({
       element: challengeBtnRef.value.ref,
       text: locale.value["button_challenge_tooltip"],

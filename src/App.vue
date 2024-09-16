@@ -36,6 +36,7 @@ import { RouterView } from "vue-router";
 
 // store
 import { useMainStore } from "@/store/main";
+import { useDataStore } from "@/store/data";
 
 // components
 import Notification from "@/components/Notification.vue";
@@ -45,5 +46,20 @@ import Loader from "@/components/UI/Loader.vue";
 import BackendModal from "@/components/UI/BackendModal.vue";
 
 const mainStore = useMainStore();
+const dataStore = useDataStore();
+
+const { pauseBattle, resumeBattle } = dataStore.battles;
 const { tooltip, modal } = storeToRefs(mainStore);
+
+const handleVisibilityChange = () => {
+  if (document.hidden) {
+    pauseBattle();
+  } else {
+    resumeBattle();
+  }
+};
+
+onMounted(() => {
+  document.addEventListener("visibilitychange", handleVisibilityChange);
+});
 </script>

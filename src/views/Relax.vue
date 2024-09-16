@@ -148,7 +148,7 @@ const onAnswer = () => {
 };
 
 onMounted(() => {
-  console.log(`mounted`);
+  // console.log(`mounted`);
 
   startBreakpoint("battle");
   setTaskTimeoutCounter(null);
@@ -157,7 +157,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  console.log(`unmounted`);
+  // console.log(`unmounted`);
 
   stopBreakpoint();
   setTaskTimeoutCounter(1);

@@ -45,6 +45,7 @@ import { inviteFriend } from "@/api/telegram";
 // stores
 import { useLocaleStore } from "@/store/locale";
 import { useDataStore } from "@/store/data";
+import { useMainStore } from "@/store/main";
 
 // components
 import Pill from "@/components/UI/Pill.vue";
@@ -56,9 +57,12 @@ import { computed } from "vue";
 
 const localeStore = useLocaleStore();
 const dataStore = useDataStore();
+const mainStore = useMainStore();
 
 const { data } = storeToRefs(dataStore.battles);
 const { battles: locale } = storeToRefs(localeStore);
+
+const { redirectTo } = mainStore;
 
 const leaderboardSorted = computed(() => {
   if (!data.value.battle_results_leaderboard?.length) return [];
@@ -67,8 +71,4 @@ const leaderboardSorted = computed(() => {
 
   return clone.sort((a, b) => b.score - a.score);
 });
-
-const onInviteFriend = () => {
-  inviteFriend(locale.value?.["invite_message"] || "Invite message");
-};
 </script>

@@ -26,44 +26,47 @@ export const useBattleStore = defineStore("battle", () => {
 
   // callbacks
   const breakpointCb = () => {
-    if (document.hasFocus()) {
-      console.log(`is in focus`);
-      const score = Math.round(challengeScore.value) || undefined;
-      mainStore.callApi({ api: "battle_breakpoint", data: { score } });
-      return;
-    }
+    // if (document.hasFocus()) {
+    // console.log(`is in focus`);
+    const score = Math.round(challengeScore.value) || undefined;
+    mainStore.callApi({ api: "battle_breakpoint", data: { score } });
+    return;
+    // }
 
-    console.log(`is not in focus`);
+    // console.log(`is not in focus`);
   };
 
   const challengeCb = () => {
-    if (document.hasFocus()) {
-      console.log(`is in focus`);
-      mainStore.callApi({ api: "challenge_breakpoint" });
-      return;
-    }
+    // if (document.hasFocus()) {
+    //   console.log(`is in focus`);
+    mainStore.callApi({ api: "challenge_breakpoint" });
+    return;
+    // }
 
-    console.log(`is not in focus`);
+    // console.log(`is not in focus`);
   };
 
   const waitingCb = () => {
-    if (document.hasFocus()) {
-      console.log(`is in focus`);
-      mainStore.callApi({ api: "waiting_breakpoint" });
-      return;
-    }
+    // if (document.hasFocus()) {
+    //   console.log(`is in focus`);
+    mainStore.callApi({ api: "waiting_breakpoint" });
+    return;
+    // }
 
-    console.log(`is not in focus`);
+    // console.log(`is not in focus`);
   };
 
   const taskIndex = ref<number | null>(null);
   const lastTaskId = ref<number | null>(null);
-  const correctStreak = ref(1);
+  const correctStreak = ref(0);
   const answers = ref<Answer[]>([]);
   const challengeScore = ref(0);
   const bonusesUsedInBattle = ref({});
 
-  let currentBreakpointInterval: BreakpointInterval | null = null;
+  let currentBreakpointInterval = {
+    fn: <BreakpointInterval | null>null,
+    type: <string | null>null,
+  };
   let currentTaskTimeout: TaskTimer | null = null;
   let taskTimeoutCounter: number | null = null;
 
@@ -73,25 +76,18 @@ export const useBattleStore = defineStore("battle", () => {
 
   // getters
   const data = computed(() => state.value.battleData);
-  const multiplier = computed(() => {
-    const multiplicator = state.value.battleData.multiplicator;
-    const calcPoints = [...state.value.battleData.calc_points];
-    const idx = correctStreak.value;
-
-    if (multiplicator && calcPoints?.length && idx) {
-      if (!calcPoints[idx]) {
-        return multiplicator * calcPoints[calcPoints.length - 1];
-      }
-
-      return multiplicator * calcPoints[idx];
-    }
-    return 0;
-  });
   const currentTask = computed(() => state.value.battleData.data?.[taskIndex.value]);
   const currentMechanic = computed(() => state.value.battleData.mechanics?.[getMechanicName(state.value.battleData.battle_type)]);
+  const currentCalcPoint = computed(() => {
+    const calcPoint = data.value.calc_points[correctStreak.value];
+
+    return calcPoint ?? data.value.calc_points[data.value.calc_points.length - 1];
+  });
 
   // setter/getter
   const set = (data) => {
+    let onCompleteHook: () => void = () => {};
+
     Object.keys(data).forEach((key) => {
       if (key === "cleanAnswers" && data["cleanAnswers"]) {
         lastTaskId.value = null;
@@ -102,7 +98,26 @@ export const useBattleStore = defineStore("battle", () => {
         resetTaskIndex();
       }
 
-      // battle mode
+      // restart working breakpoint if new breakpoint time recieved
+      if (key === "breakpoint" || key === "challenge_breakpoint" || key === "waiting_breakpoint") {
+        if (currentBreakpointInterval.fn && data[key] !== state.value.battleData[key]) {
+          if (key === "breakpoint") {
+            onCompleteHook = () => {
+              startBreakpoint("battle");
+            };
+          } else if (key === "challenge_breakpoint") {
+            onCompleteHook = () => {
+              startBreakpoint("challenge");
+            };
+          } else if (key === "waiting_breakpoint") {
+            onCompleteHook = () => {
+              startBreakpoint("waiting");
+            };
+          }
+        }
+      }
+
+      // set battle mode
       if (key === "battle_mode") {
         if (data["battle_mode"] === "relax") {
           mainStore.redirectTo(`/home/relax/${battleTypes[data["battle_type"]]}`);
@@ -110,10 +125,12 @@ export const useBattleStore = defineStore("battle", () => {
           mainStore.redirectTo(`/home/challenge/${battleTypes[data["battle_type"]]}`);
         }
       }
+
       // if no such key - create an empty object
-      if (state.value.battleData[key]) {
+      if (!state.value.battleData[key]) {
         state.value.battleData[key] = null;
       }
+
       // copy data to the key
       state.value.battleData[key] = data[key];
     });
@@ -122,6 +139,10 @@ export const useBattleStore = defineStore("battle", () => {
       state.value.battleData.data.sort((a, b) => a.id - b.id);
     }
 
+    if (onCompleteHook) {
+      onCompleteHook();
+      onCompleteHook = () => {};
+    }
     // console.log("set battle store:", state.value.battleData);
   };
 
@@ -186,7 +207,7 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const startBreakpoint = (type: string) => {
-    console.log(`starting breakpoint`);
+    // console.log(`starting breakpoint`);
 
     stopBreakpoint();
 
@@ -214,19 +235,27 @@ export const useBattleStore = defineStore("battle", () => {
       }
     }
 
-    console.log(interval);
-    console.log(callback);
     if (!interval || !callback) return;
+
+    if (interval < 1000) {
+      console.error(`Interval is too small: ${interval}`);
+    }
+
+    console.log(`Starting breakpoint: ${type}`);
 
     const breakpointInterval = new BreakpointInterval(interval, callback);
 
-    currentBreakpointInterval = breakpointInterval;
+    currentBreakpointInterval.fn = breakpointInterval;
+    currentBreakpointInterval.type = type;
     breakpointInterval.start();
   };
 
   const stopBreakpoint = () => {
-    if (currentBreakpointInterval) {
-      currentBreakpointInterval.stop();
+    if (currentBreakpointInterval.fn) {
+      console.log(`Stopping breakpoint`);
+      currentBreakpointInterval.fn.stop();
+      currentBreakpointInterval.fn = null;
+      currentBreakpointInterval.type = null;
     }
   };
 
@@ -268,7 +297,8 @@ export const useBattleStore = defineStore("battle", () => {
 
     if (isCorrect) {
       onCorrectAnswer();
-      dataStore.addBolts(multiplier.value);
+      const multiplier = calculateRelaxMultiplierAmount();
+      dataStore.addBolts(multiplier);
     } else {
       if (subtractEnergyAmount) {
         changeEnergy(-subtractEnergyAmount);
@@ -316,8 +346,7 @@ export const useBattleStore = defineStore("battle", () => {
     }
 
     if (isCorrect) {
-      // const scoreBonus = calculateBonusAmount();
-      setChallengeScore(challengeScore.value + multiplier.value);
+      addToChallengeScore(currentCalcPoint.value);
       onCorrectAnswer();
     } else {
       onWrongChallengeAnswer();
@@ -336,14 +365,14 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const onWrongRelaxAnswer = () => {
-    correctStreak.value = 1;
+    correctStreak.value = 0;
   };
 
   const onWrongChallengeAnswer = () => {
     if (!bonusesUsedInBattle.value["extra_mistake"]) {
       bonusesUsedInBattle.value["extra_mistake"] = true;
     } else {
-      correctStreak.value = 1;
+      correctStreak.value = 0;
     }
   };
 
@@ -378,7 +407,7 @@ export const useBattleStore = defineStore("battle", () => {
   const resetBattleStats = () => {
     taskIndex.value = 0;
     lastTaskId.value = null;
-    correctStreak.value = 1;
+    correctStreak.value = 0;
     // answers.value = [];
     challengeScore.value = 0;
     bonusesUsedInBattle.value = {};
@@ -392,7 +421,7 @@ export const useBattleStore = defineStore("battle", () => {
     }
   };
 
-  const calculateBonusAmount = () => {
+  const calculateRelaxMultiplierAmount = () => {
     const multiplicator = state.value.battleData.multiplicator;
     const calcPoints = [...state.value.battleData.calc_points];
     const idx = correctStreak.value;
@@ -407,13 +436,34 @@ export const useBattleStore = defineStore("battle", () => {
     return 0;
   };
 
-  const setChallengeScore = (value: number) => {
-    challengeScore.value = value;
+  const addToChallengeScore = (value: number) => {
+    challengeScore.value += value;
   };
 
   const decreaseWaitingTimer = () => {
     if (state.value.battleData.waiting_timer > 0) {
       state.value.battleData.waiting_timer -= 1000;
+    }
+  };
+
+  const pauseBattle = () => {
+    console.log(`Battle paused`);
+    currentBreakpointInterval.fn?.stop();
+
+    console.log(data.value.battle_type);
+
+    if (data.value.battle_mode === "relax") {
+      stopTaskTimeout();
+    }
+  };
+
+  const resumeBattle = () => {
+    console.log(`Battle resumed`);
+    const type = currentBreakpointInterval.type || "";
+    startBreakpoint(type);
+
+    if (data.value.battle_mode === "relax") {
+      startTaskTimeout();
     }
   };
 
@@ -423,13 +473,15 @@ export const useBattleStore = defineStore("battle", () => {
     lastTaskId,
     answers,
     challengeScore,
-    multiplier,
     bonusesUsedInBattle,
+    currentCalcPoint,
     set,
+    expand,
+    pauseBattle,
+    resumeBattle,
     handleRelaxAnswer,
     handleChallengeAnswer,
     changeMechanic,
-    expand,
     getMechanicName,
     startTaskTimeout,
     stopTaskTimeout,
@@ -437,9 +489,7 @@ export const useBattleStore = defineStore("battle", () => {
     startBreakpoint,
     stopBreakpoint,
     decreaseWaitingTimer,
-    setChallengeScore,
     resetTaskIndex,
     resetBattleStats,
-    calculateBonusAmount,
   };
 });
