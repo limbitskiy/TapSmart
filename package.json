@@ -12,10 +12,10 @@
     "@vueuse/core": "^10.11.0",
     "axios": "^1.7.3",
     "howler": "^2.2.4",
-    "lottie-web-vue": "^2.0.7",
     "pinia": "^2.2.0",
     "vue": "^3.4.31",
-    "vue-router": "4"
+    "vue-router": "4",
+    "vue3-lottie": "^3.3.1"
   },
   "devDependencies": {
     "@types/node": "^22.5.2",
