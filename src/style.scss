@@ -43,6 +43,13 @@ body {
     display: inline !important;
     vertical-align: initial !important;
   }
+
+  &.svg-top-margin {
+    svg {
+      position: relative;
+      top: 3px;
+    }
+  }
 }
 
 .tutorial-bg {
