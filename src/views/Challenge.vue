@@ -38,7 +38,7 @@
     <!-- battle complete animation -->
     <Transition name="fade">
       <div v-if="isBattleCompleteAnimation" class="on-battle-complete-backdrop fixed inset-0 bg-black bg-opacity-80 z-20 grid place-items-center">
-        <div class="animation-cnt fira-bold text-2xl">Battle complete animation</div>
+        <BattleCompleteAnimation />
       </div>
     </Transition>
   </div>
@@ -64,6 +64,7 @@ import Waiting from "@/components/modals/Waiting.vue";
 import Backlight from "@/components/UI/Backlight.vue";
 import ChallengeStatus from "@/components/ChallengeStatus.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
+import BattleCompleteAnimation from "@/components/animations/BattleCompleteAnimation.vue";
 
 const route = useRoute();
 

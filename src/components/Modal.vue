@@ -54,8 +54,4 @@ const onBackdropClick = (event: MouseEvent) => {
 const onCloseClick = () => {
   emit("update:visible", false);
 };
-
-onMounted(() => {
-  console.log(`1mounted`);
-});
 </script>
