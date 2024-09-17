@@ -16,7 +16,7 @@ const { redirectTo, callApi } = mainStore;
 
 const props = defineProps<{
   dark?: boolean;
-  data?: { route?: string; api?: string; data?: {} };
+  data?: { route?: string; api?: string; data?: {}; label: string };
   defaultAction?: () => void;
 }>();
 

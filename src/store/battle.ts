@@ -26,34 +26,19 @@ export const useBattleStore = defineStore("battle", () => {
 
   // callbacks
   const breakpointCb = () => {
-    // if (document.hasFocus()) {
-    // console.log(`is in focus`);
     const score = Math.round(challengeScore.value) || undefined;
     mainStore.callApi({ api: "battle_breakpoint", data: { score } });
     return;
-    // }
-
-    // console.log(`is not in focus`);
   };
 
   const challengeCb = () => {
-    // if (document.hasFocus()) {
-    //   console.log(`is in focus`);
     mainStore.callApi({ api: "challenge_breakpoint" });
     return;
-    // }
-
-    // console.log(`is not in focus`);
   };
 
   const waitingCb = () => {
-    // if (document.hasFocus()) {
-    //   console.log(`is in focus`);
     mainStore.callApi({ api: "waiting_breakpoint" });
     return;
-    // }
-
-    // console.log(`is not in focus`);
   };
 
   const taskIndex = ref<number | null>(null);
@@ -61,7 +46,7 @@ export const useBattleStore = defineStore("battle", () => {
   const correctStreak = ref(0);
   const answers = ref<Answer[]>([]);
   const challengeScore = ref(0);
-  const bonusesUsedInBattle = ref({});
+  const bonusesUsed = ref({});
 
   let currentBreakpointInterval = {
     fn: <BreakpointInterval | null>null,
@@ -122,7 +107,7 @@ export const useBattleStore = defineStore("battle", () => {
         if (data["battle_mode"] === "relax") {
           mainStore.redirectTo(`/home/relax/${battleTypes[data["battle_type"]]}`);
         } else if (data["battle_mode"] === "challenge") {
-          mainStore.redirectTo(`/home/challenge/${battleTypes[data["battle_type"]]}`);
+          mainStore.redirectTo(`/challenge/${battleTypes[data["battle_type"]]}`);
         }
       }
 
@@ -231,7 +216,7 @@ export const useBattleStore = defineStore("battle", () => {
         break;
       }
       default: {
-        console.error(`Unknown type of battle breakpoint`);
+        console.error(`Unknown type of battle breakpoint: ${type}`);
       }
     }
 
@@ -369,8 +354,8 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const onWrongChallengeAnswer = () => {
-    if (!bonusesUsedInBattle.value["extra_mistake"]) {
-      bonusesUsedInBattle.value["extra_mistake"] = true;
+    if (data.value.battle_extra_mistake && !bonusesUsed.value["extra_mistake"]) {
+      bonusesUsed.value["extra_mistake"] = true;
     } else {
       correctStreak.value = 0;
     }
@@ -410,7 +395,7 @@ export const useBattleStore = defineStore("battle", () => {
     correctStreak.value = 0;
     // answers.value = [];
     challengeScore.value = 0;
-    bonusesUsedInBattle.value = {};
+    bonusesUsed.value = {};
   };
 
   const changeEnergy = (value: number) => {
@@ -473,7 +458,7 @@ export const useBattleStore = defineStore("battle", () => {
     lastTaskId,
     answers,
     challengeScore,
-    bonusesUsedInBattle,
+    bonusesUsed,
     currentCalcPoint,
     set,
     expand,

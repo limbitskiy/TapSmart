@@ -80,7 +80,9 @@ export interface BattleState {
 export interface NotificationProps {
   title: string | null;
   subtitle: string | null;
-  buttons: {};
+  buttons: {
+    [key in "left" | "right"]: { hidden?: boolean; route?: string; api?: string; data?: {}; label?: string };
+  };
   timeout?: number | undefined;
   isShown: boolean;
 }

@@ -2,22 +2,22 @@
   <Teleport to="body">
     <Transition name="toast-slide">
       <div
-        v-if="notificationData.isShown"
+        v-if="notification.isShown"
         class="notification glass flex flex-col text-lg fixed top-1 left-1 right-1 bg-[--grey-light] p-4 rounded-2xl text-white transition-transform z-50 border border-gray-600"
       >
-        <span class="text-xl fira-condensed-bold text-gray-100">{{ notificationData.title }}</span>
-        <span class="fira-condensed text-base">{{ notificationData.subtitle }}</span>
+        <span class="text-xl fira-condensed-bold text-gray-100">{{ notification.title }}</span>
+        <span class="fira-condensed text-base">{{ notification.subtitle }}</span>
         <div class="btns flex justify-end gap-4 mt-2">
           <Button
-            v-if="!notificationData.buttons?.left?.hidden"
+            v-if="!notification.buttons?.left?.hidden"
             class="!py-1 text-white bg-[var(--red-color)]"
-            :data="notificationData.buttons.left"
+            :data="notification.buttons.left"
             :defaultAction="hideNotification"
           ></Button>
           <Button
-            v-if="!notificationData.buttons?.right?.hidden"
+            v-if="!notification.buttons?.right?.hidden"
             class="!py-1 text-white bg-[var(--green-color)]"
-            :data="notificationData.buttons.right"
+            :data="notification.buttons.right"
             :defaultAction="hideNotification"
           ></Button>
         </div>
@@ -36,6 +36,6 @@ import { useMainStore } from "@/store/main";
 import Button from "@/components/UI/Button.vue";
 
 const userStore = useMainStore();
-const { notificationData } = storeToRefs(userStore);
+const { notification } = storeToRefs(userStore);
 const { hideNotification } = userStore;
 </script>

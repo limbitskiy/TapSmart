@@ -31,7 +31,7 @@
     <!-- waiting modal -->
     <Teleport to="body">
       <Modal v-model:visible="isWaiting" sticky>
-        <Waiting @countdownComplete="onStartChallenge" />
+        <Waiting @countdownComplete="onStart" />
       </Modal>
     </Teleport>
 
@@ -71,7 +71,7 @@ const dataStore = useDataStore();
 const mainStore = useMainStore();
 const localeStore = useLocaleStore();
 
-const { data, challengeScore: score, bonusesUsedInBattle, currentCalcPoint } = storeToRefs(dataStore.battles);
+const { data, challengeScore: score, bonusesUsed, currentCalcPoint } = storeToRefs(dataStore.battles);
 const { startBreakpoint, stopBreakpoint, resetBattleStats } = dataStore.battles;
 const { battles: locale } = storeToRefs(localeStore);
 
@@ -96,7 +96,7 @@ Object.keys(route.query).forEach((key) => {
 
 // watch bonuses
 watch(
-  bonusesUsedInBattle,
+  bonusesUsed,
   (newVal, oldVal) => {
     if (Object.keys(newVal).length) {
       Object.keys(newVal).forEach((bonus) => {
@@ -113,7 +113,7 @@ watch(
 
 await fetchChallengePageData(challengeParams);
 
-const timer = ref(data.value.battle_duration);
+const timer = ref(0);
 
 const playerPosition = computed(() => {
   if (!data.value?.["player_progress"]?.length) return [0, 0];
@@ -125,25 +125,37 @@ const playerPosition = computed(() => {
   return [playersSorted?.findIndex((player) => player.isPlayer) + 1 || data.value["player_progress"].length, data.value["player_progress"].length];
 });
 
-const onStartChallenge = async () => {
+const onStart = async () => {
   isWaiting.value = false;
-  callApi({ api: "battle_init" });
+  await callApi({ api: "battle_init" });
+
+  timer.value = data.value.battle_duration ? +data.value.battle_duration : 0;
+  isBattle.value = true;
+  resetBattleStats();
+  startBreakpoint("battle");
+
+  interval = setInterval(() => {
+    if (timer.value === 0) {
+      clearInterval(interval);
+      onEnd();
+      return;
+    }
+
+    timer.value -= 1000;
+  }, 1000);
+};
+
+const onEnd = () => {
+  isBattle.value = false;
+  stopBreakpoint();
+  callApi({ api: "battle_breakpoint", data: { final: 1 } });
+  isBattleCompleteAnimation.value = true;
 
   setTimeout(() => {
-    isBattle.value = true;
-    resetBattleStats();
-    startBreakpoint("battle");
-
-    interval = setInterval(() => {
-      if (timer.value === 0) {
-        clearInterval(interval);
-        onEndChallenge();
-        return;
-      }
-
-      timer.value -= 1000;
-    }, 1000);
-  }, 1000);
+    callApi({ api: "battle_completed" });
+    isBattleCompleteAnimation.value = false;
+    redirectTo("/battle-complete");
+  }, 3000);
 };
 
 const onBonusUsed = (bonusName: string) => {
@@ -159,19 +171,6 @@ const onBonusUsed = (bonusName: string) => {
 
     bonusState.value.used[bonusName] = true;
   }, 1000);
-};
-
-const onEndChallenge = () => {
-  isBattle.value = false;
-  stopBreakpoint();
-  callApi({ api: "battle_breakpoint", data: { final: 1 } });
-  isBattleCompleteAnimation.value = true;
-
-  setTimeout(() => {
-    callApi({ api: "battle_completed" });
-    isBattleCompleteAnimation.value = false;
-    redirectTo("/battle-complete");
-  }, 3000);
 };
 
 onMounted(() => {

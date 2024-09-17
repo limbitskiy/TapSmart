@@ -16,7 +16,10 @@ export const useMainStore = defineStore("main", () => {
   const notification = ref<NotificationProps>({
     title: null,
     subtitle: null,
-    buttons: {},
+    buttons: {
+      left: {},
+      right: {},
+    },
     isShown: false,
   });
 
@@ -41,8 +44,6 @@ export const useMainStore = defineStore("main", () => {
   const battleStore = useBattleStore();
 
   const isAppLoaded = ref(false);
-
-  const notificationData = computed(() => notification.value);
 
   const requestPending = ref(false);
   const requestQueue = ref([]);
@@ -155,8 +156,8 @@ export const useMainStore = defineStore("main", () => {
     modal.value.isShown = false;
   };
 
-  const callApi = ({ api, data }: { api: string; data?: {} }) => {
-    useFetch({ key: api, data });
+  const callApi = async ({ api, data }: { api: string; data?: {} }) => {
+    await useFetch({ key: api, data });
   };
 
   const onVibrate = (type: string) => {
@@ -258,7 +259,7 @@ export const useMainStore = defineStore("main", () => {
   };
 
   return {
-    notificationData,
+    notification,
     tooltip,
     modal,
     startApp,
