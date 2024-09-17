@@ -1,7 +1,8 @@
 <template>
   <div class="modal relative">
     <div v-if="visible" id="modal-backdrop" class="modal-backdrop fixed inset-0 bg-black bg-opacity-50 z-40" @click="onBackdropClick"></div>
-    <div v-if="visible && !sticky" class="close fixed top-4 right-4 z-50" @click="onCloseClick">
+    <!-- <Transition name="toast-slide" appear> -->
+    <div v-if="visible && !sticky" class="close fixed top-4 right-4 z-50" :class="{ animate__heartBeat: visible && !sticky }" @click="onCloseClick">
       <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect width="36" height="36" rx="10" fill="#FEAC3E" />
         <path
@@ -10,6 +11,7 @@
         />
       </svg>
     </div>
+    <!-- </Transition> -->
     <Transition name="modal-slide-up">
       <BackgroundPill
         v-if="visible"
@@ -27,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from "vue";
+import { onMounted, watch } from "vue";
 
 // composables
 // components
@@ -52,4 +54,8 @@ const onBackdropClick = (event: MouseEvent) => {
 const onCloseClick = () => {
   emit("update:visible", false);
 };
+
+onMounted(() => {
+  console.log(`1mounted`);
+});
 </script>
