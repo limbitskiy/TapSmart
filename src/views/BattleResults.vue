@@ -40,7 +40,6 @@
 <script setup lang="ts">
 import { getAsset } from "@/utils";
 import { storeToRefs } from "pinia";
-import { inviteFriend } from "@/api/telegram";
 
 // stores
 import { useLocaleStore } from "@/store/locale";
@@ -61,8 +60,6 @@ const mainStore = useMainStore();
 
 const { data } = storeToRefs(dataStore.battles);
 const { battles: locale } = storeToRefs(localeStore);
-
-const { redirectTo } = mainStore;
 
 const leaderboardSorted = computed(() => {
   if (!data.value.battle_results_leaderboard?.length) return [];

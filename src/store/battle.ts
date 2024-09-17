@@ -220,7 +220,7 @@ export const useBattleStore = defineStore("battle", () => {
       }
     }
 
-    if (!interval || !callback) return;
+    if (!interval || !callback || !type) return;
 
     if (interval < 1000) {
       console.error(`Interval is too small: ${interval}`);
@@ -241,6 +241,24 @@ export const useBattleStore = defineStore("battle", () => {
       currentBreakpointInterval.fn.stop();
       currentBreakpointInterval.fn = null;
       currentBreakpointInterval.type = null;
+    }
+  };
+
+  const storeAnswer = (answerString: string) => {
+    const foundIdx = answers.value.findIndex((answer) => answer.id === currentTask.value!.id);
+
+    if (foundIdx !== -1) {
+      answers.value[foundIdx] = {
+        id: currentTask.value.id,
+        key: currentTask.value.key,
+        answer: answerString,
+      };
+    } else {
+      answers.value.push({
+        id: currentTask.value.id,
+        key: currentTask.value.key,
+        answer: answerString,
+      });
     }
   };
 
@@ -435,8 +453,6 @@ export const useBattleStore = defineStore("battle", () => {
     console.log(`Battle paused`);
     currentBreakpointInterval.fn?.stop();
 
-    console.log(data.value.battle_type);
-
     if (data.value.battle_mode === "relax") {
       stopTaskTimeout();
     }
@@ -445,7 +461,10 @@ export const useBattleStore = defineStore("battle", () => {
   const resumeBattle = () => {
     console.log(`Battle resumed`);
     const type = currentBreakpointInterval.type || "";
-    startBreakpoint(type);
+
+    if (type) {
+      startBreakpoint(type);
+    }
 
     if (data.value.battle_mode === "relax") {
       startTaskTimeout();
