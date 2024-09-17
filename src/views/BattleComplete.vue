@@ -1,14 +1,15 @@
 <template>
-  <div id="battle-complete" class="flex-1">
+  <div id="battle-complete" class="flex-1 flex flex-col h-screen">
     <Profile />
 
-    <BackgroundPill class="py-8 mt-4">
+    <BackgroundPill class="py-8 mt-4 overflow-y-hidden">
       <div class="pill-header flex items-center justify-between">
         <span class="bg-pill-title">{{ locale?.["battle_complete_title"] || "Battle complete!" }}</span>
       </div>
 
-      <div class="battle-stats flex flex-col gap-2 pt-4">
-        <Pill color="light">
+      <div class="scrollable-cnt flex-1 overflow-y-auto">
+        <div class="battle-stats flex flex-col gap-1 pt-4">
+        <Pill class="py-2" color="light">
           <div class="content flex gap-2 items-center justify-between">
             <span class="text-xl fira-bold text-gray-300">{{ locale?.["battle_complete_place"] || "Place" }}</span>
             <div class="flex gap-2 items-center">
@@ -19,7 +20,7 @@
         </Pill>
 
         <!-- bolts -->
-        <Pill color="light">
+        <Pill class="py-2" color="light">
           <div class="content flex gap-2 items-center justify-between">
             <span class="text-xl fira-bold text-gray-300">{{ locale?.["battle_complete_bolts"] || "Bolts" }}</span>
             <div class="flex gap-2 items-center">
@@ -30,7 +31,7 @@
         </Pill>
 
         <!-- nuts -->
-        <Pill color="light">
+        <Pill class="py-2" color="light">
           <div class="content flex gap-2 items-center justify-between">
             <span class="text-xl fira-bold text-gray-300">{{ locale?.["battle_complete_nuts"] || "Nuts" }}</span>
             <div class="flex gap-2 items-center">
@@ -44,7 +45,10 @@
       <!-- ad -->
       <div class="ad flex flex-col items-center justify-center mt-8">
         <Ad image="x2" :text="locale?.['battle_complete_ad_text']" :tooltip="locale?.['tooltip_battle_complete_ad']" />
-        <div class="ad-btns w-full flex gap-4 mt-8">
+      </div>
+      </div>
+
+      <div class="ad-btns w-full flex gap-4 mt-8">
           <Button class="flex-1 py-3 !px-0 text-white bg-[var(--grey-light)]" :data="data?.['button_claim']">
             <div class="flex flex-col gap-1 items-center">
               <div class="flex gap-1 items-baseline">
@@ -64,7 +68,6 @@
             </div>
           </Button>
         </div>
-      </div>
     </BackgroundPill>
   </div>
 </template>

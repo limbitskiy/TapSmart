@@ -52,7 +52,9 @@ export const useBattle = (type: "relax" | "challenge", el?: Ref<HTMLElement>) =>
       el.value.classList.add("animate__heartBeat");
 
       setTimeout(() => {
-        el.value.classList.remove("animate__heartBeat");
+        if (el.value) {
+          el.value.classList.remove("animate__heartBeat");
+        }
         res(true);
       }, 500);
     });
