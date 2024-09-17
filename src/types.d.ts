@@ -145,6 +145,7 @@ export interface Answer {
   id: number;
   key: string | number;
   answer: string;
+  msec?: number;
 }
 
 export interface Bonus {

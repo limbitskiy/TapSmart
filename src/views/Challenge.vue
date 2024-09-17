@@ -72,7 +72,7 @@ const mainStore = useMainStore();
 const localeStore = useLocaleStore();
 
 const { data, challengeScore: score, bonusesUsed, currentCalcPoint } = storeToRefs(dataStore.battles);
-const { startBreakpoint, stopBreakpoint, resetBattleStats } = dataStore.battles;
+const { startBreakpoint, stopBreakpoint, resetBattleStats, startChallenge, stopChallenge } = dataStore.battles;
 const { battles: locale } = storeToRefs(localeStore);
 
 const { fetchChallengePageData, callApi, redirectTo } = mainStore;
@@ -131,8 +131,7 @@ const onStart = async () => {
 
   timer.value = data.value.battle_duration ? +data.value.battle_duration : 0;
   isBattle.value = true;
-  resetBattleStats();
-  startBreakpoint("battle");
+  startChallenge();
 
   interval = setInterval(() => {
     if (timer.value === 0) {
@@ -147,7 +146,7 @@ const onStart = async () => {
 
 const onEnd = () => {
   isBattle.value = false;
-  stopBreakpoint();
+  stopChallenge();
   callApi({ api: "battle_breakpoint", data: { final: 1 } });
   isBattleCompleteAnimation.value = true;
 

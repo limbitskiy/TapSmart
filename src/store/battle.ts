@@ -47,6 +47,7 @@ export const useBattleStore = defineStore("battle", () => {
   const answers = ref<Answer[]>([]);
   const challengeScore = ref(0);
   const bonusesUsed = ref({});
+  let battleStartTime = null;
 
   let currentBreakpointInterval = {
     fn: <BreakpointInterval | null>null,
@@ -244,7 +245,7 @@ export const useBattleStore = defineStore("battle", () => {
     }
   };
 
-  const storeAnswer = (answerString: string) => {
+  const storeAnswer = (answerString: string, msec?: number) => {
     const foundIdx = answers.value.findIndex((answer) => answer.id === currentTask.value!.id);
 
     if (foundIdx !== -1) {
@@ -252,12 +253,14 @@ export const useBattleStore = defineStore("battle", () => {
         id: currentTask.value.id,
         key: currentTask.value.key,
         answer: answerString,
+        msec,
       };
     } else {
       answers.value.push({
         id: currentTask.value.id,
         key: currentTask.value.key,
         answer: answerString,
+        msec,
       });
     }
   };
@@ -265,8 +268,6 @@ export const useBattleStore = defineStore("battle", () => {
   // answer handlers
   const handleRelaxAnswer = ({ isCorrect, answerString, subtractEnergyAmount = 1 }: AnswerProps) => {
     if (data.value.energy === 0) return;
-
-    // const currentDataItem = state.value.battleData.data?.[taskIndex.value];
 
     if (!currentTask.value) {
       console.error(`Could not find current item`);
@@ -277,21 +278,7 @@ export const useBattleStore = defineStore("battle", () => {
     lastTaskId.value = currentTask.value!.id;
 
     // store answer
-    const foundIdx = answers.value.findIndex((answer) => answer.id === currentTask.value!.id);
-
-    if (foundIdx !== -1) {
-      answers.value[foundIdx] = {
-        id: currentTask.value.id,
-        key: currentTask.value.key,
-        answer: answerString,
-      };
-    } else {
-      answers.value.push({
-        id: currentTask.value.id,
-        key: currentTask.value.key,
-        answer: answerString,
-      });
-    }
+    storeAnswer(answerString);
 
     // call api
     if (currentTask.value.api) {
@@ -332,21 +319,8 @@ export const useBattleStore = defineStore("battle", () => {
     lastTaskId.value = currentDataItem!.id;
 
     // store answer
-    const foundIdx = answers.value.findIndex((answer) => answer.id === currentDataItem!.id);
-
-    if (foundIdx !== -1) {
-      answers.value[foundIdx] = {
-        id: currentDataItem.id,
-        key: currentDataItem.key,
-        answer: answerString,
-      };
-    } else {
-      answers.value.push({
-        id: currentDataItem.id,
-        key: currentDataItem.key,
-        answer: answerString,
-      });
-    }
+    const msec = Date.now() - battleStartTime;
+    storeAnswer(answerString, msec);
 
     if (isCorrect) {
       addToChallengeScore(currentCalcPoint.value);
@@ -471,6 +445,18 @@ export const useBattleStore = defineStore("battle", () => {
     }
   };
 
+  const startChallenge = () => {
+    resetBattleStats();
+    battleStartTime = Date.now();
+    startBreakpoint("battle");
+  };
+
+  const stopChallenge = () => {
+    resetBattleStats();
+    battleStartTime = null;
+    stopBreakpoint();
+  };
+
   return {
     data,
     currentTask,
@@ -495,5 +481,7 @@ export const useBattleStore = defineStore("battle", () => {
     decreaseWaitingTimer,
     resetTaskIndex,
     resetBattleStats,
+    startChallenge,
+    stopChallenge,
   };
 });

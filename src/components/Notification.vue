@@ -7,17 +7,17 @@
       >
         <span class="text-xl fira-condensed-bold text-gray-100">{{ notification.title }}</span>
         <!-- <span class="fira-condensed text-sm inline-svg" v-html="notification.subtitle"></span> -->
-        <span class="fira-condensed text-sm inline-svg svg-top-margin" v-html="textWithSpecialSymbols(notification.subtitle)"></span>
+        <span class="fira-condensed text-sm inline-svg svg-top-margin leading-3 my-2" v-html="textWithSpecialSymbols(notification.subtitle)"></span>
         <div class="btns flex justify-end gap-4 mt-2">
           <Button
             v-if="!notification.buttons?.left?.hidden"
-            class="!py-1 text-white bg-[var(--red-color)]"
+            class="!py-1 !text-lg text-white bg-[var(--red-color)]"
             :data="notification.buttons.left"
             :defaultAction="hideNotification"
           ></Button>
           <Button
             v-if="!notification.buttons?.right?.hidden"
-            class="!py-1 text-white bg-[var(--green-color)]"
+            class="!py-1 !text-lg text-white bg-[var(--green-color)]"
             :data="notification.buttons.right"
             :defaultAction="hideNotification"
           ></Button>
