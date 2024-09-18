@@ -5,7 +5,7 @@
       <div class="page-subtitle">{{ locale?.["subtitle"] }}</div>
     </div>
 
-    <Settings @change="onSettingsChange" />
+    <LanguageSettings @change="onSettingsChange" />
 
     <div class="bnt-cnt flex justify-between absolute bottom-0 w-full">
       <Button class="w-full py-3" label="Next" @click="onNext">
@@ -27,7 +27,7 @@ import { useLocaleStore } from "@/store/locale";
 
 // components
 import Button from "@/components/UI/Button.vue";
-import Settings from "@/components/Settings.vue";
+import LanguageSettings from "@/components/LanguageSettings.vue";
 
 const dataStore = useDataStore();
 const localeStore = useLocaleStore();

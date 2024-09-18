@@ -3,7 +3,6 @@
     <div class="header flex flex-col gap-4">
       <span class="bg-pill-title">{{ locale?.["waiting_title"] || "Waiting" }}</span>
       <Pill color="light">
-        <!-- <CountdownTimer class="exo-bold text-xl" :initValue="data['waiting_timer']" @completed="emit('countdownComplete')" /> -->
         <div class="timer">
           <span>{{ "00:" + formattedTime }}</span>
         </div>
@@ -55,7 +54,6 @@ import { useLocaleStore } from "@/store/locale";
 // components
 import Button from "@/components/UI/Button.vue";
 import Pill from "@/components/UI/Pill.vue";
-import CountdownTimer from "@/components/CountdownTimer.vue";
 
 const emit = defineEmits<{
   countdownComplete: [];

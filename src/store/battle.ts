@@ -227,7 +227,7 @@ export const useBattleStore = defineStore("battle", () => {
       console.error(`Interval is too small: ${interval}`);
     }
 
-    console.log(`Starting breakpoint: ${type}`);
+    // console.log(`Starting breakpoint: ${type}`);
 
     const breakpointInterval = new BreakpointInterval(interval, callback);
 
@@ -238,7 +238,7 @@ export const useBattleStore = defineStore("battle", () => {
 
   const stopBreakpoint = () => {
     if (currentBreakpointInterval.fn) {
-      console.log(`Stopping breakpoint`);
+      // console.log(`Stopping breakpoint`);
       currentBreakpointInterval.fn.stop();
       currentBreakpointInterval.fn = null;
       currentBreakpointInterval.type = null;
@@ -424,7 +424,7 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const pauseBattle = () => {
-    console.log(`Battle paused`);
+    // console.log(`Battle paused`);
     currentBreakpointInterval.fn?.stop();
 
     if (data.value.battle_mode === "relax") {
@@ -433,7 +433,7 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const resumeBattle = () => {
-    console.log(`Battle resumed`);
+    // console.log(`Battle resumed`);
     const type = currentBreakpointInterval.type || "";
 
     if (type) {

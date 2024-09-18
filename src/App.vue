@@ -27,6 +27,7 @@
       </Modal>
     </Teleport>
   </div>
+  <!-- <ProgressBar /> -->
 </template>
 
 <script setup lang="ts">
@@ -44,6 +45,7 @@ import Tooltip from "@/components/Tooltip.vue";
 import Modal from "@/components/Modal.vue";
 import Loader from "@/components/UI/Loader.vue";
 import BackendModal from "@/components/UI/BackendModal.vue";
+import ProgressBar from "./components/ProgressBar.vue";
 
 const mainStore = useMainStore();
 const dataStore = useDataStore();

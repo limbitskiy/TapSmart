@@ -15,7 +15,7 @@
             <img class="h-4" :src="getAsset('bolt')" />
             <span class="text-md exo-black text-xl leading-3 text-[var(--accent-color)]">{{ showFormattedNumber(data?.["bolts"]) || 0 }}</span>
           </div>
-          <svg width="79" height="27" viewBox="0 0 79 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- <svg width="79" height="27" viewBox="0 0 79 27" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g filter="url(#filter0_b_223_2510)">
               <rect width="79" height="27" rx="13.5" fill="url(#paint0_linear_223_2510)" />
               <rect x="0.25" y="0.25" width="78.5" height="26.5" rx="13.25" stroke="url(#paint1_linear_223_2510)" stroke-width="0.5" />
@@ -43,7 +43,7 @@
                 <stop offset="1" stop-color="#999999" stop-opacity="0.05" />
               </linearGradient>
             </defs>
-          </svg>
+          </svg> -->
         </div>
       </div>
     </div>

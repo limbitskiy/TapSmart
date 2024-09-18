@@ -37,14 +37,14 @@ export class Timer {
   }
 
   start() {
-    console.log(`Starting timeout`);
+    // console.log(`Starting timeout`);
     this._timeoutFn = setTimeout(() => {
       this.callback();
     }, this.interval);
   }
 
   stop() {
-    console.log(`Stopping timeout`);
+    // console.log(`Stopping timeout`);
     if (this._timeoutFn) {
       clearTimeout(this._timeoutFn);
       this._timeoutFn = null;

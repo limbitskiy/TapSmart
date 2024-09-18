@@ -15,9 +15,9 @@
     <Transition name="modal-slide-up">
       <BackgroundPill
         v-if="visible"
-        class="fixed bottom-0 w-full z-50 flex flex-col max-h-[85dvh] rounded-bl-none rounded-br-none py-4"
+        class="fixed bottom-0 w-full z-50 flex flex-col rounded-bl-none rounded-br-none py-4"
         color="dark"
-        :style="{ maxHeight: height }"
+        :style="{ maxHeight: height ?? sticky ? '85dvh' : 'calc(100dvh - 68px)' }"
       >
         <div class="w-8 h-1 bg-gray-500 rounded-full m-auto relative -top-4"></div>
         <div class="modal-scroll overflow-y-scroll">

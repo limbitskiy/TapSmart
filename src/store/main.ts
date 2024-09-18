@@ -219,12 +219,18 @@ export const useMainStore = defineStore("main", () => {
               ...data,
               answers: battleStore.answers,
               lastTaskId: battleStore.lastTaskId,
+              routeData: state.value.routeData,
             },
             service: state.value.service,
           },
         });
 
         parseResponse(result.data);
+
+        // clean route data
+        if (state.value.routeData) {
+          delete state.value.routeData;
+        }
 
         res(true);
 
@@ -258,6 +264,10 @@ export const useMainStore = defineStore("main", () => {
     router.push(location);
   };
 
+  const setRouteData = (value: any) => {
+    state.value.routeData = value;
+  };
+
   return {
     notification,
     tooltip,
@@ -278,5 +288,6 @@ export const useMainStore = defineStore("main", () => {
     hideModal,
     redirectTo,
     onVibrate,
+    setRouteData,
   };
 });

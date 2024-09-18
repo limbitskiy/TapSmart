@@ -2,12 +2,12 @@
   <div id="battle-complete" class="flex-1 flex flex-col h-screen">
     <Profile />
 
-    <BackgroundPill class="py-8 mt-4 overflow-y-hidden">
+    <BackgroundPill class="py-8 mt-4 overflow-y-hidden flex-1">
       <div class="pill-header flex items-center justify-between">
         <span class="bg-pill-title">{{ locale?.["battle_complete_title"] || "Battle complete!" }}</span>
       </div>
 
-      <div class="scrollable-cnt flex-1 overflow-y-auto">
+      <div class="scrollable-cnt flex-1 overflow-y-auto mt-2">
         <div class="battle-stats flex flex-col gap-1 pt-4">
         <Pill class="py-2" color="light">
           <div class="content flex gap-2 items-center justify-between">

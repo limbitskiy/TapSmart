@@ -50,7 +50,7 @@
 
     <!-- select booster modal -->
     <Teleport to="body">
-      <Modal v-model:visible="isBoostersModalVisible" height="90dvh">
+      <Modal v-model:visible="isBoostersModalVisible">
         <BoosterSelect @startBattle="onStartChallenge" />
       </Modal>
     </Teleport>

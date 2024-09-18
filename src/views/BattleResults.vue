@@ -2,12 +2,12 @@
   <div id="battle-results" class="flex-1 flex flex-col h-screen">
     <Profile />
 
-    <BackgroundPill class="py-8 mt-4 overflow-y-hidden">
+    <BackgroundPill class="py-8 mt-4 overflow-y-hidden flex-1">
       <div class="pill-header flex items-center justify-between">
         <span class="bg-pill-title">{{ locale?.["battle_results_title"] || "Battle results:" }}</span>
       </div>
 
-      <div class="scrollable-cnt flex-1 overflow-y-auto">
+      <div class="scrollable-cnt flex-1 overflow-y-auto mt-2">
         <div class="leaderboard flex flex-col gap-1 pt-4">
           <Pill v-for="(player, index) in leaderboardSorted" :key="player.id" class="py-2 flex items-center justify-between gap-4" color="light">
             <div class="player-meta leading-3 flex gap-4 items-center">

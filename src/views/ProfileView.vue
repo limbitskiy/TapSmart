@@ -77,7 +77,7 @@
       <span class="bg-pill-subtitle">{{ locale?.["activity_subtitle"] || "Subtitle" }}</span>
     </BackgroundPill>
 
-    <Settings class="mt-12" @change="onSettingsChange" />
+    <LanguageSettings class="mt-12" @change="onSettingsChange" />
   </div>
 </template>
 
@@ -96,7 +96,7 @@ import { useLocaleStore } from "@/store/locale";
 // components
 import Pill from "@/components/UI/Pill.vue";
 import BackgroundPill from "@/components/UI/BackgroundPill.vue";
-import Settings from "@/components/Settings.vue";
+import LanguageSettings from "@/components/LanguageSettings.vue";
 
 const mainStore = useMainStore();
 const dataStore = useDataStore();

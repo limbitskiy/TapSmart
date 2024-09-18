@@ -25,6 +25,7 @@ export interface MainState {
   entryPoint?: string | null;
   service?: {};
   apiUrl?: string | null;
+  routeData: any;
 }
 
 export interface DataState {

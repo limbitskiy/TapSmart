@@ -12,7 +12,7 @@ import { useMainStore } from "@/store/main";
 
 const mainStore = useMainStore();
 
-const { redirectTo, callApi } = mainStore;
+const { redirectTo, callApi, setRouteData } = mainStore;
 
 const props = defineProps<{
   dark?: boolean;
@@ -26,6 +26,10 @@ const onClick = () => {
   }
 
   if (props.data?.route) {
+    if (props.data?.routeData) {
+      setRouteData(props.data?.routeData);
+    }
+
     redirectTo(props.data.route);
   }
 
