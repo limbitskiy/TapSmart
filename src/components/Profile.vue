@@ -1,5 +1,5 @@
 <template>
-  <Pill class="mx-4 mt-2" color="dark" @click="$router.push('/profile')">
+  <Pill class="mx-4 mt-2 border border-gray-600" color="dark" @click="$router.push('/profile')">
     <div class="content flex gap-4 items-center">
       <img :src="getAsset('avatar1')" />
       <div class="profile-meta flex flex-col flex-1">
@@ -15,6 +15,7 @@
             <img class="h-4" :src="getAsset('bolt')" />
             <span class="text-md exo-black text-xl leading-3 text-[var(--accent-color)]">{{ showFormattedNumber(data?.["bolts"]) || 0 }}</span>
           </div>
+          <!-- commented boost btn for now -->
           <!-- <svg width="79" height="27" viewBox="0 0 79 27" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g filter="url(#filter0_b_223_2510)">
               <rect width="79" height="27" rx="13.5" fill="url(#paint0_linear_223_2510)" />

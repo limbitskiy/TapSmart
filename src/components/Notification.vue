@@ -11,13 +11,13 @@
         <div class="btns flex justify-end gap-4 mt-2">
           <Button
             v-if="!notification.buttons?.left?.hidden"
-            class="!py-1 !text-lg text-white bg-[var(--red-color)]"
+            class="!py-1 !text-lg text-white bg-[var(--red-color)] !rounded-lg"
             :data="notification.buttons.left"
             :defaultAction="hideNotification"
           ></Button>
           <Button
             v-if="!notification.buttons?.right?.hidden"
-            class="!py-1 !text-lg text-white bg-[var(--green-color)]"
+            class="!py-1 !text-lg text-white bg-[var(--green-color)] !rounded-lg"
             :data="notification.buttons.right"
             :defaultAction="hideNotification"
           ></Button>
