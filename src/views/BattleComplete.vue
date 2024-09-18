@@ -1,5 +1,5 @@
 <template>
-  <div id="battle-complete" class="flex-1 flex flex-col h-screen">
+  <div id="battle-complete" class="flex-1 flex flex-col h-dvh">
     <Profile />
 
     <BackgroundPill class="py-8 mt-4 overflow-y-hidden flex-1">
@@ -49,7 +49,7 @@
       </div>
 
       <div class="ad-btns w-full flex gap-4 mt-8">
-        <Button class="flex-1 py-3 !px-0 text-white bg-[var(--grey-light)]" :data="data?.['button_claim']">
+        <Button class="flex-1 py-3 !px-0 text-white bg-[var(--grey-light)]" activeColor="#525252" :data="data?.['button_claim']">
           <div class="flex flex-col gap-1 items-center">
             <div class="flex gap-1 items-baseline">
               <span class="text-base leading-4">{{ getBtnTextArr(locale?.["button_claim"])[0] }}</span>
@@ -58,7 +58,7 @@
             <span class="text-sm fira-regular !leading-3">{{ getBtnTextArr(locale?.["button_claim"])[1] }}</span>
           </div>
         </Button>
-        <Button class="flex-1 py-3 !px-0" :data="data?.['button_claim_with_ton']">
+        <Button class="flex-1 py-3 !px-0" activeColor="#fcdcb0" :data="data?.['button_claim_with_ton']">
           <div class="flex flex-col gap-1 items-center">
             <div class="flex gap-1 items-baseline">
               <span class="text-base leading-4">{{ getBtnTextArr(locale?.["button_claim_with_ton"])[0] }}</span>

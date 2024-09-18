@@ -14,12 +14,14 @@
             class="!py-1 !text-lg text-white bg-[var(--red-color)] !rounded-lg"
             :data="notification.buttons.left"
             :defaultAction="hideNotification"
+            activeColor="#ff8964"
           ></Button>
           <Button
             v-if="!notification.buttons?.right?.hidden"
             class="!py-1 !text-lg text-white bg-[var(--green-color)] !rounded-lg"
             :data="notification.buttons.right"
             :defaultAction="hideNotification"
+            activeColor="#74d77d"
           ></Button>
         </div>
       </div>
@@ -43,7 +45,4 @@ const { notification } = storeToRefs(userStore);
 const { hideNotification } = userStore;
 
 const textWithSpecialSymbols = (text) => text?.replace(/<bolt>/, getSpecialSymbol("bolt")).replace(/<nut>/, getSpecialSymbol("nut"));
-
-const html = `Дружеский баттл <span class="fira-bold text-orange-500">4 ответа</span> с бонусом <span class="fira-bold text-orange-500">x8</span> от
-          <span class="fira-bold text-orange-500">Max_5746</span>`;
 </script>

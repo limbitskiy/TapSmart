@@ -29,7 +29,7 @@
       </button>
 
       <!-- invite friends button -->
-      <Button class="!text-base !py-1 !px-4" @click="onInviteFriends">{{ locale?.["invite_friends"] || "Invite friends" }}</Button>
+      <Button class="!text-base !py-1 !px-4" activeColor="#fcdcb0" @click="onInviteFriends">{{ locale?.["invite_friends"] || "Invite friends" }}</Button>
     </div>
 
     <div class="boosters flex flex-col gap-4 flex-1">
@@ -60,24 +60,31 @@
             </div>
           </div>
           <div class="end flex justify-end">
-            <button
+            <Button
               v-if="pickedBonuses['mistake']"
-              class="px-5 bg-[var(--accent-color)] text-black rounded-full fira-condensed-bold mt-2 py-1 flex items-center gap-2"
+              class="!px-5 bg-[var(--accent-color)] text-black !rounded-full fira-condensed-bold mt-2 !py-1 flex items-center gap-2 !text-base"
+              activeColor="#fcdcb0"
               @click="pickedBonuses['mistake'] = false"
             >
               {{ locale?.["button_active"] }}
-            </button>
-            <button
+            </Button>
+            <Button
               v-else-if="data.boosters?.extra_mistake.price === 0"
-              class="px-5 bg-[var(--green-color)] rounded-full fira-condensed-bold mt-2 py-1 flex items-center gap-2"
+              class="!px-5 bg-[var(--green-color)] !rounded-full fira-condensed-bold mt-2 !py-1 flex items-center gap-2"
+              activeColor="#74d77d"
               @click="pickedBonuses['mistake'] = true"
             >
-              <span class="exo-bold">{{ locale?.["enable_boost"] || "Enable" }}</span>
-            </button>
-            <button v-else class="px-5 bg-[var(--green-color)] rounded-full fira-condensed-bold mt-2 py-1 flex items-center gap-2" @click="pickedBonuses['mistake'] = true">
+              <span class="exo-bold !text-base !text-white">{{ locale?.["enable_boost"] || "Enable" }}</span>
+            </Button>
+            <Button
+              v-else
+              class="!px-5 bg-[var(--green-color)] !rounded-full fira-condensed-bold mt-2 !py-1 flex items-center gap-2"
+              activeColor="#74d77d"
+              @click="pickedBonuses['mistake'] = true"
+            >
               <img class="h-4 scale-125" :src="getAsset('nut')" />
-              <span class="exo-bold">{{ data.boosters?.extra_mistake.price }}</span>
-            </button>
+              <span class="exo-bold !text-base !text-white">{{ data.boosters?.extra_mistake.price }}</span>
+            </Button>
           </div>
         </Pill>
 
@@ -108,30 +115,37 @@
             </div>
           </div>
           <div class="end flex justify-end">
-            <button
+            <Button
               v-if="pickedBonuses['time']"
-              class="px-5 bg-[var(--accent-color)] text-black rounded-full fira-condensed-bold mt-2 py-1 flex items-center gap-2"
+              class="!px-5 bg-[var(--accent-color)] text-black !rounded-full fira-condensed-bold mt-2 !py-1 flex items-center gap-2 !text-base"
+              activeColor="#fcdcb0"
               @click="pickedBonuses['time'] = false"
             >
               {{ locale?.["button_active"] }}
-            </button>
-            <button
+            </Button>
+            <Button
               v-else-if="data.boosters?.extra_time.price === 0"
-              class="px-5 bg-[var(--green-color)] rounded-full fira-condensed-bold mt-2 py-1 flex items-center gap-2"
+              class="!px-5 bg-[var(--green-color)] !rounded-full fira-condensed-bold mt-2 !py-1 flex items-center gap-2"
+              activeColor="#74d77d"
               @click="pickedBonuses['time'] = true"
             >
-              <span class="exo-bold">{{ locale?.["enable_boost"] || "Enable" }}</span>
-            </button>
-            <button v-else class="px-5 bg-[var(--green-color)] rounded-full fira-condensed-bold mt-2 py-1 flex items-center gap-2" @click="pickedBonuses['time'] = true">
+              <span class="exo-bold !text-base !text-white">{{ locale?.["enable_boost"] || "Enable" }}</span>
+            </Button>
+            <Button
+              v-else
+              class="!px-5 bg-[var(--green-color)] !rounded-full fira-condensed-bold mt-2 !py-1 flex items-center gap-2"
+              activeColor="#74d77d"
+              @click="pickedBonuses['time'] = true"
+            >
               <img class="h-4 scale-125" :src="getAsset('nut')" />
-              <span class="exo-bold">{{ data.boosters?.extra_time.price }}</span>
-            </button>
+              <span class="exo-bold !text-base !text-white">{{ data.boosters?.extra_time.price }}</span>
+            </Button>
           </div>
         </Pill>
       </div>
     </div>
 
-    <Button class="flex-1 py-4 rounded-lg" @click="onStartBattle">
+    <Button class="flex-1 py-4 rounded-lg" activeColor="#fcdcb0" @click="onStartBattle">
       <div class="flex justify-center gap-1">
         <span class="text-xl leading-4">{{ locale?.["button_booster_select"] || "Challenge" }}</span>
       </div>

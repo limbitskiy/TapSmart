@@ -15,19 +15,29 @@
     </Teleport>
 
     <div class="answers flex-1 grid place-items-center bg-[var(--grey-dark)] rounded-t-3xl">
-      <div class="answer-buttons flex w-full justify-evenly py-4">
-        <div class="no-btn bg-[var(--red-color)] border-b-4 border-[#6A3524]" @click="(event) => handleAnswer(currentTask?.task.variants[1]!, currentTask, event, 'no')">
+      <div class="answer-buttons flex w-full justify-evenly">
+        <button
+          class="no-btn bg-[var(--red-color)] border-b-4 border-[#6A3524]"
+          @touchstart="btnTouchstart"
+          @touchend="btnTouchend"
+          @click="(event) => handleAnswer(currentTask?.task.variants[1]!, currentTask, event, 'no')"
+        >
           <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M3.5 3.5L38.5 38.5" stroke="white" stroke-width="7" stroke-linecap="round" />
             <path d="M38.5 3.5L3.5 38.5" stroke="white" stroke-width="7" stroke-linecap="round" />
           </svg>
-        </div>
+        </button>
 
-        <div class="yes-btn bg-[var(--green-color)] border-b-4 border-[#034E0A]" @click="(event) => handleAnswer(currentTask?.task.variants[0]!, currentTask, event, 'yes')">
+        <button
+          class="yes-btn bg-[var(--green-color)] border-b-4 border-[#034E0A]"
+          @touchstart="btnTouchstart"
+          @touchend="btnTouchend"
+          @click="(event) => handleAnswer(currentTask?.task.variants[0]!, currentTask, event, 'yes')"
+        >
           <svg width="56" height="41" viewBox="0 0 56 41" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M4 20L19.5294 36L52 4" stroke="white" stroke-width="7" stroke-linecap="round" />
           </svg>
-        </div>
+        </button>
       </div>
     </div>
   </div>
@@ -74,5 +84,19 @@ const handleAnswer = (answer, currentTask, event, button) => {
 
   emit("answer", { correct, answer });
   onAnswer(correct, event, answer);
+};
+
+const btnTouchstart = (event: TouchEvent) => {
+  const { target } = event;
+  const btn = target.closest("button");
+
+  btn?.classList.add("active");
+};
+
+const btnTouchend = (event: TouchEvent) => {
+  const { target } = event;
+  const btn = target?.closest("button");
+
+  btn?.classList.remove("active");
 };
 </script>

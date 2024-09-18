@@ -2,7 +2,7 @@
   <div class="modal relative">
     <div v-if="visible" id="modal-backdrop" class="modal-backdrop fixed inset-0 bg-black bg-opacity-50 z-40" @click="onBackdropClick"></div>
     <!-- <Transition name="toast-slide" appear> -->
-    <div v-if="visible && !sticky" class="close fixed top-4 right-4 z-50" :class="{ animate__heartBeat: visible && !sticky }" @click="onCloseClick">
+    <Button v-if="visible && !sticky" activeColor="#fcdcb0" class="close fixed top-4 right-4 z-50 !p-1" :class="{ animate__heartBeat: visible && !sticky }" @click="onCloseClick">
       <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect width="36" height="36" rx="10" fill="#FEAC3E" />
         <path
@@ -10,14 +10,14 @@
           fill="#222222"
         />
       </svg>
-    </div>
+    </Button>
     <!-- </Transition> -->
     <Transition name="modal-slide-up">
       <BackgroundPill
         v-if="visible"
         class="fixed bottom-0 w-full z-50 flex flex-col rounded-bl-none rounded-br-none py-4"
         color="dark"
-        :style="{ maxHeight: height ?? sticky ? '85dvh' : 'calc(100dvh - 68px)' }"
+        :style="{ maxHeight: height ?? sticky ? '85dvh' : 'calc(100dvh - 76px)' }"
       >
         <div class="w-8 h-1 bg-gray-500 rounded-full m-auto relative -top-4"></div>
         <div class="modal-scroll overflow-y-scroll">
@@ -31,9 +31,9 @@
 <script setup lang="ts">
 import { onMounted, watch } from "vue";
 
-// composables
 // components
 import BackgroundPill from "@/components/UI/BackgroundPill.vue";
+import Button from "@/components/UI/Button.vue";
 
 const props = defineProps<{
   visible: boolean;

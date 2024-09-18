@@ -1,5 +1,11 @@
 <template>
-  <button :class="dark ? 'bg-black' : 'bg-[var(--accent-color)] text-black'" class="rounded-xl font-bold fira-bold py-3 px-8 text-xl" @click="onClick">
+  <button
+    :class="dark ? 'bg-black' : 'bg-[var(--accent-color)] text-black'"
+    class="rounded-xl font-bold fira-bold py-3 px-8 text-xl"
+    @touchstart="btnTouchstart"
+    @touchend="btnTouchend"
+    @click="onClick"
+  >
     <slot>
       <span v-if="data?.label">{{ data.label }}</span>
     </slot>
@@ -7,8 +13,12 @@
 </template>
 
 <script setup lang="ts">
+import { useCssModule } from "vue";
+
 // stores
 import { useMainStore } from "@/store/main";
+
+const { active: activeClass } = useCssModule();
 
 const mainStore = useMainStore();
 
@@ -17,6 +27,7 @@ const { redirectTo, callApi, setRouteData } = mainStore;
 const props = defineProps<{
   dark?: boolean;
   data?: { route?: string; api?: string; data?: {}; label: string };
+  activeColor?: string;
   defaultAction?: () => void;
 }>();
 
@@ -37,4 +48,28 @@ const onClick = () => {
     props.defaultAction();
   }
 };
+
+const btnTouchstart = (event: TouchEvent) => {
+  if (!props.activeColor) return;
+
+  const { target } = event;
+  const btn = target.closest("button");
+
+  btn?.classList.add(activeClass);
+};
+
+const btnTouchend = (event: TouchEvent) => {
+  if (!props.activeColor) return;
+
+  const { target } = event;
+  const btn = target?.closest("button");
+
+  btn?.classList.remove(activeClass);
+};
 </script>
+
+<style module>
+.active {
+  background-color: v-bind(props.activeColor);
+}
+</style>

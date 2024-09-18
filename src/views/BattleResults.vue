@@ -1,5 +1,5 @@
 <template>
-  <div id="battle-results" class="flex-1 flex flex-col h-screen">
+  <div id="battle-results" class="flex-1 flex flex-col h-dvh">
     <Profile />
 
     <BackgroundPill class="py-8 mt-4 overflow-y-hidden flex-1">
@@ -29,11 +29,16 @@
       </div>
 
       <div class="ad-btns w-full flex gap-4 justify-between mt-6">
-        <Button v-if="data?.battle_results_buttons?.left" class="flex-1 !py-2 px-5 text-white bg-[var(--grey-light)]" :data="data.battle_results_buttons.left">
-          <span class="text-xl inline-block leading-5">{{ data?.["battle_results_buttons"]?.left?.label }}</span>
+        <Button
+          v-if="data?.battle_results_buttons?.left"
+          class="flex-1 !py-2 px-5 text-white bg-[var(--grey-light)]"
+          activeColor="#525252"
+          :data="data.battle_results_buttons.left"
+        >
+          <span class="text-lg inline-block leading-5 mt-1">{{ data?.["battle_results_buttons"]?.left?.label }}</span>
         </Button>
-        <Button v-if="data?.battle_results_buttons?.right" class="flex-1 !py-2 px-5" :data="data.battle_results_buttons.right">
-          <span class="text-xl inline-block leading-5">{{ data?.["battle_results_buttons"]?.right?.label }}</span>
+        <Button v-if="data?.battle_results_buttons?.right" class="flex-1 !py-2 px-5" activeColor="#fcdcb0" :data="data.battle_results_buttons.right">
+          <span class="text-lg inline-block leading-5 mt-1">{{ data?.["battle_results_buttons"]?.right?.label }}</span>
         </Button>
       </div>
     </BackgroundPill>

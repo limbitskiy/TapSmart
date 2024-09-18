@@ -3,7 +3,7 @@
     <Backlight color="green" />
     <Profile />
     <div class="top-btns grid grid-cols-2 gap-4 w-full px-4 relative">
-      <Button class="bg-black text-white border fira-condensed-bold leading-4 !px-4 py-2" @click="onChangeMech">
+      <Button class="bg-black text-white border fira-condensed-bold leading-4 !px-4 py-2" activeColor="#fff" @click="onChangeMech">
         <div class="flex gap-1 items-center justify-between">
           <div v-if="width > 410" class="icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

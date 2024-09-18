@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vueuse/components": "^11.1.0",
     "@vueuse/core": "^10.11.0",
     "axios": "^1.7.3",
     "howler": "^2.2.4",

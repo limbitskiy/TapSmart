@@ -181,7 +181,11 @@ const onInviteFriend = () => {
 
 const onCopyToClipboard = () => {
   const link = generateShareLink();
-  navigator.clipboard.writeText(link);
+
+  // use useClipboard
+  if (navigator?.clipboard) {
+    navigator.clipboard.writeText(link);
+  }
 };
 
 onMounted(() => {});

@@ -118,17 +118,17 @@ body {
   border-radius: 1rem;
   position: relative;
 
-  &:active {
+  &.active {
     border-bottom: none;
     top: 3px;
   }
 }
 
-.yes-btn:active {
+.yes-btn.active {
   background-color: #65b36d;
 }
 
-.no-btn:active {
+.no-btn.active {
   background-color: #e67955;
 }
 

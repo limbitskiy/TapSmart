@@ -32,7 +32,7 @@ const routes = [
   {
     path: "/init",
     component: Init,
-    meta: { transition: "long-fade" },
+    // meta: { transition: "long-fade" },
   },
   {
     path: "/tutorial",

@@ -1,5 +1,5 @@
 <template>
-  <Button ref="challengeBtnRef" class="flex-1 py-3 px-5 relative" :class="{ 'bg-gray-300 text-gray-400': data.challengeButton?.disabled }" @click="onClick"
+  <Button ref="challengeBtnRef" activeColor="#fcdcb0" class="flex-1 py-3 px-5 relative" :class="{ 'bg-gray-300 text-gray-400': data.challengeButton?.disabled }" @click="onClick"
     ><div class="flex justify-center gap-1">
       <span v-bind="$attrs" class="text-base leading-4">{{ locale?.["button_challenge"] }}</span>
       <div

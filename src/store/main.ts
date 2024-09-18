@@ -1,6 +1,7 @@
 import { computed, ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { defineStore } from "pinia";
+import { useVibrate } from "@vueuse/core";
 
 // stores
 import { useDataStore } from "@/store/data";
@@ -162,15 +163,22 @@ export const useMainStore = defineStore("main", () => {
 
   const onVibrate = (type: string) => {
     if (dataStore.settings.vibro) {
+      let pattern;
       switch (type) {
         case "correct": {
-          navigator.vibrate(300);
+          pattern = [300];
           break;
         }
         case "wrong": {
-          navigator.vibrate([100, 10, 100, 10, 100]);
+          pattern = [100, 10, 100, 10, 100];
           break;
         }
+      }
+
+      const { vibrate, isSupported } = useVibrate({ pattern });
+
+      if (isSupported) {
+        vibrate();
       }
     }
   };

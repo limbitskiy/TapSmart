@@ -1,5 +1,5 @@
 <template>
-  <nav class="fixed bottom-0 w-full z-10">
+  <nav class="fixed bottom-0 left-0 right-0 w-full z-10">
     <ul class="flex items-center justify-around bg-black text-white py-1">
       <RouterLink v-for="menuItem in data?.items" :to="menuItem.link" class="w-16 h-16 rounded-xl">
         <div class="nav-item flex flex-col items-center justify-center gap-1 p-1 relative">

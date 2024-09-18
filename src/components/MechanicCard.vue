@@ -29,28 +29,44 @@
       </div>
     </div>
     <!-- active -->
-    <button v-if="data.battle_type == propData.id" class="px-2 w-full bg-[var(--accent-color)] text-black rounded-full fira-condensed-bold mt-2 py-1">
+    <Button v-if="data.battle_type == propData.id" class="!px-2 w-full bg-[var(--accent-color)] text-black !text-lg rounded-full fira-condensed-bold mt-2 !py-1">
       {{ locale?.["button_active"] || "Active" }}
-    </button>
+    </Button>
     <!-- trial message -->
-    <button v-else-if="propData.nuts" class="px-2 w-full bg-[var(--green-color)] text-white rounded-full fira-condensed-bold mt-2 py-1" @click="() => emit('select', propData.id)">
-      <div class="btn-content flex items-center justify-center gap-3">
+    <Button
+      v-else-if="propData.nuts"
+      class="!px-2 w-full bg-[var(--green-color)] text-white fira-condensed-bold mt-2 !py-1"
+      activeColor="#74d77d"
+      @click="() => emit('select', propData.id)"
+    >
+      <div class="btn-content flex items-center justify-center gap-3 !text-lg">
         {{ locale?.["button_trial_message"] }}
         <div class="bolts flex items-center gap-1">
           <img class="h-4" :src="getAsset('nut')" />
           <span class="exo-black">{{ propData.nuts }}</span>
         </div>
       </div>
-    </button>
-    <!-- normal / disabled -->
-    <button
-      v-else
-      class="px-2 w-full bg-[var(--green-color)] text-white rounded-full fira-condensed-bold mt- py-1"
-      :class="{ 'bg-transparent border border-gray-500 text-gray-200': propData.disabled }"
+    </Button>
+    <!--  disabled -->
+    <Button
+      v-else-if="propData.disabled"
+      class="!px-2 w-full bg-transparent border border-gray-500 text-gray-200 fira-condensed-bold !py-1 !text-lg"
+      :class="{ '': propData.disabled }"
       @click="() => emit('select', propData.id)"
     >
       {{ buttonLabel }}
-    </button>
+    </Button>
+
+    <!-- normal -->
+    <Button
+      v-else
+      class="!px-2 w-full bg-[var(--green-color)] text-white fira-condensed-bold !py-1 !text-lg"
+      :class="{ 'bg-transparent border border-gray-500 text-gray-200': propData.disabled }"
+      activeColor="#74d77d"
+      @click="() => emit('select', propData.id)"
+    >
+      {{ buttonLabel }}
+    </Button>
   </Pill>
 </template>
 
@@ -66,6 +82,7 @@ import { useMainStore } from "@/store/main";
 
 // components
 import Pill from "@/components/UI/Pill.vue";
+import Button from "@/components/UI/Button.vue";
 
 // types
 import { Mechanic } from "@/types";

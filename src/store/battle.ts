@@ -69,6 +69,7 @@ export const useBattleStore = defineStore("battle", () => {
 
     return calcPoint ?? data.value.calc_points[data.value.calc_points.length - 1];
   });
+  const energy = computed(() => state.value.battleData.energy);
 
   // setter/getter
   const set = (data) => {
@@ -465,6 +466,7 @@ export const useBattleStore = defineStore("battle", () => {
     challengeScore,
     bonusesUsed,
     currentCalcPoint,
+    energy,
     set,
     expand,
     pauseBattle,

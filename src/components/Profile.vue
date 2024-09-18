@@ -5,11 +5,15 @@
       <div class="profile-meta flex flex-col flex-1">
         <div class="profile-start flex items-center justify-between">
           <span class="text-xl font-bold fira-condensed-bold">{{ userName || "Unknown Tiger" }}</span>
-          <div class="energy flex gap-1 items-center">
+
+          <!-- energy -->
+          <div ref="energyRef" class="energy flex gap-1 items-center">
             <img class="h-4" :src="getAsset('energy')" />
             <span class="text-md exo-bold" :class="{ 'text-red-600': battles.data['energy'] === 0 }">{{ battles.data["energy"] }}</span>
           </div>
         </div>
+
+        <!-- bolts -->
         <div class="money flex gap-2 items-center">
           <div class="bolts flex gap-1 items-center">
             <img class="h-4" :src="getAsset('bolt')" />
@@ -52,6 +56,7 @@
 </template>
 
 <script setup lang="ts">
+import { watch, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { userName } from "@/api/telegram";
 import { getAsset, showFormattedNumber } from "@/utils";
@@ -68,4 +73,19 @@ const localeStore = useLocaleStore();
 
 const { profile: data, battles } = storeToRefs(dataStore);
 const { profile: locale } = storeToRefs(localeStore);
+const { energy } = storeToRefs(dataStore.battles);
+
+const energyRef = ref();
+
+watch(energy, (val, oldVal) => {
+  if (val !== oldVal) {
+    animateEnergy();
+  }
+});
+
+const animateEnergy = () => {
+  if (energyRef.value) {
+    energyRef.value.animate([{ transform: "scale(1.8)" }, { transform: "scale(1)" }], 500);
+  }
+};
 </script>

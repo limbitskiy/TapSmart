@@ -251,6 +251,8 @@ tg?.ready();
 
 tg?.disableVerticalSwipes();
 
+tg?.expand();
+
 console.log("tg:", tg);
 
 Promise.allSettled([
