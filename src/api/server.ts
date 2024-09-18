@@ -11,21 +11,13 @@ export const makeRequest = async ({ apiUrl, payload }: RequestParams) => {
 
   const deltaTime = currentTime - lastCall;
 
-  // console.log(`time past last request: `, deltaTime);
-
   if (deltaTime > 90000) {
     const pingResult = await axios.post(`${defaultApiUrl}/main`, { key: "ping", data: payload.data, service: payload.service });
     const timeout = pingResult.data.data.requestTimeout;
 
-    // console.log(`timeout: `, timeout);
-
-    // console.time(`timeout`);
-
     if (timeout) {
       await waitFor(timeout);
     }
-
-    // console.timeEnd(`timeout`);
   }
 
   lastCall = Date.now();
