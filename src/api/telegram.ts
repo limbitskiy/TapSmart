@@ -1,4 +1,7 @@
 import { computed } from "vue";
+import constants from "@/constants";
+
+const { botName, appName } = constants;
 
 export const tg = window.Telegram?.WebApp;
 
@@ -25,7 +28,7 @@ export const userId = computed(() => tg?.initDataUnsafe?.user?.id);
 export const userName = computed(() => tg?.initDataUnsafe?.user?.username);
 
 export const generateShareLink = () => {
-  return `https://t.me/${import.meta.env.VITE_BOT_NAME}/${import.meta.env.VITE_APP_NAME}?startapp=fr${userId.value}`;
+  return `https://t.me/${botName}/${appName}?startapp=fr${userId.value}`;
 };
 
 export const inviteFriend = (inviteMessage?: string) => {

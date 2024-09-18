@@ -222,6 +222,7 @@
 import { ref } from "vue";
 import { waitFor } from "@/utils";
 import { tg } from "@/api/telegram";
+import constants from "@/constants";
 
 // composables
 import preloadAssets from "@/composables/preloadAssets";
@@ -229,6 +230,8 @@ import preloadAssets from "@/composables/preloadAssets";
 // stores
 import { useMainStore } from "@/store/main";
 import { useSoundStore } from "@/store/sound";
+
+const { botName } = constants;
 
 const mainStore = useMainStore();
 const soundStore = useSoundStore();
@@ -252,7 +255,7 @@ console.log("tg:", tg);
 
 Promise.allSettled([
   initialFetch({
-    botName: import.meta.env.VITE_BOT_NAME,
+    botName,
     tg: {
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       rawInitData: tg.initData,

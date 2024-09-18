@@ -1,8 +1,9 @@
 import axios from "axios";
 import { RequestParams } from "@/types";
 import { waitFor } from "@/utils";
+import constants from "@/constants";
 
-const defaultApiUrl = import.meta.env.VITE_API_URL;
+const { apiUrl: defaultApiUrl } = constants;
 
 let lastCall = Date.now();
 
