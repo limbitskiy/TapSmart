@@ -47,7 +47,9 @@ export const useBattleStore = defineStore("battle", () => {
   const answers = ref<Answer[]>([]);
   const challengeScore = ref(0);
   const bonusesUsed = ref({});
+
   let battleStartTime = null;
+  let challengeStarted = ref(false);
 
   let currentBreakpointInterval = {
     fn: <BreakpointInterval | null>null,
@@ -62,6 +64,8 @@ export const useBattleStore = defineStore("battle", () => {
 
   // getters
   const data = computed(() => state.value.battleData);
+  // const currentBattleMode = computed(() => state.value.battleData.battle_mode);
+  // const currentBattleType = computed(() => state.value.battleData.battle_type);
   const currentTask = computed(() => state.value.battleData.data?.[taskIndex.value]);
   const currentMechanic = computed(() => state.value.battleData.mechanics?.[getMechanicName(state.value.battleData.battle_type)]);
   const currentCalcPoint = computed(() => {
@@ -320,7 +324,12 @@ export const useBattleStore = defineStore("battle", () => {
     lastTaskId.value = currentDataItem!.id;
 
     // store answer
-    const msec = Date.now() - battleStartTime;
+    let msec;
+
+    if (battleStartTime) {
+      msec = Date.now() - +battleStartTime;
+    }
+
     storeAnswer(answerString, msec);
 
     if (isCorrect) {
@@ -450,12 +459,14 @@ export const useBattleStore = defineStore("battle", () => {
     resetBattleStats();
     battleStartTime = Date.now();
     startBreakpoint("battle");
+    challengeStarted.value = true;
   };
 
   const stopChallenge = () => {
     resetBattleStats();
     battleStartTime = null;
     stopBreakpoint();
+    challengeStarted.value = false;
   };
 
   return {
