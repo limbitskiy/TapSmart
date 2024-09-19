@@ -34,7 +34,7 @@
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { onMounted } from "vue";
+import { onMounted, onErrorCaptured } from "vue";
 import { RouterView } from "vue-router";
 import { UseScreenSafeArea } from "@vueuse/components";
 

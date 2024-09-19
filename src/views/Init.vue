@@ -241,11 +241,11 @@ const { addSound, playSound } = soundStore;
 const loading = ref(true);
 const errors = ref([]);
 
-const onClick = () => {
-  if (!loading.value && !errors.value.length) {
-    startApp();
-  }
-};
+// const onClick = () => {
+//   if (!loading.value && !errors.value.length) {
+//     startApp();
+//   }
+// };
 
 tg?.ready();
 

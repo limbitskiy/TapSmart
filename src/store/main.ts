@@ -100,16 +100,16 @@ export const useMainStore = defineStore("main", () => {
     notification.value.title = title;
     notification.value.subtitle = subtitle;
     notification.value.buttons = buttons;
-    notification.value.isShown = true;
+    // notification.value.isShown = true;
 
     // console.log(`notification: `, notification.value);
 
-    setTimeout(() => {
-      notification.value.title = null;
-      notification.value.subtitle = null;
-      notification.value.buttons = {};
-      notification.value.isShown = false;
-    }, timeout);
+    // setTimeout(() => {
+    //   notification.value.title = null;
+    //   notification.value.subtitle = null;
+    //   notification.value.buttons = {};
+    //   notification.value.isShown = false;
+    // }, timeout);
   };
 
   const hideNotification = () => {
@@ -183,8 +183,8 @@ export const useMainStore = defineStore("main", () => {
     }
   };
 
-  const initialFetch = async (data: {}) => {
-    return await useFetch({ data });
+  const initialFetch = (data: {}) => {
+    return useFetch({ data });
   };
 
   const fetchFriendsPage = async () => {
@@ -219,35 +219,39 @@ export const useMainStore = defineStore("main", () => {
       // console.log(requestQueue.value.length);
 
       requestQueue.value.push(async () => {
-        const result = await makeRequest({
-          apiUrl: state.value.apiUrl,
-          payload: {
-            key,
-            data: {
-              ...data,
-              answers: battleStore.answers,
-              lastTaskId: battleStore.lastTaskId,
-              routeData: state.value.routeData,
+        try {
+          const result = await makeRequest({
+            apiUrl: state.value.apiUrl,
+            payload: {
+              key,
+              data: {
+                ...data,
+                answers: battleStore.answers,
+                lastTaskId: battleStore.lastTaskId,
+                routeData: state.value.routeData,
+              },
+              service: state.value.service,
             },
-            service: state.value.service,
-          },
-        });
+          });
 
-        parseResponse(result.data);
+          parseResponse(result.data);
 
-        // clean route data
-        if (state.value.routeData) {
-          delete state.value.routeData;
+          // clean route data
+          if (state.value.routeData) {
+            delete state.value.routeData;
+          }
+
+          res(true);
+        } catch (error) {
+          rej(error);
         }
 
-        res(true);
+        // const redirectLocation = result.data.redirect;
 
-        const redirectLocation = result.data.redirect;
-
-        if (redirectLocation) {
-          console.log(`redirecting to ${redirectLocation}`);
-          router.push(redirectLocation);
-        }
+        // if (redirectLocation) {
+        //   console.log(`redirecting to ${redirectLocation}`);
+        //   router.push(redirectLocation);
+        // }
       });
     });
   };
