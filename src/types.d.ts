@@ -86,6 +86,7 @@ export interface NotificationProps {
   };
   timeout?: number | undefined;
   isShown: boolean;
+  fn: ReturnType<typeof setTimeout> | null;
 }
 
 export interface TooltipProps {

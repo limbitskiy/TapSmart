@@ -22,6 +22,7 @@ export const useMainStore = defineStore("main", () => {
       right: {},
     },
     isShown: false,
+    fn: null,
   });
 
   const tooltip = ref<TooltipProps>({
@@ -95,7 +96,14 @@ export const useMainStore = defineStore("main", () => {
   };
 
   const showNotification = ({ title, subtitle, buttons, timeout }: NotificationProps) => {
-    if (notification.value.isShown) return;
+    if (notification.value.isShown) {
+      hideNotification();
+
+      setTimeout(() => {
+        showNotification({ title, subtitle, buttons, timeout });
+      }, 500);
+      return;
+    }
 
     notification.value.title = title;
     notification.value.subtitle = subtitle;
@@ -104,11 +112,8 @@ export const useMainStore = defineStore("main", () => {
 
     // console.log(`notification: `, notification.value);
 
-    setTimeout(() => {
-      notification.value.title = null;
-      notification.value.subtitle = null;
-      notification.value.buttons = {};
-      notification.value.isShown = false;
+    notification.value.fn = setTimeout(() => {
+      hideNotification();
     }, timeout);
   };
 
@@ -117,6 +122,7 @@ export const useMainStore = defineStore("main", () => {
     notification.value.subtitle = null;
     notification.value.buttons = {};
     notification.value.isShown = false;
+    notification.value.fn = null;
   };
 
   const showTooltip = ({ element, text }: { element: HTMLElement; text: string }) => {
