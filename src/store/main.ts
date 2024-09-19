@@ -99,10 +99,10 @@ export const useMainStore = defineStore("main", () => {
 
   const showNotification = ({ title, subtitle, buttons, timeout }: NotificationProps) => {
     if (notification.value.isShown) {
-      // hideNotification();
+      hideNotification();
 
       setTimeout(() => {
-        // showNotification({ title, subtitle, buttons, timeout });
+        showNotification({ title, subtitle, buttons, timeout });
       }, 500);
       return;
     }
@@ -110,12 +110,12 @@ export const useMainStore = defineStore("main", () => {
     notification.value.title = title;
     notification.value.subtitle = subtitle;
     notification.value.buttons = buttons;
-    // notification.value.isShown = true;
+    notification.value.isShown = true;
 
     // console.log(`notification: `, notification.value);
 
     notification.value.fn = setTimeout(() => {
-      // hideNotification();
+      hideNotification();
     }, timeout);
   };
 
