@@ -20,7 +20,10 @@
         </div>
       </Button>
       <ChallengeButton class="text-base" @challenge="openBoosterModal" />
-      <VolumeControl />
+      <div class="relax-topbar flex items-center justify-end w-full absolute -bottom-[35px] px-4">
+        <!-- <TaskCountdown /> -->
+        <VolumeControl />
+      </div>
     </div>
 
     <RouterView v-slot="{ Component }" type="relax" @answer="onAnswer">
@@ -76,6 +79,7 @@ import Button from "@/components/UI/Button.vue";
 import Modal from "@/components/Modal.vue";
 import ChangeMechanic from "@/components/modals/ChangeMechanic.vue";
 import VolumeControl from "@/components/VolumeControl.vue";
+import TaskCountdown from "@/components/TaskCountdown.vue";
 import NoEnergy from "@/components/modals/NoEnergy.vue";
 import ChallengeButton from "@/components/UI/ChallengeButton.vue";
 import BoosterSelect from "@/components/modals/BoosterSelect.vue";

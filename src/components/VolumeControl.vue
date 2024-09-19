@@ -1,5 +1,5 @@
 <template>
-  <div class="volume-control flex justify-end px-4 py-1 absolute -bottom-9 right-0 w-[63px]" @click="onChange">
+  <div class="volume-control" @click="onChange">
     <div class="no-sound">
       <svg v-if="validSettings[currentSetting] === 'off'" width="31" height="21" viewBox="0 0 31 21" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path

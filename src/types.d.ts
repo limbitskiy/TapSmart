@@ -17,6 +17,7 @@ export interface ResponseData {
 export interface ResponseObject {
   data: ResponseData;
   entryPoint?: string | null;
+  externalUrl?: string | null;
   service: {};
   apiUrl?: string;
 }
