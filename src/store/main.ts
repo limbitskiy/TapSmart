@@ -243,7 +243,7 @@ export const useMainStore = defineStore("main", () => {
 
           res(true);
         } catch (error) {
-          rej(error);
+          rej(error?.response?.data?.error?.message || error?.message || error);
         }
 
         // const redirectLocation = result.data.redirect;
