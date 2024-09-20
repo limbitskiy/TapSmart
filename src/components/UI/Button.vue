@@ -2,6 +2,7 @@
   <button
     :class="dark ? 'bg-black' : 'bg-[var(--accent-color)] text-black'"
     class="rounded-xl font-bold fira-bold py-3 px-8 text-xl leading-6"
+    :disabled="data?.disabled"
     @touchstart="btnTouchstart"
     @touchend="btnTouchend"
     @click="onClick"
@@ -26,7 +27,7 @@ const { redirectTo, callApi, setRouteData, showModal } = mainStore;
 
 const props = defineProps<{
   dark?: boolean;
-  data?: { route?: string; api?: string; data?: {}; label: string; isClose: boolean; showModal: { title: string; subtitle: string; buttons: {} } };
+  data?: { disabled: boolean; route?: string; api?: string; data?: {}; label: string; isClose: boolean; showModal: { title: string; subtitle: string; buttons: {} } };
   activeColor?: string;
   defaultAction?: () => void;
 }>();

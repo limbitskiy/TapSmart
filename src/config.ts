@@ -30,6 +30,7 @@ export const images = {
   invite_friends: "/invite_friends.png",
   repetition: "/repetition.png",
   stories: "/stories.png",
+  "1st_place": "/1st_place.png",
 };
 
 // assets folder

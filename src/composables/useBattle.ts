@@ -67,7 +67,9 @@ export const useBattle = (type: "relax" | "challenge", el?: Ref<HTMLElement>) =>
       el.value.classList.add("animate__headShake");
 
       setTimeout(() => {
-        el.value.classList.remove("animate__headShake");
+        if (el.value) {
+          el.value.classList.remove("animate__headShake");
+        }
         res(true);
       }, 500);
     });

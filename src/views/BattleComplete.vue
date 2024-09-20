@@ -9,7 +9,19 @@
 
       <div class="scrollable-cnt flex-1 overflow-y-auto mt-2">
         <div class="battle-stats flex flex-col gap-1 pt-4">
-          <Pill class="py-2" color="light">
+          <!-- 1st place -->
+          <Pill v-if="calculatePlayerPlace[0] == 1" class="py-2" color="light">
+            <div class="content flex gap-2 items-center justify-between">
+              <span class="text-xl fira-bold text-gray-300">{{ locale?.["battle_complete_place"] || "Place" }}</span>
+              <div class="flex gap-2 items-center">
+                <!-- <span class="text-xl exo-black">{{ calculatePlayerPlace }}</span> -->
+                <img class="h-10" :src="getAsset('1st_place')" />
+              </div>
+            </div>
+          </Pill>
+
+          <!-- other places-->
+          <Pill v-else class="py-2" color="light">
             <div class="content flex gap-2 items-center justify-between">
               <span class="text-xl fira-bold text-gray-300">{{ locale?.["battle_complete_place"] || "Place" }}</span>
               <div class="flex gap-2 items-center">

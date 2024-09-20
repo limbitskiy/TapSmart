@@ -219,6 +219,11 @@ export const useMainStore = defineStore("main", () => {
     return;
   };
 
+  const fetchTasksList = async () => {
+    await useFetch({ key: "tasks_list" });
+    return;
+  };
+
   const setLanguages = async (data: {}) => {
     return await useFetch({ key: "profile_set", data });
   };
@@ -300,6 +305,7 @@ export const useMainStore = defineStore("main", () => {
     fetchRelaxPageData,
     fetchChallengePageData,
     fetchProfilePageData,
+    fetchTasksList,
     setLanguages,
     initialFetch,
     useFetch,

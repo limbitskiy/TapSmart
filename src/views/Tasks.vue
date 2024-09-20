@@ -87,6 +87,10 @@ const localeStore = useLocaleStore();
 
 // const { tasks: data } = storeToRefs(dataStore);
 const { tasks: locale } = storeToRefs(localeStore);
+const { fetchTasksList } = mainStore;
+
+await fetchTasksList();
+
 const activeFilters = ref({});
 const selectedTask = ref({});
 const isTaskModal = ref(false);
@@ -173,6 +177,7 @@ const data = {
               },
             },
             bottom: {
+              disabled: true,
               hidden: false,
               label: "Bottom button",
               route: "",

@@ -38,7 +38,7 @@
     <!-- battle complete animation -->
     <Transition name="fade">
       <div v-if="isBattleCompleteAnimation" class="on-battle-complete-backdrop fixed inset-0 bg-black bg-opacity-80 z-20 grid place-items-center">
-        <BattleCompleteAnimation />
+        <BattleCompleteAnimation :place="data" />
       </div>
     </Transition>
   </div>
@@ -149,7 +149,7 @@ const onStart = async () => {
   }
 };
 
-const onEnd = () => {
+const onEnd = async () => {
   isBattle.value = false;
   stopChallenge();
   callApi({ api: "battle_breakpoint", data: { final: 1 } });

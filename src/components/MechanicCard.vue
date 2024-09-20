@@ -3,6 +3,7 @@
     class="flex flex-col gap-2 !p-2 justify-between outline-1 relative"
     :class="{ 'outline outline-2 outline-[var(--accent-color)]': data.battle_type == propData.id }"
     color="light"
+    @click="() => emit('select', propData.id)"
   >
     <div class="pill-content">
       <div class="pill-toolbar flex items-center justify-between min-h-[20px]">
@@ -33,12 +34,7 @@
       {{ locale?.["button_active"] || "Active" }}
     </Button>
     <!-- trial message -->
-    <Button
-      v-else-if="propData.nuts"
-      class="!px-2 w-full bg-[var(--green-color)] text-white fira-condensed-bold mt-2 !py-1"
-      activeColor="#74d77d"
-      @click="() => emit('select', propData.id)"
-    >
+    <Button v-else-if="propData.nuts" class="!px-2 w-full bg-[var(--green-color)] text-white fira-condensed-bold mt-2 !py-1" activeColor="#74d77d">
       <div class="btn-content flex items-center justify-center gap-3 !text-lg">
         {{ locale?.["button_trial_message"] }}
         <div class="bolts flex items-center gap-1">
@@ -52,7 +48,6 @@
       v-else-if="propData.disabled"
       class="!px-2 w-full bg-transparent border border-gray-500 text-gray-200 fira-condensed-bold !py-1 !text-lg"
       :class="{ '': propData.disabled }"
-      @click="() => emit('select', propData.id)"
     >
       {{ buttonLabel }}
     </Button>
@@ -63,7 +58,6 @@
       class="!px-2 w-full bg-[var(--green-color)] text-white fira-condensed-bold !py-1 !text-lg"
       :class="{ 'bg-transparent border border-gray-500 text-gray-200': propData.disabled }"
       activeColor="#74d77d"
-      @click="() => emit('select', propData.id)"
     >
       {{ buttonLabel }}
     </Button>
