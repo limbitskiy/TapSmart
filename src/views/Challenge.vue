@@ -29,7 +29,7 @@
     </Transition>
 
     <!-- waiting modal -->
-    <Teleport to="body">
+    <Teleport to="#modals">
       <Modal v-model:visible="isWaiting" sticky>
         <Waiting @countdownComplete="onStart" />
       </Modal>

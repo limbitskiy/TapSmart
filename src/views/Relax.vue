@@ -20,8 +20,8 @@
         </div>
       </Button>
       <ChallengeButton class="text-base" @challenge="openBoosterModal" />
-      <div class="relax-topbar flex items-center justify-end w-full absolute -bottom-[35px] px-4">
-        <!-- <TaskCountdown /> -->
+      <div class="relax-topbar flex items-center justify-between w-full absolute -bottom-[35px] px-4">
+        <TaskCountdown />
         <VolumeControl />
       </div>
     </div>
@@ -38,22 +38,22 @@
     </RouterView>
 
     <!-- mechanic change modal -->
-    <Teleport to="body">
-      <Modal v-model:visible="isChangeMechModalVisible">
+    <Teleport to="#modals">
+      <Modal id="mechanic-change-modal" v-model:visible="isChangeMechModalVisible">
         <ChangeMechanic @close="() => closeModal('changeMechanic')" />
       </Modal>
     </Teleport>
 
     <!-- no energy modal -->
-    <Teleport to="body">
-      <Modal v-model:visible="isNoEnergyVisible" sticky>
+    <Teleport to="#modals">
+      <Modal id="no-energy-modal" v-model:visible="isNoEnergyVisible" sticky>
         <NoEnergy @challenge="openBoosterModal" @close="() => closeModal('noEnergy')" />
       </Modal>
     </Teleport>
 
     <!-- select booster modal -->
-    <Teleport to="body">
-      <Modal v-model:visible="isBoostersModalVisible">
+    <Teleport to="#modals">
+      <Modal id="select-booster-modal" v-model:visible="isBoostersModalVisible">
         <BoosterSelect @startBattle="onStartChallenge" />
       </Modal>
     </Teleport>

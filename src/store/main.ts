@@ -34,6 +34,7 @@ export const useMainStore = defineStore("main", () => {
   const modal = ref<ModalProps>({
     title: null,
     subtitle: null,
+    image: null,
     buttons: {},
     isShown: false,
   });
@@ -99,10 +100,10 @@ export const useMainStore = defineStore("main", () => {
 
   const showNotification = ({ title, subtitle, buttons, timeout }: NotificationProps) => {
     if (notification.value.isShown) {
-      hideNotification();
+      // hideNotification();
 
       setTimeout(() => {
-        showNotification({ title, subtitle, buttons, timeout });
+        // showNotification({ title, subtitle, buttons, timeout });
       }, 500);
       return;
     }
@@ -110,12 +111,12 @@ export const useMainStore = defineStore("main", () => {
     notification.value.title = title;
     notification.value.subtitle = subtitle;
     notification.value.buttons = buttons;
-    notification.value.isShown = true;
+    // notification.value.isShown = true;
 
     // console.log(`notification: `, notification.value);
 
     notification.value.fn = setTimeout(() => {
-      hideNotification();
+      // hideNotification();
     }, timeout);
   };
 
@@ -147,11 +148,12 @@ export const useMainStore = defineStore("main", () => {
     tooltip.value.isShown = false;
   };
 
-  const showModal = ({ title, subtitle, buttons }: ModalProps) => {
+  const showModal = ({ title, subtitle, image, buttons }: ModalProps) => {
     if (modal.value.isShown) return;
 
     modal.value.title = title;
     modal.value.subtitle = subtitle;
+    modal.value.image = image;
     modal.value.buttons = buttons;
     modal.value.isShown = true;
 
@@ -161,6 +163,7 @@ export const useMainStore = defineStore("main", () => {
   const hideModal = () => {
     modal.value.title = null;
     modal.value.subtitle = null;
+    modal.value.image = null;
     modal.value.buttons = {};
     modal.value.isShown = false;
   };
@@ -309,5 +312,6 @@ export const useMainStore = defineStore("main", () => {
     redirectTo,
     onVibrate,
     setRouteData,
+    showModal,
   };
 });

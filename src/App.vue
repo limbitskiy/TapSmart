@@ -1,42 +1,40 @@
 <template>
-  <UseScreenSafeArea top right bottom left>
-    <div class="main-page flex w-full min-h-[100dvh] relative">
-      <RouterView v-slot="{ Component, route }">
-        <template v-if="Component">
-          <Transition :name="route.meta.transition || 'fade'" mode="out-in">
-            <Suspense>
-              <component :is="Component" />
-              <template #fallback><Loader /></template>
-            </Suspense>
-          </Transition>
-        </template>
-      </RouterView>
-
-      <Notification />
-
-      <!-- tooltip -->
-      <Teleport to="body">
-        <Transition name="tooltip" appear>
-          <Tooltip v-if="tooltip.isShown" />
+  <div class="main-page flex w-full min-h-[100dvh] relative" :style="{ 'margin-left': left, 'margin-right': right, 'margin-top': top, 'margin-bottom': bottom }">
+    <RouterView v-slot="{ Component, route }">
+      <template v-if="Component">
+        <Transition :name="route.meta.transition || 'fade'" mode="out-in">
+          <Suspense>
+            <component :is="Component" />
+            <template #fallback><Loader /></template>
+          </Suspense>
         </Transition>
-      </Teleport>
+      </template>
+    </RouterView>
 
-      <!-- backend-controlled modal -->
-      <Teleport to="body">
-        <Modal v-model:visible="modal.isShown" sticky>
-          <BackendModal />
-        </Modal>
-      </Teleport>
-    </div>
-    <!-- <ProgressBar /> -->
-  </UseScreenSafeArea>
+    <Notification />
+
+    <!-- tooltip -->
+    <Teleport to="#tooltip">
+      <Transition name="tooltip" appear>
+        <Tooltip v-if="tooltip.isShown" />
+      </Transition>
+    </Teleport>
+
+    <!-- backend-controlled modal -->
+    <Teleport to="#backend-modal">
+      <Modal id="backend-modal" v-model:visible="modal.isShown" sticky>
+        <BackendModal />
+      </Modal>
+    </Teleport>
+  </div>
+  <!-- <ProgressBar /> -->
 </template>
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { onMounted, onErrorCaptured } from "vue";
+import { onMounted } from "vue";
 import { RouterView } from "vue-router";
-import { UseScreenSafeArea } from "@vueuse/components";
+import { useScreenSafeArea } from "@vueuse/core";
 
 // store
 import { useMainStore } from "@/store/main";
@@ -49,6 +47,8 @@ import Modal from "@/components/Modal.vue";
 import Loader from "@/components/UI/Loader.vue";
 import BackendModal from "@/components/UI/BackendModal.vue";
 import ProgressBar from "./components/ProgressBar.vue";
+
+const { top, right, bottom, left } = useScreenSafeArea();
 
 const mainStore = useMainStore();
 const dataStore = useDataStore();

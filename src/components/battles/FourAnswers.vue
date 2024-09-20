@@ -6,7 +6,7 @@
       </div>
     </div>
 
-    <Teleport to="body">
+    <Teleport to="#modals">
       <div v-for="bonus in bonuses" :key="bonus.id" class="bonus bonus-animate z-20 flex gap-1 items-center absolute" :style="{ left: bonus.x + 'px', top: bonus.y + 'px' }">
         <img class="h-4" :src="getAsset('bolt')" />
         <span class="exo-bold">+2</span>

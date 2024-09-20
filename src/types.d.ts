@@ -99,7 +99,8 @@ export interface TooltipProps {
 export interface ModalProps {
   title: string | null;
   subtitle: string | null;
-  buttons: {};
+  image?: string | null;
+  buttons?: {};
   isShown: boolean;
 }
 

@@ -10,7 +10,7 @@
       </div>
     </div>
   </Pill>
-  <Teleport to="body">
+  <Teleport to="#modals">
     <Modal v-model:visible="isModalVisible">
       <slot name="modal" :closeModal="closeModal"></slot>
     </Modal>

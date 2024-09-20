@@ -5,13 +5,29 @@
       <div class="page-subtitle" v-html="locale?.['subtitle'] || 'Our new section! Complete tasks and get something! Maybe bolts, maybe nuts, maybe fame - who knows?'"></div>
     </div>
 
-    <BackgroundPill v-for="section in data.sections" :key="section.title" class="task-section py-8 mb-8 overflow-y-hidden flex-1">
+    <BackgroundPill v-for="section in data.sections" :key="section.id" class="task-section py-8 mb-8 overflow-y-hidden flex-1">
       <div class="pill-header flex items-center justify-between">
         <span class="bg-pill-title">{{ section.title }}</span>
       </div>
 
+      <div class="filters flex gap-2 mt-2">
+        <Button
+          v-for="filter in section.filters"
+          class="!py-1 !px-3 !text-base"
+          :class="activeFilters[section.id]?.includes(filter.key) ? '' : 'bg-gray-500 text-white'"
+          @click="() => onFilter(section.id, filter)"
+          >{{ filter.label }}</Button
+        >
+      </div>
+
       <div class="section-tasks flex flex-col gap-2 pt-4">
-        <Pill v-for="task in section.tasks" :key="task.title" class="py-3" color="light">
+        <Pill
+          v-for="task in section.tasks.filter((task) => task.filterKeys.includes(activeFilters[section.id]))"
+          :key="task.id"
+          class="py-3"
+          color="light"
+          @click="() => onTaskClick(task)"
+        >
           <div class="content flex gap-2 items-center justify-between">
             <div class="start flex gap-4 items-center">
               <div class="flex gap-2 items-center p-2">
@@ -32,6 +48,12 @@
         </Pill>
       </div>
     </BackgroundPill>
+
+    <Teleport to="#modals">
+      <Modal id="task-modal" v-model:visible="isTaskModal">
+        <TaskModal :data="selectedTask" />
+      </Modal>
+    </Teleport>
   </div>
 </template>
 
@@ -48,32 +70,73 @@ import { useLocaleStore } from "@/store/locale";
 
 // components
 import Button from "@/components/UI/Button.vue";
-import IconPill from "@/components/UI/IconPill.vue";
 import Pill from "@/components/UI/Pill.vue";
 import BackgroundPill from "@/components/UI/BackgroundPill.vue";
+import TaskModal from "@/components/modals/TaskModal.vue";
+import Modal from "@/components/Modal.vue";
+
+interface Filter {
+  key: string;
+  label: string;
+  selected: boolean;
+}
 
 const mainStore = useMainStore();
 const dataStore = useDataStore();
 const localeStore = useLocaleStore();
 
 // const { tasks: data } = storeToRefs(dataStore);
-// const { tasks: locale } = storeToRefs(localeStore);
+const { tasks: locale } = storeToRefs(localeStore);
+const activeFilters = ref({});
+const selectedTask = ref({});
+const isTaskModal = ref(false);
+
+const onFilter = (sectionId: number, filter: Filter) => {
+  if (activeFilters.value[sectionId] === filter.key) {
+    activeFilters.value[sectionId] = null;
+  } else {
+    activeFilters.value[sectionId] = filter.key;
+  }
+};
+
+const onTaskClick = (task) => {
+  console.log(task);
+
+  selectedTask.value = task;
+  isTaskModal.value = true;
+};
 
 const data = {
   sections: [
     {
+      id: 0,
       title: "First section",
       subtitle: "Complete task - get more points and bolts!",
-      filter: ["status", "nuts"],
+      filters: [
+        {
+          key: "new",
+          label: "Новые",
+          selected: true,
+        },
+        {
+          key: "todo",
+          label: "Сделать",
+          selected: false,
+        },
+      ],
       tasks: [
         {
-          title: "First task",
-          icon: "task1Icon",
+          id: 10,
+          title: "Invite 3 friends",
+          desc: "Invite 3 friends into the game and get bonuses!",
+          icon: "invite_friends",
+          image: "invite_friends",
           bolts: 4500,
           nuts: 50,
           status: "new",
           type: 1,
           data: {},
+          filterKeys: ["new"],
           buttons: {
             top: {
               hidden: false,
@@ -83,6 +146,31 @@ const data = {
               api: "",
               data: {},
               externalUrl: "",
+              showModal: {
+                title: "Hello",
+                subtitle: "This is a test modal",
+                image: "bolt",
+                buttons: {
+                  left: {
+                    hidden: false,
+                    label: "Top button",
+                    route: "",
+                    routeData: {},
+                    api: "",
+                    data: {},
+                    externalUrl: "",
+                  },
+                  right: {
+                    hidden: false,
+                    label: "Bottom button",
+                    route: "",
+                    routeData: {},
+                    api: "",
+                    data: {},
+                    externalUrl: "",
+                  },
+                },
+              },
             },
             bottom: {
               hidden: false,
@@ -96,13 +184,15 @@ const data = {
           },
         },
         {
-          title: "Second task",
-          icon: "task1Icon",
-          bolts: 10000,
-          nuts: 50,
+          id: 11,
+          title: "Win 3 challenges",
+          icon: "congrats",
+          bolts: 6500,
+          nuts: 150,
           status: "new",
           type: 1,
           data: {},
+          filterKeys: ["todo"],
           buttons: {
             top: {
               hidden: false,
@@ -127,11 +217,24 @@ const data = {
       ],
     },
     {
+      id: 2,
       title: "Second section",
       subtitle: "Complete task - get more points and bolts!",
-      filter: ["status", "nuts"],
+      filters: [
+        {
+          key: "big",
+          label: "Сложные",
+          selected: true,
+        },
+        {
+          key: "small",
+          label: "Легкие",
+          selected: false,
+        },
+      ],
       tasks: [
         {
+          id: 20,
           title: "First task",
           icon: "task1Icon",
           bolts: 4500,
@@ -139,6 +242,7 @@ const data = {
           status: "new",
           type: 1,
           data: {},
+          filterKeys: ["small"],
           buttons: {
             top: {
               hidden: false,
@@ -161,6 +265,7 @@ const data = {
           },
         },
         {
+          id: 22,
           title: "Second task",
           icon: "task1Icon",
           bolts: 10000,
@@ -168,6 +273,7 @@ const data = {
           status: "new",
           type: 1,
           data: {},
+          filterKeys: ["small", "big"],
           buttons: {
             top: {
               hidden: false,
@@ -193,4 +299,14 @@ const data = {
     },
   ],
 };
+
+data.sections.forEach((section) => {
+  section.filters.forEach((filter) => {
+    if (filter.selected) {
+      activeFilters.value[section.id] = filter.key;
+    }
+  });
+});
+
+console.log(activeFilters.value);
 </script>

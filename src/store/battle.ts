@@ -1,4 +1,4 @@
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, Ref } from "vue";
 import { defineStore } from "pinia";
 
 // common
@@ -55,7 +55,7 @@ export const useBattleStore = defineStore("battle", () => {
     fn: <BreakpointInterval | null>null,
     type: <string | null>null,
   };
-  let currentTaskTimeout: TaskTimer | null = null;
+  const currentTaskTimeout: Ref<TaskTimer | null> = ref(null);
   let taskTimeoutCounter: number | null = null;
 
   const state = ref({
@@ -166,7 +166,7 @@ export const useBattleStore = defineStore("battle", () => {
 
   // breakpoints/timers
   const startTaskTimeout = () => {
-    if (!currentMechanic.value?.timeout || currentTaskTimeout || taskTimeoutCounter === 0) return;
+    if (!currentMechanic.value?.timeout || currentTaskTimeout.value || taskTimeoutCounter === 0) return;
 
     const callback = () => {
       stopTaskTimeout();
@@ -177,15 +177,17 @@ export const useBattleStore = defineStore("battle", () => {
       });
     };
 
+    // console.log(`new timeout: ${currentMechanic.value.timeout}`);
+
     const taskTimeout = new TaskTimer(currentMechanic.value?.timeout, callback);
-    currentTaskTimeout = taskTimeout;
-    currentTaskTimeout.start();
+    currentTaskTimeout.value = taskTimeout;
+    currentTaskTimeout.value.start();
   };
 
   const stopTaskTimeout = () => {
-    if (currentTaskTimeout) {
-      currentTaskTimeout.stop();
-      currentTaskTimeout = null;
+    if (currentTaskTimeout.value) {
+      currentTaskTimeout.value.stop();
+      currentTaskTimeout.value = null;
 
       if (taskTimeoutCounter) {
         taskTimeoutCounter -= 1;
@@ -379,10 +381,10 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   // mechanic
-  const changeMechanic = (mechId: number) => {
-    stopTaskTimeout();
-    mainStore.callApi({ api: "battle_init", data: { battle_type: mechId } });
+  const changeMechanic = async (mechId: number) => {
+    await mainStore.callApi({ api: "battle_init", data: { battle_type: mechId } });
     resetBattleStats();
+    stopTaskTimeout();
     startTaskTimeout();
   };
 
@@ -478,6 +480,7 @@ export const useBattleStore = defineStore("battle", () => {
     bonusesUsed,
     currentCalcPoint,
     energy,
+    currentTaskTimeout,
     set,
     expand,
     pauseBattle,

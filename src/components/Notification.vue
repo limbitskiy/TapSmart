@@ -1,5 +1,5 @@
 <template>
-  <Teleport to="body">
+  <Teleport to="#modals">
     <Transition name="toast-slide">
       <div
         v-if="notification.isShown"

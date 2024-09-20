@@ -2,11 +2,16 @@
   <div class="modal relative">
     <div v-if="visible" id="modal-backdrop" class="modal-backdrop fixed inset-0 bg-black bg-opacity-50 z-40" @click="onBackdropClick"></div>
     <!-- <Transition name="toast-slide" appear> -->
-    <Button v-if="visible && !sticky" activeColor="#fcdcb0" class="close fixed top-4 right-4 z-50 !p-1" :class="{ animate__heartBeat: visible && !sticky }" @click="onCloseClick">
-      <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="36" height="36" rx="10" fill="#FEAC3E" />
+    <Button
+      v-if="visible && !sticky"
+      activeColor="#fcdcb0"
+      class="close fixed top-4 right-4 z-50 !p-2 !rounded-lg"
+      :class="{ animate__heartBeat: visible && !sticky }"
+      @click="onCloseClick"
+    >
+      <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
-          d="M27.241 24.7556L20.864 18.3787L27.241 12.0017C27.9294 11.3132 27.9294 10.2048 27.241 9.51636C26.5525 8.82788 25.4441 8.82788 24.7556 9.51636L18.3787 15.8933L12.0017 9.51636C11.3132 8.82788 10.2048 8.82788 9.51636 9.51636C8.82788 10.2048 8.82788 11.3132 9.51636 12.0017L15.8933 18.3787L9.51636 24.7556C8.82788 25.4441 8.82788 26.5525 9.51636 27.241C10.2048 27.9294 11.3132 27.9294 12.0017 27.241L18.3787 20.864L24.7556 27.241C25.4441 27.9294 26.5525 27.9294 27.241 27.241C27.9246 26.5525 27.9246 25.4392 27.241 24.7556Z"
+          d="M18.241 15.7556L11.864 9.37866L18.241 3.00171C18.9294 2.31323 18.9294 1.20483 18.241 0.516357C17.5525 -0.172119 16.4441 -0.172119 15.7556 0.516357L9.37866 6.89331L3.00171 0.516357C2.31323 -0.172119 1.20483 -0.172119 0.516357 0.516357C-0.172119 1.20483 -0.172119 2.31323 0.516357 3.00171L6.89331 9.37866L0.516357 15.7556C-0.172119 16.4441 -0.172119 17.5525 0.516357 18.241C1.20483 18.9294 2.31323 18.9294 3.00171 18.241L9.37866 11.864L15.7556 18.241C16.4441 18.9294 17.5525 18.9294 18.241 18.241C18.9246 17.5525 18.9246 16.4392 18.241 15.7556Z"
           fill="#222222"
         />
       </svg>
