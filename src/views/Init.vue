@@ -253,6 +253,8 @@ tg?.disableVerticalSwipes();
 
 tg?.expand();
 
+tg?.setHeaderColor("#333");
+
 console.log("tg:", tg);
 
 Promise.allSettled([
