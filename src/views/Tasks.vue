@@ -5,7 +5,7 @@
       <div class="page-subtitle" v-html="locale?.['subtitle'] || 'Our new section! Complete tasks and get something! Maybe bolts, maybe nuts, maybe fame - who knows?'"></div>
     </div>
 
-    <BackgroundPill v-for="section in data.sections" :key="section.id" class="task-section py-8 mb-8 overflow-y-hidden flex-1">
+    <BackgroundPill v-for="section in tasks.data" :key="section.id" class="task-section py-8 mb-8 overflow-y-hidden flex-1">
       <div class="pill-header flex items-center justify-between">
         <span class="bg-pill-title">{{ section.title }}</span>
       </div>
@@ -85,11 +85,13 @@ const mainStore = useMainStore();
 const dataStore = useDataStore();
 const localeStore = useLocaleStore();
 
-// const { tasks: data } = storeToRefs(dataStore);
+const { tasks } = storeToRefs(dataStore);
 const { tasks: locale } = storeToRefs(localeStore);
 const { fetchTasksList } = mainStore;
 
 await fetchTasksList();
+
+console.log(tasks.value.data);
 
 const activeFilters = ref({});
 const selectedTask = ref({});
@@ -110,202 +112,202 @@ const onTaskClick = (task) => {
   isTaskModal.value = true;
 };
 
-const data = {
-  sections: [
-    {
-      id: 0,
-      title: "First section",
-      subtitle: "Complete task - get more points and bolts!",
-      filters: [
-        {
-          key: "new",
-          label: "Новые",
-          selected: true,
-        },
-        {
-          key: "todo",
-          label: "Сделать",
-          selected: false,
-        },
-      ],
-      tasks: [
-        {
-          id: 10,
-          title: "Invite 3 friends",
-          desc: "Invite 3 friends into the game and get bonuses!",
-          icon: "invite_friends",
-          image: "invite_friends",
-          bolts: 4500,
-          nuts: 50,
-          status: "new",
-          type: 1,
-          data: {},
-          filterKeys: ["new"],
-          buttons: {
-            top: {
-              hidden: false,
-              label: "Top button",
-              route: "",
-              routeData: {},
-              api: "",
-              data: {},
-              externalUrl: "",
-              showModal: {
-                title: "Hello",
-                subtitle: "This is a test modal",
-                image: "bolt",
-                buttons: {
-                  left: {
-                    hidden: false,
-                    label: "Top button",
-                    route: "",
-                    routeData: {},
-                    api: "",
-                    data: {},
-                    externalUrl: "",
-                  },
-                  right: {
-                    hidden: false,
-                    label: "Bottom button",
-                    route: "",
-                    routeData: {},
-                    api: "",
-                    data: {},
-                    externalUrl: "",
-                  },
-                },
-              },
-            },
-            bottom: {
-              disabled: true,
-              hidden: false,
-              label: "Bottom button",
-              route: "",
-              routeData: {},
-              api: "",
-              data: {},
-              externalUrl: "",
-            },
-          },
-        },
-        {
-          id: 11,
-          title: "Win 3 challenges",
-          icon: "congrats",
-          bolts: 6500,
-          nuts: 150,
-          status: "new",
-          type: 1,
-          data: {},
-          filterKeys: ["todo"],
-          buttons: {
-            top: {
-              hidden: false,
-              label: "Top button",
-              route: "",
-              routeData: {},
-              api: "",
-              data: {},
-              externalUrl: "",
-            },
-            bottom: {
-              hidden: false,
-              label: "Bottom button",
-              route: "",
-              routeData: {},
-              api: "",
-              data: {},
-              externalUrl: "",
-            },
-          },
-        },
-      ],
-    },
-    {
-      id: 2,
-      title: "Second section",
-      subtitle: "Complete task - get more points and bolts!",
-      filters: [
-        {
-          key: "big",
-          label: "Сложные",
-          selected: true,
-        },
-        {
-          key: "small",
-          label: "Легкие",
-          selected: false,
-        },
-      ],
-      tasks: [
-        {
-          id: 20,
-          title: "First task",
-          icon: "task1Icon",
-          bolts: 4500,
-          nuts: 50,
-          status: "new",
-          type: 1,
-          data: {},
-          filterKeys: ["small"],
-          buttons: {
-            top: {
-              hidden: false,
-              label: "Top button",
-              route: "",
-              routeData: {},
-              api: "",
-              data: {},
-              externalUrl: "",
-            },
-            bottom: {
-              hidden: false,
-              label: "Bottom button",
-              route: "",
-              routeData: {},
-              api: "",
-              data: {},
-              externalUrl: "",
-            },
-          },
-        },
-        {
-          id: 22,
-          title: "Second task",
-          icon: "task1Icon",
-          bolts: 10000,
-          nuts: 50,
-          status: "new",
-          type: 1,
-          data: {},
-          filterKeys: ["small", "big"],
-          buttons: {
-            top: {
-              hidden: false,
-              label: "Top button",
-              route: "",
-              routeData: {},
-              api: "",
-              data: {},
-              externalUrl: "",
-            },
-            bottom: {
-              hidden: false,
-              label: "Bottom button",
-              route: "",
-              routeData: {},
-              api: "",
-              data: {},
-              externalUrl: "",
-            },
-          },
-        },
-      ],
-    },
-  ],
-};
+// const data = {
+//   sections: [
+//     {
+//       id: 0,
+//       title: "First section",
+//       subtitle: "Complete task - get more points and bolts!",
+//       filters: [
+//         {
+//           key: "new",
+//           label: "Новые",
+//           selected: true,
+//         },
+//         {
+//           key: "todo",
+//           label: "Сделать",
+//           selected: false,
+//         },
+//       ],
+//       tasks: [
+//         {
+//           id: 10,
+//           title: "Invite 3 friends",
+//           desc: "Invite 3 friends into the game and get bonuses!",
+//           icon: "invite_friends",
+//           image: "invite_friends",
+//           bolts: 4500,
+//           nuts: 50,
+//           status: "new",
+//           type: 1,
+//           data: {},
+//           filterKeys: ["new"],
+//           buttons: {
+//             top: {
+//               hidden: false,
+//               label: "Top button",
+//               route: "",
+//               routeData: {},
+//               api: "",
+//               data: {},
+//               externalUrl: "",
+//               showModal: {
+//                 title: "Hello",
+//                 subtitle: "This is a test modal",
+//                 image: "bolt",
+//                 buttons: {
+//                   left: {
+//                     hidden: false,
+//                     label: "Top button",
+//                     route: "",
+//                     routeData: {},
+//                     api: "",
+//                     data: {},
+//                     externalUrl: "",
+//                   },
+//                   right: {
+//                     hidden: false,
+//                     label: "Bottom button",
+//                     route: "",
+//                     routeData: {},
+//                     api: "",
+//                     data: {},
+//                     externalUrl: "",
+//                   },
+//                 },
+//               },
+//             },
+//             bottom: {
+//               disabled: true,
+//               hidden: false,
+//               label: "Bottom button",
+//               route: "",
+//               routeData: {},
+//               api: "",
+//               data: {},
+//               externalUrl: "",
+//             },
+//           },
+//         },
+//         {
+//           id: 11,
+//           title: "Win 3 challenges",
+//           icon: "congrats",
+//           bolts: 6500,
+//           nuts: 150,
+//           status: "new",
+//           type: 1,
+//           data: {},
+//           filterKeys: ["todo"],
+//           buttons: {
+//             top: {
+//               hidden: false,
+//               label: "Top button",
+//               route: "",
+//               routeData: {},
+//               api: "",
+//               data: {},
+//               externalUrl: "",
+//             },
+//             bottom: {
+//               hidden: false,
+//               label: "Bottom button",
+//               route: "",
+//               routeData: {},
+//               api: "",
+//               data: {},
+//               externalUrl: "",
+//             },
+//           },
+//         },
+//       ],
+//     },
+//     {
+//       id: 2,
+//       title: "Second section",
+//       subtitle: "Complete task - get more points and bolts!",
+//       filters: [
+//         {
+//           key: "big",
+//           label: "Сложные",
+//           selected: true,
+//         },
+//         {
+//           key: "small",
+//           label: "Легкие",
+//           selected: false,
+//         },
+//       ],
+//       tasks: [
+//         {
+//           id: 20,
+//           title: "First task",
+//           icon: "task1Icon",
+//           bolts: 4500,
+//           nuts: 50,
+//           status: "new",
+//           type: 1,
+//           data: {},
+//           filterKeys: ["small"],
+//           buttons: {
+//             top: {
+//               hidden: false,
+//               label: "Top button",
+//               route: "",
+//               routeData: {},
+//               api: "",
+//               data: {},
+//               externalUrl: "",
+//             },
+//             bottom: {
+//               hidden: false,
+//               label: "Bottom button",
+//               route: "",
+//               routeData: {},
+//               api: "",
+//               data: {},
+//               externalUrl: "",
+//             },
+//           },
+//         },
+//         {
+//           id: 22,
+//           title: "Second task",
+//           icon: "task1Icon",
+//           bolts: 10000,
+//           nuts: 50,
+//           status: "new",
+//           type: 1,
+//           data: {},
+//           filterKeys: ["small", "big"],
+//           buttons: {
+//             top: {
+//               hidden: false,
+//               label: "Top button",
+//               route: "",
+//               routeData: {},
+//               api: "",
+//               data: {},
+//               externalUrl: "",
+//             },
+//             bottom: {
+//               hidden: false,
+//               label: "Bottom button",
+//               route: "",
+//               routeData: {},
+//               api: "",
+//               data: {},
+//               externalUrl: "",
+//             },
+//           },
+//         },
+//       ],
+//     },
+//   ],
+// };
 
-data.sections.forEach((section) => {
+tasks.value.data.forEach((section) => {
   section.filters.forEach((filter) => {
     if (filter.selected) {
       activeFilters.value[section.id] = filter.key;

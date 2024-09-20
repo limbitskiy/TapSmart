@@ -20,6 +20,17 @@
             </div>
           </Pill>
 
+          <!-- 2nd place -->
+          <Pill v-else-if="calculatePlayerPlace[0] == 2" class="!p-4" color="light">
+            <div class="content flex flex-col gap-0 items-center justify-between">
+              <img class="h-20" :src="getAsset('2nd_place')" />
+              <span class="text-xl fira-bold text-gray-300">{{ locale?.["battle_complete_2nd"] || "2nd place!" }}</span>
+              <div class="flex gap-2 items-center">
+                <!-- <span class="text-xl exo-black">{{ calculatePlayerPlace }}</span> -->
+              </div>
+            </div>
+          </Pill>
+
           <!-- other places-->
           <Pill v-else class="py-2" color="light">
             <div class="content flex gap-2 items-center justify-between">

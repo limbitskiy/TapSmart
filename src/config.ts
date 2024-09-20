@@ -31,6 +31,7 @@ export const images = {
   repetition: "/repetition.png",
   stories: "/stories.png",
   "1st_place": "/1st_place.png",
+  "2nd_place": "/2nd_place.png",
 };
 
 // assets folder
