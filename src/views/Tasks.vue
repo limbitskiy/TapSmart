@@ -22,7 +22,13 @@
 
       <div class="section-tasks flex flex-col gap-2 pt-4">
         <Pill
-          v-for="task in section.tasks.filter((task) => task.filterKeys.includes(activeFilters[section.id]))"
+          v-for="task in section.tasks.filter((task) => {
+            if (task.filterKeys?.length) {
+              return task.filterKeys.includes(activeFilters[section.id]);
+            } else {
+              return task;
+            }
+          })"
           :key="task.id"
           class="py-3"
           color="light"
@@ -91,7 +97,7 @@ const { fetchTasksList } = mainStore;
 
 await fetchTasksList();
 
-console.log(tasks.value.data);
+// console.log(tasks.value.data);
 
 const activeFilters = ref({});
 const selectedTask = ref({});
@@ -106,7 +112,7 @@ const onFilter = (sectionId: number, filter: Filter) => {
 };
 
 const onTaskClick = (task) => {
-  console.log(task);
+  // console.log(task);
 
   selectedTask.value = task;
   isTaskModal.value = true;
@@ -315,5 +321,5 @@ tasks.value.data.forEach((section) => {
   });
 });
 
-console.log(activeFilters.value);
+// console.log(activeFilters.value);
 </script>
