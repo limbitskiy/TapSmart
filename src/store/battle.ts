@@ -64,7 +64,7 @@ export const useBattleStore = defineStore("battle", () => {
 
   // getters
   const data = computed(() => state.value.battleData);
-  // const currentBattleMode = computed(() => state.value.battleData.battle_mode);
+  const currentBattleMode = computed(() => state.value.battleData.battle_mode);
   // const currentBattleType = computed(() => state.value.battleData.battle_type);
   const currentTask = computed(() => state.value.battleData.data?.[taskIndex.value]);
   const currentMechanic = computed(() => state.value.battleData.mechanics?.[getMechanicName(state.value.battleData.battle_type)]);
@@ -481,6 +481,7 @@ export const useBattleStore = defineStore("battle", () => {
     currentCalcPoint,
     energy,
     currentTaskTimeout,
+    currentBattleMode,
     set,
     expand,
     pauseBattle,

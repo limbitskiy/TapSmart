@@ -1,6 +1,6 @@
 <template>
   <div ref="counterRef" class="task-countdown">
-    <span class="exo-bold text-lg">{{ timer }}</span>
+    <span v-if="timer" class="exo-bold text-lg">{{ timer }}</span>
   </div>
 </template>
 

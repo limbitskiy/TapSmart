@@ -74,8 +74,8 @@ const dataStore = useDataStore();
 const mainStore = useMainStore();
 const localeStore = useLocaleStore();
 
-const { data, challengeScore: score, bonusesUsed, currentCalcPoint } = storeToRefs(dataStore.battles);
-const { startBreakpoint, stopBreakpoint, resetBattleStats, startChallenge, stopChallenge } = dataStore.battles;
+const { data, challengeScore: score, bonusesUsed, currentCalcPoint, currentBattleMode } = storeToRefs(dataStore.battles);
+const { stopBreakpoint, startChallenge, stopChallenge } = dataStore.battles;
 const { battles: locale } = storeToRefs(localeStore);
 
 const { fetchChallengePageData, callApi, redirectTo } = mainStore;
@@ -132,19 +132,21 @@ const onStart = async () => {
   isWaiting.value = false;
   await callApi({ api: "battle_init" });
 
-  timer.value = data.value.battle_duration ? +data.value.battle_duration : 0;
-  isBattle.value = true;
-  startChallenge();
+  if (currentBattleMode.value === "challenge") {
+    timer.value = data.value.battle_duration ? +data.value.battle_duration : 0;
+    isBattle.value = true;
+    startChallenge();
 
-  interval = setInterval(() => {
-    if (timer.value === 0) {
-      clearInterval(interval);
-      onEnd();
-      return;
-    }
+    interval = setInterval(() => {
+      if (timer.value === 0) {
+        clearInterval(interval);
+        onEnd();
+        return;
+      }
 
-    timer.value -= 1000;
-  }, 1000);
+      timer.value -= 1000;
+    }, 1000);
+  }
 };
 
 const onEnd = () => {
