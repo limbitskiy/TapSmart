@@ -48,7 +48,7 @@
 import { ref, computed, onMounted, onBeforeUnmount, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
-import { tg, getUserName } from "@/api/telegram";
+import { tg, setThemeColor } from "@/api/telegram";
 import { useRoute } from "vue-router";
 
 // stores
@@ -65,6 +65,8 @@ import Backlight from "@/components/UI/Backlight.vue";
 import ChallengeStatus from "@/components/ChallengeStatus.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import BattleCompleteAnimation from "@/components/animations/BattleCompleteAnimation.vue";
+
+setThemeColor("#D26542");
 
 const route = useRoute();
 

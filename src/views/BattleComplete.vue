@@ -76,6 +76,7 @@
 import { computed } from "vue";
 import { getAsset } from "@/utils";
 import { storeToRefs } from "pinia";
+import { setThemeColor } from "@/api/telegram";
 
 // stores
 import { useDataStore } from "@/store/data";
@@ -87,6 +88,8 @@ import Pill from "@/components/UI/Pill.vue";
 import Button from "@/components/UI/Button.vue";
 import Ad from "@/components/UI/Ad.vue";
 import BackgroundPill from "@/components/UI/BackgroundPill.vue";
+
+setThemeColor("#222");
 
 const localeStore = useLocaleStore();
 const dataStore = useDataStore();

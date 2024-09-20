@@ -35,3 +35,9 @@ export const inviteFriend = (inviteMessage?: string) => {
   const link = generateShareLink();
   tg.openTelegramLink(`https://t.me/share/url?url=${link}&text=${inviteMessage}`);
 };
+
+export const setThemeColor = (color: string) => {
+  tg?.setHeaderColor(color);
+  tg?.setBackgroundColor(color);
+  tg?.setBottomBarColor(color);
+};

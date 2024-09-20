@@ -221,7 +221,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { waitFor } from "@/utils";
-import { tg } from "@/api/telegram";
+import { tg, setThemeColor } from "@/api/telegram";
 import constants from "@/constants";
 
 // composables
@@ -253,7 +253,7 @@ tg?.disableVerticalSwipes();
 
 tg?.expand();
 
-tg?.setHeaderColor("#333");
+setThemeColor("#222");
 
 console.log("tg:", tg);
 

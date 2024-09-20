@@ -64,7 +64,7 @@
 import { onMounted, ref, watch, onBeforeUnmount, onUpdated } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
-import { tg, getUserName } from "@/api/telegram";
+import { tg, setThemeColor } from "@/api/telegram";
 import { useWindowSize } from "@vueuse/core";
 
 // stores
@@ -97,6 +97,8 @@ const { redirectTo } = mainStore;
 const isChangeMechModalVisible = ref(false);
 const isNoEnergyVisible = ref(false);
 const isBoostersModalVisible = ref(false);
+
+setThemeColor("#222");
 
 // stop questions when modals are open
 watch([isChangeMechModalVisible, isNoEnergyVisible, isBoostersModalVisible], (val) => {
