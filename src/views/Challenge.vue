@@ -31,7 +31,7 @@
     <!-- waiting modal -->
     <Teleport to="#modals">
       <Modal v-model:visible="isWaiting" sticky>
-        <Waiting @countdownComplete="onStart" />
+        <Waiting @countdownComplete="onStart" @abort="onAbortChallenge" />
       </Modal>
     </Teleport>
 
@@ -160,6 +160,10 @@ const onEnd = async () => {
     isBattleCompleteAnimation.value = false;
     redirectTo("/battle-complete");
   }, 3000);
+};
+
+const onAbortChallenge = () => {
+  redirectTo("/start-relax");
 };
 
 const onBonusUsed = (bonusName: string) => {

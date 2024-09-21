@@ -9,7 +9,7 @@
       </Pill>
     </div>
 
-    <ul class="players h-[55dvh] overflow-y-scroll flex flex-col gap-2">
+    <ul class="players h-[45dvh] overflow-y-scroll flex flex-col gap-2">
       <li v-for="player in data['players_waiting'] || []" :key="player.id">
         <Pill class="flex items-center gap-4" color="light">
           <span class="league exo-black text-xl">{{ player?.league || 0 }}</span>
@@ -37,6 +37,12 @@
         </Pill>
       </li>
     </ul>
+
+    <Button class="flex-1 py-4 rounded-lg bg-[var(--red-color)]" activeColor="#fd9675" @click="onAbort">
+      <div class="flex justify-center gap-1">
+        <span class="text-xl text-white leading-4">{{ locale?.["button_waiting_abort"] || "Abort" }}</span>
+      </div>
+    </Button>
   </div>
 </template>
 
@@ -57,6 +63,7 @@ import Pill from "@/components/UI/Pill.vue";
 
 const emit = defineEmits<{
   countdownComplete: [];
+  abort: [];
 }>();
 
 const dataStore = useDataStore();
@@ -79,6 +86,11 @@ const formattedTime = computed(() => {
     return "0" + data.value.waiting_timer / 1000;
   }
 });
+
+const onAbort = () => {
+  clearInterval(interval);
+  emit("abort");
+};
 
 onMounted(() => {
   startBreakpoint("waiting");

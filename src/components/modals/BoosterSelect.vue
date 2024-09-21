@@ -146,7 +146,7 @@
     </div>
 
     <div class="bottom-btns flex flex-col gap-2">
-      <Button class="flex-1 py-4 rounded-lg" activeColor="#fcdcb0" @click="onStartBattle" grey>
+      <Button class="flex-1 py-4 rounded-lg" activeColor="#5a5a5a" @click="onStartBattle" grey>
         <div class="flex justify-center gap-1">
           <span class="text-xl leading-4">{{ locale?.["button_booster_select"] || "Challenge" }}</span>
         </div>
