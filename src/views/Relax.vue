@@ -20,8 +20,8 @@
         </div>
       </Button>
       <ChallengeButton class="text-base" @challenge="openBoosterModal" />
-      <div class="relax-topbar flex items-center justify-between w-full absolute -bottom-[35px] px-4">
-        <TaskCountdown />
+      <div class="relax-topbar flex flex-col items-end justify-between w-full absolute -bottom-[35px] px-4">
+        <!-- <TaskCountdown /> -->
         <VolumeControl />
       </div>
     </div>

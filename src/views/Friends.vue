@@ -82,7 +82,13 @@
 
       <template v-if="data?.friendList?.length">
         <div class="switches flex justify-start gap-3 mt-4">
-          <Button class="!py-1 !px-3" :class="filters.online ? '' : 'bg-gray-500 text-white'" @click="onOnlineFilter">{{ locale?.["online"] }}</Button>
+          <Button class="!py-1 !px-3" :class="filters.online ? '' : 'bg-gray-500 text-white'" :badge="onlineFriends" @click="onOnlineFilter">
+            <div class="flex gap-1">
+              <span>{{ locale?.["online"] }}</span>
+              <!-- <Badge :class="!filters.online ? '' : 'bg-gray-700 text-white'" :data="onlineFriends.length" /> -->
+              <Badge :data="onlineFriends.length" :dark="filters.online" :grey="!filters.online" />
+            </div>
+          </Button>
           <Button class="!py-1 !px-3" :class="filters.battles ? '' : 'bg-gray-500 text-white'" @click="onBattlesFilter">{{ locale?.["battles"] }}</Button>
         </div>
 
@@ -123,6 +129,7 @@ import IconPill from "@/components/UI/IconPill.vue";
 import Pill from "@/components/UI/Pill.vue";
 import FriendPill from "@/components/UI/FriendPill.vue";
 import BackgroundPill from "@/components/UI/BackgroundPill.vue";
+import Badge from "@/components/UI/Badge.vue";
 
 const mainStore = useMainStore();
 const dataStore = useDataStore();
@@ -161,6 +168,8 @@ const filteredFriends = computed(() => {
 
   return friendList;
 });
+
+const onlineFriends = computed(() => data.value.friendList.filter((friend) => friend.isOnline));
 
 const onRefreshFriends = () => {
   fetchFriendsPage();

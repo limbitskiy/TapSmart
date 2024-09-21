@@ -13,7 +13,8 @@
       </div>
     </Teleport>
 
-    <div class="answers flex-1 grid place-items-center bg-[var(--grey-dark)] rounded-t-3xl">
+    <div class="answers flex-1 grid place-items-center bg-[var(--grey-dark)] rounded-t-3xl relative">
+      <TaskCountdown class="absolute top-0 px-4" color="#777" />
       <div class="answer-buttons grid w-full grid-cols-2 grid-rows-2 gap-4 px-4 leading-5">
         <Button class="four-answer-btn" @touchstart="btnTouchstart" @touchend="btnTouchend" @click="(event) => handleAnswer(currentTask.task.variants[0], currentTask, event)">{{
           currentTask.task.variants[0]
@@ -45,6 +46,7 @@ import { useDataStore } from "@/store/data";
 
 // components
 import Button from "@/components/UI/Button.vue";
+import TaskCountdown from "@/components/TaskCountdown.vue";
 
 const emit = defineEmits<{
   answer: [data: { correct: boolean; answer: string }];

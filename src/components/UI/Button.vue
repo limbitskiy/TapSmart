@@ -1,7 +1,7 @@
 <template>
   <button
     v-if="!data?.hidden"
-    :class="dark ? 'bg-black' : 'bg-[var(--accent-color)] text-black'"
+    :class="dark ? 'bg-black' : grey ? 'bg-[var(--grey-light)]' : 'bg-[var(--accent-color)] text-black'"
     class="rounded-xl font-bold fira-bold py-3 px-8 text-xl leading-6"
     :disabled="data?.disabled"
     @touchstart="btnTouchstart"
@@ -28,6 +28,7 @@ const { redirectTo, callApi, setRouteData, showModal } = mainStore;
 
 const props = defineProps<{
   dark?: boolean;
+  grey?: boolean;
   data?: {
     hidden: boolean;
     disabled: boolean;

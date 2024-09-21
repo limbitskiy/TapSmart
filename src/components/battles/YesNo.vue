@@ -14,7 +14,8 @@
       </div>
     </Teleport>
 
-    <div class="answers flex-1 grid place-items-center bg-[var(--grey-dark)] rounded-t-3xl">
+    <div class="answers flex-1 grid place-items-center bg-[var(--grey-dark)] rounded-t-3xl relative">
+      <TaskCountdown class="absolute top-0 px-4" color="#777" />
       <div class="answer-buttons flex w-full justify-evenly">
         <button
           class="no-btn bg-[var(--red-color)] border-b-4 border-[#6A3524]"
@@ -55,6 +56,7 @@ import { useBattle } from "@/composables/useBattle";
 import { useDataStore } from "@/store/data";
 
 // components
+import TaskCountdown from "@/components/TaskCountdown.vue";
 
 // types
 import { Task } from "@/types";

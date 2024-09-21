@@ -8,9 +8,9 @@
       </div>
     </div>
 
-    <div class="filters flex items-center justify-between">
-      <!-- friends only filter button -->
-      <button
+    <!-- <div class="filters flex items-center justify-between"> -->
+    <!-- friends only filter button -->
+    <!-- <button
         class="border rounded-full text-sm py-1 px-3 border-[var(--accent-color)] fira-semibold"
         :class="{ 'bg-[var(--accent-color)] text-[#333]': friendsOnly }"
         @click="onFriendsOnly"
@@ -26,11 +26,11 @@
             {{ data["friends_only_badge"] || 0 }}
           </div>
         </div>
-      </button>
+      </button> -->
 
-      <!-- invite friends button -->
-      <Button class="!text-base !py-1 !px-4" activeColor="#fcdcb0" @click="onInviteFriends">{{ locale?.["invite_friends"] || "Invite friends" }}</Button>
-    </div>
+    <!-- invite friends button -->
+    <!-- <Button class="!text-base !py-1 !px-4" activeColor="#fcdcb0" @click="onInviteFriends">{{ locale?.["invite_friends"] || "Invite friends" }}</Button> -->
+    <!-- </div> -->
 
     <div class="boosters flex flex-col gap-4 flex-1">
       <span class="fira-bold text-lg">{{ locale?.["available_boosters"] || "Available boosters" }}</span>
@@ -145,11 +145,19 @@
       </div>
     </div>
 
-    <Button class="flex-1 py-4 rounded-lg" activeColor="#fcdcb0" @click="onStartBattle">
-      <div class="flex justify-center gap-1">
-        <span class="text-xl leading-4">{{ locale?.["button_booster_select"] || "Challenge" }}</span>
-      </div>
-    </Button>
+    <div class="bottom-btns flex flex-col gap-2">
+      <Button class="flex-1 py-4 rounded-lg" activeColor="#fcdcb0" @click="onStartBattle" grey>
+        <div class="flex justify-center gap-1">
+          <span class="text-xl leading-4">{{ locale?.["button_booster_select"] || "Challenge" }}</span>
+        </div>
+      </Button>
+      <Button class="" :badge="onlineFriends">
+        <div class="flex gap-1 justify-center">
+          <span class="">{{ locale?.["button_booster_select_friend_challenge"] || "Challenge friends" }}</span>
+          <Badge :data="onlineFriends?.length" grey />
+        </div>
+      </Button>
+    </div>
   </div>
 </template>
 
@@ -162,6 +170,7 @@ import { getAsset, showFormattedNumber } from "@/utils";
 // components
 import Pill from "@/components/UI/Pill.vue";
 import Button from "@/components/UI/Button.vue";
+import Badge from "@/components/UI/Badge.vue";
 
 // stores
 import { useDataStore } from "@/store/data";
@@ -182,7 +191,8 @@ const dataStore = useDataStore();
 const localeStore = useLocaleStore();
 
 const { battles: locale } = storeToRefs(localeStore);
-const { profile } = storeToRefs(dataStore);
+const { profile, friends } = storeToRefs(dataStore);
+const { onlineFriends } = dataStore;
 const { data } = storeToRefs(dataStore.battles);
 const { stopBreakpoint, startBreakpoint } = dataStore.battles;
 

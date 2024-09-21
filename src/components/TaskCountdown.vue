@@ -1,63 +1,43 @@
 <template>
-  <div ref="counterRef" class="task-countdown">
-    <span v-if="timer" class="exo-bold text-lg">{{ timer }}</span>
+  <div class="task-countdown w-full">
+    <div class="wrap h-[2px] w-full rounded-full">
+      <div ref="progressRef" class="bg-[var(--red-color)] h-[2px] transition-all ease-linear" :style="`background-color: ${color}!important`"></div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, ref } from "vue";
+import { ref, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 
 // stores
 import { useDataStore } from "@/store/data";
 import { watch } from "vue";
 
+defineProps<{
+  color: string;
+}>();
+
 const dataStore = useDataStore();
+let currentAnimation = null;
 
 const { currentTaskTimeout } = storeToRefs(dataStore.battles);
 
-const timer = ref(0);
-const timerFunc = ref(null);
-const counterRef = ref();
+const progressRef = ref();
 
-const playAnimation = () => {
-  if (counterRef.value) {
-    counterRef.value.animate([{ transform: "scale(1.5)" }, { transform: "scale(1)" }], 500);
-  }
-};
-
-const startTimer = (timerData) => {
-  if (timerFunc.value) {
-    clearInterval(timerFunc.value);
-  }
-
-  if (!timerData) return;
-
-  timer.value = timerData.interval / 1000;
-
-  timerFunc.value = setInterval(() => {
-    if (timer.value <= 0) {
-      clearInterval(timerFunc.value);
-    } else {
-      playAnimation();
-      timer.value -= 1;
-    }
-  }, 1000);
+const startAnimation = (duration: number) => {
+  currentAnimation = progressRef.value?.animate([{ transform: "scaleX(0)" }], duration);
 };
 
 watch(currentTaskTimeout, (val) => {
-  if (!val) return;
+  if (!val?.interval) return;
 
-  startTimer(val);
-
-  if (counterRef.value) {
-    counterRef.value.animate([{ transform: "scale(2)", color: "orange" }, { transform: "scale(1)" }], 500);
-  }
+  startAnimation(val.interval);
 });
 
-onBeforeUnmount(() => {
-  if (timerFunc.value) {
-    clearInterval(timerFunc.value);
+onMounted(() => {
+  if (currentTaskTimeout.value?.interval) {
+    startAnimation(currentTaskTimeout.value?.interval);
   }
 });
 </script>
