@@ -1,5 +1,5 @@
 <template>
-  <Pill class="!py-3" ripple>
+  <Pill class="!py-3" color="light">
     <div class="pill-content flex items-center justify-between">
       <!-- <slot name="start"> -->
       <div class="start flex items-center gap-3">
@@ -15,20 +15,20 @@
             <span class="text-sm text-[var(--accent-color)]">{{ data.title }}</span>
             <div class="money flex items-center gap-1 -mt-1">
               <img :src="getAsset('bolt')" />
-              <span class="exo-black">{{ data.money || 0 }}</span>
+              <span class="exo-black">{{ data.bolts || 0 }}</span>
             </div>
           </div>
         </div>
       </div>
       <!-- </slot>
       <slot name="end"> -->
-      <div v-show="battles" class="battles-played flex items-center gap-2">
+      <div v-show="battleFilter" class="battles-played flex items-center gap-2">
         <img :src="getAsset('swords')" />
-        <span class="text-xl exo-black">{{ data.bolts || 0 }}</span>
+        <span class="text-xl exo-black">{{ data.points_earned || 0 }}</span>
       </div>
-      <div v-show="!battles" class="money-earned flex items-center gap-2">
+      <div v-show="!battleFilter" class="money-earned flex items-center gap-2">
         <img :src="getAsset('bolt')" />
-        <span class="text-xl exo-black">{{ data.moneyEarned || 0 }}</span>
+        <span class="text-xl exo-black">{{ data.bolts_earned || 0 }}</span>
       </div>
       <!-- </slot> -->
     </div>
@@ -51,6 +51,6 @@ defineProps<{
     moneyEarned: string;
     bolts: number;
   };
-  battles: boolean;
+  battleFilter: boolean;
 }>();
 </script>

@@ -93,7 +93,7 @@
         </div>
 
         <TransitionGroup class="friend-list flex flex-col gap-4 my-4" name="list" tag="div">
-          <FriendPill v-for="friend in filteredFriends" :key="friend.id" :data="friend" color="light" :battles="filters.battles" />
+          <FriendPill v-for="friend in filteredFriends" :key="friend.id" :data="friend" :battleFilter="filters.battles" />
         </TransitionGroup>
       </template>
       <div v-else class="empty-message my-4">
