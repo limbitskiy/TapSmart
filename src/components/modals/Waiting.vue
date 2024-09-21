@@ -74,6 +74,7 @@ const { data } = storeToRefs(dataStore.battles);
 const { battles: locale } = storeToRefs(localeStore);
 
 const { startBreakpoint, stopBreakpoint, decreaseWaitingTimer } = dataStore.battles;
+const { fetchChallengePageData, callApi, redirectTo } = mainStore;
 
 let interval: ReturnType<typeof setInterval> | undefined;
 
@@ -90,6 +91,7 @@ const formattedTime = computed(() => {
 const onAbort = () => {
   clearInterval(interval);
   emit("abort");
+  callApi({ api: "waiting_exit" });
 };
 
 onMounted(() => {
