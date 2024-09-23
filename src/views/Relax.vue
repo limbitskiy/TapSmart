@@ -1,9 +1,9 @@
 <template>
   <div class="home-main flex-1 overflow-auto flex flex-col gap-2 mb-[72px]">
     <Backlight color="green" />
-    <Profile />
+    <ProfileWidget />
     <div class="top-btns grid grid-cols-2 gap-4 w-full px-4 relative">
-      <Button class="bg-black text-white border fira-condensed-bold leading-4 !px-4 py-2" activeColor="#fff" @click="onChangeMech">
+      <Button class="bg-[var(--grey-dark)] text-white fira-condensed-bold leading-4 !px-4 py-2" activeColor="#fff" @click="onChangeMech">
         <div class="flex gap-1 items-center justify-between">
           <div v-if="width > 410" class="icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -14,8 +14,9 @@
             </svg>
           </div>
           <span class="text-base leading-4">{{ locale?.["button_change_mech"] }}</span>
-          <svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M9 10L0 1.22807L1.26 0L9 7.54386L16.74 0L18 1.22807L9 10Z" fill="white" />
+          <!-- chevron down -->
+          <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 8L0 0.982456L0.98 0L7 6.03509L13.02 0L14 0.982456L7 8Z" fill="white" />
           </svg>
         </div>
       </Button>
@@ -74,7 +75,7 @@ import { useLocaleStore } from "@/store/locale";
 
 // components
 import Backlight from "@/components/UI/Backlight.vue";
-import Profile from "@/components/Profile.vue";
+import ProfileWidget from "@/components/ProfileWidget.vue";
 import Button from "@/components/UI/Button.vue";
 import Modal from "@/components/Modal.vue";
 import ChangeMechanic from "@/components/modals/ChangeMechanic.vue";

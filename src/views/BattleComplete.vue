@@ -103,7 +103,7 @@ import { useDataStore } from "@/store/data";
 import { useLocaleStore } from "@/store/locale";
 
 // components
-import Profile from "@/components/Profile.vue";
+import Profile from "@/components/ProfileWidget.vue";
 import Pill from "@/components/UI/Pill.vue";
 import Button from "@/components/UI/Button.vue";
 import Ad from "@/components/UI/Ad.vue";

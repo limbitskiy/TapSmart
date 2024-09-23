@@ -58,7 +58,7 @@ import { useMainStore } from "@/store/main";
 import Pill from "@/components/UI/Pill.vue";
 import Button from "@/components/UI/Button.vue";
 import BackgroundPill from "@/components/UI/BackgroundPill.vue";
-import Profile from "@/components/Profile.vue";
+import Profile from "@/components/ProfileWidget.vue";
 import Ad from "@/components/UI/Ad.vue";
 import { computed } from "vue";
 
