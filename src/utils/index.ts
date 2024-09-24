@@ -36,4 +36,19 @@ export const waitFor = (ms: number) => {
   });
 };
 
+export const shortenNumber = (num: number) => {
+  const number = showFormattedNumber(num);
+  const numArr = number.split(",");
+
+  if (numArr.length > 3) {
+    return "BIG";
+  } else if (numArr.length === 3) {
+    return Math.round(num / 1000000) + "M";
+  } else if (numArr.length === 2) {
+    return Math.round(num / 1000) + "K";
+  } else {
+    return num;
+  }
+};
+
 export const getSpecialSymbol = (symbolName: string) => specialSymbols[symbolName];

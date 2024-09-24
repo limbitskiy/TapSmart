@@ -1,5 +1,5 @@
 <template>
-  <div ref="el" :class="`pill p-4 rounded-2xl relative select-none ${outlined ? 'border' : ''}`" @click="onClick" :style="`background-color: var(--grey-${color})`">
+  <div ref="el" class="pill p-4 rounded-2xl relative select-none" :class="[outlined ? 'border' : null, dark ? 'bg-[var(--grey-dark)]' : 'bg-[var(--grey-light)]']" @click="onClick">
     <slot></slot>
   </div>
 </template>
@@ -18,10 +18,10 @@ const { showTooltip } = mainStore;
 const el = ref();
 
 const props = defineProps<{
-  color: "light" | "dark" | "darker";
   outlined?: boolean;
-  ripple?: boolean;
   tooltip?: string;
+  dark?: string;
+  // light?: boolean;
 }>();
 
 const onClick = (event: MouseEvent) => {

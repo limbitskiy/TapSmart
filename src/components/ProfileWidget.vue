@@ -13,24 +13,24 @@
             <LeagueProgress />
           </div>
           <Button class="!py-[2px] !px-3 !rounded-lg bg-gradient-to-r from-[#408CFF] to-[#894899]">
-            <span class="text-base text-gray-200">Boost</span>
+            <span class="text-base text-gray-200">{{ battleLocale?.["button_boost"] }}</span>
           </Button>
         </div>
       </div>
       <div class="bottom grid grid-cols-3 bg-[var(--grey-light)] py-1 rounded-xl pl-[55px]">
         <div class="bolts flex-1 flex items-center gap-1 relative justify-center">
           <img class="h-4" :src="getAsset('bolt')" />
-          <span class="exo-black text-[var(--accent-color)]">175K</span>
+          <span class="exo-black text-[var(--accent-color)]">{{ shortenNumber(profileData?.["bolts"]) }}</span>
           <div class="separator h-[10px] w-[1px] bg-gray-500 absolute -right-1 mt-[2px]"></div>
         </div>
         <div class="nuts flex-1 flex items-center gap-1 relative justify-center">
           <img class="h-4" :src="getAsset('nut')" />
-          <span class="exo-black">110</span>
+          <span class="exo-black">{{ profileData?.["nuts"] }}</span>
           <div class="separator h-[10px] w-[1px] bg-gray-500 absolute -right-1 mt-[2px]"></div>
         </div>
         <div class="energy flex items-center gap-1 justify-center">
           <img class="h-4" :src="getAsset('energy')" />
-          <span class="exo-black">10</span>
+          <span class="exo-black">{{ battleData?.["energy"] }}</span>
         </div>
       </div>
     </div>
@@ -40,7 +40,7 @@
 <script setup lang="ts">
 import { watch, ref } from "vue";
 import { storeToRefs } from "pinia";
-import { getAsset, showFormattedNumber } from "@/utils";
+import { getAsset, shortenNumber } from "@/utils";
 
 // stores
 import { useDataStore } from "@/store/data";
@@ -53,8 +53,8 @@ import LeagueProgress from "@/components/LeagueProgress.vue";
 const dataStore = useDataStore();
 const localeStore = useLocaleStore();
 
-const { profile: data, battles } = storeToRefs(dataStore);
-const { profile: locale } = storeToRefs(localeStore);
+const { profile: profileData, battles: battleData } = storeToRefs(dataStore);
+const { profile: profileLocale, battles: battleLocale } = storeToRefs(localeStore);
 const { energy } = storeToRefs(dataStore.battles);
 
 // const energyRef = ref();
