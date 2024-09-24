@@ -269,6 +269,9 @@ const onSettingsChange = ({ setting, value }) => {
 };
 
 const onFeedback = () => {
-  location.href = data.value?.["feedback_url"];
+  tg.openInvoice({
+    url: data.value?.["feedback_url"],
+    request_id: Math.random() * 99999,
+  });
 };
 </script>
