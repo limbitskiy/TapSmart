@@ -20,17 +20,17 @@
       <div class="bottom grid grid-cols-[3fr_2fr_2fr] bg-[var(--grey-light)] py-1 rounded-xl pl-[55px]">
         <div class="bolts flex-1 flex items-center gap-1 relative justify-center">
           <img class="h-4" :src="getAsset('bolt')" />
-          <span class="exo-black text-[var(--accent-color)]">{{ shortenNumber(profileData?.["bolts"]) }}</span>
+          <span data-locale="profile.tooltip_bolts" class="exo-black text-[var(--accent-color)]" @click="onTooltip">{{ shortenNumber(profileData?.["bolts"]) }}</span>
           <div class="separator h-[10px] w-[1px] bg-gray-500 absolute -right-1 mt-[2px]"></div>
         </div>
         <div class="nuts flex-1 flex items-center gap-1 relative justify-center">
           <img class="h-4" :src="getAsset('nut')" />
-          <span class="exo-black">{{ profileData?.["nuts"] }}</span>
+          <span data-locale="profile.tooltip_nuts" class="exo-black" @click="onTooltip">{{ profileData?.["nuts"] }}</span>
           <div class="separator h-[10px] w-[1px] bg-gray-500 absolute -right-1 mt-[2px]"></div>
         </div>
         <div class="energy flex items-center gap-1 justify-center">
           <img class="h-4" :src="getAsset('energy')" />
-          <span class="exo-black">{{ battleData?.["energy"] }}</span>
+          <span data-locale="battle.tooltip_energy" class="exo-black" @click="onTooltip">{{ battleData?.["energy"] }}</span>
         </div>
       </div>
     </div>
@@ -45,6 +45,7 @@ import { getAsset, shortenNumber } from "@/utils";
 // stores
 import { useDataStore } from "@/store/data";
 import { useLocaleStore } from "@/store/locale";
+import { useMainStore } from "@/store/main";
 
 // components
 import Button from "@/components/UI/Button.vue";
@@ -52,10 +53,31 @@ import LeagueProgress from "@/components/LeagueProgress.vue";
 
 const dataStore = useDataStore();
 const localeStore = useLocaleStore();
+const mainStore = useMainStore();
+
+const { showTooltip } = mainStore;
 
 const { profile: profileData, battles: battleData } = storeToRefs(dataStore);
 const { profile: profileLocale, battles: battleLocale } = storeToRefs(localeStore);
 const { energy } = storeToRefs(dataStore.battles);
+
+const onTooltip = (event: MouseEvent) => {
+  // console.log(event.target.dataset.locale);
+  const locales = {
+    profile: profileLocale.value,
+    battle: battleLocale.value,
+  };
+
+  const localeKey = event.target.dataset.locale.split(".")[0];
+  const localeValue = event.target.dataset.locale.split(".")[1];
+
+  // console.log(locales[localeKey]);
+
+  showTooltip({
+    element: event.target,
+    text: locales[localeKey][localeValue],
+  });
+};
 
 // const energyRef = ref();
 

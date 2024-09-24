@@ -40,8 +40,6 @@ const params = ref({
 });
 
 const onClick = () => {
-  console.log(`scro0ll`);
-
   hideTooltip();
 };
 
@@ -70,7 +68,7 @@ onMounted(() => {
 
   params.value.center = triangleDeltaX + elementWidth / 2;
 
-  addEventListener("scroll", onScroll);
+  document.querySelector("#app")?.addEventListener("scroll", onScroll);
 });
 
 onBeforeUnmount(() => {
