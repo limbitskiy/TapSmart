@@ -1,8 +1,8 @@
 <template>
   <div class="league-progress flex flex-col gap-1">
     <div class="top flex items-baseline justify-between">
-      <span class="exo-black text-sm text-nowrap">Gold League</span>
-      <span class="text-[10px] exo-black text-gray-400">{{ value }}%</span>
+      <span class="text-sm text-nowrap">Gold League</span>
+      <span class="text-[10px] exo-bold text-gray-300">{{ value }}%</span>
     </div>
     <div class="bottom">
       <div class="progressbar h-[4px] w-full bg-[var(--grey-light)] rounded-full relative">

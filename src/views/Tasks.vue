@@ -11,13 +11,15 @@
       </div>
 
       <div class="filters flex gap-2 mt-2">
+        <!-- filters -->
         <Button
           v-for="filter in section.filters"
-          class="!py-1 !px-3 !text-base"
+          class="!py-1 !px-3"
           :class="activeFilters[section.id]?.includes(filter.key) ? '' : 'bg-gray-500 text-white'"
           @click="() => onFilter(section.id, filter)"
-          >{{ filter.label }}</Button
         >
+          <span class="fira-regular text-base">{{ filter.label }}</span>
+        </Button>
       </div>
 
       <div class="section-tasks flex flex-col gap-2 pt-4">

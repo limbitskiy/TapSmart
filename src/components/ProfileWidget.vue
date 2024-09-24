@@ -1,7 +1,7 @@
 <template>
   <div class="profile-widget mx-4 mt-6 flex items-center z-10">
     <div class="avatar-cnt w-[35px] h-full relative">
-      <div class="avatar w-[90px] h-[90px] rounded-full overflow-hidden border-[var(--grey-light)] border-4 absolute bottom-0">
+      <div class="avatar w-[90px] h-[90px] rounded-full overflow-hidden border-[var(--grey-light)] border-4 absolute bottom-0" @click="$router.push('/profile')">
         <img class="w-[90px] h-[90px]" :src="getAsset('avatar1')" />
       </div>
     </div>
@@ -12,8 +12,8 @@
           <div class="league-progress flex-1">
             <LeagueProgress />
           </div>
-          <Button class="!py-[2px] !px-3 !rounded-lg">
-            <span class="text-base exo-black text-[#333]">Boost</span>
+          <Button class="!py-[2px] !px-3 !rounded-lg bg-gradient-to-r from-[#408CFF] to-[#894899]">
+            <span class="text-base text-gray-200">Boost</span>
           </Button>
         </div>
       </div>

@@ -39,33 +39,35 @@
       </div>
     </div>
 
-    <!-- stats -->
-    <BackgroundPill class="py-8">
+    <!-- friend stats -->
+    <BackgroundPill>
       <span class="bg-pill-title">{{ locale?.["income_title"] }}</span>
 
-      <Pill class="mt-4" color="light" :tooltip="locale?.['tooltip_bolts_earned']">
-        <div class="content flex items-center justify-between">
-          <span class="text-xl fira-bold text-gray-300">{{ locale?.["bolts_earned"] || "Bolts earned" }}</span>
-          <div class="price flex gap-2 items-center">
-            <img class="h-4 scale-150" :src="getAsset('bolt')" />
-            <span class="text-xl font-bold exo-bold">{{ data?.["income"] || 0 }}</span>
+      <div class="flex flex-col gap-2 mt-4">
+        <Pill color="light" :tooltip="locale?.['tooltip_bolts_earned']">
+          <div class="content flex items-center justify-between">
+            <span class="text-lg text-gray-300">{{ locale?.["bolts_earned"] || "Bolts earned" }}</span>
+            <div class="price flex gap-2 items-center">
+              <img class="h-4 scale-150" :src="getAsset('bolt')" />
+              <span class="text-xl font-bold exo-bold">{{ data?.["income"] || 0 }}</span>
+            </div>
           </div>
-        </div>
-      </Pill>
+        </Pill>
 
-      <Pill class="mt-4" color="light" :tooltip="locale?.['tooltip_battles_played']">
-        <div class="content flex justify-between">
-          <span class="text-xl fira-bold text-gray-300">{{ locale?.["battles_played"] || "Battles played" }}</span>
-          <span class="text-xl font-bold exo-bold">{{ data?.["battles"] || 0 }}</span>
-        </div>
-      </Pill>
+        <Pill color="light" :tooltip="locale?.['tooltip_battles_played']">
+          <div class="content flex justify-between">
+            <span class="text-lg text-gray-300">{{ locale?.["battles_played"] || "Battles played" }}</span>
+            <span class="text-xl font-bold exo-bold">{{ data?.["battles"] || 0 }}</span>
+          </div>
+        </Pill>
 
-      <Pill class="mt-4" color="light" :tooltip="locale?.['tooltip_points_earned']">
-        <div class="content flex justify-between">
-          <span class="text-xl fira-bold text-gray-300">{{ locale?.["points_earned"] || "Points earned" }}</span>
-          <span class="text-xl font-bold exo-bold">{{ data?.["points"] || 0 }}</span>
-        </div>
-      </Pill>
+        <Pill color="light" :tooltip="locale?.['tooltip_points_earned']">
+          <div class="content flex justify-between">
+            <span class="text-lg text-gray-300">{{ locale?.["points_earned"] || "Points earned" }}</span>
+            <span class="text-xl font-bold exo-bold">{{ data?.["points"] || 0 }}</span>
+          </div>
+        </Pill>
+      </div>
     </BackgroundPill>
 
     <!-- friends -->
@@ -84,12 +86,13 @@
         <div class="switches flex justify-start gap-3 mt-4">
           <Button class="!py-1 !px-3" :class="filters.online ? '' : 'bg-gray-500 text-white'" :badge="onlineFriends" @click="onOnlineFilter">
             <div class="flex gap-1">
-              <span>{{ locale?.["online"] }}</span>
-              <!-- <Badge :class="!filters.online ? '' : 'bg-gray-700 text-white'" :data="onlineFriends.length" /> -->
+              <span class="fira-regular text-base">{{ locale?.["online"] }}</span>
               <Badge :data="onlineFriends.length" :dark="filters.online" :grey="!filters.online" />
             </div>
           </Button>
-          <Button class="!py-1 !px-3" :class="filters.battles ? '' : 'bg-gray-500 text-white'" @click="onBattlesFilter">{{ locale?.["battles"] }}</Button>
+          <Button class="!py-1 !px-3" :class="filters.battles ? '' : 'bg-gray-500 text-white'" @click="onBattlesFilter">
+            <span class="fira-regular text-base">{{ locale?.["battles"] }}</span>
+          </Button>
         </div>
 
         <TransitionGroup class="friend-list flex flex-col gap-4 my-4" name="list" tag="div">

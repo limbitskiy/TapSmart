@@ -1,15 +1,15 @@
 <template>
   <button
     v-if="!data?.hidden"
-    :class="dark ? 'bg-black' : grey ? 'bg-[var(--grey-light)]' : 'bg-[var(--accent-color)] text-black'"
-    class="rounded-xl font-bold fira-bold py-3 px-8 text-xl leading-6"
+    class="rounded-xl font-bold py-3 px-8 text-xl leading-6"
+    :class="[dark ? 'bg-black' : grey ? 'bg-[var(--grey-light)]' : 'bg-[var(--accent-color)] text-black', font ? font : 'fira-bold']"
     :disabled="data?.disabled"
     @touchstart="btnTouchstart"
     @touchend="btnTouchend"
     @click="onClick"
   >
     <slot>
-      <span v-if="data?.label">{{ data.label }}</span>
+      <span :class="[font]" v-if="data?.label">{{ data.label }}</span>
     </slot>
   </button>
 </template>
@@ -29,6 +29,7 @@ const { redirectTo, callApi, setRouteData, showModal } = mainStore;
 const props = defineProps<{
   dark?: boolean;
   grey?: boolean;
+  font?: string;
   data?: {
     hidden: boolean;
     disabled: boolean;
