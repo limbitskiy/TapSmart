@@ -17,7 +17,7 @@
           </Button>
         </div>
       </div>
-      <div class="bottom grid grid-cols-3 bg-[var(--grey-light)] py-1 rounded-xl pl-[55px]">
+      <div class="bottom grid grid-cols-[3fr_2fr_2fr] bg-[var(--grey-light)] py-1 rounded-xl pl-[55px]">
         <div class="bolts flex-1 flex items-center gap-1 relative justify-center">
           <img class="h-4" :src="getAsset('bolt')" />
           <span class="exo-black text-[var(--accent-color)]">{{ shortenNumber(profileData?.["bolts"]) }}</span>
