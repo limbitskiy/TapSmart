@@ -40,6 +40,8 @@ const params = ref({
 });
 
 const onClick = () => {
+  console.log(`scro0ll`);
+
   hideTooltip();
 };
 

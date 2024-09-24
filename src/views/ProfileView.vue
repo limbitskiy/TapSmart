@@ -61,11 +61,11 @@
 
           <!-- league progress -->
           <div class="with-substat flex flex-col">
-            <Pill class="rounded-xl" :tooltip="locale?.['tooltip_bolts_remain']">
+            <Pill class="rounded-xl" :tooltip="locale?.['tooltip_league']">
               <LeagueProgress grey="bg-gray-500" />
             </Pill>
             <!-- bolts left -->
-            <Pill class="!py-0 mx-2 bg-black rounded-xl rounded-t-none" :tooltip="locale?.['tooltip_bolts_remain']">
+            <Pill class="!py-0 mx-2 bg-black rounded-xl rounded-t-none">
               <div class="content flex items-center justify-between">
                 <span class="text-sm text-gray-300">{{ locale?.["bolts_remain"] || "Bolts left" }}</span>
                 <div class="flex gap-2 items-center">
@@ -177,7 +177,7 @@
 
           <!-- learning level -->
           <div class="with-substat flex flex-col">
-            <Pill class="rounded-xl" :tooltip="locale?.['tooltip_bolts_remain']">
+            <Pill class="rounded-xl" :tooltip="locale?.['tooltip_level']">
               <div class="learning-progress flex flex-col gap-1">
                 <div class="top flex items-baseline justify-between">
                   <div class="level">
@@ -269,6 +269,6 @@ const onSettingsChange = ({ setting, value }) => {
 };
 
 const onFeedback = () => {
-  location.href = "https://docs.google.com/forms/d/e/1FAIpQLSeUBEqDSVlTjW46qrrFkQQpNNZpsVuIGFjRj4HYt7toVJUAhg/viewform";
+  location.href = data.value?.["feedback_url"];
 };
 </script>
