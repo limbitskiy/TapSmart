@@ -44,10 +44,12 @@ export const shortenNumber = (num: number) => {
     return "BIG";
   } else if (numArr.length === 3) {
     return Math.round(num / 1000000) + "M";
-  } else if (numArr.length === 2) {
-    return Math.round(num / 1000) + "K";
-  } else {
-    return num;
+  }
+  // else if (numArr.length === 2) {
+  //   return Math.round(num / 1000) + "K";
+  // }
+  else {
+    return number;
   }
 };
 
