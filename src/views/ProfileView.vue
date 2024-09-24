@@ -24,7 +24,7 @@
             </Pill>
 
             <!-- bolts today -->
-            <Pill class="!py-0 mx-2 bg-[#111] rounded-xl rounded-t-none" :tooltip="locale?.['tooltip_bolts_today']">
+            <Pill class="!py-0 mx-2 bg-black rounded-xl rounded-t-none" :tooltip="locale?.['tooltip_bolts_today']">
               <div class="content flex items-center justify-between">
                 <span class="text-sm text-gray-300">{{ locale?.["bolts_today"] || "Today" }}</span>
                 <div class="flex gap-2 items-center">
@@ -48,7 +48,7 @@
             </Pill>
 
             <!-- nuts today -->
-            <Pill class="!py-0 mx-2 bg-[#111] rounded-xl rounded-t-none" :tooltip="locale?.['tooltip_nuts_today']">
+            <Pill class="!py-0 mx-2 bg-black rounded-xl rounded-t-none" :tooltip="locale?.['tooltip_nuts_today']">
               <div class="content flex items-center justify-between">
                 <span class="text-sm text-gray-300">{{ locale?.["nuts_today"] || "Nuts earned today" }}</span>
                 <div class="flex gap-2 items-center">
@@ -65,7 +65,7 @@
               <LeagueProgress grey="bg-gray-500" />
             </Pill>
             <!-- bolts left -->
-            <Pill class="!py-0 mx-2 bg-[#111] rounded-xl rounded-t-none" :tooltip="locale?.['tooltip_bolts_remain']">
+            <Pill class="!py-0 mx-2 bg-black rounded-xl rounded-t-none" :tooltip="locale?.['tooltip_bolts_remain']">
               <div class="content flex items-center justify-between">
                 <span class="text-sm text-gray-300">{{ locale?.["bolts_remain"] || "Bolts left" }}</span>
                 <div class="flex gap-2 items-center">
@@ -89,7 +89,7 @@
             </Pill>
 
             <!-- battles played today -->
-            <Pill class="!py-0 mx-2 bg-[#111] rounded-xl rounded-t-none">
+            <Pill class="!py-0 mx-2 bg-black rounded-xl rounded-t-none">
               <div class="content flex items-center justify-between">
                 <span class="text-sm text-gray-300">{{ locale?.["battles_played_today"] || "Battles played today" }}</span>
                 <div class="flex gap-2 items-center">
@@ -119,7 +119,7 @@
             </Pill>
 
             <!-- words trained today -->
-            <Pill class="!py-0 mx-2 bg-[#111] rounded-xl rounded-t-none">
+            <Pill class="!py-0 mx-2 bg-black rounded-xl rounded-t-none">
               <div class="content flex items-center justify-between">
                 <span class="text-sm text-gray-300">{{ locale?.["questions_trained_today"] || "Words trained today" }}</span>
                 <div class="flex gap-2 items-center">
@@ -142,7 +142,7 @@
             </Pill>
 
             <!-- words learned today -->
-            <Pill class="!py-0 mx-2 bg-[#111] rounded-xl rounded-t-none">
+            <Pill class="!py-0 mx-2 bg-black rounded-xl rounded-t-none">
               <div class="content flex items-center justify-between">
                 <span class="text-sm text-gray-300">{{ locale?.["questions_learned_today"] || "Words learned today" }}</span>
                 <div class="flex gap-2 items-center">
@@ -165,7 +165,7 @@
             </Pill>
 
             <!-- words learned today -->
-            <!-- <Pill class="!py-0 mx-2 bg-[#111] rounded-xl rounded-t-none">
+            <!-- <Pill class="!py-0 mx-2 bg-black rounded-xl rounded-t-none">
               <div class="content flex items-center justify-between">
                 <span class="text-sm text-gray-300">{{ locale?.["questions_repetition"] || "Words repeated today" }}</span>
                 <div class="flex gap-2 items-center">
@@ -200,7 +200,7 @@
             </Pill>
 
             <!-- left to get next learning level -->
-            <Pill class="!py-0 mx-2 bg-[#111] rounded-xl rounded-t-none" :tooltip="locale?.['tooltip_bolts_remain']">
+            <Pill class="!py-0 mx-2 bg-black rounded-xl rounded-t-none" :tooltip="locale?.['tooltip_bolts_remain']">
               <div class="content flex items-center justify-between">
                 <span class="text-sm text-gray-300">{{ locale?.["questions_remain"] || "Level remain" }}</span>
                 <div class="flex gap-2 items-center">
