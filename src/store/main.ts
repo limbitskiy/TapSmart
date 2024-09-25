@@ -198,7 +198,7 @@ export const useMainStore = defineStore("main", () => {
     return useFetch({ data });
   };
 
-  const fetchFriendsPage = async () => {
+  const fetchFriendsList = async () => {
     return await useFetch({ key: "friend_table_list" });
   };
 
@@ -301,7 +301,7 @@ export const useMainStore = defineStore("main", () => {
     tooltip,
     modal,
     startApp,
-    fetchFriendsPage,
+    fetchFriendsList,
     fetchRelaxPageData,
     fetchChallengePageData,
     fetchProfilePageData,

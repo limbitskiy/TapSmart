@@ -1,5 +1,5 @@
 <template>
-  <div class="league-progress flex flex-col gap-1">
+  <div class="league-progress flex flex-col gap-1" @click="onProgressClick">
     <div class="top flex items-baseline justify-between">
       <span class="text-sm fira-condensed text-nowrap">{{ profile?.["league_name"] }}</span>
       <span class="text-[10px] exo-bold text-gray-300">{{ profile?.["league_progress"] }}%</span>
@@ -30,12 +30,18 @@ const mainStore = useMainStore();
 const dataStore = useDataStore();
 const localeStore = useLocaleStore();
 
+const { showTooltip } = mainStore;
 const { profile, battles } = storeToRefs(dataStore);
-// const { profile, battles } = storeToRefs(localeStore);
+const { profile: profileLocale, battles: battleLocale } = storeToRefs(localeStore);
 
 defineProps<{
   grey?: string;
 }>();
 
-const value = ref(85.1);
+const onProgressClick = (event: MouseEvent) => {
+  showTooltip({
+    element: event.target,
+    text: profileLocale.value?.["tooltip_league"],
+  });
+};
 </script>

@@ -26,6 +26,7 @@ const { currentTaskTimeout } = storeToRefs(dataStore.battles);
 const progressRef = ref();
 
 const startAnimation = (duration: number) => {
+  currentAnimation?.finish();
   currentAnimation = progressRef.value?.animate([{ transform: "scaleX(0)" }], duration);
 };
 

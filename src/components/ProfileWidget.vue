@@ -59,10 +59,8 @@ const { showTooltip } = mainStore;
 
 const { profile: profileData, battles: battleData } = storeToRefs(dataStore);
 const { profile: profileLocale, battles: battleLocale } = storeToRefs(localeStore);
-const { energy } = storeToRefs(dataStore.battles);
 
 const onTooltip = (event: MouseEvent) => {
-  // console.log(event.target.dataset.locale);
   const locales = {
     profile: profileLocale.value,
     battle: battleLocale.value,
@@ -70,8 +68,6 @@ const onTooltip = (event: MouseEvent) => {
 
   const localeKey = event.target.dataset.locale.split(".")[0];
   const localeValue = event.target.dataset.locale.split(".")[1];
-
-  // console.log(locales[localeKey]);
 
   showTooltip({
     element: event.target,

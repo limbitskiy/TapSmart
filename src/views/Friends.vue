@@ -141,11 +141,11 @@ const localeStore = useLocaleStore();
 const { friends: data } = storeToRefs(dataStore);
 const { friends: locale } = storeToRefs(localeStore);
 
-const { fetchFriendsPage } = mainStore;
+const { fetchFriendsList } = mainStore;
 
 const el = ref();
 
-await fetchFriendsPage();
+await fetchFriendsList();
 
 const filters = ref({
   online: false,
@@ -175,7 +175,7 @@ const filteredFriends = computed(() => {
 const onlineFriends = computed(() => data.value.friendList.filter((friend) => friend.isOnline));
 
 const onRefreshFriends = () => {
-  fetchFriendsPage();
+  fetchFriendsList();
   el.value.animate({ rotate: "360deg" }, 1000);
 };
 

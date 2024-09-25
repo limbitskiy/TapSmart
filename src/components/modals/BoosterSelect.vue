@@ -2,10 +2,28 @@
   <div id="booster-select" class="flex-1 px-[2px] flex flex-col gap-4">
     <div class="pill-header flex items-center justify-between">
       <span class="bg-pill-title">{{ locale?.["booster_select_title"] || "Challenge" }}</span>
-      <div class="nuts flex items-center gap-1">
+      <!-- <div class="nuts flex items-center gap-1">
         <img class="h-4" :src="getAsset('nut')" />
         <span class="exo-black">{{ showFormattedNumber(profile?.["nuts"]) }}</span>
-      </div>
+      </div> -->
+    </div>
+
+    <div class="battle-rewards text-center">
+      <Pill id="extra-mistake" class="!py-2">
+        <!-- <span class="fira-bold">Battle rewards:</span> -->
+        <div class="rewards flex items-center justify-center">
+          <div class="mult flex gap-1 items-baseline">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M11 8.85185C11 9.09877 10.9136 9.30864 10.7407 9.48148L9.48148 10.7407C9.30864 10.9136 9.09877 11 8.85185 11C8.60494 11 8.39506 10.9136 8.22222 10.7407L5.5 8.01852L2.77778 10.7407C2.60494 10.9136 2.39506 11 2.14815 11C1.90123 11 1.69136 10.9136 1.51852 10.7407L0.259259 9.48148C0.0864198 9.30864 0 9.09877 0 8.85185C0 8.60494 0.0864198 8.39506 0.259259 8.22222L2.98148 5.5L0.259259 2.77778C0.0864198 2.60494 0 2.39506 0 2.14815C0 1.90123 0.0864198 1.69136 0.259259 1.51852L1.51852 0.259259C1.69136 0.0864198 1.90123 0 2.14815 0C2.39506 0 2.60494 0.0864198 2.77778 0.259259L5.5 2.98148L8.22222 0.259259C8.39506 0.0864198 8.60494 0 8.85185 0C9.09877 0 9.30864 0.0864198 9.48148 0.259259L10.7407 1.51852C10.9136 1.69136 11 1.90123 11 2.14815C11 2.39506 10.9136 2.60494 10.7407 2.77778L8.01852 5.5L10.7407 8.22222C10.9136 8.39506 11 8.60494 11 8.85185Z"
+                fill="#23DE35"
+              />
+            </svg>
+
+            <span class="text-xl exo-black"> {{ data?.["challenge_multiplicator"] }}</span>
+          </div>
+        </div>
+      </Pill>
     </div>
 
     <!-- <div class="filters flex items-center justify-between"> -->
@@ -32,7 +50,7 @@
     <!-- <Button class="!text-base !py-1 !px-4" activeColor="#fcdcb0" @click="onInviteFriends">{{ locale?.["invite_friends"] || "Invite friends" }}</Button> -->
     <!-- </div> -->
 
-    <div class="boosters flex flex-col gap-4 flex-1">
+    <div class="boosters flex flex-col gap-2 flex-1">
       <span class="fira-bold text-lg">{{ locale?.["available_boosters"] || "Available boosters" }}</span>
       <div class="boosters-content">
         <!-- extra mistake -->
@@ -146,15 +164,20 @@
     </div>
 
     <div class="bottom-btns flex flex-col gap-2">
-      <Button class="flex-1 py-4 rounded-lg" activeColor="#5a5a5a" @click="onStartBattle" grey>
+      <Button
+        class="flex-1 py-4 rounded-lg"
+        :style="onlineFriends.length ? 'background-color: black; color: white' : 'background-color: var(--accent-color); color: black'"
+        activeColor="#5a5a5a"
+        @click="onStartBattle"
+      >
         <div class="flex justify-center gap-1">
           <span class="text-xl leading-4">{{ locale?.["button_booster_select"] || "Challenge" }}</span>
         </div>
       </Button>
-      <Button class="" :badge="onlineFriends">
+      <Button class="" :class="onlineFriends.length ? '' : '!bg-black !text-white'" :badge="onlineFriends">
         <div class="flex gap-1 justify-center">
-          <span class="">{{ locale?.["button_booster_select_friend_challenge"] || "Challenge friends" }}</span>
-          <Badge :data="onlineFriends?.length" grey />
+          <span class="">{{ locale?.["button_booster_friends"] || "Challenge friends" }}</span>
+          <Badge class="bg-green-500" :data="onlineFriends?.length" grey />
         </div>
       </Button>
     </div>
@@ -175,6 +198,7 @@ import Badge from "@/components/UI/Badge.vue";
 // stores
 import { useDataStore } from "@/store/data";
 import { useLocaleStore } from "@/store/locale";
+import { useMainStore } from "@/store/main";
 
 const emit = defineEmits<{
   startBattle: [payload: {}];
@@ -189,12 +213,16 @@ const friendsOnly = ref(false);
 
 const dataStore = useDataStore();
 const localeStore = useLocaleStore();
+const mainStore = useMainStore();
 
 const { battles: locale } = storeToRefs(localeStore);
 const { profile, friends } = storeToRefs(dataStore);
 const { onlineFriends } = dataStore;
 const { data } = storeToRefs(dataStore.battles);
 const { stopBreakpoint, startBreakpoint } = dataStore.battles;
+const { fetchFriendsList } = mainStore;
+
+await fetchFriendsList();
 
 const onStartBattle = () => {
   const payloadObject = {
