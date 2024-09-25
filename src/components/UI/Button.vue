@@ -1,6 +1,7 @@
 <template>
   <button
     v-if="!data?.hidden"
+    ref="btnRef"
     class="rounded-xl font-bold py-3 px-8 text-xl leading-6"
     :class="[dark ? 'bg-black' : grey ? 'bg-[var(--grey-light)]' : 'bg-[var(--accent-color)] text-black', font ? font : 'fira-bold']"
     :disabled="data?.disabled"
@@ -15,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { useCssModule } from "vue";
+import { ref, useCssModule } from "vue";
 
 // stores
 import { useMainStore } from "@/store/main";
@@ -25,6 +26,12 @@ const { active: activeClass } = useCssModule();
 const mainStore = useMainStore();
 
 const { redirectTo, callApi, setRouteData, showModal } = mainStore;
+
+const btnRef = ref();
+
+defineExpose({
+  btnRef,
+});
 
 const props = defineProps<{
   dark?: boolean;

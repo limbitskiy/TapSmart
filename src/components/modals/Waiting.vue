@@ -2,6 +2,7 @@
   <div class="waiting-modal flex flex-col gap-4">
     <div class="header flex flex-col gap-4">
       <span class="bg-pill-title">{{ locale?.["waiting_title"] || "Waiting" }}</span>
+      <span class="bg-pill-subtitle">{{ locale?.["waiting_subtitle"] || "Waiting subtitle" }}</span>
       <Pill color="light">
         <div class="timer">
           <span>{{ "00:" + formattedTime }}</span>

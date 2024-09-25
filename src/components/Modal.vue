@@ -22,7 +22,7 @@
         v-if="visible"
         class="fixed bottom-0 w-full z-50 flex flex-col rounded-bl-none rounded-br-none py-4"
         color="dark"
-        :style="{ maxHeight: height ?? sticky ? '85dvh' : 'calc(100dvh - 76px)' }"
+        :style="{ maxHeight: height ?? sticky ? '85dvh' : 'calc(100dvh - 67px)' }"
       >
         <div class="w-8 h-1 bg-gray-500 rounded-full m-auto relative -top-4"></div>
         <div class="modal-scroll overflow-y-scroll">
