@@ -1,61 +1,64 @@
 <template>
   <div id="tasks" class="flex-1 mb-16">
-    <div class="top-part p-5 mb-4">
-      <div class="page-title mb-4">{{ locale?.["title"] || "Tasks" }}</div>
+    <div class="top-part p-5 mb-2">
+      <div class="page-title mb-2">{{ locale?.["title"] || "Tasks" }}</div>
       <div class="page-subtitle" v-html="locale?.['subtitle'] || 'Our new section! Complete tasks and get something! Maybe bolts, maybe nuts, maybe fame - who knows?'"></div>
     </div>
 
-    <BackgroundPill v-for="section in tasks.data" :key="section.id" class="task-section py-8 mb-8 overflow-y-hidden flex-1">
-      <div class="pill-header flex items-center justify-between">
-        <span class="bg-pill-title">{{ section.title }}</span>
-      </div>
+    <div class="flex-1 flex flex-col gap-12">
+      <BackgroundPill v-for="section in tasks.data" :key="section.id" class="task-section overflow-y-hidden flex-1">
+        <div class="pill-header flex items-center justify-between">
+          <span class="bg-pill-title">{{ section.title }}</span>
+        </div>
 
-      <div class="filters flex gap-2 mt-2">
         <!-- filters -->
-        <Button
-          v-for="filter in section.filters"
-          class="!py-1 !px-3"
-          :class="activeFilters[section.id]?.includes(filter.key) ? '' : 'bg-gray-500 text-white'"
-          @click="() => onFilter(section.id, filter)"
-        >
-          <span class="fira-regular text-base">{{ filter.label }}</span>
-        </Button>
-      </div>
+        <div class="filters flex gap-2 mt-2">
+          <Button
+            v-for="filter in section.filters"
+            class="!py-0 !px-3 !rounded-lg"
+            :class="activeFilters[section.id]?.includes(filter.key) ? '' : 'bg-gray-500 text-white'"
+            @click="() => onFilter(section.id, filter)"
+          >
+            <span class="fira-regular text-base">{{ filter.label }}</span>
+          </Button>
+        </div>
 
-      <div class="section-tasks flex flex-col gap-2 pt-4">
-        <Pill
-          v-for="task in section.tasks.filter((task) => {
-            if (task.filterKeys?.length) {
-              return task.filterKeys.includes(activeFilters[section.id]);
-            } else {
-              return task;
-            }
-          })"
-          :key="task.id"
-          class="py-3"
-          color="light"
-          @click="() => onTaskClick(task)"
-        >
-          <div class="content flex gap-2 items-center justify-between">
-            <div class="start flex gap-4 items-center">
-              <div class="flex gap-2 items-center p-2">
-                <img class="h-4 scale-[2]" :src="getAsset('cup')" />
-              </div>
-              <div class="task-meta">
-                <span class="text-xl fira-bold text-gray-300">{{ task.title }}</span>
-                <div class="reward flex items-center gap-2 ml-1">
-                  <img class="h-4 scale-125" :src="getAsset('bolt')" />
-                  <span class="text-xl exo-bold text-[var(--accent-color)]">+{{ task.bolts }}</span>
+        <!-- tasks -->
+        <div class="section-tasks flex flex-col gap-2 pt-4">
+          <Pill
+            v-for="task in section.tasks.filter((task) => {
+              if (task.filterKeys?.length) {
+                return task.filterKeys.includes(activeFilters[section.id]);
+              } else {
+                return task;
+              }
+            })"
+            :key="task.id"
+            class="!py-2 rounded-xl"
+            color="light"
+            @click="() => onTaskClick(task)"
+          >
+            <div class="content flex gap-2 items-center justify-between">
+              <div class="start flex gap-4 items-center">
+                <div class="flex gap-2 items-center p-2">
+                  <img class="h-4 scale-[2]" :src="getAsset('cup')" />
+                </div>
+                <div class="task-meta">
+                  <span class="text-lg fira-regular text-gray-300">{{ task.title }}</span>
+                  <div class="reward flex items-center gap-2 ml-1 h-6">
+                    <img class="h-4 scale-125" :src="getAsset('bolt')" />
+                    <span class="text-lg exo-bold text-[var(--accent-color)]">+{{ task.bolts }}</span>
+                  </div>
                 </div>
               </div>
+              <div class="end">
+                <img class="h-4" :src="getAsset('chevron-right')" />
+              </div>
             </div>
-            <div class="end">
-              <img class="h-4" :src="getAsset('chevron-right')" />
-            </div>
-          </div>
-        </Pill>
-      </div>
-    </BackgroundPill>
+          </Pill>
+        </div>
+      </BackgroundPill>
+    </div>
 
     <Teleport to="#modals">
       <Modal id="task-modal" v-model:visible="isTaskModal">

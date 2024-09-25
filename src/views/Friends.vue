@@ -13,7 +13,7 @@
           <template #end>
             <div class="flex flex-col gap-1">
               <span class="text-lg pill-title">{{ locale?.["premium_pill_title"] }}</span>
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 h-4 mb-1">
                 <img class="h-4 scale-150" :src="getAsset('bolt')" />
                 <span class="text-gray-400 exo-bold" v-html="locale?.['premium_pill_subtitle']"></span>
               </div>
@@ -29,7 +29,7 @@
           <template #end>
             <div class="flex flex-col gap-1">
               <span class="text-lg pill-title">{{ locale?.["tg_pill_title"] }}</span>
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 h-4 mb-1">
                 <img class="h-4 scale-150" :src="getAsset('bolt')" />
                 <span class="text-gray-400 exo-bold" v-html="locale?.['tg_pill_subtitle']"></span>
               </div>
@@ -44,27 +44,27 @@
       <span class="bg-pill-title">{{ locale?.["income_title"] }}</span>
 
       <div class="flex flex-col gap-2 mt-4">
-        <Pill color="light" :tooltip="locale?.['tooltip_bolts_earned']">
+        <Pill class="!py-2 rounded-xl" :tooltip="locale?.['tooltip_bolts_earned']">
           <div class="content flex items-center justify-between">
             <span class="text-lg text-gray-300">{{ locale?.["bolts_earned"] || "Bolts earned" }}</span>
             <div class="price flex gap-2 items-center">
               <img class="h-4 scale-150" :src="getAsset('bolt')" />
-              <span class="text-xl font-bold exo-bold">{{ data?.["income"] || 0 }}</span>
+              <span class="text-lg font-bold exo-bold">{{ data?.["income"] || 0 }}</span>
             </div>
           </div>
         </Pill>
 
-        <Pill color="light" :tooltip="locale?.['tooltip_battles_played']">
+        <Pill class="!py-2 rounded-xl" :tooltip="locale?.['tooltip_battles_played']">
           <div class="content flex justify-between">
             <span class="text-lg text-gray-300">{{ locale?.["battles_played"] || "Battles played" }}</span>
-            <span class="text-xl font-bold exo-bold">{{ data?.["battles"] || 0 }}</span>
+            <span class="text-lg font-bold exo-bold">{{ data?.["battles"] || 0 }}</span>
           </div>
         </Pill>
 
-        <Pill color="light" :tooltip="locale?.['tooltip_points_earned']">
+        <Pill class="!py-2 rounded-xl" :tooltip="locale?.['tooltip_points_earned']">
           <div class="content flex justify-between">
             <span class="text-lg text-gray-300">{{ locale?.["points_earned"] || "Points earned" }}</span>
-            <span class="text-xl font-bold exo-bold">{{ data?.["points"] || 0 }}</span>
+            <span class="text-lg font-bold exo-bold">{{ data?.["points"] || 0 }}</span>
           </div>
         </Pill>
       </div>
@@ -84,13 +84,13 @@
 
       <template v-if="data?.friendList?.length">
         <div class="switches flex justify-start gap-3 mt-4">
-          <Button class="!py-1 !px-3" :class="filters.online ? '' : 'bg-gray-500 text-white'" :badge="onlineFriends" @click="onOnlineFilter">
+          <Button class="!py-0 !px-3 !rounded-lg" :class="filters.online ? '' : 'bg-gray-500 text-white'" :badge="onlineFriends" @click="onOnlineFilter">
             <div class="flex gap-1">
               <span class="fira-regular text-base">{{ locale?.["online"] }}</span>
               <Badge :data="onlineFriends.length" :dark="filters.online" :grey="!filters.online" />
             </div>
           </Button>
-          <Button class="!py-1 !px-3" :class="filters.battles ? '' : 'bg-gray-500 text-white'" @click="onBattlesFilter">
+          <Button class="!py-0 !px-3 !rounded-lg" :class="filters.battles ? '' : 'bg-gray-500 text-white'" @click="onBattlesFilter">
             <span class="fira-regular text-base">{{ locale?.["battles"] }}</span>
           </Button>
         </div>
