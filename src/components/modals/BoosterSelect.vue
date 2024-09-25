@@ -174,7 +174,7 @@
           <span class="text-xl leading-4">{{ locale?.["button_booster_select"] || "Challenge" }}</span>
         </div>
       </Button>
-      <Button class="" :class="onlineFriends.length ? '' : '!bg-black !text-white'" :badge="onlineFriends">
+      <Button class="" :class="onlineFriends.length ? '' : '!bg-black !text-white'" :badge="onlineFriends" @click="onFriendsOnly">
         <div class="flex gap-1 justify-center">
           <span class="">{{ locale?.["button_booster_friends"] || "Challenge friends" }}</span>
           <Badge class="bg-green-500" :data="onlineFriends?.length" grey />
@@ -209,8 +209,6 @@ const pickedBonuses = ref({
   time: false,
 });
 
-const friendsOnly = ref(false);
-
 const dataStore = useDataStore();
 const localeStore = useLocaleStore();
 const mainStore = useMainStore();
@@ -222,20 +220,26 @@ const { data } = storeToRefs(dataStore.battles);
 const { stopBreakpoint, startBreakpoint } = dataStore.battles;
 const { fetchFriendsList } = mainStore;
 
-await fetchFriendsList();
+fetchFriendsList();
 
 const onStartBattle = () => {
   const payloadObject = {
     extra_time: pickedBonuses.value.time ? 1 : 0,
     extra_mistake: pickedBonuses.value.mistake ? 1 : 0,
-    friends_only: friendsOnly.value ? 1 : 0,
+    friends_only: 0,
   };
 
   emit("startBattle", payloadObject);
 };
 
 const onFriendsOnly = () => {
-  friendsOnly.value = !friendsOnly.value;
+  const payloadObject = {
+    extra_time: pickedBonuses.value.time ? 1 : 0,
+    extra_mistake: pickedBonuses.value.mistake ? 1 : 0,
+    friends_only: 1,
+  };
+
+  emit("startBattle", payloadObject);
 };
 
 const onInviteFriends = () => {
