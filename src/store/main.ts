@@ -8,7 +8,14 @@ import { useDataStore } from "@/store/data";
 import { useBattleStore } from "@/store/battle";
 
 // types
-import { NotificationProps, ResponseObject, ResponseData, MainState, TooltipProps, ModalProps } from "@/types";
+import {
+  NotificationProps,
+  ResponseObject,
+  ResponseData,
+  MainState,
+  TooltipProps,
+  ModalProps,
+} from "@/types";
 
 // api
 import { makeRequest } from "@/api/server";
@@ -65,19 +72,21 @@ export const useMainStore = defineStore("main", () => {
   const parseResponse = (response: ResponseObject) => {
     (Object.keys(response) as Array<keyof ResponseObject>).forEach((key) => {
       if (key === "data") {
-        (Object.keys(response.data) as Array<keyof ResponseData>).forEach((section) => {
-          const sectionData = response.data[section];
+        (Object.keys(response.data) as Array<keyof ResponseData>).forEach(
+          (section) => {
+            const sectionData = response.data[section];
 
-          if (sectionData === null) return;
+            if (sectionData === null) return;
 
-          if (section === "notification") {
-            showNotification(sectionData as NotificationProps);
-          } else if (section === "modal") {
-            showModal(sectionData as ModalProps);
-          } else {
-            dataStore.set(section, sectionData);
+            if (section === "notification") {
+              showNotification(sectionData as NotificationProps);
+            } else if (section === "modal") {
+              showModal(sectionData as ModalProps);
+            } else {
+              dataStore.set(section, sectionData);
+            }
           }
-        });
+        );
       } else if (key === "entryPoint" && isAppLoaded.value) {
         redirectTo(response.entryPoint);
       } else if (key === "externalUrl") {
@@ -98,12 +107,17 @@ export const useMainStore = defineStore("main", () => {
     }
   };
 
-  const showNotification = ({ title, subtitle, buttons, timeout }: NotificationProps) => {
+  const showNotification = ({
+    title,
+    subtitle,
+    buttons,
+    timeout,
+  }: NotificationProps) => {
     if (notification.value.isShown) {
-      hideNotification();
+      // hideNotification();
 
       setTimeout(() => {
-        showNotification({ title, subtitle, buttons, timeout });
+        // showNotification({ title, subtitle, buttons, timeout });
       }, 500);
       return;
     }
@@ -111,12 +125,12 @@ export const useMainStore = defineStore("main", () => {
     notification.value.title = title;
     notification.value.subtitle = subtitle;
     notification.value.buttons = buttons;
-    notification.value.isShown = true;
+    // notification.value.isShown = true;
 
     // console.log(`notification: `, notification.value);
 
     notification.value.fn = setTimeout(() => {
-      hideNotification();
+      // hideNotification();
     }, timeout);
   };
 
@@ -128,7 +142,13 @@ export const useMainStore = defineStore("main", () => {
     notification.value.fn = null;
   };
 
-  const showTooltip = ({ element, text }: { element: HTMLElement; text: string }) => {
+  const showTooltip = ({
+    element,
+    text,
+  }: {
+    element: HTMLElement;
+    text: string;
+  }) => {
     if (element === tooltip.value.element) {
       return;
     }
@@ -204,13 +224,17 @@ export const useMainStore = defineStore("main", () => {
 
   const fetchRelaxPageData = async () => {
     await useFetch({ key: "battle_init" });
-    redirectTo(`/home/relax/${battleStore.getMechanicName(battleStore.data.battle_type)}`);
+    redirectTo(
+      `/home/relax/${battleStore.getMechanicName(battleStore.data.battle_type)}`
+    );
     return;
   };
 
   const fetchChallengePageData = async (data: {}) => {
     await useFetch({ key: "challenge_init", data });
-    redirectTo(`/challenge/${battleStore.getMechanicName(battleStore.data.battle_type)}`);
+    redirectTo(
+      `/challenge/${battleStore.getMechanicName(battleStore.data.battle_type)}`
+    );
     return;
   };
 
@@ -221,6 +245,11 @@ export const useMainStore = defineStore("main", () => {
 
   const fetchTasksList = async () => {
     await useFetch({ key: "tasks_list" });
+    return;
+  };
+
+  const getOnlineFriends = async () => {
+    await useFetch({ key: "get_online_friends" });
     return;
   };
 
@@ -289,6 +318,8 @@ export const useMainStore = defineStore("main", () => {
   const redirectTo = (location: string) => {
     if (route.path === location) return;
 
+    console.log(`redirecting to ${location}`);
+
     router.push(location);
   };
 
@@ -302,6 +333,7 @@ export const useMainStore = defineStore("main", () => {
     modal,
     startApp,
     fetchFriendsList,
+    getOnlineFriends,
     fetchRelaxPageData,
     fetchChallengePageData,
     fetchProfilePageData,
