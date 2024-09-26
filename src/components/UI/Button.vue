@@ -2,9 +2,17 @@
   <button
     v-if="!data?.hidden"
     ref="btnRef"
-    class="rounded-xl font-bold py-3 px-8 text-xl leading-6"
-    :class="[dark ? 'bg-black' : grey ? 'bg-[var(--grey-light)]' : 'bg-[var(--accent-color)] text-black', font ? font : 'fira-bold']"
-    :disabled="data?.disabled"
+    :class="[
+      !unstyled && 'rounded-xl font-bold py-3 px-8 text-xl leading-6',
+      dark
+        ? 'bg-black'
+        : grey
+        ? 'bg-[var(--grey-light)]'
+        : !unstyled && 'bg-[var(--accent-color)] text-black',
+      font ? font : 'fira-bold',
+      data?.disabled ?? disabled ? 'bg-gray-300 text-gray-500' : '',
+    ]"
+    :disabled="data?.disabled ?? disabled"
     @touchstart="btnTouchstart"
     @touchend="btnTouchend"
     @click="onClick"
@@ -48,6 +56,8 @@ const props = defineProps<{
     showModal: { title: string; subtitle: string; buttons: {} };
   };
   activeColor?: string;
+  unstyled?: boolean;
+  disabled?: boolean;
   defaultAction?: () => void;
 }>();
 
@@ -74,7 +84,7 @@ const onClick = () => {
 };
 
 const btnTouchstart = (event: TouchEvent) => {
-  if (!props.activeColor) return;
+  if (!props.activeColor || props.disabled) return;
 
   const { target } = event;
   const btn = target.closest("button");
@@ -83,7 +93,7 @@ const btnTouchstart = (event: TouchEvent) => {
 };
 
 const btnTouchend = (event: TouchEvent) => {
-  if (!props.activeColor) return;
+  if (!props.activeColor || props.disabled) return;
 
   const { target } = event;
   const btn = target?.closest("button");
