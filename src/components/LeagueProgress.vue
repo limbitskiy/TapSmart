@@ -1,9 +1,11 @@
 <template>
   <div class="league-progress flex flex-col gap-1" @click="onProgressClick">
     <div class="top flex items-baseline justify-between">
-      <span class="text-sm fira-condensed text-nowrap">{{
-        profile?.["league_name"]
-      }}</span>
+      <slot name="leagueName">
+        <span class="text-sm fira-condensed text-nowrap">{{
+          profile?.["league_name"]
+        }}</span>
+      </slot>
       <span class="text-[10px] exo-bold text-gray-300"
         >{{ profile?.["league_progress"] }}%</span
       >
