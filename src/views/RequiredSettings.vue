@@ -8,8 +8,15 @@
     <LanguageSettings @change="onSettingsChange" />
 
     <div class="bnt-cnt flex justify-between absolute bottom-0 w-full">
-      <Button class="w-full py-3" activeColor="#fcdcb0" label="Next" @click="onNext">
-        <span class="text-xl leading-4">{{ locale?.["button_next"] || "Next" }}</span>
+      <Button
+        class="w-full py-3"
+        activeColor="#fcdcb0"
+        label="Next"
+        @click="onNext"
+      >
+        <span class="text-xl leading-4">{{
+          locale?.["button_next"] || "Next"
+        }}</span>
       </Button>
     </div>
   </div>
@@ -38,11 +45,17 @@ const { requiredSettings: locale } = storeToRefs(localeStore);
 
 const { setLanguages, redirectTo } = mainStore;
 
-const onSettingsChange = ({ setting, value }: { setting: string; value: number }) => {
+const onSettingsChange = ({
+  setting,
+  value,
+}: {
+  setting: string;
+  value: number;
+}) => {
   setLanguages({ [setting]: value });
 };
 
 const onNext = () => {
-  redirectTo("/start-relax");
+  redirectTo("/home/relax");
 };
 </script>

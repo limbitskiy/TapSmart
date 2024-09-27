@@ -201,7 +201,7 @@ const onAbortChallenge = () => {
   isWaiting.value = false;
   isBattle.value = false;
   stopChallenge();
-  redirectTo("/start-relax");
+  redirectTo("/home/relax");
 };
 
 const onBonusUsed = (bonusName: string) => {
