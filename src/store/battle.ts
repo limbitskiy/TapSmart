@@ -50,6 +50,7 @@ export const useBattleStore = defineStore("battle", () => {
   const answers = ref<Answer[]>([]);
   const challengeScore = ref(0);
   const bonusesUsed = ref({});
+  const afkCounter = ref(0);
 
   let battleStartTime = null;
   let challengeStarted = ref(false);
@@ -68,6 +69,7 @@ export const useBattleStore = defineStore("battle", () => {
   // getters
   const data = computed(() => state.value.battleData);
   const currentBattleMode = computed(() => state.value.battleData.battle_mode);
+  // const afkCounter = computed(() => _afkCounter.value);
   // const currentBattleType = computed(() => state.value.battleData.battle_type);
   const currentTask = computed(
     () => state.value.battleData.data?.[taskIndex.value]
@@ -210,6 +212,7 @@ export const useBattleStore = defineStore("battle", () => {
         answerString: "",
         subtractEnergyAmount: 0,
       });
+      afkCounter.value += 1;
     };
 
     // console.log(`new timeout: ${currentMechanic.value.timeout}`);
@@ -313,7 +316,7 @@ export const useBattleStore = defineStore("battle", () => {
   const handleRelaxAnswer = ({
     isCorrect,
     answerString,
-    subtractEnergyAmount = 1,
+    subtractEnergyAmount = 3,
   }: AnswerProps) => {
     if (data.value.energy === 0) return;
 
@@ -337,6 +340,7 @@ export const useBattleStore = defineStore("battle", () => {
       onCorrectAnswer();
       const multiplier = calculateRelaxMultiplierAmount();
       dataStore.addBolts(multiplier);
+      changeEnergy(1);
     } else {
       if (subtractEnergyAmount) {
         changeEnergy(-subtractEnergyAmount);
@@ -518,6 +522,10 @@ export const useBattleStore = defineStore("battle", () => {
     challengeStarted.value = false;
   };
 
+  const resetAfkCounter = () => {
+    afkCounter.value = 0;
+  };
+
   return {
     data,
     currentTask,
@@ -529,6 +537,7 @@ export const useBattleStore = defineStore("battle", () => {
     energy,
     currentTaskTimeout,
     currentBattleMode,
+    afkCounter,
     set,
     expand,
     pauseBattle,
@@ -547,5 +556,6 @@ export const useBattleStore = defineStore("battle", () => {
     resetBattleStats,
     startChallenge,
     stopChallenge,
+    resetAfkCounter,
   };
 });

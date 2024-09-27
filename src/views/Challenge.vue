@@ -143,7 +143,7 @@ watch(
   }
 );
 
-await fetchChallengePageData(challengeParams);
+fetchChallengePageData(challengeParams);
 
 const timer = ref(0);
 
@@ -167,21 +167,21 @@ const onFriendStart = () => {
 };
 
 const onStart = async () => {
-  // isWaiting.value = false;
-  // await callApi({ api: "battle_init" });
-  // if (currentBattleMode.value === "challenge") {
-  //   timer.value = data.value.battle_duration ? +data.value.battle_duration : 0;
-  //   isBattle.value = true;
-  //   startChallenge();
-  //   interval = setInterval(() => {
-  //     if (timer.value === 0) {
-  //       clearInterval(interval);
-  //       onEnd();
-  //       return;
-  //     }
-  //     timer.value -= 1000;
-  //   }, 1000);
-  // }
+  isWaiting.value = false;
+  await callApi({ api: "battle_init" });
+  if (currentBattleMode.value === "challenge") {
+    timer.value = data.value.battle_duration ? +data.value.battle_duration : 0;
+    isBattle.value = true;
+    startChallenge();
+    interval = setInterval(() => {
+      if (timer.value === 0) {
+        clearInterval(interval);
+        onEnd();
+        return;
+      }
+      timer.value -= 1000;
+    }, 1000);
+  }
 };
 
 const onEnd = async () => {

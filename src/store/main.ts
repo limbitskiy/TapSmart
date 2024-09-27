@@ -58,6 +58,10 @@ export const useMainStore = defineStore("main", () => {
   const requestPending = ref(false);
   const requestQueue = ref([]);
 
+  const pageKeys = {
+    homeChild: Math.random() * 99999,
+  };
+
   // process request queue
   watch(
     requestQueue,
@@ -327,6 +331,12 @@ export const useMainStore = defineStore("main", () => {
     state.value.routeData = value;
   };
 
+  const getPageKey = (page) => pageKeys[page];
+
+  const resetPageKey = (page) => {
+    pageKeys[page] = Math.random() * 9999;
+  };
+
   return {
     notification,
     tooltip,
@@ -351,5 +361,7 @@ export const useMainStore = defineStore("main", () => {
     onVibrate,
     setRouteData,
     showModal,
+    getPageKey,
+    resetPageKey,
   };
 });
