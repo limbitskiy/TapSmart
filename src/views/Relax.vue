@@ -172,8 +172,13 @@ watch(
   ],
   (val) => {
     if (val.some((modal) => modal)) {
+      if (!val[3]) {
+        resetAfkCounter();
+      }
+
       setTaskTimeoutCounter(1);
     } else {
+      resetAfkCounter();
       setTaskTimeoutCounter(null);
       startTaskTimeout();
     }
@@ -248,7 +253,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   // console.log(`unmounted`);
-
+  resetAfkCounter();
   stopBreakpoint();
   setTaskTimeoutCounter(1);
 });
