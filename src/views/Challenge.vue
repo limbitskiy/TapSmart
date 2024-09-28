@@ -191,7 +191,7 @@ const onEnd = async () => {
   isBattleCompleteAnimation.value = true;
 
   setTimeout(() => {
-    callApi({ api: "battle_completed" });
+    // callApi({ api: "battle_completed" });
     isBattleCompleteAnimation.value = false;
     redirectTo("/battle-complete");
   }, 3000);

@@ -243,13 +243,15 @@ export const useMainStore = defineStore("main", () => {
   };
 
   const fetchProfilePageData = async () => {
-    await useFetch({ key: "profile_get" });
-    return;
+    return await useFetch({ key: "profile_get" });
   };
 
   const fetchTasksList = async () => {
-    await useFetch({ key: "tasks_list" });
-    return;
+    return await useFetch({ key: "tasks_list" });
+  };
+
+  const fetchBattleCompleteData = async () => {
+    return await useFetch({ key: "battle_completed" });
   };
 
   const getOnlineFriends = async () => {
@@ -348,6 +350,7 @@ export const useMainStore = defineStore("main", () => {
     fetchChallengePageData,
     fetchProfilePageData,
     fetchTasksList,
+    fetchBattleCompleteData,
     setLanguages,
     initialFetch,
     useFetch,

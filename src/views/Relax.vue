@@ -5,7 +5,7 @@
     <div class="top-btns grid grid-cols-2 gap-4 w-full px-4 relative">
       <Button
         class="bg-[var(--grey-dark)] text-white fira-condensed-bold leading-4 !px-4 py-2"
-        activeColor="#fff"
+        activeColor="#444"
         @click="onChangeMech"
       >
         <div class="flex gap-1 items-center justify-between">
@@ -117,14 +117,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  onMounted,
-  ref,
-  watch,
-  onBeforeUnmount,
-  onUpdated,
-  computed,
-} from "vue";
+import { onMounted, ref, watch, onBeforeUnmount, computed } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 import { tg, setThemeColor } from "@/api/telegram";

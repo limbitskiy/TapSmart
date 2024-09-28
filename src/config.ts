@@ -32,6 +32,8 @@ export const images = {
   stories: "/stories.png",
   "1st_place": "/1st_place.png",
   "2nd_place": "/2nd_place.png",
+  "3rd_place": "/3rd_place.png",
+  mult: "/mult.svg",
 };
 
 // assets folder

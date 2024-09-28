@@ -19,6 +19,10 @@ import ChallengeButton from "@/components/UI/ChallengeButton.vue";
 import BoosterSelect from "@/components/modals/BoosterSelect.vue";
 import Loader from "@/components/UI/Loader.vue";
 import Navigation from "@/components/Navigation.vue";
+import Profile from "@/components/ProfileWidget.vue";
+import Pill from "@/components/UI/Pill.vue";
+import Ad from "@/components/UI/Ad.vue";
+import BackgroundPill from "@/components/UI/BackgroundPill.vue";
 
 // modals
 import AFK from "@/components/modals/AFK.vue";
@@ -43,6 +47,11 @@ app
   .component("BoosterSelect", BoosterSelect)
   .component("Loader", Loader)
   .component("Navigation", Navigation)
-  .component("AFK", AFK);
+  .component("AFK", AFK)
+  .component("Profile", Profile)
+  .component("Pill", Pill)
+  .component("BackgroundPill", BackgroundPill)
+  .component("Profile", Profile)
+  .component("Ad", Ad);
 
 app.mount("#app");
