@@ -24,7 +24,16 @@
         />
       </svg>
     </div>
-    <img class="h-12 my-3" :src="getAsset(image)" />
+    <div v-if="image === 'progress'" class="progress-icon">
+      <div
+        class="circle grid place-items-center w-[63px] h-[63px] my-3 border border-[3px] border-[var(--accent-color)] rounded-full"
+      >
+        <span class="exo-black"
+          >{{ data?.["battle_results_ad_percent"] }}%</span
+        >
+      </div>
+    </div>
+    <img v-else class="h-12 my-3" :src="getAsset(image)" />
     <span class="fira-bold text-lg">{{ title }}</span>
     <span
       class="inline-svg"
@@ -38,12 +47,16 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { getAsset, getSpecialSymbol } from "@/utils";
+import { storeToRefs } from "pinia";
 
 // store
 import { useMainStore } from "@/store/main";
+import { useDataStore } from "@/store/data";
 
 const mainStore = useMainStore();
+const dataStore = useDataStore();
 
+const { data } = storeToRefs(dataStore.battles);
 const { showTooltip } = mainStore;
 
 const el = ref();

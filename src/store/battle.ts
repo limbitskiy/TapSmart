@@ -337,8 +337,8 @@ export const useBattleStore = defineStore("battle", () => {
     }
 
     if (isCorrect) {
-      onCorrectAnswer();
       const multiplier = calculateRelaxMultiplierAmount();
+      onCorrectAnswer();
       dataStore.addBolts(multiplier);
       changeEnergy(1);
     } else {
@@ -466,7 +466,7 @@ export const useBattleStore = defineStore("battle", () => {
     const calcPoints = [...state.value.battleData.calc_points];
     const idx = correctStreak.value;
 
-    if (multiplicator && calcPoints?.length && idx) {
+    if (multiplicator && calcPoints?.length && idx >= 0) {
       if (!calcPoints[idx]) {
         return multiplicator * calcPoints[calcPoints.length - 1];
       }

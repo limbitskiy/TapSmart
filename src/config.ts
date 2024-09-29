@@ -34,6 +34,8 @@ export const images = {
   "2nd_place": "/2nd_place.png",
   "3rd_place": "/3rd_place.png",
   mult: "/mult.svg",
+  new_level: "/new_level.png",
+  new_league: "/new_league.png",
 };
 
 // assets folder

@@ -20,17 +20,17 @@
                   data?.["completed_place"] || "Place:"
                 }}</span>
                 <img
-                  v-if="playerPlace[0] === 1"
+                  v-if="data?.['battle_complete_place'] === 1"
                   class="h-12"
                   :src="getAsset('1st_place')"
                 />
                 <img
-                  v-if="playerPlace[0] === 2"
+                  v-if="data?.['battle_complete_place'] === 2"
                   class="h-12"
                   :src="getAsset('3rd_place')"
                 />
                 <img
-                  v-if="playerPlace[0] === 3"
+                  v-if="data?.['battle_complete_place'] === 3"
                   class="h-12"
                   :src="getAsset('3rd_place')"
                 />
@@ -182,15 +182,15 @@ await fetchBattleCompleteData();
 
 const getBtnTextArr = (text: string) => text.split("<separate>");
 
-const playerPlace = computed(() => {
-  if (!data.value.battle_results_leaderboard) return 0;
+// const playerPlace = computed(() => {
+//   if (!data.value.battle_results_leaderboard) return 0;
 
-  const leaderboard = [...data.value.battle_results_leaderboard];
+//   const leaderboard = [...data.value.battle_results_leaderboard];
 
-  const sorted = leaderboard.sort((a, b) => b.score - a.score);
+//   const sorted = leaderboard.sort((a, b) => b.score - a.score);
 
-  const playerIdx = sorted.findIndex((player) => player.isPlayer);
+//   const playerIdx = sorted.findIndex((player) => player.isPlayer);
 
-  return [playerIdx + 1, leaderboard.length];
-});
+//   return [playerIdx + 1, leaderboard.length];
+// });
 </script>
