@@ -2,12 +2,24 @@
   <div
     ref="tooltipRef"
     class="tooltip absolute z-[100] bg-[#535353] border border-[#4b4b4b] p-4 rounded-xl text-sm w-max"
-    :style="{ top: `${params.y}px`, left: `${params.x}px`, maxWidth: `${params.width}px` }"
+    :style="{
+      top: `${params.y}px`,
+      left: `${params.x}px`,
+      maxWidth: `${params.width}px`,
+    }"
     @click="onClick"
   >
-    <div v-if="params.position === 'bottom'" class="triangle-up absolute -top-[8px]" :style="{ left: params.center - 5 + 'px' }"></div>
+    <div
+      v-if="params.position === 'bottom'"
+      class="triangle-up absolute -top-[8px]"
+      :style="{ left: params.center - 5 + 'px' }"
+    ></div>
     <span>{{ tooltip.text }}</span>
-    <div v-if="params.position === 'top'" class="triangle-down absolute -bottom-[8px]" :style="{ left: params.center - 5 + 'px' }"></div>
+    <div
+      v-if="params.position === 'top'"
+      class="triangle-down absolute -bottom-[8px]"
+      :style="{ left: params.center - 5 + 'px' }"
+    ></div>
   </div>
 </template>
 
@@ -25,10 +37,16 @@ const { hideTooltip } = mainStore;
 
 const tooltipRef = ref();
 
-const { left: elementLeft, width: elementWidth, height: elementHeight, top: elementTop, right: elementRight } = tooltip.value.element.getBoundingClientRect();
+const {
+  left: elementLeft,
+  width: elementWidth,
+  height: elementHeight,
+  top: elementTop,
+  right: elementRight,
+} = tooltip.value.element.getBoundingClientRect();
 
 const calculatedElementWidth = (elementWidth: number) => {
-  return elementWidth > 150 ? elementWidth : 150;
+  return elementWidth > 250 ? elementWidth : 250;
 };
 
 const params = ref({
@@ -48,7 +66,12 @@ const onScroll = () => {
 };
 
 onMounted(() => {
-  const { height: tooltipHeight, width: tooltipWidth, right: tooltipRight, left: tooltipLeft } = tooltipRef.value.getBoundingClientRect();
+  const {
+    height: tooltipHeight,
+    width: tooltipWidth,
+    right: tooltipRight,
+    left: tooltipLeft,
+  } = tooltipRef.value.getBoundingClientRect();
 
   // check for Y overflowing
   if (params.value.y - tooltipHeight < window.scrollY) {

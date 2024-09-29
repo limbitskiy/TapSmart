@@ -294,6 +294,8 @@ setThemeColor("#222");
 
 console.log("tg:", tg);
 
+console.log(`location:`, location);
+
 Promise.allSettled([
   initialFetch({
     botName,

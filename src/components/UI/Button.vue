@@ -84,7 +84,7 @@ const onClick = () => {
 };
 
 const btnTouchstart = (event: TouchEvent) => {
-  if (!props.activeColor || props.disabled) return;
+  if (!props.activeColor || props.disabled || props.data?.disabled) return;
 
   const { target } = event;
   const btn = target.closest("button");
@@ -93,7 +93,7 @@ const btnTouchstart = (event: TouchEvent) => {
 };
 
 const btnTouchend = (event: TouchEvent) => {
-  if (!props.activeColor || props.disabled) return;
+  if (!props.activeColor || props.disabled || props.data?.disabled) return;
 
   const { target } = event;
   const btn = target?.closest("button");

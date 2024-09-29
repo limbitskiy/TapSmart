@@ -4,17 +4,28 @@
 
     <BackgroundPill class="py-8 mt-4 overflow-y-hidden flex-1">
       <div class="pill-header flex items-center justify-between">
-        <span class="bg-pill-title">{{ locale?.["battle_results_title"] || "Battle results:" }}</span>
+        <span class="bg-pill-title">{{
+          locale?.["battle_results_title"] || "Battle results:"
+        }}</span>
       </div>
 
       <div class="scrollable-cnt flex-1 overflow-y-auto mt-2">
         <div class="leaderboard flex flex-col gap-1 pt-4">
-          <Pill v-for="(player, index) in leaderboardSorted" :key="player.id" class="py-2 flex items-center justify-between gap-4" color="light">
+          <Pill
+            v-for="(player, index) in leaderboardSorted"
+            :key="player.id"
+            class="py-2 flex items-center justify-between gap-4"
+            color="light"
+          >
             <div class="player-meta leading-3 flex gap-4 items-center">
               <span class="league exo-black text-xl">{{ index + 1 }}</span>
-              <span class="fira-bold text-lg max-w-1/2 text-ellipsis">{{ player.name }}</span>
+              <span class="fira-bold text-lg max-w-1/2 text-ellipsis">{{
+                player.name
+              }}</span>
             </div>
-            <span class="bolts exo-black text-[var(--accent-color)]">{{ player?.score || 0 }}</span>
+            <span class="bolts exo-black text-[var(--accent-color)]">{{
+              player?.score || 0
+            }}</span>
           </Pill>
         </div>
 
@@ -35,10 +46,19 @@
           activeColor="#525252"
           :data="data.battle_results_buttons.left"
         >
-          <span class="text-lg inline-block leading-5 mt-1">{{ data?.["battle_results_buttons"]?.left?.label }}</span>
+          <span class="text-lg inline-block leading-5 mt-1">{{
+            data?.["battle_results_buttons"]?.left?.label
+          }}</span>
         </Button>
-        <Button v-if="data?.battle_results_buttons?.right" class="flex-1 !py-2 px-5" activeColor="#fcdcb0" :data="data.battle_results_buttons.right">
-          <span class="text-lg inline-block leading-5 mt-1">{{ data?.["battle_results_buttons"]?.right?.label }}</span>
+        <Button
+          v-if="data?.battle_results_buttons?.right"
+          class="flex-1 !py-2 px-5"
+          activeColor="#fcdcb0"
+          :data="data.battle_results_buttons.right"
+        >
+          <span class="text-lg inline-block leading-5 mt-1">{{
+            data?.["battle_results_buttons"]?.right?.label
+          }}</span>
         </Button>
       </div>
     </BackgroundPill>
@@ -46,6 +66,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import { getAsset } from "@/utils";
 import { storeToRefs } from "pinia";
 
@@ -53,14 +74,6 @@ import { storeToRefs } from "pinia";
 import { useLocaleStore } from "@/store/locale";
 import { useDataStore } from "@/store/data";
 import { useMainStore } from "@/store/main";
-
-// components
-import Pill from "@/components/UI/Pill.vue";
-import Button from "@/components/UI/Button.vue";
-import BackgroundPill from "@/components/UI/BackgroundPill.vue";
-import Profile from "@/components/ProfileWidget.vue";
-import Ad from "@/components/UI/Ad.vue";
-import { computed } from "vue";
 
 const localeStore = useLocaleStore();
 const dataStore = useDataStore();
