@@ -38,8 +38,36 @@
 
               <div class="place-text"></div>
 
-              <div class="rewards flex gap-4">
-                <div class="bolts flex gap-1 items-baseline">
+              <div class="rewards flex item-center gap-2">
+                <div class="score flex gap-1 items-center">
+                  <!-- <img class="h-4 scale-150" :src="getAsset('score')" /> -->
+                  <svg
+                    width="17"
+                    height="17"
+                    viewBox="0 0 17 17"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g clip-path="url(#clip0_582_1683)">
+                      <circle cx="8.5" cy="8.5" r="8.5" fill="#3C95E3" />
+                      <path
+                        d="M8.48712 11.8272L5.08665 14L5.98829 9.92593L3 7.18272L6.94145 6.82963L8.48712 3L10.0328 6.82963L14 7.18272L10.9859 9.92593L11.8876 14L8.48712 11.8272Z"
+                        fill="white"
+                      />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_582_1683">
+                        <rect width="17" height="17" fill="white" />
+                      </clipPath>
+                    </defs>
+                  </svg>
+
+                  <span class="text-xl exo-black">{{
+                    data["battle_complete_score"] || 0
+                  }}</span>
+                </div>
+
+                <div class="mult flex gap-1 items-baseline">
                   <!-- <img class="h-4 scale-150" :src="getAsset('mult')" /> -->
                   <svg
                     width="11"
@@ -59,19 +87,21 @@
                   }}</span>
                 </div>
 
-                <div class="bolts flex gap-2 items-center">
+                <span class="leading-[28px]"> = </span>
+
+                <div class="bolts flex gap-2 items-center ml-1">
                   <img class="h-4 scale-150" :src="getAsset('bolt')" />
                   <span class="text-xl exo-black">{{
                     data["battle_complete_bolts"] || 0
                   }}</span>
                 </div>
 
-                <div class="nuts flex gap-2 items-center">
+                <!-- <div class="nuts flex gap-2 items-center">
                   <img class="h-4 scale-150" :src="getAsset('nut')" />
                   <span class="text-xl exo-black">{{
                     data["battle_complete_nuts"] || 0
                   }}</span>
-                </div>
+                </div> -->
               </div>
             </div>
           </Pill>
