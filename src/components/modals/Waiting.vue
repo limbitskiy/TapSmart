@@ -39,7 +39,7 @@
       </Pill>
     </div>
 
-    <ul class="players h-[45dvh] overflow-y-scroll flex flex-col gap-2">
+    <ul class="players flex-1 overflow-y-scroll flex flex-col gap-2">
       <li v-for="player in data?.['players_waiting'] || []" :key="player.id">
         <Pill class="flex flex-col !py-2">
           <div class="player-data flex gap-2 items-center">
@@ -101,7 +101,7 @@
         class="flex-1 py-3 !px-0"
         activeColor="#fcdcb0"
         @click="() => emit('friendStart')"
-        :disabled="data?.['players_waiting'].length <= 1"
+        :disabled="data?.['players_waiting']?.length <= 1"
       >
         <span class="text-base leading-4">{{
           locale?.["button_waiting_run"] || "Start"

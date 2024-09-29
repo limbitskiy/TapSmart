@@ -294,12 +294,12 @@ setThemeColor("#222");
 
 console.log("tg:", tg);
 
-// console.log(`location:`, location);
+console.log(`location:`, location);
 
 Promise.allSettled([
   initialFetch({
     botName,
-    host: location?.host,
+    host: location?.href?.slice(0, -5),
     tg: {
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       rawInitData: tg?.initData,
