@@ -23,6 +23,7 @@ import Profile from "@/components/ProfileWidget.vue";
 import Pill from "@/components/UI/Pill.vue";
 import Ad from "@/components/UI/Ad.vue";
 import BackgroundPill from "@/components/UI/BackgroundPill.vue";
+import CircleProgress from "@/components/UI/CircleProgress.vue";
 
 // modals
 import AFK from "@/components/modals/AFK.vue";
@@ -52,6 +53,7 @@ app
   .component("Pill", Pill)
   .component("BackgroundPill", BackgroundPill)
   .component("Profile", Profile)
-  .component("Ad", Ad);
+  .component("Ad", Ad)
+  .component("CircleProgress", CircleProgress);
 
 app.mount("#app");

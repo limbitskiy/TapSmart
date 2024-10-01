@@ -272,7 +272,7 @@ const { botName } = constants;
 
 const mainStore = useMainStore();
 const soundStore = useSoundStore();
-const { startApp, initialFetch } = mainStore;
+const { startApp, initialFetch, setPlatform } = mainStore;
 const { addSound, playSound } = soundStore;
 
 const loading = ref(true);
@@ -294,7 +294,11 @@ setThemeColor("#222");
 
 console.log("tg:", tg);
 
-console.log(`location:`, location);
+// console.log(`location:`, location);
+
+setPlatform(tg?.platform);
+
+console.log(`platform:`, tg?.platform);
 
 Promise.allSettled([
   initialFetch({

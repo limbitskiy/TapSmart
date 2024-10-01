@@ -24,7 +24,7 @@
         />
       </svg>
     </div>
-    <div v-if="image === 'progress'" class="progress-icon">
+    <div v-if="image === 'progress'" class="w-20 h-20">
       <div
         class="circle grid place-items-center w-[63px] h-[63px] my-3 border border-[3px] border-[var(--accent-color)] rounded-full"
       >
@@ -32,6 +32,7 @@
           >{{ data?.["battle_results_ad_percent"] }}%</span
         >
       </div>
+      <!-- <CircleProgress :size="80" :progress="40" /> -->
     </div>
     <img v-else class="h-12 my-3" :src="getAsset(image)" />
     <span class="fira-bold text-lg">{{ title }}</span>

@@ -27,7 +27,7 @@
                 <img
                   v-if="data?.['battle_complete_place'] === 2"
                   class="h-12"
-                  :src="getAsset('3rd_place')"
+                  :src="getAsset('2nd_place')"
                 />
                 <img
                   v-if="data?.['battle_complete_place'] === 3"
