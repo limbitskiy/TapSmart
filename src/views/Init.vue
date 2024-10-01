@@ -296,10 +296,6 @@ console.log("tg:", tg);
 
 // console.log(`location:`, location);
 
-setPlatform(tg?.platform);
-
-console.log(`platform:`, tg?.platform);
-
 Promise.allSettled([
   initialFetch({
     botName,

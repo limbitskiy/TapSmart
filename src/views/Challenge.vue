@@ -80,7 +80,6 @@ import { useMainStore } from "@/store/main";
 import { useLocaleStore } from "@/store/locale";
 
 // components
-import Button from "@/components/UI/Button.vue";
 import Modal from "@/components/Modal.vue";
 import VolumeControl from "@/components/VolumeControl.vue";
 import Waiting from "@/components/modals/Waiting.vue";

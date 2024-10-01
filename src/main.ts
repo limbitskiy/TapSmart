@@ -15,6 +15,7 @@ import Modal from "@/components/Modal.vue";
 import ChangeMechanic from "@/components/modals/ChangeMechanic.vue";
 import VolumeControl from "@/components/VolumeControl.vue";
 import NoEnergy from "@/components/modals/NoEnergy.vue";
+import Errors from "@/components/modals/Errors.vue";
 import ChallengeButton from "@/components/UI/ChallengeButton.vue";
 import BoosterSelect from "@/components/modals/BoosterSelect.vue";
 import Loader from "@/components/UI/Loader.vue";
@@ -54,6 +55,7 @@ app
   .component("BackgroundPill", BackgroundPill)
   .component("Profile", Profile)
   .component("Ad", Ad)
-  .component("CircleProgress", CircleProgress);
+  .component("CircleProgress", CircleProgress)
+  .component("Errors", Errors);
 
 app.mount("#app");

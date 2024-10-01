@@ -9,7 +9,9 @@
         }}</span>
       </div>
 
-      <div class="scrollable-cnt flex-1 overflow-y-auto mt-2">
+      <div
+        class="scrollable-cnt flex flex-col gap-2 flex-1 overflow-y-auto mt-2"
+      >
         <div class="battle-rewards flex flex-col gap-1 pt-4">
           <Pill class="!py-2">
             <div
@@ -95,15 +97,32 @@
                     data["battle_complete_bolts"] || 0
                   }}</span>
                 </div>
-
-                <!-- <div class="nuts flex gap-2 items-center">
-                  <img class="h-4 scale-150" :src="getAsset('nut')" />
-                  <span class="text-xl exo-black">{{
-                    data["battle_complete_nuts"] || 0
-                  }}</span>
-                </div> -->
               </div>
             </div>
+          </Pill>
+        </div>
+
+        <!-- errors -->
+        <div v-if="data?.['error_data']?.length" class="errors">
+          <Pill class="!py-2 flex flex-col gap-2">
+            <div class="stat flex gap-4 items-center justify-between">
+              <span class="fira-condensed-bold text-xl text-[var(--red-color)]"
+                >Errors</span
+              >
+              <span class="text-xl exo-black">{{
+                data?.["error_data"]?.length || 0
+              }}</span>
+            </div>
+            <Button
+              class="bg-[var(--grey-dark)] text-white flex-1"
+              activeColor="#5d5d5d"
+              @click="
+                () => {
+                  isErrorModalOpen = true;
+                }
+              "
+              >See errors</Button
+            >
           </Pill>
         </div>
 
@@ -154,11 +173,18 @@
         </Button>
       </div>
     </BackgroundPill>
+
+    <!-- errors modal -->
+    <Teleport to="#modals">
+      <Modal v-model:visible="isErrorModalOpen">
+        <Errors />
+      </Modal>
+    </Teleport>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { ref } from "vue";
 import { getAsset } from "@/utils";
 import { storeToRefs } from "pinia";
 import { setThemeColor } from "@/api/telegram";
@@ -178,19 +204,9 @@ const { data } = storeToRefs(dataStore.battles);
 const { battles: locale } = storeToRefs(localeStore);
 const { fetchBattleCompleteData } = mainStore;
 
+const isErrorModalOpen = ref(false);
+
 await fetchBattleCompleteData();
 
 const getBtnTextArr = (text: string) => text.split("<separate>");
-
-// const playerPlace = computed(() => {
-//   if (!data.value.battle_results_leaderboard) return 0;
-
-//   const leaderboard = [...data.value.battle_results_leaderboard];
-
-//   const sorted = leaderboard.sort((a, b) => b.score - a.score);
-
-//   const playerIdx = sorted.findIndex((player) => player.isPlayer);
-
-//   return [playerIdx + 1, leaderboard.length];
-// });
 </script>
