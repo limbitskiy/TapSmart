@@ -1,5 +1,13 @@
 <template>
-  <div class="main-page flex w-full min-h-[100dvh] relative" :style="{ 'margin-left': left, 'margin-right': right, 'margin-top': top, 'margin-bottom': bottom }">
+  <div
+    class="main-page flex w-full min-h-[100dvh] relative"
+    :style="{
+      'margin-left': left,
+      'margin-right': right,
+      'margin-top': top,
+      'margin-bottom': bottom,
+    }"
+  >
     <RouterView v-slot="{ Component, route }">
       <template v-if="Component">
         <Transition :name="route.meta.transition || 'fade'" mode="out-in">
@@ -49,6 +57,11 @@ import BackendModal from "@/components/UI/BackendModal.vue";
 import ProgressBar from "./components/ProgressBar.vue";
 
 const { top, right, bottom, left } = useScreenSafeArea();
+
+console.log(`top:`, top);
+console.log(`bottom:`, bottom);
+console.log(`left:`, left);
+console.log(`right:`, right);
 
 const mainStore = useMainStore();
 const dataStore = useDataStore();
