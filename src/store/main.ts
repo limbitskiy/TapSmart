@@ -62,8 +62,6 @@ export const useMainStore = defineStore("main", () => {
     homeChild: Math.random() * 99999,
   };
 
-  const platform = ref(null);
-
   // process request queue
   watch(
     requestQueue,
@@ -229,7 +227,15 @@ export const useMainStore = defineStore("main", () => {
   };
 
   const fetchRelaxPageData = async () => {
-    await useFetch({ key: "battle_init" });
+    let data = {};
+
+    if (battleStore.battleTypeHasChanged) {
+      data.battle_type = battleStore.currentBattleType;
+      battleStore.battleTypeHasChanged = false;
+    }
+
+    await useFetch({ key: "battle_init", data });
+
     redirectTo(
       `/home/relax/${battleStore.getMechanicName(battleStore.data.battle_type)}`
     );
@@ -341,15 +347,10 @@ export const useMainStore = defineStore("main", () => {
     pageKeys[page] = Math.random() * 9999;
   };
 
-  const setPlatform = (value) => {
-    platform.value = value;
-  };
-
   return {
     notification,
     tooltip,
     modal,
-    platform,
     startApp,
     fetchFriendsList,
     getOnlineFriends,
@@ -373,6 +374,5 @@ export const useMainStore = defineStore("main", () => {
     showModal,
     getPageKey,
     resetPageKey,
-    setPlatform,
   };
 });

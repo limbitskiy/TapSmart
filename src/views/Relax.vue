@@ -122,6 +122,7 @@ import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 import { tg, setThemeColor } from "@/api/telegram";
 import { useWindowSize } from "@vueuse/core";
+import { useRoute } from "vue-router";
 
 // stores
 import { useDataStore } from "@/store/data";
@@ -131,6 +132,8 @@ import { useLocaleStore } from "@/store/locale";
 const dataStore = useDataStore();
 const mainStore = useMainStore();
 const localeStore = useLocaleStore();
+
+const route = useRoute();
 
 const { data, afkCounter } = storeToRefs(dataStore.battles);
 const { battles: locale } = storeToRefs(localeStore);
@@ -235,9 +238,10 @@ const onAfkModalClose = () => {
 };
 
 onMounted(() => {
-  // console.log(`mounted`);
-  resetPageKey("homeChild");
+  // console.log(route.query);
 
+  console.log(`mounted`);
+  // resetPageKey("homeChild");
   startBreakpoint("battle");
   setTaskTimeoutCounter(null);
   startTaskTimeout();

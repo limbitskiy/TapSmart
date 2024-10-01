@@ -270,25 +270,21 @@
                 </div>
                 <div class="bottom">
                   <div
-                    class="progressbar h-[4px] w-full rounded-full relative bg-gray-500"
+                    class="progressbar h-[7px] w-full rounded-full bg-gray-500 relative"
                   >
                     <div
-                      v-for="item in 7"
-                      class="separator h-[6px] w-[1px] bg-[var(--grey-dark)] absolute"
-                      :style="`left: ${item * 12.5}%`"
-                    ></div>
-                    <div
-                      class="value h-[4px] bg-gradient-to-r from-[#238a1a] to-[#0fc50f] rounded-l-full relative"
+                      class="value h-[7px] bg-gradient-to-r from-[#238a1a] to-[#0fc50f] rounded-l-full"
                       :style="`width: ${data?.['level_progress']}%`"
                     >
                       <div
                         v-for="item in 7"
-                        class="separator h-[4px] w-[1px] bg-[var(--grey-dark)] absolute"
+                        class="separator h-[7px] w-[2px] bg-[var(--grey-dark)] absolute"
                         :style="`left: ${item * 12.5}%`"
                       ></div>
 
                       <div
-                        class="marker w-[2px] h-[6px] bg-[var(--accent-color)] absolute right-0 -top-[1px] rounded-full"
+                        :class="`marker w-[4px] h-[11px] bg-[var(--accent-color)] absolute -top-[2px] rounded-full`"
+                        :style="`left: ${data?.['level_progress']}%`"
                       ></div>
                     </div>
                   </div>

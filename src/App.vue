@@ -58,11 +58,6 @@ import ProgressBar from "./components/ProgressBar.vue";
 
 const { top, right, bottom, left } = useScreenSafeArea();
 
-console.log(`top:`, top);
-console.log(`bottom:`, bottom);
-console.log(`left:`, left);
-console.log(`right:`, right);
-
 const mainStore = useMainStore();
 const dataStore = useDataStore();
 

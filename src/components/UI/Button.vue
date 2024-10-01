@@ -3,6 +3,7 @@
     v-if="!data?.hidden"
     ref="btnRef"
     :class="[
+      'generic-btn',
       !unstyled && 'rounded-xl font-bold py-3 px-8 text-xl leading-6',
       dark
         ? 'bg-black'
@@ -10,7 +11,7 @@
         ? 'bg-[var(--grey-light)]'
         : !unstyled && 'bg-[var(--accent-color)] text-black',
       font ? font : 'fira-bold',
-      data?.disabled ?? disabled ? 'bg-gray-300 text-gray-500' : '',
+      data?.disabled ?? disabled ? '!bg-gray-500 bg-none' : '',
     ]"
     :disabled="data?.disabled ?? disabled"
     @touchstart="btnTouchstart"

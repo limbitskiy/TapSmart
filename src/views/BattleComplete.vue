@@ -106,8 +106,9 @@
         <div v-if="data?.['error_data']?.length" class="errors">
           <Pill class="!py-2 flex flex-col gap-2">
             <div class="stat flex gap-4 items-center justify-between">
-              <span class="fira-condensed-bold text-xl text-[var(--red-color)]"
-                >Errors</span
+              <span
+                class="fira-condensed-bold text-xl text-[var(--red-color)]"
+                >{{ locale?.["error_data_title"] || "Errors" }}</span
               >
               <span class="text-xl exo-black">{{
                 data?.["error_data"]?.length || 0
@@ -121,7 +122,9 @@
                   isErrorModalOpen = true;
                 }
               "
-              >See errors</Button
+              >{{
+                locale?.["button_error_data_open_modal"] || "See errors"
+              }}</Button
             >
           </Pill>
         </div>

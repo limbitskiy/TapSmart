@@ -18,7 +18,7 @@
             <LeagueProgress />
           </div>
           <Button
-            class="!py-[2px] !px-3 !rounded-lg bg-gradient-to-r from-[#408CFF] to-[#894899]"
+            class="boost-btn !py-[2px] !px-3 !rounded-lg bg-gradient-to-r from-[#408CFF] to-[#894899]"
             :data="battleData?.data?.['button_boost']"
           >
             <span class="text-base text-gray-200">{{

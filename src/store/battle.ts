@@ -54,6 +54,7 @@ export const useBattleStore = defineStore("battle", () => {
 
   let battleStartTime = null;
   let challengeStarted = ref(false);
+  let battleTypeHasChanged = ref(false);
 
   let currentBreakpointInterval = {
     fn: <BreakpointInterval | null>null,
@@ -70,7 +71,7 @@ export const useBattleStore = defineStore("battle", () => {
   const data = computed(() => state.value.battleData);
   const currentBattleMode = computed(() => state.value.battleData.battle_mode);
   // const afkCounter = computed(() => _afkCounter.value);
-  // const currentBattleType = computed(() => state.value.battleData.battle_type);
+  const currentBattleType = computed(() => state.value.battleData.battle_type);
   const currentTask = computed(
     () => state.value.battleData.data?.[taskIndex.value]
   );
@@ -430,10 +431,16 @@ export const useBattleStore = defineStore("battle", () => {
 
   // mechanic
   const changeMechanic = async (mechId: number) => {
-    await mainStore.callApi({
-      api: "battle_init",
-      data: { battle_type: mechId },
-    });
+    // await mainStore.callApi({
+    //   api: "battle_init",
+    //   data: { battle_type: mechId },
+    // });
+    setBattleType(mechId);
+
+    // mainStore.resetPageKey("homeChild");
+    await mainStore.fetchRelaxPageData();
+    mainStore.redirectTo(`/home/relax/${battleTypes[mechId]}`);
+
     resetBattleStats();
     stopTaskTimeout();
     startTaskTimeout();
@@ -526,6 +533,11 @@ export const useBattleStore = defineStore("battle", () => {
     afkCounter.value = 0;
   };
 
+  const setBattleType = (type) => {
+    state.value.battleData.battle_type = type;
+    battleTypeHasChanged.value = true;
+  };
+
   return {
     data,
     currentTask,
@@ -537,7 +549,9 @@ export const useBattleStore = defineStore("battle", () => {
     energy,
     currentTaskTimeout,
     currentBattleMode,
+    currentBattleType,
     afkCounter,
+    battleTypeHasChanged,
     set,
     expand,
     pauseBattle,
@@ -557,5 +571,6 @@ export const useBattleStore = defineStore("battle", () => {
     startChallenge,
     stopChallenge,
     resetAfkCounter,
+    setBattleType,
   };
 });
