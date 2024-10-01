@@ -2,10 +2,10 @@
   <div
     class="main-page flex w-full min-h-[100dvh] relative"
     :style="{
-      'margin-left': left,
-      'margin-right': right,
-      'margin-top': top,
-      'margin-bottom': bottom,
+      'padding-left': left,
+      'padding-right': right,
+      'padding-top': top,
+      'padding-bottom': bottom,
     }"
   >
     <RouterView v-slot="{ Component, route }">

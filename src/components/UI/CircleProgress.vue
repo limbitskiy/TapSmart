@@ -7,29 +7,44 @@
   >
     <circle
       class="bg"
-      :cx="size"
-      :cy="size"
-      :r="(size - (strokeWidth ?? 4)) / 2"
+      :cx="size / 2"
+      :cy="size / 2"
+      :r="radius"
       fill="none"
-      stroke="#ddd"
-      :stroke-width="strokeWidth"
+      stroke="#222"
+      :stroke-width="strokeWidth ?? 6"
       stroke-linecap="round"
     ></circle>
     <circle
       fill="none"
-      stroke="#5394fd"
+      stroke="#feac3e"
       class="fg"
-      :cx="size"
-      :cy="size"
-      :r="(size - (strokeWidth ?? 4)) / 2"
-      :stroke-width="strokeWidth"
-      stroke-dasharray="10 361.25"
+      :cx="size / 2"
+      :cy="size / 2"
+      :r="radius"
+      :stroke-width="strokeWidth ?? 6"
+      :stroke-dasharray="`${dash} ${circumference - dash}`"
       stroke-linecap="round"
+      :style="`transform: rotate(-90deg); transform-origin: ${size / 2}px ${
+        size / 2
+      }px; transition: stroke-dasharray 0.3s linear 0s;`"
     ></circle>
+    <text
+      x="50%"
+      y="50%"
+      font-size="20px"
+      text-anchor="middle"
+      fill="#feac3e"
+      font-family="Exo2Black"
+      dy=".3em"
+    >
+      {{ progress }}%
+    </text>
   </svg>
 </template>
 
 <script setup lang="ts">
+// stroke-dasharray="10 361.25"
 import { computed, onMounted, ref } from "vue";
 
 const props = defineProps<{
@@ -40,7 +55,7 @@ const props = defineProps<{
 
 const svgRef = ref();
 
-const radius = computed(() => (props.size - (props.strokeWidth ?? 4)) / 2);
+const radius = computed(() => (props.size - (props.strokeWidth ?? 6)) / 2);
 const circumference = computed(() => radius.value * Math.PI * 2);
 const dash = computed(() => (props.progress * circumference.value) / 100);
 
