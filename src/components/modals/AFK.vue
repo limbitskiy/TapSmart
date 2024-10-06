@@ -1,18 +1,11 @@
 <template>
-  <div id="afk" class="flex-1 px-[2px]">
+  <div id="afk" class="flex-1 py-1">
     <div class="pill-header flex flex-col gap-4">
-      <span class="bg-pill-title">{{
-        locale?.["no_answers_title"] || "AFK Title"
-      }}</span>
-      <div
-        class="page-subtitle text-gray-200 mb-2"
-        v-html="locale?.['no_answers_subtitle'] || 'AFK Subtitle'"
-      ></div>
+      <span class="bg-pill-title">{{ locale?.["no_answers_title"] || "AFK Title" }}</span>
+      <div class="page-subtitle text-gray-200 mb-2" v-html="locale?.['no_answers_subtitle'] || 'AFK Subtitle'"></div>
 
-      <Button class="py-4 bg-[var(--grey-light)] text-white" @click="onClose"
-        ><span class="text-xl leading-4">{{
-          locale?.["button_no_answers"] || "Back Btn"
-        }}</span>
+      <Button grey @click="onClose"
+        ><span class="text-xl leading-4">{{ locale?.["button_no_answers"] || "Back Btn" }}</span>
       </Button>
     </div>
   </div>

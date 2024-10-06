@@ -1,18 +1,11 @@
 <template>
-  <div
-    class="challenge-main flex-1 overflow-y-auto overflow-x-hidden flex flex-col gap-2 relative"
-  >
+  <div class="challenge-main flex-1 overflow-y-auto overflow-x-hidden flex flex-col gap-2 relative">
     <Backlight color="red" />
 
     <template v-if="isBattle">
       <div class="challenge-stats relative z-10 flex flex-col gap-4 mt-2">
         <!-- <button class="absolute z-[9999]" @click="onBonusUsed">get bonus</button> -->
-        <ChallengeStatus
-          :time="timer || 0"
-          :score="score"
-          :multiplier="currentCalcPoint"
-          :place="playerPosition"
-        />
+        <ChallengeStatus :time="timer || 0" :score="score" :multiplier="currentCalcPoint" :place="playerPosition" />
 
         <div class="wrap px-8">
           <ProgressBar :timer="timer || 0" />
@@ -28,14 +21,9 @@
 
     <!-- onscreen bonuses -->
     <Transition name="challenge-bonus-1">
-      <div
-        v-if="bonusState.isShown"
-        class="bonuses-cnt absolute top-[20dvh] left-0 right-0 grid place-items-center"
-      >
+      <div v-if="bonusState.isShown" class="bonuses-cnt absolute top-[20dvh] left-0 right-0 grid place-items-center">
         <div class="bonus">
-          <span class="text-[6vw] exo-black text-[#edaa38]">{{
-            bonusState.text
-          }}</span>
+          <span class="text-[6vw] exo-black text-[#edaa38]">{{ bonusState.text }}</span>
         </div>
       </div>
     </Transition>
@@ -43,20 +31,13 @@
     <!-- waiting modal -->
     <Teleport to="#modals">
       <Modal v-model:visible="isWaiting" sticky>
-        <Waiting
-          @countdownComplete="onStart"
-          @abort="onAbortChallenge"
-          @friendStart="onFriendStart"
-        />
+        <Waiting @countdownComplete="onStart" @abort="onAbortChallenge" @friendStart="onFriendStart" />
       </Modal>
     </Teleport>
 
     <!-- battle complete animation -->
     <Transition name="fade">
-      <div
-        v-if="isBattleCompleteAnimation"
-        class="on-battle-complete-backdrop fixed inset-0 bg-black bg-opacity-80 z-20 grid place-items-center"
-      >
+      <div v-if="isBattleCompleteAnimation" class="on-battle-complete-backdrop fixed inset-0 bg-black bg-opacity-80 z-20 grid place-items-center">
         <BattleCompleteAnimation :place="data" />
       </div>
     </Transition>
@@ -83,13 +64,7 @@ const dataStore = useDataStore();
 const mainStore = useMainStore();
 const localeStore = useLocaleStore();
 
-const {
-  data,
-  challengeScore: score,
-  bonusesUsed,
-  currentCalcPoint,
-  currentBattleMode,
-} = storeToRefs(dataStore.battles);
+const { data, challengeScore: score, bonusesUsed, currentCalcPoint, currentBattleMode } = storeToRefs(dataStore.battles);
 const { stopBreakpoint, startChallenge, stopChallenge } = dataStore.battles;
 const { battles: locale } = storeToRefs(localeStore);
 
@@ -140,11 +115,7 @@ const playerPosition = computed(() => {
 
   const playersSorted = clone?.sort((a, b) => b.score - a.score);
 
-  return [
-    playersSorted?.findIndex((player) => player.isPlayer) + 1 ||
-      data.value["player_progress"].length,
-    data.value["player_progress"].length,
-  ];
+  return [playersSorted?.findIndex((player) => player.isPlayer) + 1 || data.value["player_progress"].length, data.value["player_progress"].length];
 });
 
 const onFriendStart = () => {
@@ -171,16 +142,15 @@ const onStart = async () => {
 };
 
 const onEnd = async () => {
-  isBattle.value = false;
-  stopChallenge();
-  callApi({ api: "battle_breakpoint", data: { final: 1 } });
-  isBattleCompleteAnimation.value = true;
-
-  setTimeout(() => {
-    // callApi({ api: "battle_completed" });
-    isBattleCompleteAnimation.value = false;
-    redirectTo("/battle-complete");
-  }, 3000);
+  // isBattle.value = false;
+  // stopChallenge();
+  // callApi({ api: "battle_breakpoint", data: { final: 1 } });
+  // isBattleCompleteAnimation.value = true;
+  // setTimeout(() => {
+  //   // callApi({ api: "battle_completed" });
+  //   isBattleCompleteAnimation.value = false;
+  //   redirectTo("/battle-complete");
+  // }, 3000);
 };
 
 const onAbortChallenge = () => {
