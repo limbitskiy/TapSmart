@@ -142,15 +142,16 @@ const onStart = async () => {
 };
 
 const onEnd = async () => {
-  // isBattle.value = false;
-  // stopChallenge();
-  // callApi({ api: "battle_breakpoint", data: { final: 1 } });
-  // isBattleCompleteAnimation.value = true;
-  // setTimeout(() => {
-  //   // callApi({ api: "battle_completed" });
-  //   isBattleCompleteAnimation.value = false;
-  //   redirectTo("/battle-complete");
-  // }, 3000);
+  isBattle.value = false;
+  stopChallenge();
+  callApi({ api: "battle_breakpoint", data: { final: 1 } });
+  isBattleCompleteAnimation.value = true;
+
+  setTimeout(() => {
+    // callApi({ api: "battle_completed" });
+    isBattleCompleteAnimation.value = false;
+    redirectTo("/battle-complete");
+  }, 3000);
 };
 
 const onAbortChallenge = () => {
