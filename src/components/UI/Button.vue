@@ -34,7 +34,7 @@ const { active: activeClass } = useCssModule();
 
 const mainStore = useMainStore();
 
-const { redirectTo, callApi, setRouteData, showModal } = mainStore;
+const { redirectTo, callApi, callApiSync, setRouteData, showModal } = mainStore;
 
 const btnRef = ref();
 
@@ -64,7 +64,7 @@ const props = defineProps<{
 
 const onClick = () => {
   if (props.data?.api) {
-    callApi({ api: props.data.api, data: props.data.data });
+    callApiSync({ api: props.data.api, data: props.data.data });
   }
 
   if (props.data?.route) {

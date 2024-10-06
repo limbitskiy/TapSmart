@@ -12,12 +12,8 @@ import Backlight from "@/components/UI/Backlight.vue";
 import ProfileWidget from "@/components/ProfileWidget.vue";
 import Button from "@/components/UI/Button.vue";
 import Modal from "@/components/Modal.vue";
-import ChangeMechanic from "@/components/modals/ChangeMechanic.vue";
 import VolumeControl from "@/components/VolumeControl.vue";
-import NoEnergy from "@/components/modals/NoEnergy.vue";
-import Errors from "@/components/modals/Errors.vue";
 import ChallengeButton from "@/components/UI/ChallengeButton.vue";
-import BoosterSelect from "@/components/modals/BoosterSelect.vue";
 import Loader from "@/components/UI/Loader.vue";
 import Navigation from "@/components/Navigation.vue";
 import Profile from "@/components/ProfileWidget.vue";
@@ -25,8 +21,16 @@ import Pill from "@/components/UI/Pill.vue";
 import Ad from "@/components/UI/Ad.vue";
 import BackgroundPill from "@/components/UI/BackgroundPill.vue";
 import CircleProgress from "@/components/UI/CircleProgress.vue";
+import ChallengeStatus from "@/components/ChallengeStatus.vue";
+import ProgressBar from "@/components/ProgressBar.vue";
+import BattleCompleteAnimation from "@/components/animations/BattleCompleteAnimation.vue";
 
 // modals
+import ChangeMechanic from "@/components/modals/ChangeMechanic.vue";
+import NoEnergy from "@/components/modals/NoEnergy.vue";
+import Errors from "@/components/modals/Errors.vue";
+import BoosterSelect from "@/components/modals/BoosterSelect.vue";
+import Waiting from "@/components/modals/Waiting.vue";
 import AFK from "@/components/modals/AFK.vue";
 
 const pinia = createPinia();
@@ -56,6 +60,10 @@ app
   .component("Profile", Profile)
   .component("Ad", Ad)
   .component("CircleProgress", CircleProgress)
-  .component("Errors", Errors);
+  .component("Errors", Errors)
+  .component("Waiting", Waiting)
+  .component("ChallengeStatus", ChallengeStatus)
+  .component("ProgressBar", ProgressBar)
+  .component("BattleCompleteAnimation", BattleCompleteAnimation);
 
 app.mount("#app");

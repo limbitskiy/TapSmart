@@ -196,6 +196,10 @@ export const useMainStore = defineStore("main", () => {
     await useFetch({ key: api, data });
   };
 
+  const callApiSync = ({ api, data }: { api: string; data?: {} }) => {
+    useFetch({ key: api, data });
+  };
+
   const onVibrate = (type: string) => {
     if (dataStore.settings.vibro) {
       let pattern;
@@ -365,6 +369,7 @@ export const useMainStore = defineStore("main", () => {
     showNotification,
     hideNotification,
     callApi,
+    callApiSync,
     showTooltip,
     hideTooltip,
     hideModal,

@@ -15,11 +15,7 @@
         />
 
         <div class="wrap px-8">
-          <ProgressBar
-            :timer="timer || 0"
-            :initialTimerValue="data['battle_duration']!"
-            :players="data?.['player_progress'] || []"
-          />
+          <ProgressBar :timer="timer || 0" />
         </div>
       </div>
 
@@ -78,15 +74,6 @@ import { useRoute } from "vue-router";
 import { useDataStore } from "@/store/data";
 import { useMainStore } from "@/store/main";
 import { useLocaleStore } from "@/store/locale";
-
-// components
-import Modal from "@/components/Modal.vue";
-import VolumeControl from "@/components/VolumeControl.vue";
-import Waiting from "@/components/modals/Waiting.vue";
-import Backlight from "@/components/UI/Backlight.vue";
-import ChallengeStatus from "@/components/ChallengeStatus.vue";
-import ProgressBar from "@/components/ProgressBar.vue";
-import BattleCompleteAnimation from "@/components/animations/BattleCompleteAnimation.vue";
 
 setThemeColor("#D26542");
 

@@ -1,6 +1,6 @@
 <template>
   <div class="progressbar flex flex-col gap-1">
-    <div class="enemy-markers relative h-4">
+    <!-- <div class="enemy-markers relative h-4">
       <div v-for="enemy in enemies" :key="enemy.id" class="marker absolute" :style="{ transform: `translateX(${calculateMarkerPosition(enemy.score)}px)` }">
         <svg width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -10,15 +10,19 @@
           <circle cx="6.00022" cy="5.99632" r="4.6697" transform="rotate(180 6.00022 5.99632)" :fill="getMarkerColor(enemy.id)" />
         </svg>
       </div>
-    </div>
+    </div> -->
     <div class="gauge h-2 bg-[var(--grey-light)] rounded-full w-full">
-      <div ref="progressRef" class="gauge-value h-2 bg-[var(--accent-color)] rounded-full" :style="{ width: progressPercent + '%' }"></div>
+      <div
+        ref="progressRef"
+        class="gauge-value h-2 bg-[var(--accent-color)] rounded-full"
+        :style="{ width: progressPercent + '%', transition: '1s linear' }"
+      ></div>
     </div>
-    <div class="player-marker mt-2">
+    <!-- <div class="player-marker mt-2">
       <div class="marker w-[14px]" :style="{ transform: `translateX(${calculateMarkerPosition(player?.score)}px)` }">
         <img class="h-4 scale-[2]" :src="getAsset('player-marker')" />
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -34,9 +38,11 @@ import { useLocaleStore } from "@/store/locale";
 
 const props = defineProps<{
   timer: number;
-  initialTimerValue: number;
-  players: [];
 }>();
+
+// :timer="timer || 0"
+//             :initialTimerValue="data['battle_duration']!"
+//             :players="data?.['player_progress'] || []"
 
 const colors = {
   0: "F01515",
@@ -52,32 +58,66 @@ const dataStore = useDataStore();
 const mainStore = useMainStore();
 const localeStore = useLocaleStore();
 
-const { data } = storeToRefs(dataStore.battles);
+const { data, playerProgress } = storeToRefs(dataStore.battles);
 const { battles: locale } = storeToRefs(localeStore);
 
 const progressRef = ref();
 
-const player = computed(() => props.players?.find((player) => player.isPlayer));
+const positions = ref([]);
 
-const enemies = computed(() => props.players?.filter((player) => !player.isPlayer));
+watch(
+  playerProgress,
+  (players) => {
+    if (!players) {
+      players = [];
+    }
+    console.log(players);
+    // const player = players.find((player) => player.isPlayer);
+    // const enemies = players.filter((player) => !player.isPlayer);
 
-const highestScore = computed(() => props.players?.sort((a, b) => b.score - a.score)[0].score);
+    const highestScore = players.sort((a, b) => b.score - a.score)[0].score;
 
-const progressPercent = computed(() => ((props.initialTimerValue - props.timer) * 100) / props.initialTimerValue);
+    players.forEach((item) => {
+      if (!positions.value.find((position) => position.id === item.id)) {
+        positions.value.push({ id: item.id, percent: 0 });
+      }
 
-const calculateMarkerPosition = (score: number) => {
-  if (!score) return 0;
-
-  const progressBarWidth = progressRef.value?.getBoundingClientRect().width;
-
-  if (score === highestScore.value) {
-    return progressBarWidth;
+      if (item.score === 0) return;
+      if (item.score === highestScore) {
+        positions.value[item.id] = progressPercent.value;
+      }
+    });
+  },
+  {
+    deep: true,
   }
+);
 
-  const percent = (score * 100) / highestScore.value;
+// const player = computed(() => props.players?.find((player) => player.isPlayer));
 
-  return (percent * progressBarWidth) / 100;
-};
+// const enemies = computed(() => props.players?.filter((player) => !player.isPlayer));
+
+// const highestScore = computed(() => props.players?.sort((a, b) => b.score - a.score)[0].score);
+
+const progressPercent = computed(
+  () =>
+    ((data.value?.["battle_duration"] - props.timer) * 100) /
+    data.value?.["battle_duration"]
+);
+
+// const calculateMarkerPosition = (score: number) => {
+//   if (!score) return 0;
+
+//   const progressBarWidth = progressRef.value?.getBoundingClientRect().width;
+
+//   if (score === highestScore.value) {
+//     return progressBarWidth;
+//   }
+
+//   const percent = (score * 100) / highestScore.value;
+
+//   return (percent * progressBarWidth) / 100;
+// };
 
 const getMarkerColor = (id: string) => {
   return "#" + colors[+id];

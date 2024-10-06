@@ -209,7 +209,7 @@ const { fetchBattleCompleteData } = mainStore;
 
 const isErrorModalOpen = ref(false);
 
-await fetchBattleCompleteData();
+fetchBattleCompleteData();
 
 const getBtnTextArr = (text: string) => text.split("<separate>");
 </script>

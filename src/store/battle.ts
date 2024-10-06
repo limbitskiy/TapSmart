@@ -89,6 +89,7 @@ export const useBattleStore = defineStore("battle", () => {
     );
   });
   const energy = computed(() => state.value.battleData.energy);
+  const playerProgress = computed(() => state.value.battleData.player_progress);
 
   // setter/getter
   const set = (data) => {
@@ -572,5 +573,6 @@ export const useBattleStore = defineStore("battle", () => {
     stopChallenge,
     resetAfkCounter,
     setBattleType,
+    playerProgress,
   };
 });
