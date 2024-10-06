@@ -64,14 +64,14 @@ const dataStore = useDataStore();
 const mainStore = useMainStore();
 const localeStore = useLocaleStore();
 
-const { data, playerProgress } = storeToRefs(dataStore.battles);
+const { data, playerProgress, playerPositions } = storeToRefs(dataStore.battles);
 const { battles: locale } = storeToRefs(localeStore);
 
 const progressRef = ref();
 
 let resId = 0;
 
-const positions = ref([]);
+// const positions = ref([]);
 
 watch(
   playerProgress,
@@ -85,10 +85,10 @@ watch(
     const highestScore = players.sort((a, b) => b.score - a.score)[0].score;
 
     players.forEach((player) => {
-      const playerPosition = positions.value.find((position) => position?.id === player?.id);
+      const playerPosition = playerPositions.value.find((position) => position?.id === player?.id);
 
       if (!playerPosition) {
-        positions.value.push({ ...player, progress: 0 });
+        playerPositions.value.push({ ...player, progress: 0 });
         return;
       }
 
@@ -111,8 +111,8 @@ watch(
   }
 );
 
-const computedPlayer = computed(() => positions.value.find((position) => position?.isPlayer));
-const computedEnemies = computed(() => positions.value.filter((player) => !player?.isPlayer));
+const computedPlayer = computed(() => playerPositions.value.find((position) => position?.isPlayer));
+const computedEnemies = computed(() => playerPositions.value.filter((player) => !player?.isPlayer));
 const progressPercent = computed(() => ((data.value?.["battle_duration"] - props.timer) * 100) / data.value?.["battle_duration"]);
 
 const getMarkerColor = (id: string) => {
