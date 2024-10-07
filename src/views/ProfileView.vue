@@ -235,6 +235,7 @@ import { useRouter, useRoute } from "vue-router";
 import { tg } from "@/api/telegram";
 import { storeToRefs } from "pinia";
 import { getAsset, showFormattedNumber } from "@/utils";
+import { useBackButton } from "@/composables/useBackButton";
 
 // store
 import { useMainStore } from "@/store/main";
@@ -256,17 +257,16 @@ const { profile: data } = storeToRefs(dataStore);
 const { profile: locale } = storeToRefs(localeStore);
 
 const { fetchProfilePageData, setLanguages } = mainStore;
+const { show } = useBackButton(() => {
+  router.back();
+});
 
 await fetchProfilePageData();
 
 const router = useRouter();
 const route = useRoute();
 
-// tg.BackButton.show();
-// tg.BackButton.onClick(() => {
-//   tg.BackButton.hide();
-//   router.back();
-// });
+show();
 console.log(route);
 
 const onSettingsChange = ({ setting, value }) => {
