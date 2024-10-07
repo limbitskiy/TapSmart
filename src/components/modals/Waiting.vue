@@ -58,7 +58,7 @@
     </ul>
 
     <div v-if="isFriendsChallenge" class="btns w-full flex gap-4 mt-8">
-      <Button class="flex-1 py-3 !px-0" activeColor="#525252" @click="onInviteFriend" :dark="data?.['players_waiting'].length > 1">
+      <Button class="flex-1 py-3 !px-0" activeColor="#525252" @click="onInviteFriend" :dark="data?.['players_waiting']?.length > 1">
         <span class="text-lg leading-4">{{ locale?.["button_waiting_invite"] || "Invite" }}</span>
       </Button>
       <Button class="flex-1 py-3 !px-0" activeColor="#fcdcb0" @click="() => emit('friendStart')" :disabled="data?.['players_waiting']?.length <= 1">

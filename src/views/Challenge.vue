@@ -120,7 +120,6 @@ const playerPosition = computed(() => {
 
 const onFriendStart = () => {
   callApi({ api: "waiting_run" });
-  onStart();
 };
 
 const onStart = async () => {

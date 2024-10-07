@@ -1,5 +1,5 @@
 <template>
-  <div id="change-mechanic" class="flex-1 py-1">
+  <div id="change-mechanic" class="flex-1 py-1 px-[2px]">
     <div class="pill-header flex items-center justify-between">
       <span class="bg-pill-title">{{ locale?.["select_mechanic_title"] || "Select mechanic" }}</span>
       <div class="nuts flex items-center gap-1">

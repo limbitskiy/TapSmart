@@ -74,6 +74,8 @@ const progressRef = ref();
 
 const timer = computed(() => props.timer);
 
+playerPositions.value = [];
+
 watch(
   timer,
   () => {

@@ -8,41 +8,28 @@
     <div class="flex-1 flex flex-col gap-12">
       <!-- stats -->
       <BackgroundPill>
-        <span class="bg-pill-title">{{
-          locale?.["stats_title"] || "Pill title"
-        }}</span>
+        <span class="bg-pill-title">{{ locale?.["stats_title"] || "Pill title" }}</span>
 
         <div class="flex flex-col gap-2 mt-4">
           <!-- bolts -->
           <div class="with-substat flex flex-col">
             <Pill class="!py-2 rounded-xl" :tooltip="locale?.['tooltip_bolts']">
               <div class="content flex items-center justify-between">
-                <span class="text-lg text-gray-300">{{
-                  locale?.["bolts"] || "Bolts"
-                }}</span>
+                <span class="text-lg text-gray-300">{{ locale?.["bolts"] || "Bolts" }}</span>
                 <div class="flex gap-2 items-center">
                   <img class="h-4 scale-150" :src="getAsset('bolt')" />
-                  <span class="text-xl exo-black">{{
-                    showFormattedNumber(data?.["bolts"]) || 0
-                  }}</span>
+                  <span class="text-xl exo-black">{{ showFormattedNumber(data?.["bolts"]) || 0 }}</span>
                 </div>
               </div>
             </Pill>
 
             <!-- bolts today -->
-            <Pill
-              class="!py-0 mx-2 bg-black rounded-xl rounded-t-none"
-              :tooltip="locale?.['tooltip_bolts_today']"
-            >
+            <Pill class="!py-0 mx-2 bg-black rounded-xl rounded-t-none" :tooltip="locale?.['tooltip_bolts_today']">
               <div class="content flex items-center justify-between">
-                <span class="text-sm text-gray-300">{{
-                  locale?.["bolts_today"] || "Today"
-                }}</span>
+                <span class="text-sm text-gray-300">{{ locale?.["bolts_today"] || "Today" }}</span>
                 <div class="flex gap-2 items-center">
                   <!-- <img class="h-4 scale-100" :src="getAsset('bolt')" /> -->
-                  <span class="text-lg exo-bold">{{
-                    showFormattedNumber(data?.["bolts_today"]) || 0
-                  }}</span>
+                  <span class="text-lg exo-bold">{{ showFormattedNumber(data?.["bolts_today"]) || 0 }}</span>
                 </div>
               </div>
             </Pill>
@@ -52,32 +39,21 @@
             <!-- nuts -->
             <Pill class="!py-2 rounded-xl" :tooltip="locale?.['tooltip_nuts']">
               <div class="content flex items-center justify-between">
-                <span class="text-lg text-gray-300">{{
-                  locale?.["nuts"] || "Nuts"
-                }}</span>
+                <span class="text-lg text-gray-300">{{ locale?.["nuts"] || "Nuts" }}</span>
                 <div class="flex gap-2 items-center">
                   <img class="h-4 scale-150" :src="getAsset('nut')" />
-                  <span class="text-xl exo-black">{{
-                    showFormattedNumber(data?.["nuts"]) || 0
-                  }}</span>
+                  <span class="text-xl exo-black">{{ showFormattedNumber(data?.["nuts"]) || 0 }}</span>
                 </div>
               </div>
             </Pill>
 
             <!-- nuts today -->
-            <Pill
-              class="!py-0 mx-2 bg-black rounded-xl rounded-t-none"
-              :tooltip="locale?.['tooltip_nuts_today']"
-            >
+            <Pill class="!py-0 mx-2 bg-black rounded-xl rounded-t-none" :tooltip="locale?.['tooltip_nuts_today']">
               <div class="content flex items-center justify-between">
-                <span class="text-sm text-gray-300">{{
-                  locale?.["nuts_today"] || "Nuts earned today"
-                }}</span>
+                <span class="text-sm text-gray-300">{{ locale?.["nuts_today"] || "Nuts earned today" }}</span>
                 <div class="flex gap-2 items-center">
                   <!-- <img class="h-4 scale-100" :src="getAsset('nut')" /> -->
-                  <span class="text-lg exo-bold">{{
-                    showFormattedNumber(data?.["nuts_today"]) || 0
-                  }}</span>
+                  <span class="text-lg exo-bold">{{ showFormattedNumber(data?.["nuts_today"]) || 0 }}</span>
                 </div>
               </div>
             </Pill>
@@ -88,23 +64,17 @@
             <Pill class="rounded-xl" :tooltip="locale?.['tooltip_league']">
               <LeagueProgress grey="bg-gray-500">
                 <template #leagueName>
-                  <span class="text-lg fira-condensed text-nowrap">{{
-                    data?.["league_name"]
-                  }}</span>
+                  <span class="text-lg fira-condensed text-nowrap">{{ data?.["league_name"] }}</span>
                 </template>
               </LeagueProgress>
             </Pill>
             <!-- bolts left -->
             <Pill class="!py-0 mx-2 bg-black rounded-xl rounded-t-none">
               <div class="content flex items-center justify-between">
-                <span class="text-sm text-gray-300">{{
-                  locale?.["bolts_remain"] || "Bolts left"
-                }}</span>
+                <span class="text-sm text-gray-300">{{ locale?.["bolts_remain"] || "Bolts left" }}</span>
                 <div class="flex gap-2 items-center">
                   <!-- <img class="h-4 scale-100" :src="getAsset('bolt')" /> -->
-                  <span class="text-lg exo-bold">{{
-                    showFormattedNumber(data?.["bolts_remain"]) ?? 0
-                  }}</span>
+                  <span class="text-lg exo-bold">{{ showFormattedNumber(data?.["bolts_remain"]) ?? 0 }}</span>
                 </div>
               </div>
             </Pill>
@@ -112,19 +82,12 @@
 
           <!-- battles played -->
           <div class="with-substat flex flex-col">
-            <Pill
-              class="!py-2 rounded-xl"
-              :tooltip="locale?.['tooltip_battles_played']"
-            >
+            <Pill class="!py-2 rounded-xl" :tooltip="locale?.['tooltip_battles_played']">
               <div class="content flex gap-2 items-center justify-between">
-                <span class="text-lg text-gray-300">{{
-                  locale?.["battles_played"] || "Battles"
-                }}</span>
+                <span class="text-lg text-gray-300">{{ locale?.["battles_played"] || "Battles" }}</span>
                 <div class="flex gap-2 items-center">
                   <img class="h-6" :src="getAsset('swords')" />
-                  <span class="text-xl exo-black">{{
-                    data?.["battles_played"] || 0
-                  }}</span>
+                  <span class="text-xl exo-black">{{ data?.["battles_played"] || 0 }}</span>
                 </div>
               </div>
             </Pill>
@@ -132,14 +95,10 @@
             <!-- battles played today -->
             <Pill class="!py-0 mx-2 bg-black rounded-xl rounded-t-none">
               <div class="content flex items-center justify-between">
-                <span class="text-sm text-gray-300">{{
-                  locale?.["battles_played_today"] || "Battles played today"
-                }}</span>
+                <span class="text-sm text-gray-300">{{ locale?.["battles_played_today"] || "Battles played today" }}</span>
                 <div class="flex gap-2 items-center">
                   <!-- <img class="h-4 scale-100" :src="getAsset('swords')" /> -->
-                  <span class="text-lg exo-bold">{{
-                    showFormattedNumber(data?.["battles_played_today"]) || 0
-                  }}</span>
+                  <span class="text-lg exo-bold">{{ showFormattedNumber(data?.["battles_played_today"]) || 0 }}</span>
                 </div>
               </div>
             </Pill>
@@ -148,26 +107,17 @@
       </BackgroundPill>
 
       <BackgroundPill>
-        <span class="bg-pill-title">{{
-          locale?.["learning_title"] || "Learning stats"
-        }}</span>
+        <span class="bg-pill-title">{{ locale?.["learning_title"] || "Learning stats" }}</span>
 
         <div class="flex flex-col gap-2 mt-4">
           <!-- words trained -->
           <div class="with-substat flex flex-col">
-            <Pill
-              class="!py-2 rounded-xl"
-              :tooltip="locale?.['tooltip_questions_trained']"
-            >
+            <Pill class="!py-2 rounded-xl" :tooltip="locale?.['tooltip_questions_trained']">
               <div class="content flex gap-2 items-center justify-between">
-                <span class="text-lg text-gray-300">{{
-                  locale?.["questions_trained"] || "Words trained"
-                }}</span>
+                <span class="text-lg text-gray-300">{{ locale?.["questions_trained"] || "Words trained" }}</span>
                 <div class="flex gap-2 items-center">
                   <img class="h-6" :src="getAsset('book')" />
-                  <span class="text-xl exo-black">{{
-                    data?.["questions_trained"] || 0
-                  }}</span>
+                  <span class="text-xl exo-black">{{ data?.["questions_trained"] || 0 }}</span>
                 </div>
               </div>
             </Pill>
@@ -175,13 +125,9 @@
             <!-- words trained today -->
             <Pill class="!py-0 mx-2 bg-black rounded-xl rounded-t-none">
               <div class="content flex items-center justify-between">
-                <span class="text-sm text-gray-300">{{
-                  locale?.["questions_trained_today"] || "Words trained today"
-                }}</span>
+                <span class="text-sm text-gray-300">{{ locale?.["questions_trained_today"] || "Words trained today" }}</span>
                 <div class="flex gap-2 items-center">
-                  <span class="text-lg exo-bold">{{
-                    showFormattedNumber(data?.["questions_trained_today"]) || 0
-                  }}</span>
+                  <span class="text-lg exo-bold">{{ showFormattedNumber(data?.["questions_trained_today"]) || 0 }}</span>
                 </div>
               </div>
             </Pill>
@@ -189,19 +135,12 @@
 
           <!-- words learned -->
           <div class="with-substat flex flex-col">
-            <Pill
-              class="!py-2 rounded-xl"
-              :tooltip="locale?.['tooltip_questions_learned']"
-            >
+            <Pill class="!py-2 rounded-xl" :tooltip="locale?.['tooltip_questions_learned']">
               <div class="content flex gap-2 items-center justify-between">
-                <span class="text-lg text-gray-300">{{
-                  locale?.["questions_learned"] || "Words learned"
-                }}</span>
+                <span class="text-lg text-gray-300">{{ locale?.["questions_learned"] || "Words learned" }}</span>
                 <div class="flex gap-2 items-center">
                   <img class="h-6" :src="getAsset('book')" />
-                  <span class="text-xl exo-black">{{
-                    data?.["questions_learned"] || 0
-                  }}</span>
+                  <span class="text-xl exo-black">{{ data?.["questions_learned"] || 0 }}</span>
                 </div>
               </div>
             </Pill>
@@ -209,13 +148,9 @@
             <!-- words learned today -->
             <Pill class="!py-0 mx-2 bg-black rounded-xl rounded-t-none">
               <div class="content flex items-center justify-between">
-                <span class="text-sm text-gray-300">{{
-                  locale?.["questions_learned_today"] || "Words learned today"
-                }}</span>
+                <span class="text-sm text-gray-300">{{ locale?.["questions_learned_today"] || "Words learned today" }}</span>
                 <div class="flex gap-2 items-center">
-                  <span class="text-lg exo-bold">{{
-                    showFormattedNumber(data?.["questions_learned_today"]) || 0
-                  }}</span>
+                  <span class="text-lg exo-bold">{{ showFormattedNumber(data?.["questions_learned_today"]) || 0 }}</span>
                 </div>
               </div>
             </Pill>
@@ -223,19 +158,12 @@
 
           <!-- words learned -->
           <div class="with-substat flex flex-col">
-            <Pill
-              class="!py-2 rounded-xl"
-              :tooltip="locale?.['tooltip_questions_repetition']"
-            >
+            <Pill class="!py-2 rounded-xl" :tooltip="locale?.['tooltip_questions_repetition']">
               <div class="content flex gap-2 items-center justify-between">
-                <span class="text-lg text-gray-300">{{
-                  locale?.["questions_repetition"] || "Repetitions"
-                }}</span>
+                <span class="text-lg text-gray-300">{{ locale?.["questions_repetition"] || "Repetitions" }}</span>
                 <div class="flex gap-2 items-center">
                   <img class="h-6" :src="getAsset('book')" />
-                  <span class="text-xl exo-black">{{
-                    data?.["questions_repetition"] || 0
-                  }}</span>
+                  <span class="text-xl exo-black">{{ data?.["questions_repetition"] || 0 }}</span>
                 </div>
               </div>
             </Pill>
@@ -257,35 +185,17 @@
               <div class="learning-progress flex flex-col gap-1">
                 <div class="top flex items-baseline justify-between">
                   <div class="level">
-                    <span class="text-lg text-gray-300"
-                      >{{ locale?.["level"] }}:
-                    </span>
-                    <span class="text-base exo-black text-gray-300">{{
-                      data?.["level"]
-                    }}</span>
+                    <span class="text-lg text-gray-300">{{ locale?.["level"] }}: </span>
+                    <span class="text-base exo-black text-gray-300">{{ data?.["level"] }}</span>
                   </div>
-                  <span class="text-[10px] exo-bold text-gray-300"
-                    >{{ data?.["level_progress"] }}%</span
-                  >
+                  <span class="text-[10px] exo-bold text-gray-300">{{ data?.["level_progress"] }}%</span>
                 </div>
                 <div class="bottom">
-                  <div
-                    class="progressbar h-[7px] w-full rounded-full bg-gray-500 relative"
-                  >
-                    <div
-                      class="value h-[7px] bg-gradient-to-r from-[#238a1a] to-[#0fc50f] rounded-l-full"
-                      :style="`width: ${data?.['level_progress']}%`"
-                    >
-                      <div
-                        v-for="item in 7"
-                        class="separator h-[7px] w-[2px] bg-[var(--grey-dark)] absolute"
-                        :style="`left: ${item * 12.5}%`"
-                      ></div>
+                  <div class="progressbar h-[7px] w-full rounded-full bg-gray-500 relative">
+                    <div class="value h-[7px] bg-gradient-to-r from-[#238a1a] to-[#0fc50f] rounded-l-full" :style="`width: ${data?.['level_progress']}%`">
+                      <div v-for="item in 7" class="separator h-[7px] w-[2px] bg-[var(--grey-dark)] absolute" :style="`left: ${item * 12.5}%`"></div>
 
-                      <div
-                        :class="`marker w-[4px] h-[11px] bg-[var(--accent-color)] absolute -top-[2px] rounded-full`"
-                        :style="`left: ${data?.['level_progress']}%`"
-                      ></div>
+                      <div :class="`marker w-[4px] h-[11px] bg-[var(--accent-color)] absolute -top-[2px] rounded-full`" :style="`left: ${data?.['level_progress']}%`"></div>
                     </div>
                   </div>
                 </div>
@@ -293,19 +203,12 @@
             </Pill>
 
             <!-- left to get next learning level -->
-            <Pill
-              class="!py-0 mx-2 bg-black rounded-xl rounded-t-none"
-              :tooltip="locale?.['tooltip_bolts_remain']"
-            >
+            <Pill class="!py-0 mx-2 bg-black rounded-xl rounded-t-none" :tooltip="locale?.['tooltip_bolts_remain']">
               <div class="content flex items-center justify-between">
-                <span class="text-sm text-gray-300">{{
-                  locale?.["questions_remain"] || "Level remain"
-                }}</span>
+                <span class="text-sm text-gray-300">{{ locale?.["questions_remain"] || "Level remain" }}</span>
                 <div class="flex gap-2 items-center">
                   <!-- <img class="h-4 scale-100" :src="getAsset('bolt')" /> -->
-                  <span class="text-lg exo-bold">{{
-                    showFormattedNumber(data?.["questions_remain"]) ?? 0
-                  }}</span>
+                  <span class="text-lg exo-bold">{{ showFormattedNumber(data?.["questions_remain"]) ?? 0 }}</span>
                 </div>
               </div>
             </Pill>
@@ -315,12 +218,8 @@
 
       <!-- activity -->
       <BackgroundPill class="flex flex-col">
-        <span class="bg-pill-title">{{
-          locale?.["activity_title"] || "Title"
-        }}</span>
-        <span class="bg-pill-subtitle">{{
-          locale?.["activity_subtitle"] || "Subtitle"
-        }}</span>
+        <span class="bg-pill-title">{{ locale?.["activity_title"] || "Title" }}</span>
+        <span class="bg-pill-subtitle">{{ locale?.["activity_subtitle"] || "Subtitle" }}</span>
       </BackgroundPill>
 
       <LanguageSettings @change="onSettingsChange" />
@@ -332,7 +231,7 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { tg } from "@/api/telegram";
 import { storeToRefs } from "pinia";
 import { getAsset, showFormattedNumber } from "@/utils";
@@ -361,12 +260,14 @@ const { fetchProfilePageData, setLanguages } = mainStore;
 await fetchProfilePageData();
 
 const router = useRouter();
+const route = useRoute();
 
-tg.BackButton.show();
-tg.BackButton.onClick(() => {
-  tg.BackButton.hide();
-  router.back();
-});
+// tg.BackButton.show();
+// tg.BackButton.onClick(() => {
+//   tg.BackButton.hide();
+//   router.back();
+// });
+console.log(route);
 
 const onSettingsChange = ({ setting, value }) => {
   setLanguages({ [setting]: value });

@@ -1,11 +1,13 @@
 import { tg } from "@/api/telegram";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
 const router = useRouter();
+const route = useRoute();
 
 export const useBackButton = (callback) => {
   const show = () => {
-    console.log(`showing btn`);
+    // console.log(`showing btn`);
+    console.log(route);
 
     tg.BackButton.show();
     tg.BackButton.onClick(() => {
