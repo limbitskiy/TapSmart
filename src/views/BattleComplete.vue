@@ -106,7 +106,7 @@
             <div class="flex gap-1 items-baseline">
               <span class="text-base leading-4">{{ getBtnTextArr(locale?.["button_claim_with_ton"])[0] }}</span>
               <img class="h-4" :src="getAsset('bolt-dark')" />
-              <span>{{ data?.["battle_complete_bolts"] * 2 }}</span>
+              <span>{{ data?.["battle_complete_bolts_with_ton"] }}</span>
             </div>
             <span class="text-sm fira-regular !leading-3">{{ getBtnTextArr(locale?.["button_claim_with_ton"])[1] }}</span>
           </div>

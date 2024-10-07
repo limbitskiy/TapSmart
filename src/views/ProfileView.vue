@@ -264,7 +264,7 @@ await fetchProfilePageData();
 const router = useRouter();
 const route = useRoute();
 
-console.log(route);
+// console.log(route.query.from);
 
 const onSettingsChange = ({ setting, value }) => {
   setLanguages({ [setting]: value });
