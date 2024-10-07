@@ -258,12 +258,23 @@ const { profile: locale } = storeToRefs(localeStore);
 
 const { fetchProfilePageData, setLanguages } = mainStore;
 
-useBackButton();
-
-await fetchProfilePageData();
-
 const router = useRouter();
 const route = useRoute();
+
+tg.BackButton.show();
+
+tg.BackButton.onClick(() => {
+  tg.BackButton.hide();
+
+  console.log(route.query.from);
+
+  if (route.query.from) {
+    console.log(`pushing`);
+    router.push(route.query.from);
+  }
+});
+
+await fetchProfilePageData();
 
 // console.log(route.query.from);
 
