@@ -3,67 +3,25 @@
     <Backlight color="green" />
     <ProfileWidget />
     <div class="top-btns grid grid-cols-2 gap-4 w-full px-4 relative">
-      <Button
-        class="bg-[var(--grey-dark)] text-white fira-condensed-bold leading-4 !px-4 py-2"
-        activeColor="#444"
-        @click="onChangeMech"
-      >
+      <Button class="bg-[var(--grey-dark)] text-white fira-condensed-bold leading-4 !px-4 py-2" activeColor="#444" @click="onChangeMech">
         <div class="flex gap-1 items-center justify-between">
           <div v-if="width > 410" class="icon">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="10.8387" height="10.8387" rx="2" fill="white" />
-              <rect
-                y="13.1613"
-                width="10.8387"
-                height="10.8387"
-                rx="2"
-                fill="white"
-              />
-              <rect
-                x="13.1611"
-                width="10.8387"
-                height="10.8387"
-                rx="2"
-                fill="white"
-              />
-              <rect
-                x="13.1611"
-                y="13.1613"
-                width="10.8387"
-                height="10.8387"
-                rx="2"
-                fill="white"
-              />
+              <rect y="13.1613" width="10.8387" height="10.8387" rx="2" fill="white" />
+              <rect x="13.1611" width="10.8387" height="10.8387" rx="2" fill="white" />
+              <rect x="13.1611" y="13.1613" width="10.8387" height="10.8387" rx="2" fill="white" />
             </svg>
           </div>
-          <span class="text-base leading-4">{{
-            locale?.["button_change_mech"]
-          }}</span>
+          <span class="text-base leading-4">{{ locale?.["button_change_mech"] }}</span>
           <!-- chevron down -->
-          <svg
-            width="14"
-            height="8"
-            viewBox="0 0 14 8"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M7 8L0 0.982456L0.98 0L7 6.03509L13.02 0L14 0.982456L7 8Z"
-              fill="white"
-            />
+          <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 8L0 0.982456L0.98 0L7 6.03509L13.02 0L14 0.982456L7 8Z" fill="white" />
           </svg>
         </div>
       </Button>
       <ChallengeButton class="text-base" @challenge="openBoosterModal" />
-      <div
-        class="relax-topbar flex flex-col items-end justify-between w-full absolute -bottom-[35px] px-4"
-      >
+      <div class="relax-topbar flex flex-col items-end justify-between w-full absolute -bottom-[35px] px-4">
         <!-- <TaskCountdown /> -->
         <VolumeControl />
       </div>
@@ -82,10 +40,7 @@
 
     <!-- mechanic change modal -->
     <Teleport to="#modals">
-      <Modal
-        id="mechanic-change-modal"
-        v-model:visible="isChangeMechModalVisible"
-      >
+      <Modal id="mechanic-change-modal" v-model:visible="isChangeMechModalVisible">
         <ChangeMechanic @close="() => closeModal('changeMechanic')" />
       </Modal>
     </Teleport>
@@ -93,14 +48,11 @@
     <!-- no energy modal -->
     <Teleport to="#modals">
       <Modal id="no-energy-modal" v-model:visible="isNoEnergyVisible" sticky>
-        <NoEnergy
-          @challenge="openBoosterModal"
-          @close="() => closeModal('noEnergy')"
-        />
+        <NoEnergy @challenge="openBoosterModal" @close="() => closeModal('noEnergy')" />
       </Modal>
     </Teleport>
 
-    <!-- select booster modal -->
+    <!-- booster select modal -->
     <Teleport to="#modals">
       <Modal id="select-booster-modal" v-model:visible="isBoostersModalVisible">
         <BoosterSelect @startBattle="onStartChallenge" />
@@ -137,15 +89,7 @@ const route = useRoute();
 
 const { data, afkCounter } = storeToRefs(dataStore.battles);
 const { battles: locale } = storeToRefs(localeStore);
-const {
-  startBreakpoint,
-  stopBreakpoint,
-  startTaskTimeout,
-  stopTaskTimeout,
-  setTaskTimeoutCounter,
-  resetBattleStats,
-  resetAfkCounter,
-} = dataStore.battles;
+const { startBreakpoint, stopBreakpoint, startTaskTimeout, stopTaskTimeout, setTaskTimeoutCounter, resetBattleStats, resetAfkCounter, getCurrentMechanicName } = dataStore.battles;
 const { redirectTo, fetchRelaxPageData, resetPageKey } = mainStore;
 
 const isChangeMechModalVisible = ref(false);
@@ -159,27 +103,19 @@ await fetchRelaxPageData();
 const isAFKModalVisible = computed(() => afkCounter.value >= 3);
 
 // stop questions when modals are open
-watch(
-  [
-    isChangeMechModalVisible,
-    isNoEnergyVisible,
-    isBoostersModalVisible,
-    isAFKModalVisible,
-  ],
-  (val) => {
-    if (val.some((modal) => modal)) {
-      if (!val[3]) {
-        resetAfkCounter();
-      }
-
-      setTaskTimeoutCounter(1);
-    } else {
+watch([isChangeMechModalVisible, isNoEnergyVisible, isBoostersModalVisible, isAFKModalVisible], (val) => {
+  if (val.some((modal) => modal)) {
+    if (!val[3]) {
       resetAfkCounter();
-      setTaskTimeoutCounter(null);
-      startTaskTimeout();
     }
+
+    setTaskTimeoutCounter(1);
+  } else {
+    resetAfkCounter();
+    setTaskTimeoutCounter(null);
+    startTaskTimeout();
   }
-);
+});
 
 // watch energy
 watch(
@@ -212,18 +148,11 @@ const openBoosterModal = () => {
   isBoostersModalVisible.value = true;
 };
 
-const onStartChallenge = ({
-  extra_mistake,
-  extra_time,
-  friends_only,
-}: {
-  [key: string]: string;
-}) => {
+const onStartChallenge = ({ extra_mistake, extra_time, friends_only }: { [key: string]: string }) => {
   isBoostersModalVisible.value = false;
+
   setTimeout(() => {
-    redirectTo(
-      `/challenge/yesno?extra_mistake=${extra_mistake}&extra_time=${extra_time}&friends_only=${friends_only}`
-    );
+    redirectTo(`/challenge/${getCurrentMechanicName()}?extra_mistake=${extra_mistake}&extra_time=${extra_time}&friends_only=${friends_only}`);
   }, 300);
 };
 

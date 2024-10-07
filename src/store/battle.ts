@@ -410,6 +410,10 @@ export const useBattleStore = defineStore("battle", () => {
     return battleTypes[mechId];
   };
 
+  const getCurrentMechanicName = () => {
+    return battleTypes[currentBattleType.value];
+  };
+
   // misc
   const resetBattleStats = () => {
     taskIndex.value = 0;
@@ -521,6 +525,7 @@ export const useBattleStore = defineStore("battle", () => {
     handleChallengeAnswer,
     changeMechanic,
     getMechanicName,
+    getCurrentMechanicName,
     startTaskTimeout,
     stopTaskTimeout,
     setTaskTimeoutCounter,

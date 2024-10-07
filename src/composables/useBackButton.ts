@@ -10,7 +10,7 @@ export const useBackButton = (callback) => {
     tg.BackButton.show();
     tg.BackButton.onClick(() => {
       tg.BackButton.hide();
-      callback();
+      router.back();
     });
   };
 
