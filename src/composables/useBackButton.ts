@@ -4,23 +4,10 @@ import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
 const route = useRoute();
 
-export const useBackButton = (callback) => {
-  const show = () => {
-    // console.log(`showing btn`);
-    console.log(route);
-
-    tg.BackButton.show();
-    tg.BackButton.onClick(() => {
-      tg.BackButton.hide();
-      router.back();
-    });
-  };
-
-  const hide = () => {
-    console.log(`hiding btn`);
-
+export const useBackButton = () => {
+  tg.BackButton.show();
+  tg.BackButton.onClick(() => {
     tg.BackButton.hide();
-  };
-
-  return { show, hide };
+    router.back();
+  });
 };

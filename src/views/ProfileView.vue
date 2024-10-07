@@ -257,16 +257,13 @@ const { profile: data } = storeToRefs(dataStore);
 const { profile: locale } = storeToRefs(localeStore);
 
 const { fetchProfilePageData, setLanguages } = mainStore;
-const { show } = useBackButton(() => {
-  router.back();
-});
+useBackButton();
 
 await fetchProfilePageData();
 
 const router = useRouter();
 const route = useRoute();
 
-show();
 console.log(route);
 
 const onSettingsChange = ({ setting, value }) => {
