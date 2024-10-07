@@ -8,7 +8,11 @@ export const useBackButton = () => {
   tg.BackButton.show();
   tg.BackButton.onClick(() => {
     tg.BackButton.hide();
+
+    console.log(route);
+
     if (route.query.from) {
+      console.log(`pushing`);
       router.push(route.query.from);
     }
   });

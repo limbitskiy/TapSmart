@@ -257,6 +257,7 @@ const { profile: data } = storeToRefs(dataStore);
 const { profile: locale } = storeToRefs(localeStore);
 
 const { fetchProfilePageData, setLanguages } = mainStore;
+
 useBackButton();
 
 await fetchProfilePageData();
