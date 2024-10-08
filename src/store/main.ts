@@ -117,6 +117,8 @@ export const useMainStore = defineStore("main", () => {
     notification.value.buttons = buttons;
     notification.value.isShown = true;
 
+    hideTooltip();
+
     // console.log(`notification: `, notification.value);
 
     notification.value.fn = setTimeout(() => {
@@ -226,10 +228,12 @@ export const useMainStore = defineStore("main", () => {
     return;
   };
 
-  const fetchChallengePageData = async (data: {}) => {
-    await useFetch({ key: "challenge_init", data });
-    redirectTo(`/challenge/${battleStore.getMechanicName(battleStore.data.battle_type)}`);
-    return;
+  const fetchWaitingData = async (data: {}) => {
+    return await useFetch({ key: "challenge_init", data });
+  };
+
+  const fetchChallengePageData = async () => {
+    return await useFetch({ key: "battle_init" });
   };
 
   const fetchProfilePageData = async () => {
@@ -337,8 +341,9 @@ export const useMainStore = defineStore("main", () => {
     fetchFriendsList,
     getOnlineFriends,
     fetchRelaxPageData,
-    fetchChallengePageData,
+    fetchWaitingData,
     fetchProfilePageData,
+    fetchChallengePageData,
     fetchTasksList,
     fetchBattleCompleteData,
     setLanguages,

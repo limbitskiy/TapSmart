@@ -11,12 +11,12 @@
     <RouterView v-slot="{ Component, route }">
       <template v-if="Component">
         <Transition :name="route.meta.transition || 'fade'" mode="out-in">
-          <KeepAlive>
-            <Suspense>
-              <component :is="Component" />
-              <template #fallback><Loader /></template>
-            </Suspense>
-          </KeepAlive>
+          <!-- <KeepAlive> -->
+          <Suspense>
+            <component :is="Component" />
+            <template #fallback><Loader /></template>
+          </Suspense>
+          <!-- </KeepAlive> -->
         </Transition>
       </template>
     </RouterView>
@@ -37,7 +37,6 @@
       </Modal>
     </Teleport>
   </div>
-  <!-- <ProgressBar /> -->
 </template>
 
 <script setup lang="ts">
@@ -48,14 +47,6 @@ import { useScreenSafeArea } from "@vueuse/core";
 // store
 import { useMainStore } from "@/store/main";
 import { useDataStore } from "@/store/data";
-
-// components
-import Notification from "@/components/Notification.vue";
-import Tooltip from "@/components/Tooltip.vue";
-import Modal from "@/components/Modal.vue";
-import Loader from "@/components/UI/Loader.vue";
-import BackendModal from "@/components/UI/BackendModal.vue";
-import ProgressBar from "./components/ProgressBar.vue";
 
 const { top, right, bottom, left } = useScreenSafeArea();
 

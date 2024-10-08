@@ -17,6 +17,7 @@ import BattleResults from "@/views/BattleResults.vue";
 import BattleComplete from "@/views/BattleComplete.vue";
 import StartRelax from "@/views/StartRelax.vue";
 import InviteFriend from "@/views/InviteFriend.vue";
+import BattleCompleteAnimation from "@/views/BattleCompleteAnimation.vue";
 
 // battles
 import YesNo from "@/components/battles/YesNo.vue";
@@ -112,6 +113,10 @@ const routes = [
   {
     path: "/battle-complete",
     component: BattleComplete,
+  },
+  {
+    path: "/battle-complete-animation",
+    component: BattleCompleteAnimation,
   },
   {
     path: "/battle-results",

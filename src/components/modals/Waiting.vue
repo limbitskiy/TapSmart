@@ -1,5 +1,5 @@
 <template>
-  <div class="waiting-modal flex flex-col gap-4">
+  <div class="waiting-modal flex flex-col gap-4 min-h-[60dvh]">
     <div class="header flex flex-col gap-4">
       <div class="top-row flex-1 flex items-center justify-between">
         <span class="bg-pill-title">{{ locale?.["waiting_title"] || "Waiting" }}</span>
@@ -57,11 +57,11 @@
       </li>
     </ul>
 
-    <div v-if="isFriendsChallenge" class="btns w-full flex gap-4 mt-8">
+    <div v-if="challengeProps.friends_only === 1" class="btns w-full flex gap-4 mt-8">
       <Button class="flex-1 py-3 !px-0" activeColor="#525252" @click="onInviteFriend" :dark="data?.['players_waiting']?.length > 1">
         <span class="text-lg leading-4">{{ locale?.["button_waiting_invite"] || "Invite" }}</span>
       </Button>
-      <Button class="flex-1 py-3 !px-0" activeColor="#fcdcb0" @click="() => emit('friendStart')" :disabled="data?.['players_waiting']?.length <= 1">
+      <Button class="flex-1 py-3 !px-0" activeColor="#fcdcb0" @click="onFriendStart" :disabled="data?.['players_waiting']?.length <= 1">
         <span class="text-lg leading-4">{{ locale?.["button_waiting_run"] || "Start" }}</span>
       </Button>
     </div>
@@ -80,10 +80,9 @@ import { useDataStore } from "@/store/data";
 import { useMainStore } from "@/store/main";
 import { useLocaleStore } from "@/store/locale";
 
-// components
-import Button from "@/components/UI/Button.vue";
-import Pill from "@/components/UI/Pill.vue";
-import { log } from "console";
+const props = defineProps<{
+  challengeProps: {};
+}>();
 
 const emit = defineEmits<{
   countdownComplete: [];
@@ -101,7 +100,9 @@ const { data } = storeToRefs(dataStore.battles);
 const { battles: locale } = storeToRefs(localeStore);
 
 const { startBreakpoint, stopBreakpoint, decreaseWaitingTimer } = dataStore.battles;
-const { fetchChallengePageData, callApi, redirectTo } = mainStore;
+const { fetchWaitingData, callApi, redirectTo } = mainStore;
+
+await fetchWaitingData(props.challengeProps);
 
 let interval: ReturnType<typeof setInterval> | undefined;
 
@@ -115,8 +116,6 @@ const formattedTime = computed(() => {
   }
 });
 
-const isFriendsChallenge = computed(() => route.query.friends_only === "1");
-
 const onAbort = () => {
   clearInterval(interval);
   emit("abort");
@@ -125,6 +124,10 @@ const onAbort = () => {
 
 const onInviteFriend = () => {
   inviteFriend(locale.value?.["invite_message"] || "Invite message");
+};
+
+const onFriendStart = () => {
+  callApi({ api: "waiting_run" });
 };
 
 onMounted(() => {

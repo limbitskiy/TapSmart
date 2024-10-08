@@ -26,6 +26,9 @@ import ProgressBar from "@/components/ProgressBar.vue";
 import BattleCompleteAnimation from "@/components/animations/BattleCompleteAnimation.vue";
 import LanguageSettings from "@/components/LanguageSettings.vue";
 import LeagueProgress from "@/components/LeagueProgress.vue";
+import Notification from "@/components/Notification.vue";
+import Tooltip from "@/components/Tooltip.vue";
+import BackendModal from "@/components/UI/BackendModal.vue";
 
 // modals
 import ChangeMechanic from "@/components/modals/ChangeMechanic.vue";
@@ -68,6 +71,9 @@ app
   .component("ProgressBar", ProgressBar)
   .component("LanguageSettings", LanguageSettings)
   .component("LeagueProgress", LeagueProgress)
+  .component("Notification", Notification)
+  .component("Tooltip", Tooltip)
+  .component("BackendModal", BackendModal)
   .component("BattleCompleteAnimation", BattleCompleteAnimation);
 
 app.mount("#app");

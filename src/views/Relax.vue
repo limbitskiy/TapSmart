@@ -22,7 +22,6 @@
       </Button>
       <ChallengeButton class="text-base" @challenge="openBoosterModal" />
       <div class="relax-topbar flex flex-col items-end justify-between w-full absolute -bottom-[35px] px-4">
-        <!-- <TaskCountdown /> -->
         <VolumeControl />
       </div>
     </div>
@@ -55,7 +54,7 @@
     <!-- booster select modal -->
     <Teleport to="#modals">
       <Modal id="select-booster-modal" v-model:visible="isBoostersModalVisible">
-        <BoosterSelect @startBattle="onStartChallenge" />
+        <BoosterSelect @startBattle="onStartWaiting" />
       </Modal>
     </Teleport>
 
@@ -63,6 +62,13 @@
     <Teleport to="#modals">
       <Modal id="afk-modal" v-model:visible="isAFKModalVisible" sticky>
         <AFK @close="onAfkModalClose" />
+      </Modal>
+    </Teleport>
+
+    <!-- waiting modal -->
+    <Teleport to="#modals">
+      <Modal id="waiting-modal" v-model:visible="isWaitingModalVisible" sticky>
+        <Waiting :challengeProps="challengeProps" @countdownComplete="onStartChallenge" @abort="onAbortWaiting" />
       </Modal>
     </Teleport>
   </div>
@@ -95,6 +101,12 @@ const { redirectTo, fetchRelaxPageData, resetPageKey } = mainStore;
 const isChangeMechModalVisible = ref(false);
 const isNoEnergyVisible = ref(false);
 const isBoostersModalVisible = ref(false);
+const isWaitingModalVisible = ref(false);
+const challengeProps = ref({
+  extra_mistake: 0,
+  extra_time: 0,
+  friends_only: 0,
+});
 
 setThemeColor("#222");
 
@@ -103,7 +115,7 @@ await fetchRelaxPageData();
 const isAFKModalVisible = computed(() => afkCounter.value >= 3);
 
 // stop questions when modals are open
-watch([isChangeMechModalVisible, isNoEnergyVisible, isBoostersModalVisible, isAFKModalVisible], (val) => {
+watch([isChangeMechModalVisible, isNoEnergyVisible, isBoostersModalVisible, isAFKModalVisible, isWaitingModalVisible], (val) => {
   if (val.some((modal) => modal)) {
     if (!val[3]) {
       resetAfkCounter();
@@ -148,14 +160,6 @@ const openBoosterModal = () => {
   isBoostersModalVisible.value = true;
 };
 
-const onStartChallenge = ({ extra_mistake, extra_time, friends_only }: { [key: string]: string }) => {
-  isBoostersModalVisible.value = false;
-
-  setTimeout(() => {
-    redirectTo(`/challenge/${getCurrentMechanicName()}?extra_mistake=${extra_mistake}&extra_time=${extra_time}&friends_only=${friends_only}`);
-  }, 300);
-};
-
 const onAnswer = () => {
   if (data.value.energy === 0) {
     isNoEnergyVisible.value = true;
@@ -164,6 +168,23 @@ const onAnswer = () => {
 
 const onAfkModalClose = () => {
   resetAfkCounter();
+};
+
+// waiting
+const onStartWaiting = (_challengeProps: {}) => {
+  isBoostersModalVisible.value = false;
+  challengeProps.value = _challengeProps;
+  isWaitingModalVisible.value = true;
+};
+
+const onStartChallenge = () => {
+  isWaitingModalVisible.value = false;
+  redirectTo(`/challenge/${getCurrentMechanicName()}`);
+};
+
+const onAbortWaiting = () => {
+  challengeProps.value = { extra_mistake: 0, extra_time: 0, friends_only: 0 };
+  isWaitingModalVisible.value = false;
 };
 
 onMounted(() => {
