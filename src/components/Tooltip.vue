@@ -9,17 +9,14 @@
     }"
     @click="onClick"
   >
-    <div
-      v-if="params.position === 'bottom'"
-      class="triangle-up absolute -top-[8px]"
-      :style="{ left: params.center - 5 + 'px' }"
-    ></div>
+    <!-- arrow down -->
+    <div v-if="params.position === 'bottom'" class="triangle-up absolute -top-[8px]" :style="{ left: params.center - 5 + 'px' }"></div>
+
+    <!-- tooltip text -->
     <span>{{ tooltip.text }}</span>
-    <div
-      v-if="params.position === 'top'"
-      class="triangle-down absolute -bottom-[8px]"
-      :style="{ left: params.center - 5 + 'px' }"
-    ></div>
+
+    <!-- arrow up -->
+    <div v-if="params.position === 'top'" class="triangle-down absolute -bottom-[8px]" :style="{ left: params.center - 5 + 'px' }"></div>
   </div>
 </template>
 
@@ -37,24 +34,20 @@ const { hideTooltip } = mainStore;
 
 const tooltipRef = ref();
 
-const {
-  left: elementLeft,
-  width: elementWidth,
-  height: elementHeight,
-  top: elementTop,
-  right: elementRight,
-} = tooltip.value.element.getBoundingClientRect();
-
-const calculatedElementWidth = (elementWidth: number) => {
+const calculateElementWidth = (elementWidth: number) => {
   return elementWidth > 250 ? elementWidth : 250;
 };
 
+// parent element passed with the tooltip
+const elementRect = tooltip.value.element.getBoundingClientRect();
+
+// tooltip params
 const params = ref({
-  x: elementLeft,
-  y: elementTop + window.scrollY,
-  center: elementWidth / 2,
+  x: elementRect.left,
+  y: elementRect.top + window.scrollY,
+  center: elementRect.width / 2,
   position: tooltip.value.position || "top",
-  width: calculatedElementWidth(elementWidth),
+  width: calculateElementWidth(elementRect.width),
 });
 
 const onClick = () => {
@@ -66,30 +59,35 @@ const onScroll = () => {
 };
 
 onMounted(() => {
-  const {
-    height: tooltipHeight,
-    width: tooltipWidth,
-    right: tooltipRight,
-    left: tooltipLeft,
-  } = tooltipRef.value.getBoundingClientRect();
+  // original tooltip position! probably not the same after all checks
+  const { height: tooltipHeight, width: tooltipWidth, right: tooltipRight, left: tooltipLeft } = tooltipRef.value.getBoundingClientRect();
+
+  // center tooltip on element
+  params.value.x += elementRect.width / 2 - tooltipWidth / 2;
 
   // check for Y overflowing
   if (params.value.y - tooltipHeight < window.scrollY) {
-    params.value.y = params.value.y + elementHeight + 10;
+    params.value.y = params.value.y + elementRect.height + 10;
     params.value.position = "bottom";
   } else {
     params.value.y = params.value.y - tooltipHeight - 10;
   }
 
-  // check for X overflowing
-  if (tooltipRight > window.innerWidth) {
-    const delta = tooltipRight - window.innerWidth;
+  // check for X overflowing on the right
+  if (params.value.x + tooltipWidth > window.innerWidth) {
+    const delta = params.value.x + tooltipWidth - window.innerWidth;
     params.value.x -= delta;
+    // params.value.x = window.innerWidth - params.value.width;
   }
 
-  const triangleDeltaX = elementLeft - params.value.x;
+  // check for X overflowing on the left
+  if (params.value.x < 0) {
+    params.value.x = 0;
+  }
 
-  params.value.center = triangleDeltaX + elementWidth / 2;
+  const triangleDeltaX = elementRect.left - params.value.x;
+
+  params.value.center = triangleDeltaX + elementRect.width / 2;
 
   document.querySelector("#app")?.addEventListener("scroll", onScroll);
 });

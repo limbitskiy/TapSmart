@@ -32,6 +32,7 @@ import { storeToRefs } from "pinia";
 import { getAsset, showFormattedNumber } from "@/utils/index";
 
 // stores
+import { useMainStore } from "@/store/main";
 import { useDataStore } from "@/store/data";
 import { useLocaleStore } from "@/store/locale";
 
@@ -42,9 +43,11 @@ const emit = defineEmits<{
   close: [];
 }>();
 
+const mainStore = useMainStore();
 const dataStore = useDataStore();
 const localeStore = useLocaleStore();
 
+const { hideTooltip } = mainStore;
 const { battles: locale } = storeToRefs(localeStore);
 const { data } = storeToRefs(dataStore.battles);
 const { getMechanicName, changeMechanic, stopBreakpoint, startBreakpoint } = dataStore.battles;
@@ -73,5 +76,6 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   startBreakpoint("battle");
+  hideTooltip();
 });
 </script>

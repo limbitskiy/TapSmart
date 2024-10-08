@@ -24,6 +24,8 @@ import CircleProgress from "@/components/UI/CircleProgress.vue";
 import ChallengeStatus from "@/components/ChallengeStatus.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import BattleCompleteAnimation from "@/components/animations/BattleCompleteAnimation.vue";
+import LanguageSettings from "@/components/LanguageSettings.vue";
+import LeagueProgress from "@/components/LeagueProgress.vue";
 
 // modals
 import ChangeMechanic from "@/components/modals/ChangeMechanic.vue";
@@ -64,6 +66,8 @@ app
   .component("Waiting", Waiting)
   .component("ChallengeStatus", ChallengeStatus)
   .component("ProgressBar", ProgressBar)
+  .component("LanguageSettings", LanguageSettings)
+  .component("LeagueProgress", LeagueProgress)
   .component("BattleCompleteAnimation", BattleCompleteAnimation);
 
 app.mount("#app");

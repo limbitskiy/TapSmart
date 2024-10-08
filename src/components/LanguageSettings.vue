@@ -1,21 +1,21 @@
 <template>
   <BackgroundPill color="dark">
-    <span class="bg-pill-title">{{ locale["settings_title"] }}</span>
+    <span class="bg-pill-title">{{ locale?.["settings_title"] }}</span>
 
     <div class="flex flex-col gap-2 mt-4">
-      <PillButton color="light">
+      <PillButton color="light" @click="onClick">
         <template #name>
           <span class="text-lg font-semibold text-gray-300">{{ locale["target_language"] }}</span>
         </template>
-        <template #value>{{ data["target_language_list"].find((item) => item.id === targetLang).label }}</template>
+        <template #value>{{ data?.["target_language_list"].find((item) => item.id === targetLang).label }}</template>
         <template #modal="{ closeModal }">
           <div>
-            <span class="pill-title">{{ locale["modal_language_title"] }}</span>
+            <span class="pill-title">{{ locale?.["modal_language_title"] }}</span>
             <PillRadioGroup
               class="mt-2"
               color="light"
-              :data="data['target_language_list']"
-              :selected="data['target_language']"
+              :data="data?.['target_language_list']"
+              :selected="data?.['target_language']"
               ripple
               @select="
                 (lang) => {
@@ -27,19 +27,19 @@
         </template>
       </PillButton>
 
-      <PillButton color="light">
+      <PillButton color="light" @click="onClick">
         <template #name>
-          <span class="text-lg font-semibold text-gray-300">{{ locale["native_language"] }}</span>
+          <span class="text-lg font-semibold text-gray-300">{{ locale?.["native_language"] }}</span>
         </template>
-        <template #value>{{ data["native_language_list"].find((item) => item.id === nativeLang).label }}</template>
+        <template #value>{{ data?.["native_language_list"].find((item) => item.id === nativeLang).label }}</template>
         <template #modal="{ closeModal }">
           <div>
-            <span class="pill-title">{{ locale["modal_language_title"] }}</span>
+            <span class="pill-title">{{ locale?.["modal_language_title"] }}</span>
             <PillRadioGroup
               class="mt-2"
               color="light"
-              :data="data['native_language_list']"
-              :selected="data['native_language']"
+              :data="data?.['native_language_list']"
+              :selected="data?.['native_language']"
               ripple
               @select="
                 (lang) => {
@@ -60,8 +60,9 @@ import { storeToRefs } from "pinia";
 import { tg } from "@/api/telegram";
 
 // stores
-import { useDataStore } from "@/store/data.ts";
-import { useLocaleStore } from "@/store/locale.ts";
+import { useMainStore } from "@/store/main";
+import { useDataStore } from "@/store/data";
+import { useLocaleStore } from "@/store/locale";
 
 // components
 import BackgroundPill from "@/components/UI/BackgroundPill.vue";
@@ -72,14 +73,16 @@ const emit = defineEmits<{
   change: [data: { setting: string; value: number }];
 }>();
 
+const mainStore = useMainStore();
 const dataStore = useDataStore();
 const localeStore = useLocaleStore();
 
+const { hideTooltip } = mainStore;
 const { profile: data } = storeToRefs(dataStore);
 const { profile: locale } = storeToRefs(localeStore);
 
-const nativeLang = ref(data.value["native_language"]);
-const targetLang = ref(data.value["target_language"]);
+const nativeLang = ref(data.value?.["native_language"]);
+const targetLang = ref(data.value?.["target_language"]);
 
 const onNativeSelect = (lang, cb) => {
   emit("change", { setting: "native_language", value: lang });
@@ -95,5 +98,9 @@ const onTargetSelect = (lang, cb) => {
   setTimeout(() => {
     cb();
   }, 100);
+};
+
+const onClick = () => {
+  hideTooltip();
 };
 </script>

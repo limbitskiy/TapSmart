@@ -11,10 +11,12 @@
     <RouterView v-slot="{ Component, route }">
       <template v-if="Component">
         <Transition :name="route.meta.transition || 'fade'" mode="out-in">
-          <Suspense>
-            <component :is="Component" />
-            <template #fallback><Loader /></template>
-          </Suspense>
+          <KeepAlive>
+            <Suspense>
+              <component :is="Component" />
+              <template #fallback><Loader /></template>
+            </Suspense>
+          </KeepAlive>
         </Transition>
       </template>
     </RouterView>
@@ -41,7 +43,6 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { onMounted } from "vue";
-import { RouterView } from "vue-router";
 import { useScreenSafeArea } from "@vueuse/core";
 
 // store
