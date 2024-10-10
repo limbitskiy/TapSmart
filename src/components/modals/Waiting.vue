@@ -16,8 +16,8 @@
 
       <span class="">{{ locale?.["waiting_subtitle"] || "Waiting subtitle" }}</span>
       <Pill>
-        <div class="timer">
-          <span>{{ "00:" + formattedTime }}</span>
+        <div class="timer text-center">
+          <span class="exo-black text-3xl">{{ formattedTime ?? "00:00" }}</span>
         </div>
       </Pill>
     </div>
@@ -107,12 +107,21 @@ await fetchWaitingData(props.challengeProps);
 let interval: ReturnType<typeof setInterval> | undefined;
 
 const formattedTime = computed(() => {
-  if (!data.value.waiting_timer) return "00";
+  if (!data.value.waiting_timer) return "00:00";
 
-  if (data.value.waiting_timer > 9000) {
-    return data.value.waiting_timer / 1000;
+  if (data.value.waiting_timer < 60000) {
+    if (data.value.waiting_timer > 9000) {
+      "00:" + data.value.waiting_timer / 1000;
+    } else {
+      return "00:0" + data.value.waiting_timer / 1000;
+    }
   } else {
-    return "0" + data.value.waiting_timer / 1000;
+    const min = Math.trunc(data.value.waiting_timer / 60000);
+    let sec = (data.value.waiting_timer % 60000) / 1000 + "";
+    if (sec.length === 1) {
+      sec = "0" + sec;
+    }
+    return "0" + min + ":" + sec;
   }
 });
 

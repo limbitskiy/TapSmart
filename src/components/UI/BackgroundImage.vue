@@ -38,14 +38,31 @@
       <g filter="url(#bbblurry-filter)"><ellipse rx="277.5" ry="277.5" cx="724.2387545121278" cy="71.68735987478527" fill="hsla(0, 83%, 54%, 1.00)"></ellipse></g>
     </svg>
   </div> -->
-  <div class="bg-image absolute inset-0 pointer-events-none" style="background: linear-gradient(180deg, #3585df 0%, #1758a0 100%); z-index: -1"></div>
+  <div
+    v-if="backgroundColor === 'blue'"
+    class="bg-image absolute inset-0 pointer-events-none"
+    style="background: linear-gradient(180deg, #3585df 0%, #1758a0 100%); z-index: -1"
+  ></div>
+  <div
+    v-else-if="backgroundColor === 'red'"
+    class="bg-image absolute inset-0 pointer-events-none"
+    style="background: linear-gradient(180deg, #d26542 0%, #8f3c21 100%); z-index: -1"
+  ></div>
   <div class="bg-image absolute inset-0 pointer-events-none" style="z-index: 0" :style="`background: url(${getAsset('pattern_paws_blue')})`"></div>
 </template>
 
 <script setup lang="ts">
 import { getAsset } from "@/utils";
+import { storeToRefs } from "pinia";
 
-defineProps<{
-  color: string;
-}>();
+// stores
+import { useMainStore } from "@/store/main";
+
+const mainStore = useMainStore();
+
+const { backgroundColor } = storeToRefs(mainStore);
+
+// defineProps<{
+//   color: string;
+// }>();
 </script>

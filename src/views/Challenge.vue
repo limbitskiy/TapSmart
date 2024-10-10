@@ -40,8 +40,6 @@ import { useDataStore } from "@/store/data";
 import { useMainStore } from "@/store/main";
 import { useLocaleStore } from "@/store/locale";
 
-setThemeColor("#D26542");
-
 const route = useRoute();
 
 const dataStore = useDataStore();
@@ -51,8 +49,12 @@ const localeStore = useLocaleStore();
 const { data, challengeScore: score, bonusesUsed, currentCalcPoint, currentBattleMode } = storeToRefs(dataStore.battles);
 const { startChallenge, stopChallenge } = dataStore.battles;
 const { battles: locale } = storeToRefs(localeStore);
+const { backgroundColor } = storeToRefs(mainStore);
 
 const { fetchChallengePageData, callApi, redirectTo } = mainStore;
+
+setThemeColor("#D26542");
+backgroundColor.value = "red";
 
 const bonusState = ref({
   text: "",

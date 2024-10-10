@@ -1,5 +1,5 @@
 <template>
-  <div id="battle-complete" class="flex-1 flex flex-col h-dvh">
+  <div id="battle-complete" class="flex-1 flex p-4 flex-col h-dvh">
     <Profile />
 
     <BackgroundPill class="py-8 mt-4 overflow-y-hidden flex-1">

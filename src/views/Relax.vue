@@ -53,10 +53,10 @@
 
         <Transition name="correct-text" mode="out-in">
           <div v-if="isCorrectTextShown" class="correct-text absolute z-20 inset-0 grid place-items-center pointer-events-none">
-            <span class="block text-[10vw] exo-black text-[#1fe525] mb-8">Correct!</span>
+            <span class="block text-[10vw] exo-black text-[#1fe525] mb-8">{{ locale?.["is_correct_answer"] || "Yes!" }}</span>
           </div>
           <div v-else-if="isWrongTextShown" class="correct-text absolute z-20 inset-0 grid place-items-center pointer-events-none">
-            <span class="block text-[10vw] exo-black text-[red] mb-8">Wrong!</span>
+            <span class="block text-[10vw] exo-black text-[red] mb-8">{{ locale?.["is_wrong_answer"] || "No!" }}</span>
           </div>
         </Transition>
       </div>
@@ -124,6 +124,7 @@ const { data, afkCounter } = storeToRefs(dataStore.battles);
 const { battles: locale } = storeToRefs(localeStore);
 const { startBreakpoint, stopBreakpoint, startTaskTimeout, stopTaskTimeout, setTaskTimeoutCounter, resetBattleStats, resetAfkCounter, getCurrentMechanicName } = dataStore.battles;
 const { redirectTo, fetchRelaxPageData, resetPageKey } = mainStore;
+const { backgroundColor } = storeToRefs(mainStore);
 
 const isCorrectTextShown = ref(false);
 const isWrongTextShown = ref(false);
@@ -138,6 +139,7 @@ const challengeProps = ref({
 });
 
 setThemeColor("#222");
+backgroundColor.value = "blue";
 
 await fetchRelaxPageData();
 

@@ -51,6 +51,8 @@ export const useMainStore = defineStore("main", () => {
   const requestPending = ref(false);
   const requestQueue = ref([]);
 
+  const backgroundColor = ref();
+
   const pageKeys = {
     homeChild: Math.random() * 99999,
   };
@@ -337,6 +339,7 @@ export const useMainStore = defineStore("main", () => {
     notification,
     tooltip,
     modal,
+    backgroundColor,
     startApp,
     fetchFriendsList,
     getOnlineFriends,
