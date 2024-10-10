@@ -1,27 +1,78 @@
 <template>
-  <div class="challenge-main flex-1 overflow-y-auto overflow-x-hidden flex flex-col gap-2 relative">
-    <Backlight color="red" />
+  <div
+    class="challenge-main flex-1 overflow-y-auto overflow-x-hidden flex flex-col gap-2 relative p-4"
+  >
+    <BackgroundImage type="red" />
 
     <div class="challenge-stats relative z-10 flex flex-col gap-4 mt-2">
       <!-- <button class="absolute z-[9999]" @click="onBonusUsed">get bonus</button> -->
-      <ChallengeStatus :time="timer || 0" :score="score" :multiplier="currentCalcPoint" :place="playerPosition" />
+      <ChallengeStatus
+        :time="timer || 0"
+        :score="score"
+        :multiplier="currentCalcPoint"
+        :place="playerPosition"
+      />
 
       <div class="wrap px-8">
         <ProgressBar :timer="timer || 0" />
       </div>
     </div>
 
-    <RouterView v-slot="{ Component }" type="challenge">
-      <!-- <Transition name="fade" mode="out-in"> -->
-      <component :is="Component" />
-      <!-- </Transition> -->
-    </RouterView>
+    <BackgroundPill class="flex-1 z-10 rounded-[15px] relative" dark>
+      <div class="header flex items-center justify-between">
+        <span class="fira-bold text-lg text-[#B7B7B7]"
+          >{{ locale?.[`yesno_title`] || "Yes-no" }} battle</span
+        >
+        <div class="right flex items-center gap-3">
+          <!-- <CircleProgress class="text-white" :strokeWidth="2" color="grey" :size="20" /> -->
+          <VolumeControl class="scale-75" />
+        </div>
+      </div>
+
+      <!-- battle body -->
+      <div class="battle-body flex-1 flex relative overflow-hidden">
+        <RouterView v-slot="{ Component }" type="challenge" @answer="onAnswer">
+          <template v-if="Component">
+            <Transition name="fade" mode="out-in">
+              <Suspense suspensible>
+                <component :is="Component" />
+                <template #fallback><Loader /></template>
+              </Suspense>
+            </Transition>
+          </template>
+        </RouterView>
+
+        <Transition name="correct-text" mode="out-in">
+          <div
+            v-if="isCorrectTextShown"
+            class="correct-text absolute z-20 inset-0 grid place-items-center pointer-events-none"
+          >
+            <span class="block text-[10vw] exo-black text-[#1fe525] mb-8">{{
+              locale?.["is_correct_answer"] || "Yes!"
+            }}</span>
+          </div>
+          <div
+            v-else-if="isWrongTextShown"
+            class="correct-text absolute z-20 inset-0 grid place-items-center pointer-events-none"
+          >
+            <span class="block text-[10vw] exo-black text-[red] mb-8">{{
+              locale?.["is_wrong_answer"] || "No!"
+            }}</span>
+          </div>
+        </Transition>
+      </div>
+    </BackgroundPill>
 
     <!-- onscreen bonuses -->
     <Transition name="challenge-bonus-1">
-      <div v-if="bonusState.isShown" class="bonuses-cnt absolute top-[20dvh] left-0 right-0 grid place-items-center">
+      <div
+        v-if="bonusState.isShown"
+        class="bonuses-cnt absolute top-[20dvh] left-0 right-0 grid place-items-center"
+      >
         <div class="bonus">
-          <span class="text-[6vw] exo-black text-[#edaa38]">{{ bonusState.text }}</span>
+          <span class="text-[6vw] exo-black text-[#edaa38]">{{
+            bonusState.text
+          }}</span>
         </div>
       </div>
     </Transition>
@@ -46,15 +97,22 @@ const dataStore = useDataStore();
 const mainStore = useMainStore();
 const localeStore = useLocaleStore();
 
-const { data, challengeScore: score, bonusesUsed, currentCalcPoint, currentBattleMode } = storeToRefs(dataStore.battles);
+const {
+  data,
+  challengeScore: score,
+  bonusesUsed,
+  currentCalcPoint,
+  currentBattleMode,
+} = storeToRefs(dataStore.battles);
 const { startChallenge, stopChallenge } = dataStore.battles;
 const { battles: locale } = storeToRefs(localeStore);
-const { backgroundColor } = storeToRefs(mainStore);
 
 const { fetchChallengePageData, callApi, redirectTo } = mainStore;
 
 setThemeColor("#D26542");
-backgroundColor.value = "red";
+
+const isCorrectTextShown = ref(false);
+const isWrongTextShown = ref(false);
 
 const bonusState = ref({
   text: "",
@@ -91,7 +149,11 @@ const playerPosition = computed(() => {
 
   const playersSorted = clone?.sort((a, b) => b.score - a.score);
 
-  return [playersSorted?.findIndex((player) => player.isPlayer) + 1 || data.value["player_progress"].length, data.value["player_progress"].length];
+  return [
+    playersSorted?.findIndex((player) => player.isPlayer) + 1 ||
+      data.value["player_progress"].length,
+    data.value["player_progress"].length,
+  ];
 });
 
 const onStartChallenge = () => {
@@ -128,6 +190,28 @@ const onBonusUsed = (bonusName: string) => {
 
     bonusState.value.used[bonusName] = true;
   }, 1000);
+};
+
+const onAnswer = (_data) => {
+  if (_data.correct) {
+    setTimeout(() => {
+      isCorrectTextShown.value = true;
+    }, 50);
+
+    setTimeout(() => {
+      isCorrectTextShown.value = false;
+    }, 500);
+  }
+
+  if (!_data.correct) {
+    setTimeout(() => {
+      isWrongTextShown.value = true;
+    }, 50);
+
+    setTimeout(() => {
+      isWrongTextShown.value = false;
+    }, 500);
+  }
 };
 
 onMounted(() => {

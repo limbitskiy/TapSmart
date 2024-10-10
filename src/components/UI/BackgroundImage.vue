@@ -1,68 +1,47 @@
 <template>
-  <!-- <div v-if="color === 'green'" class="backlight absolute inset-0 pointer-events-none">
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" viewBox="0 0 800 800" opacity="0.39">
-      <defs>
-        <filter
-          id="bbblurry-filter"
-          x="-100%"
-          y="-100%"
-          width="400%"
-          height="400%"
-          filterUnits="objectBoundingBox"
-          primitiveUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
-        >
-          <feGaussianBlur stdDeviation="130" x="0%" y="0%" width="100%" height="100%" in="SourceGraphic" edgeMode="none" result="blur"></feGaussianBlur>
-        </filter>
-      </defs>
-      <g filter="url(#bbblurry-filter)"><ellipse rx="277.5" ry="277.5" cx="630.5030070200016" cy="159.2365291255931" fill="#7afd3c"></ellipse></g>
-    </svg>
-  </div>
-
-  <div v-else-if="color === 'red'" class="backlight absolute inset-0 pointer-events-none">
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" viewBox="0 0 800 800" opacity="0.26">
-      <defs>
-        <filter
-          id="bbblurry-filter"
-          x="-100%"
-          y="-100%"
-          width="400%"
-          height="400%"
-          filterUnits="objectBoundingBox"
-          primitiveUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
-        >
-          <feGaussianBlur stdDeviation="130" x="0%" y="0%" width="100%" height="100%" in="SourceGraphic" edgeMode="none" result="blur"></feGaussianBlur>
-        </filter>
-      </defs>
-      <g filter="url(#bbblurry-filter)"><ellipse rx="277.5" ry="277.5" cx="724.2387545121278" cy="71.68735987478527" fill="hsla(0, 83%, 54%, 1.00)"></ellipse></g>
-    </svg>
-  </div> -->
   <div
-    v-if="backgroundColor === 'blue'"
+    v-if="type === 'blue'"
     class="bg-image absolute inset-0 pointer-events-none"
-    style="background: linear-gradient(180deg, #3585df 0%, #1758a0 100%); z-index: -1"
+    style="
+      background: linear-gradient(180deg, #3585df 0%, #1758a0 100%);
+      z-index: -1;
+    "
   ></div>
   <div
-    v-else-if="backgroundColor === 'red'"
+    v-else-if="type === 'red'"
     class="bg-image absolute inset-0 pointer-events-none"
-    style="background: linear-gradient(180deg, #d26542 0%, #8f3c21 100%); z-index: -1"
+    style="
+      background: linear-gradient(180deg, #d26542 0%, #8f3c21 100%);
+      z-index: -1;
+    "
   ></div>
-  <div class="bg-image absolute inset-0 pointer-events-none" style="z-index: 0" :style="`background: url(${getAsset('pattern_paws_blue')})`"></div>
+  <div
+    v-else-if="type === 'purple'"
+    class="bg-image absolute inset-0 pointer-events-none"
+    style="
+      background: linear-gradient(180deg, #824ea2 0%, #562475 100%);
+      z-index: -1;
+    "
+  ></div>
+  <div
+    class="bg-image absolute inset-0 pointer-events-none"
+    style="z-index: 0"
+    :style="`background: url(${getAsset('pattern_paws_blue')})`"
+  ></div>
 </template>
 
 <script setup lang="ts">
 import { getAsset } from "@/utils";
-import { storeToRefs } from "pinia";
+// import { storeToRefs } from "pinia";
 
 // stores
-import { useMainStore } from "@/store/main";
+// import { useMainStore } from "@/store/main";
 
-const mainStore = useMainStore();
+// const mainStore = useMainStore();
 
-const { backgroundColor } = storeToRefs(mainStore);
+// const { backgroundColor } = storeToRefs(mainStore);
 
-// defineProps<{
-//   color: string;
-// }>();
+defineProps<{
+  type: "red" | "blue" | "purple";
+}>();
 </script>
