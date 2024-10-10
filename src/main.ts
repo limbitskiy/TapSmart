@@ -8,11 +8,12 @@ import App from "./App.vue";
 import Vue3Lottie from "vue3-lottie";
 
 // components
-import Backlight from "@/components/UI/Backlight.vue";
+import BackgroundImage from "@/components/UI/BackgroundImage.vue";
 import ProfileWidget from "@/components/ProfileWidget.vue";
 import Button from "@/components/UI/Button.vue";
 import Modal from "@/components/Modal.vue";
 import VolumeControl from "@/components/VolumeControl.vue";
+import TaskCountdown from "@/components/TaskCountdown.vue";
 import ChallengeButton from "@/components/UI/ChallengeButton.vue";
 import Loader from "@/components/UI/Loader.vue";
 import Navigation from "@/components/Navigation.vue";
@@ -23,7 +24,6 @@ import BackgroundPill from "@/components/UI/BackgroundPill.vue";
 import CircleProgress from "@/components/UI/CircleProgress.vue";
 import ChallengeStatus from "@/components/ChallengeStatus.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
-import BattleCompleteAnimation from "@/components/animations/BattleCompleteAnimation.vue";
 import LanguageSettings from "@/components/LanguageSettings.vue";
 import LeagueProgress from "@/components/LeagueProgress.vue";
 import Notification from "@/components/Notification.vue";
@@ -47,7 +47,7 @@ app.use(Vue3Lottie);
 
 // global component registration
 app
-  .component("Backlight", Backlight)
+  .component("BackgroundImage", BackgroundImage)
   .component("ProfileWidget", ProfileWidget)
   .component("Button", Button)
   .component("Modal", Modal)
@@ -73,7 +73,7 @@ app
   .component("LeagueProgress", LeagueProgress)
   .component("Notification", Notification)
   .component("Tooltip", Tooltip)
-  .component("BackendModal", BackendModal)
-  .component("BattleCompleteAnimation", BattleCompleteAnimation);
+  .component("TaskCountdown", TaskCountdown)
+  .component("BackendModal", BackendModal);
 
 app.mount("#app");

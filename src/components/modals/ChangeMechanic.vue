@@ -1,5 +1,5 @@
 <template>
-  <div id="change-mechanic" class="flex-1 py-1 px-[2px]">
+  <div id="change-mechanic" class="flex-1 flex flex-col gap-4 py-1">
     <div class="pill-header flex items-center justify-between">
       <span class="bg-pill-title">{{ locale?.["select_mechanic_title"] || "Select mechanic" }}</span>
       <div class="nuts flex items-center gap-1">
@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <div class="pill-grid grid grid-cols-2 gap-4 pt-4">
+    <div class="pill-grid grid grid-cols-2 gap-4 p-[2px] flex-1 overflow-y-scroll">
       <MechanicCard v-for="mech in battleMechanics" :key="mech!.id" :propData="mech!" @select="onMechSelect">
         <template #image>
           <svg width="116" height="60" viewBox="0 0 116 60" fill="none" xmlns="http://www.w3.org/2000/svg">

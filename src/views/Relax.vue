@@ -1,10 +1,15 @@
 <template>
-  <div class="home-main flex-1 overflow-auto flex flex-col gap-2 mb-[72px]">
-    <Backlight color="green" />
+  <div class="home-main p-4 flex-1 overflow-auto flex flex-col gap-2 mb-[72px]">
+    <!-- bg image -->
+    <BackgroundImage />
+
+    <!-- profile widget -->
     <ProfileWidget />
-    <div class="top-btns grid grid-cols-2 gap-4 w-full px-4 relative">
-      <Button class="bg-[var(--grey-dark)] text-white fira-condensed-bold leading-4 !px-4 py-2" activeColor="#444" @click="onChangeMech">
-        <div class="flex gap-1 items-center justify-between">
+
+    <!-- battle controls -->
+    <div class="top-btns grid grid-cols-2 gap-4 pr-1 relative bg-[var(--grey-dark)] rounded-[15px] py-1 z-10">
+      <Button class="bg-[var(--grey-dark)] text-white fira-condensed-bold leading-4 !px-4" activeColor="#444" @click="onChangeMech">
+        <div class="flex gap-4 items-center justify-end">
           <div v-if="width > 410" class="icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="10.8387" height="10.8387" rx="2" fill="white" />
@@ -21,21 +26,43 @@
         </div>
       </Button>
       <ChallengeButton class="text-base" @challenge="openBoosterModal" />
-      <div class="relax-topbar flex flex-col items-end justify-between w-full absolute -bottom-[35px] px-4">
-        <VolumeControl />
-      </div>
+      <div class="relax-topbar flex flex-col items-end justify-between w-full absolute -bottom-[35px] px-4"></div>
     </div>
 
-    <RouterView v-slot="{ Component }" type="relax" @answer="onAnswer">
-      <template v-if="Component">
-        <Transition name="fade" mode="out-in">
-          <Suspense suspensible>
-            <component :is="Component" />
-            <template #fallback><Loader /></template>
-          </Suspense>
+    <BackgroundPill class="flex-1 z-10 rounded-[15px] relative" dark>
+      <div class="header flex items-center justify-between">
+        <span class="fira-bold text-lg text-[#B7B7B7]">{{ locale?.[`mechanics_${1}_title`] || "Mech title" }}</span>
+        <div class="right flex items-center gap-3">
+          <!-- <CircleProgress class="text-white" :strokeWidth="2" color="grey" :size="20" /> -->
+          <VolumeControl class="scale-75" />
+        </div>
+      </div>
+
+      <!-- battle body -->
+      <div class="battle-body flex-1 flex relative overflow-hidden">
+        <RouterView v-slot="{ Component }" type="relax" @answer="onAnswer">
+          <template v-if="Component">
+            <Transition name="fade" mode="out-in">
+              <Suspense suspensible>
+                <component :is="Component" />
+                <template #fallback><Loader /></template>
+              </Suspense>
+            </Transition>
+          </template>
+        </RouterView>
+
+        <Transition name="correct-text" mode="out-in">
+          <div v-if="isCorrectTextShown" class="correct-text absolute z-20 inset-0 grid place-items-center pointer-events-none">
+            <span class="block text-[10vw] exo-black text-[#1fe525] mb-8">Correct!</span>
+          </div>
+          <div v-else-if="isWrongTextShown" class="correct-text absolute z-20 inset-0 grid place-items-center pointer-events-none">
+            <span class="block text-[10vw] exo-black text-[red] mb-8">Wrong!</span>
+          </div>
         </Transition>
-      </template>
-    </RouterView>
+      </div>
+
+      <TaskCountdown class="absolute top-0 left-0 right-0 px-4" color="#a5a5a5" />
+    </BackgroundPill>
 
     <!-- mechanic change modal -->
     <Teleport to="#modals">
@@ -98,6 +125,8 @@ const { battles: locale } = storeToRefs(localeStore);
 const { startBreakpoint, stopBreakpoint, startTaskTimeout, stopTaskTimeout, setTaskTimeoutCounter, resetBattleStats, resetAfkCounter, getCurrentMechanicName } = dataStore.battles;
 const { redirectTo, fetchRelaxPageData, resetPageKey } = mainStore;
 
+const isCorrectTextShown = ref(false);
+const isWrongTextShown = ref(false);
 const isChangeMechModalVisible = ref(false);
 const isNoEnergyVisible = ref(false);
 const isBoostersModalVisible = ref(false);
@@ -160,9 +189,29 @@ const openBoosterModal = () => {
   isBoostersModalVisible.value = true;
 };
 
-const onAnswer = () => {
+const onAnswer = (_data) => {
   if (data.value.energy === 0) {
     isNoEnergyVisible.value = true;
+  }
+
+  if (_data.correct) {
+    setTimeout(() => {
+      isCorrectTextShown.value = true;
+    }, 50);
+
+    setTimeout(() => {
+      isCorrectTextShown.value = false;
+    }, 500);
+  }
+
+  if (!_data.correct) {
+    setTimeout(() => {
+      isWrongTextShown.value = true;
+    }, 50);
+
+    setTimeout(() => {
+      isWrongTextShown.value = false;
+    }, 500);
   }
 };
 

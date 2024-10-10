@@ -117,7 +117,7 @@
     <!-- errors modal -->
     <Teleport to="#modals">
       <Modal v-model:visible="isErrorModalOpen">
-        <Errors />
+        <Errors @close="onCloseErrorModal" />
       </Modal>
     </Teleport>
   </div>
@@ -149,4 +149,8 @@ const isErrorModalOpen = ref(false);
 await fetchBattleCompleteData();
 
 const getBtnTextArr = (text: string) => text.split("<separate>");
+
+const onCloseErrorModal = () => {
+  isErrorModalOpen.value = false;
+};
 </script>

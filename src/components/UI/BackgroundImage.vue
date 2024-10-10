@@ -1,5 +1,5 @@
 <template>
-  <div v-if="color === 'green'" class="backlight absolute inset-0 pointer-events-none">
+  <!-- <div v-if="color === 'green'" class="backlight absolute inset-0 pointer-events-none">
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" viewBox="0 0 800 800" opacity="0.39">
       <defs>
         <filter
@@ -37,10 +37,14 @@
       </defs>
       <g filter="url(#bbblurry-filter)"><ellipse rx="277.5" ry="277.5" cx="724.2387545121278" cy="71.68735987478527" fill="hsla(0, 83%, 54%, 1.00)"></ellipse></g>
     </svg>
-  </div>
+  </div> -->
+  <div class="bg-image absolute inset-0 pointer-events-none" style="background: linear-gradient(180deg, #3585df 0%, #1758a0 100%); z-index: -1"></div>
+  <div class="bg-image absolute inset-0 pointer-events-none" style="z-index: 0" :style="`background: url(${getAsset('pattern_paws_blue')})`"></div>
 </template>
 
 <script setup lang="ts">
+import { getAsset } from "@/utils";
+
 defineProps<{
   color: string;
 }>();

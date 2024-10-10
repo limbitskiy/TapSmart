@@ -42,17 +42,9 @@ body {
 }
 
 .glass {
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.25) 0%,
-    rgba(0, 0, 0, 0.15) 100%
-  );
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.15) 100%);
   backdrop-filter: blur(10px);
-  border-color: linear-gradient(
-    180deg,
-    rgba(182, 182, 182, 40%) 0%,
-    rgba(182, 182, 182, 10%) 100%
-  );
+  border-color: linear-gradient(180deg, rgba(182, 182, 182, 40%) 0%, rgba(182, 182, 182, 10%) 100%);
 }
 
 .inline-svg {
@@ -126,28 +118,31 @@ body {
 }
 
 // battles
-.yes-btn,
-.no-btn {
-  width: min(15vh, 85px);
-  height: min(15vh, 85px);
-  display: grid;
-  place-items: center;
-  border-radius: 1rem;
-  position: relative;
-
-  &.active {
-    border-bottom: none;
-    top: 3px;
-  }
+.yesNoBtn[disabled] {
+  background-color: transparent !important;
 }
+// .yes-btn,
+// .no-btn {
+//   width: min(15vh, 85px);
+//   height: min(15vh, 85px);
+//   display: grid;
+//   place-items: center;
+//   border-radius: 1rem;
+//   position: relative;
 
-.yes-btn.active {
-  background-color: #65b36d;
-}
+//   &.active {
+//     border-bottom: none;
+//     top: 3px;
+//   }
+// }
 
-.no-btn.active {
-  background-color: #e67955;
-}
+// .yes-btn.active {
+//   background-color: #65b36d;
+// }
+
+// .no-btn.active {
+//   background-color: #e67955;
+// }
 
 .four-answer-btn {
   @apply w-full !text-base bg-[var(--dark-blue-color)] text-white h-[68px] overflow-hidden text-ellipsis border-b-4 border-[#252D7C] px-4 leading-5;

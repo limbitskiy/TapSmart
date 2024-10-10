@@ -7,6 +7,7 @@ import { useMainStore } from "@/store/main";
 
 // types
 import { Task, Bonus } from "@/types";
+import { waitFor } from "@/utils";
 
 export const useBattle = (type: "relax" | "challenge", el?: Ref<HTMLElement>) => {
   const dataStore = useDataStore();
@@ -30,10 +31,12 @@ export const useBattle = (type: "relax" | "challenge", el?: Ref<HTMLElement>) =>
     if (isCorrect) {
       onVibrate("correct");
       await drawBonus({ x: clientX, y: clientY });
-      await animateCorrect();
+      // await animateCorrect();
+      // await waitFor(500);
     } else {
       onVibrate("wrong");
-      await animateWrong();
+      // await waitFor(500);
+      // await animateWrong();
     }
 
     if (type === "relax") {
