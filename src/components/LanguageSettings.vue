@@ -9,7 +9,7 @@
         </template>
         <template #value>{{ data?.["target_language_list"].find((item) => item.id === targetLang).label }}</template>
         <template #modal="{ closeModal }">
-          <div>
+          <div class="flex-1 flex flex-col">
             <span class="pill-title">{{ locale?.["modal_language_title"] }}</span>
             <PillRadioGroup
               class="mt-2"
@@ -33,7 +33,7 @@
         </template>
         <template #value>{{ data?.["native_language_list"].find((item) => item.id === nativeLang).label }}</template>
         <template #modal="{ closeModal }">
-          <div>
+          <div class="flex-1 flex flex-col">
             <span class="pill-title">{{ locale?.["modal_language_title"] }}</span>
             <PillRadioGroup
               class="mt-2"
