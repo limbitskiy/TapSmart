@@ -31,7 +31,7 @@
 
     <BackgroundPill class="flex-1 z-10 rounded-[15px] relative" dark>
       <div class="header flex items-center justify-between">
-        <span class="fira-bold text-lg text-[#B7B7B7]">{{ locale?.[`mechanics_${1}_title`] || "Mech title" }}</span>
+        <span class="fira-bold text-lg text-[#B7B7B7]">{{ locale?.[`yesno_title`] || "Yes-no" }} battle</span>
         <div class="right flex items-center gap-3">
           <!-- <CircleProgress class="text-white" :strokeWidth="2" color="grey" :size="20" /> -->
           <VolumeControl class="scale-75" />

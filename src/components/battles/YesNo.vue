@@ -90,7 +90,7 @@ const localeStore = useLocaleStore();
 const dataStore = useDataStore();
 
 const { battles: locale } = storeToRefs(localeStore);
-const { currentTask } = storeToRefs(dataStore.battles);
+const { data, currentTask } = storeToRefs(dataStore.battles);
 const buttonsActive = ref(false);
 
 const el = ref();
@@ -99,9 +99,12 @@ watch(
   currentTask,
   () => {
     buttonsActive.value = false;
-    setTimeout(() => {
-      buttonsActive.value = true;
-    }, 1000);
+
+    if (data.value?.energy > 0) {
+      setTimeout(() => {
+        buttonsActive.value = true;
+      }, 1000);
+    }
   },
   {
     immediate: true,
