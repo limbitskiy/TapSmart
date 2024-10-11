@@ -31,6 +31,7 @@ import BattleMechanic from "@/components/BattleMechanic.vue";
 import Tooltip from "@/components/Tooltip.vue";
 import BackendModal from "@/components/UI/BackendModal.vue";
 import CircleCountdown from "@/components/UI/CircleCountdown.vue";
+import MechanicCard from "@/components/MechanicCard.vue";
 
 // modals
 import ChangeMechanic from "@/components/modals/ChangeMechanic.vue";
@@ -76,6 +77,7 @@ app
   .component("TaskCountdown", TaskCountdown)
   .component("BattleMechanic", BattleMechanic)
   .component("CircleCountdown", CircleCountdown)
+  .component("MechanicCard", MechanicCard)
   .component("BackendModal", BackendModal);
 
 app.mount("#app");

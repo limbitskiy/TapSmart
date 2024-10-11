@@ -1,7 +1,9 @@
 <template>
   <BackgroundPill class="flex-1 !p-4 z-10 rounded-[15px] relative" dark>
     <div class="header flex items-center justify-between mb-4">
-      <span class="fira-regular text-lg text-[#B7B7B7]">{{ locale?.[`yesno_title`] || "Yes-no" }} battle</span>
+      <span class="fira-regular text-lg text-[#B7B7B7]"
+        >{{ locale?.[`yesno_title`] || "Yes-no" }} battle</span
+      >
       <div class="right flex items-center gap-3">
         <CircleCountdown class="" :strokeWidth="2" color="grey" :size="20" />
         <VolumeControl />
@@ -20,8 +22,14 @@
             </Transition>
           </template>
         </RouterView> -->
-      <Transition name="fade">
-        <component :is="mountedMechanic" :task="currentTask" :locales="locale" @mounted="onMechanicMounted" @unmounted="onMechanicUnmounted" />
+      <Transition name="fade" mode="out-in">
+        <component
+          :is="mountedMechanic"
+          :task="currentTask"
+          :locales="locale"
+          @mounted="onMechanicMounted"
+          @unmounted="onMechanicUnmounted"
+        />
       </Transition>
     </div>
   </BackgroundPill>
@@ -49,15 +57,25 @@ const localeStore = useLocaleStore();
 const route = useRoute();
 const {} = mainStore;
 const { battles: locale } = storeToRefs(localeStore);
-const { сurrentMechanicName, currentTask, data, afkCounter } = storeToRefs(dataStore.battles);
-const { startBreakpoint, stopBreakpoint, startTaskTimeout, stopTaskTimeout, setTaskTimeoutCounter, resetBattleStats, resetAfkCounter, getMechanicName } = dataStore.battles;
+const { сurrentMechanicName, currentTask, data, afkCounter } = storeToRefs(
+  dataStore.battles
+);
+const {
+  startBreakpoint,
+  stopBreakpoint,
+  startTaskTimeout,
+  stopTaskTimeout,
+  setTaskTimeoutCounter,
+  resetBattleStats,
+  resetAfkCounter,
+} = dataStore.battles;
 
 const mechMap = {
   yesno: YesNo,
   "4answers": FourAnswers,
 };
 
-const mountedMechanic = computed(() => mechMap[getMechanicName(route.query.battle_type)] ?? mechMap[сurrentMechanicName.value]);
+const mountedMechanic = computed(() => mechMap[сurrentMechanicName.value]);
 
 const onMechanicMounted = () => {
   startBreakpoint("battle");
