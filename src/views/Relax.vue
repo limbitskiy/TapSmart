@@ -29,40 +29,8 @@
       <div class="relax-topbar flex flex-col items-end justify-between w-full absolute -bottom-[35px] px-4"></div>
     </div>
 
-    <BackgroundPill class="flex-1 !p-4 z-10 rounded-[15px] relative" dark>
-      <div class="header flex items-center justify-between mb-4">
-        <span class="fira-regular text-lg text-[#B7B7B7]">{{ locale?.[`yesno_title`] || "Yes-no" }} battle</span>
-        <div class="right flex items-center gap-3">
-          <CircleCountdown class="" :strokeWidth="2" color="grey" :size="20" />
-          <VolumeControl />
-        </div>
-      </div>
-
-      <!-- battle body -->
-      <div class="battle-body flex-1 flex relative overflow-hidden">
-        <RouterView v-slot="{ Component }" type="relax" @answer="onAnswer">
-          <template v-if="Component">
-            <Transition name="fade" mode="out-in">
-              <Suspense suspensible>
-                <component :is="Component" />
-                <template #fallback><Loader /></template>
-              </Suspense>
-            </Transition>
-          </template>
-        </RouterView>
-
-        <Transition name="correct-text" mode="out-in">
-          <div v-if="isCorrectTextShown" class="correct-text absolute z-20 inset-0 grid place-items-center pointer-events-none">
-            <span class="block text-[12vw] exo-black text-[#1fe525] mb-8">{{ locale?.["is_correct_answer"] || "Yes!" }}</span>
-          </div>
-          <div v-else-if="isWrongTextShown" class="correct-text absolute z-20 inset-0 grid place-items-center pointer-events-none">
-            <span class="block text-[12vw] exo-black text-[red] mb-8">{{ locale?.["is_wrong_answer"] || "No!" }}</span>
-          </div>
-        </Transition>
-      </div>
-
-      <!-- <TaskCountdown class="absolute top-[60px] left-0 right-0 px-4" color="#a5a5a5" /> -->
-    </BackgroundPill>
+    <!-- battle mechanic -->
+    <BattleMechanic />
 
     <!-- mechanic change modal -->
     <Teleport to="#modals">
@@ -81,23 +49,16 @@
     <!-- booster select modal -->
     <Teleport to="#modals">
       <Modal id="select-booster-modal" v-model:visible="isBoostersModalVisible">
-        <BoosterSelect @startBattle="onStartWaiting" />
+        <BoosterSelect />
       </Modal>
     </Teleport>
 
     <!-- afk modal -->
-    <Teleport to="#modals">
+    <!-- <Teleport to="#modals">
       <Modal id="afk-modal" v-model:visible="isAFKModalVisible" sticky>
         <AFK @close="onAfkModalClose" />
       </Modal>
-    </Teleport>
-
-    <!-- waiting modal -->
-    <Teleport to="#modals">
-      <Modal id="waiting-modal" v-model:visible="isWaitingModalVisible" sticky>
-        <Waiting :challengeProps="challengeProps" @countdownComplete="onStartChallenge" @abort="onAbortWaiting" />
-      </Modal>
-    </Teleport>
+    </Teleport> -->
   </div>
 </template>
 
@@ -118,24 +79,14 @@ const dataStore = useDataStore();
 const mainStore = useMainStore();
 const localeStore = useLocaleStore();
 
-const route = useRoute();
-
-const { data, afkCounter } = storeToRefs(dataStore.battles);
+const { fetchRelaxPageData } = mainStore;
 const { battles: locale } = storeToRefs(localeStore);
-const { startBreakpoint, stopBreakpoint, startTaskTimeout, stopTaskTimeout, setTaskTimeoutCounter, resetBattleStats, resetAfkCounter, getCurrentMechanicName } = dataStore.battles;
-const { redirectTo, fetchRelaxPageData, resetPageKey } = mainStore;
+const { data, afkCounter } = storeToRefs(dataStore.battles);
+const { startBreakpoint, stopBreakpoint, startTaskTimeout, stopTaskTimeout, setTaskTimeoutCounter, resetBattleStats, resetAfkCounter } = dataStore.battles;
 
-const isCorrectTextShown = ref(false);
-const isWrongTextShown = ref(false);
 const isChangeMechModalVisible = ref(false);
 const isNoEnergyVisible = ref(false);
 const isBoostersModalVisible = ref(false);
-const isWaitingModalVisible = ref(false);
-const challengeProps = ref({
-  extra_mistake: 0,
-  extra_time: 0,
-  friends_only: 0,
-});
 
 setThemeColor("#222");
 
@@ -144,10 +95,13 @@ await fetchRelaxPageData();
 const isAFKModalVisible = computed(() => afkCounter.value >= 3);
 
 // stop questions when modals are open
-watch([isChangeMechModalVisible, isNoEnergyVisible, isBoostersModalVisible, isAFKModalVisible, isWaitingModalVisible], (val) => {
+watch([isChangeMechModalVisible, isNoEnergyVisible, isBoostersModalVisible, isAFKModalVisible], (val) => {
   if (val.some((modal) => modal)) {
+    // if AFK modal
     if (!val[3]) {
       resetAfkCounter();
+      stopTaskTimeout();
+      return;
     }
 
     setTaskTimeoutCounter(1);
@@ -223,39 +177,4 @@ const onAnswer = (_data) => {
 const onAfkModalClose = () => {
   resetAfkCounter();
 };
-
-// waiting
-const onStartWaiting = (_challengeProps: {}) => {
-  isBoostersModalVisible.value = false;
-  challengeProps.value = _challengeProps;
-  isWaitingModalVisible.value = true;
-};
-
-const onStartChallenge = () => {
-  isWaitingModalVisible.value = false;
-  redirectTo(`/challenge/${getCurrentMechanicName()}`);
-};
-
-const onAbortWaiting = () => {
-  challengeProps.value = { extra_mistake: 0, extra_time: 0, friends_only: 0 };
-  isWaitingModalVisible.value = false;
-};
-
-onMounted(() => {
-  // console.log(route.query);
-
-  console.log(`mounted`);
-  // resetPageKey("homeChild");
-  startBreakpoint("battle");
-  setTaskTimeoutCounter(null);
-  startTaskTimeout();
-  resetBattleStats();
-});
-
-onBeforeUnmount(() => {
-  // console.log(`unmounted`);
-  resetAfkCounter();
-  stopBreakpoint();
-  setTaskTimeoutCounter(1);
-});
 </script>

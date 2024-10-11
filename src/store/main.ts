@@ -51,9 +51,9 @@ export const useMainStore = defineStore("main", () => {
   const requestPending = ref(false);
   const requestQueue = ref([]);
 
-  const pageKeys = {
-    homeChild: Math.random() * 99999,
-  };
+  // const pageKeys = {
+  //   homeChild: Math.random() * 99999,
+  // };
 
   // process request queue
   watch(
@@ -215,17 +215,14 @@ export const useMainStore = defineStore("main", () => {
   };
 
   const fetchRelaxPageData = async () => {
-    let data = {};
+    // let data = {};
 
-    if (battleStore.battleTypeHasChanged) {
-      data.battle_type = battleStore.currentBattleType;
-      battleStore.battleTypeHasChanged = false;
-    }
+    // if (battleStore.battleTypeHasChanged) {
+    //   data.battle_type = battleStore.currentBattleType;
+    //   battleStore.battleTypeHasChanged = false;
+    // }
 
-    await useFetch({ key: "battle_init", data });
-
-    redirectTo(`/home/relax/${battleStore.getMechanicName(battleStore.data.battle_type)}`);
-    return;
+    return await useFetch({ key: "battle_init" });
   };
 
   const fetchWaitingData = async (data: {}) => {
@@ -327,11 +324,11 @@ export const useMainStore = defineStore("main", () => {
     state.value.routeData = value;
   };
 
-  const getPageKey = (page) => pageKeys[page];
+  // const getPageKey = (page) => pageKeys[page];
 
-  const resetPageKey = (page) => {
-    pageKeys[page] = Math.random() * 9999;
-  };
+  // const resetPageKey = (page) => {
+  //   pageKeys[page] = Math.random() * 9999;
+  // };
 
   return {
     notification,
@@ -360,7 +357,7 @@ export const useMainStore = defineStore("main", () => {
     onVibrate,
     setRouteData,
     showModal,
-    getPageKey,
-    resetPageKey,
+    // getPageKey,
+    // resetPageKey,
   };
 });

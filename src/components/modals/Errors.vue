@@ -2,7 +2,7 @@
   <div id="errors" class="flex-1 flex flex-col gap-4 min-h-[60dvh] overflow-hidden">
     <span class="bg-pill-title">{{ locale?.["error_title"] || "Error Title" }}</span>
 
-    <div class="error-list flex flex-col gap-2 flex-1 overflow-scroll">
+    <div class="error-list flex flex-col gap-2 flex-1 mt-2 overflow-scroll">
       <Pill v-for="error in data?.['error_data']">
         <div class="error-content flex items-center justify-between fira-condensed-bold">
           <span>{{ error.question }}</span>

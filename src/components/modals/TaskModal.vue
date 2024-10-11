@@ -59,7 +59,7 @@ const localeStore = useLocaleStore();
 
 const { battles: locale } = storeToRefs(localeStore);
 // const { data } = storeToRefs(dataStore.battles);
-const { getMechanicName, changeMechanic, stopBreakpoint, startBreakpoint } = dataStore.battles;
+const {} = dataStore.battles;
 const { profile } = storeToRefs(dataStore);
 
 onMounted(() => {});

@@ -27,6 +27,7 @@ import ProgressBar from "@/components/ProgressBar.vue";
 import LanguageSettings from "@/components/LanguageSettings.vue";
 import LeagueProgress from "@/components/LeagueProgress.vue";
 import Notification from "@/components/Notification.vue";
+import BattleMechanic from "@/components/BattleMechanic.vue";
 import Tooltip from "@/components/Tooltip.vue";
 import BackendModal from "@/components/UI/BackendModal.vue";
 import CircleCountdown from "@/components/UI/CircleCountdown.vue";
@@ -36,7 +37,6 @@ import ChangeMechanic from "@/components/modals/ChangeMechanic.vue";
 import NoEnergy from "@/components/modals/NoEnergy.vue";
 import Errors from "@/components/modals/Errors.vue";
 import BoosterSelect from "@/components/modals/BoosterSelect.vue";
-import Waiting from "@/components/modals/Waiting.vue";
 import AFK from "@/components/modals/AFK.vue";
 
 const pinia = createPinia();
@@ -67,7 +67,6 @@ app
   .component("Ad", Ad)
   .component("CircleProgress", CircleProgress)
   .component("Errors", Errors)
-  .component("Waiting", Waiting)
   .component("ChallengeStatus", ChallengeStatus)
   .component("ProgressBar", ProgressBar)
   .component("LanguageSettings", LanguageSettings)
@@ -75,6 +74,7 @@ app
   .component("Notification", Notification)
   .component("Tooltip", Tooltip)
   .component("TaskCountdown", TaskCountdown)
+  .component("BattleMechanic", BattleMechanic)
   .component("CircleCountdown", CircleCountdown)
   .component("BackendModal", BackendModal);
 

@@ -178,7 +178,7 @@
           <span class="text-xl leading-4">{{ locale?.["button_booster_select"] || "Challenge" }}</span>
         </div>
       </Button>
-      <Button class="" :class="onlineFriends.length ? '' : '!bg-black !text-white'" :badge="onlineFriends" @click="onFriendsOnly">
+      <Button class="" :class="onlineFriends.length ? '' : '!bg-black !text-white'" :badge="onlineFriends" @click="() => onStartBattle({ friendsOnly: true })">
         <div class="flex gap-1 justify-center">
           <span class="">{{ locale?.["button_booster_friends"] || "Challenge friends" }}</span>
           <Badge class="bg-green-500" :data="onlineFriends?.length" grey />
@@ -204,9 +204,9 @@ import { useDataStore } from "@/store/data";
 import { useLocaleStore } from "@/store/locale";
 import { useMainStore } from "@/store/main";
 
-const emit = defineEmits<{
-  startBattle: [payload: {}];
-}>();
+// const emit = defineEmits<{
+//   startBattle: [payload: {}];
+// }>();
 
 const pickedBonuses = ref({
   mistake: false,
@@ -222,33 +222,33 @@ const { profile, friends } = storeToRefs(dataStore);
 const { onlineFriends } = dataStore;
 const { data } = storeToRefs(dataStore.battles);
 const { stopBreakpoint, startBreakpoint } = dataStore.battles;
-const { getOnlineFriends } = mainStore;
+const { getOnlineFriends, redirectTo } = mainStore;
 
 getOnlineFriends();
 
-const onStartBattle = () => {
-  const payloadObject = {
-    extra_time: pickedBonuses.value.time ? 1 : 0,
-    extra_mistake: pickedBonuses.value.mistake ? 1 : 0,
-    friends_only: 0,
-  };
+const onStartBattle = ({ friendsOnly }) => {
+  let paramString = "?";
 
-  emit("startBattle", payloadObject);
+  if (pickedBonuses.value.time) {
+    paramString += "extra_time=1";
+  }
+
+  if (pickedBonuses.value.mistake) {
+    paramString += "&extra_mistake=1";
+  }
+
+  if (friendsOnly) {
+    paramString += "&friends_only=1";
+  }
+
+  console.log(paramString);
+
+  redirectTo(`/waiting${paramString}`);
 };
 
-const onFriendsOnly = () => {
-  const payloadObject = {
-    extra_time: pickedBonuses.value.time ? 1 : 0,
-    extra_mistake: pickedBonuses.value.mistake ? 1 : 0,
-    friends_only: 1,
-  };
-
-  emit("startBattle", payloadObject);
-};
-
-const onInviteFriends = () => {
-  inviteFriend(locale.value?.["challenge_message"] || "Invite message");
-};
+// const onInviteFriends = () => {
+//   inviteFriend(locale.value?.["challenge_message"] || "Invite message");
+// };
 
 onMounted(() => {
   startBreakpoint("challenge");

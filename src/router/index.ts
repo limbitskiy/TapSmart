@@ -16,6 +16,7 @@ import Challenge from "@/views/Challenge.vue";
 import BattleResults from "@/views/BattleResults.vue";
 import BattleComplete from "@/views/BattleComplete.vue";
 import InviteFriend from "@/views/InviteFriend.vue";
+import Waiting from "@/views/Waiting.vue";
 import BattleCompleteAnimation from "@/views/BattleCompleteAnimation.vue";
 
 // battles
@@ -120,6 +121,10 @@ const routes = [
   {
     path: "/invite",
     component: InviteFriend,
+  },
+  {
+    path: "/waiting",
+    component: Waiting,
   },
 ];
 

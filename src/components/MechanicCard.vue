@@ -74,10 +74,6 @@ import { useDataStore } from "@/store/data";
 import { useLocaleStore } from "@/store/locale";
 import { useMainStore } from "@/store/main";
 
-// components
-import Pill from "@/components/UI/Pill.vue";
-import Button from "@/components/UI/Button.vue";
-
 // types
 import { Mechanic } from "@/types";
 

@@ -93,11 +93,11 @@ const { battles: locale } = storeToRefs(localeStore);
 const gaugeRef = ref();
 const progressRef = ref();
 
-// const positions = ref([]);
+const positions = ref([]);
 
 const timer = computed(() => props.timer);
 
-playerPositions.value = [];
+// playerPositions.value = [];
 
 watch(
   timer,
@@ -110,10 +110,10 @@ watch(
     const secId = (data?.value?.["battle_duration"] - timer.value) / 1000;
 
     players.forEach((player) => {
-      const playerPosition = playerPositions.value.find((position) => position?.id === player?.id);
+      const playerPosition = positions.value.find((position) => position?.id === player?.id);
 
       if (!playerPosition) {
-        playerPositions.value.push({ ...player, progress: 0 });
+        positions.value.push({ ...player, progress: 0 });
         return;
       }
 
@@ -135,15 +135,17 @@ watch(
   }
 );
 
-const computedPlayer = computed(() => playerPositions.value.find((position) => position?.isPlayer));
+const computedPlayer = computed(() => positions.value.find((position) => position?.isPlayer));
+const computedEnemies = computed(() => positions.value.filter((player) => !player?.isPlayer));
+const progressPercent = computed(() => ((data.value?.["battle_duration"] - props.timer) * 100) / data.value?.["battle_duration"]);
 
 const computedPlayerProgress = computed(() => {
   const coef = gaugeRef.value?.getBoundingClientRect()?.width / (data?.value?.["battle_duration"] / 1000);
+
   if (!coef || !computedPlayer.value) return 0;
+
   return computedPlayer.value?.progress * coef;
 });
-const computedEnemies = computed(() => playerPositions.value.filter((player) => !player?.isPlayer));
-const progressPercent = computed(() => ((data.value?.["battle_duration"] - props.timer) * 100) / data.value?.["battle_duration"]);
 
 const getEnemyPosition = (enemy) => {
   const coef = gaugeRef.value?.getBoundingClientRect()?.width / (data?.value?.["battle_duration"] / 1000);
