@@ -3,12 +3,11 @@
     <div class="header flex flex-col gap-4">
       <div class="top-row flex-1 flex items-center justify-between">
         <span class="bg-pill-title">{{ locale?.["waiting_title"] || "Waiting" }}</span>
-        <Button activeColor="#444" @click="onAbort" unstyled>
-          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="0.5" y="0.5" width="35" height="35" rx="9.5" stroke="#686868" />
+        <Button activeColor="#fcdcb0" class="close absolute top-4 right-4 z-50 !p-2 !rounded-lg" @click="onAbort">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
-              d="M27.241 24.7556L20.864 18.3787L27.241 12.0017C27.9294 11.3132 27.9294 10.2048 27.241 9.51636C26.5525 8.82788 25.4441 8.82788 24.7556 9.51636L18.3787 15.8933L12.0017 9.51636C11.3132 8.82788 10.2048 8.82788 9.51636 9.51636C8.82788 10.2048 8.82788 11.3132 9.51636 12.0017L15.8933 18.3787L9.51636 24.7556C8.82788 25.4441 8.82788 26.5525 9.51636 27.241C10.2048 27.9294 11.3132 27.9294 12.0017 27.241L18.3787 20.864L24.7556 27.241C25.4441 27.9294 26.5525 27.9294 27.241 27.241C27.9246 26.5525 27.9246 25.4392 27.241 24.7556Z"
-              fill="#686868"
+              d="M13.6146 11.7596L8.855 7L13.6146 2.2404C14.1285 1.72654 14.1285 0.899258 13.6146 0.385396C13.1007 -0.128465 12.2735 -0.128465 11.7596 0.385396L7 5.145L2.2404 0.385396C1.72654 -0.128465 0.899258 -0.128465 0.385396 0.385396C-0.128465 0.899258 -0.128465 1.72654 0.385396 2.2404L5.145 7L0.385396 11.7596C-0.128465 12.2735 -0.128465 13.1007 0.385396 13.6146C0.899258 14.1285 1.72654 14.1285 2.2404 13.6146L7 8.855L11.7596 13.6146C12.2735 14.1285 13.1007 14.1285 13.6146 13.6146C14.1248 13.1007 14.1248 12.2698 13.6146 11.7596Z"
+              fill="#222222"
             />
           </svg>
         </Button>
@@ -17,7 +16,7 @@
       <span class="">{{ locale?.["waiting_subtitle"] || "Waiting subtitle" }}</span>
       <Pill>
         <div class="timer text-center">
-          <span class="exo-black text-3xl">{{ formattedTime ?? "00:00" }}</span>
+          <span class="exo-black text-3xl">{{ formattedTime(data?.["waiting_timer"]) ?? "00:00" }}</span>
         </div>
       </Pill>
     </div>
@@ -74,6 +73,7 @@ import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 import { tg, getUserName, inviteFriend } from "@/api/telegram";
 import { useRoute } from "vue-router";
+import { formattedTime } from "@/utils";
 
 // stores
 import { useDataStore } from "@/store/data";
@@ -106,24 +106,24 @@ await fetchWaitingData(props.challengeProps);
 
 let interval: ReturnType<typeof setInterval> | undefined;
 
-const formattedTime = computed(() => {
-  if (!data.value.waiting_timer) return "00:00";
+// const formattedTime = computed(() => {
+//   if (!data.value.waiting_timer) return "00:00";
 
-  if (data.value.waiting_timer < 60000) {
-    if (data.value.waiting_timer > 9000) {
-      "00:" + data.value.waiting_timer / 1000;
-    } else {
-      return "00:0" + data.value.waiting_timer / 1000;
-    }
-  } else {
-    const min = Math.trunc(data.value.waiting_timer / 60000);
-    let sec = (data.value.waiting_timer % 60000) / 1000 + "";
-    if (sec.length === 1) {
-      sec = "0" + sec;
-    }
-    return "0" + min + ":" + sec;
-  }
-});
+//   if (data.value.waiting_timer < 60000) {
+//     if (data.value.waiting_timer > 9000) {
+//       "00:" + data.value.waiting_timer / 1000;
+//     } else {
+//       return "00:0" + data.value.waiting_timer / 1000;
+//     }
+//   } else {
+//     const min = Math.trunc(data.value.waiting_timer / 60000);
+//     let sec = (data.value.waiting_timer % 60000) / 1000 + "";
+//     if (sec.length === 1) {
+//       sec = "0" + sec;
+//     }
+//     return "0" + min + ":" + sec;
+//   }
+// });
 
 const onAbort = () => {
   clearInterval(interval);

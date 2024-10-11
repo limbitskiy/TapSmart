@@ -53,4 +53,23 @@ export const shortenNumber = (num: number) => {
   }
 };
 
+export const formattedTime = (timer: number) => {
+  if (!timer) return "00:00";
+
+  if (timer < 60000) {
+    if (timer > 9000) {
+      return "00:" + timer / 1000;
+    } else {
+      return "00:0" + timer / 1000;
+    }
+  } else {
+    const min = Math.trunc(timer / 60000);
+    let sec = (timer % 60000) / 1000 + "";
+    if (sec.length === 1) {
+      sec = "0" + sec;
+    }
+    return "0" + min + ":" + sec;
+  }
+};
+
 export const getSpecialSymbol = (symbolName: string) => specialSymbols[symbolName];

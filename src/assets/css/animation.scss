@@ -24,19 +24,21 @@
   pointer-events: none;
 }
 
-.challenge-bonus-1-enter-active,
+.challenge-bonus-1-enter-active {
+  animation: lightSpeedInLeft 0.5s ease-in;
+}
 .challenge-bonus-1-leave-active {
-  transition: all 0.5s ease;
+  animation: lightSpeedOutRight 0.5s ease-in;
 }
-.challenge-bonus-1-enter-from {
-  opacity: 1;
-  transform: scale(0);
-}
+// .challenge-bonus-1-enter-from {
+//   opacity: 1;
+//   transform: scale(0);
+// }
 
-.challenge-bonus-1-leave-to {
-  opacity: 0;
-  transform: scale(4);
-}
+// .challenge-bonus-1-leave-to {
+//   opacity: 0;
+//   transform: scale(4);
+// }
 
 .grow-enter-active,
 .grow-leave-active {
@@ -71,7 +73,7 @@
 
 // question card slide
 .question-slide-enter-active {
-  animation: questionEnter 0.5s ease-in;
+  animation: questionEnter 0.3s ease-in;
 }
 .question-slide-leave-active {
   animation: questionLeave 0.5s ease-out;
@@ -273,5 +275,36 @@
   to {
     opacity: 1;
     transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes lightSpeedInLeft {
+  from {
+    transform: translate3d(-100%, 0, 0) skewX(30deg);
+    opacity: 0;
+  }
+
+  60% {
+    transform: skewX(-20deg);
+    opacity: 1;
+  }
+
+  80% {
+    transform: skewX(5deg);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes lightSpeedOutRight {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    transform: translate3d(100%, 0, 0) skewX(30deg);
+    opacity: 0;
   }
 }

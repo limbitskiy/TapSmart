@@ -15,7 +15,6 @@ import ProfileView from "@/views/ProfileView.vue";
 import Challenge from "@/views/Challenge.vue";
 import BattleResults from "@/views/BattleResults.vue";
 import BattleComplete from "@/views/BattleComplete.vue";
-import StartRelax from "@/views/StartRelax.vue";
 import InviteFriend from "@/views/InviteFriend.vue";
 import BattleCompleteAnimation from "@/views/BattleCompleteAnimation.vue";
 
@@ -46,10 +45,6 @@ const routes = [
   {
     path: "/profile",
     component: ProfileView,
-  },
-  {
-    path: "/start-relax",
-    component: StartRelax,
   },
   {
     path: "/home",

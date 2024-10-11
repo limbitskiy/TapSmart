@@ -1,22 +1,7 @@
 <template>
   <div class="modal relative">
     <div v-if="visible" id="modal-backdrop" class="modal-backdrop fixed inset-0 bg-black bg-opacity-50 z-40" @click="onBackdropClick"></div>
-    <!-- <Transition name="toast-slide" appear> -->
-    <Button
-      v-if="visible && !sticky"
-      activeColor="#fcdcb0"
-      class="close fixed top-4 right-4 z-50 !p-2 !rounded-lg"
-      :class="{ animate__heartBeat: visible && !sticky }"
-      @click="onCloseClick"
-    >
-      <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M18.241 15.7556L11.864 9.37866L18.241 3.00171C18.9294 2.31323 18.9294 1.20483 18.241 0.516357C17.5525 -0.172119 16.4441 -0.172119 15.7556 0.516357L9.37866 6.89331L3.00171 0.516357C2.31323 -0.172119 1.20483 -0.172119 0.516357 0.516357C-0.172119 1.20483 -0.172119 2.31323 0.516357 3.00171L6.89331 9.37866L0.516357 15.7556C-0.172119 16.4441 -0.172119 17.5525 0.516357 18.241C1.20483 18.9294 2.31323 18.9294 3.00171 18.241L9.37866 11.864L15.7556 18.241C16.4441 18.9294 17.5525 18.9294 18.241 18.241C18.9246 17.5525 18.9246 16.4392 18.241 15.7556Z"
-          fill="#222222"
-        />
-      </svg>
-    </Button>
-    <!-- </Transition> -->
+
     <Transition name="modal-slide-up">
       <BackgroundPill
         v-if="visible"
@@ -28,17 +13,28 @@
         <div class="modal-scroll flex overflow-y-scroll">
           <slot></slot>
         </div>
+
+        <Button
+          v-if="visible && !sticky"
+          activeColor="#fcdcb0"
+          class="close absolute top-4 right-4 z-50 !p-2 !rounded-lg"
+          :class="{ animate__heartBeat: visible && !sticky && animateBtn }"
+          @click="onCloseClick"
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M13.6146 11.7596L8.855 7L13.6146 2.2404C14.1285 1.72654 14.1285 0.899258 13.6146 0.385396C13.1007 -0.128465 12.2735 -0.128465 11.7596 0.385396L7 5.145L2.2404 0.385396C1.72654 -0.128465 0.899258 -0.128465 0.385396 0.385396C-0.128465 0.899258 -0.128465 1.72654 0.385396 2.2404L5.145 7L0.385396 11.7596C-0.128465 12.2735 -0.128465 13.1007 0.385396 13.6146C0.899258 14.1285 1.72654 14.1285 2.2404 13.6146L7 8.855L11.7596 13.6146C12.2735 14.1285 13.1007 14.1285 13.6146 13.6146C14.1248 13.1007 14.1248 12.2698 13.6146 11.7596Z"
+              fill="#222222"
+            />
+          </svg>
+        </Button>
       </BackgroundPill>
     </Transition>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch } from "vue";
-
-// components
-import BackgroundPill from "@/components/UI/BackgroundPill.vue";
-import Button from "@/components/UI/Button.vue";
+import { ref, watch } from "vue";
 
 const props = defineProps<{
   visible: boolean;
@@ -50,6 +46,8 @@ const emit = defineEmits<{
   "update:visible": [value: boolean];
 }>();
 
+const animateBtn = ref(false);
+
 const onBackdropClick = (event: MouseEvent) => {
   if (event.target?.id === "modal-backdrop" && !props.sticky) {
     emit("update:visible", false);
@@ -59,4 +57,14 @@ const onBackdropClick = (event: MouseEvent) => {
 const onCloseClick = () => {
   emit("update:visible", false);
 };
+
+watch(props, (val) => {
+  if (val?.visible) {
+    setTimeout(() => {
+      animateBtn.value = true;
+    }, 500);
+  } else {
+    animateBtn.value = false;
+  }
+});
 </script>

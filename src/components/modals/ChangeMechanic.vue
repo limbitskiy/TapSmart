@@ -2,10 +2,10 @@
   <div id="change-mechanic" class="flex-1 flex flex-col gap-4 py-1">
     <div class="pill-header flex items-center justify-between">
       <span class="bg-pill-title">{{ locale?.["select_mechanic_title"] || "Select mechanic" }}</span>
-      <div class="nuts flex items-center gap-1">
+      <!-- <div class="nuts flex items-center gap-1">
         <img class="h-4" :src="getAsset('nut')" />
         <span class="exo-black">{{ showFormattedNumber(profile?.["nuts"]) }}</span>
-      </div>
+      </div> -->
     </div>
 
     <div class="pill-grid grid grid-cols-2 gap-4 p-[2px] flex-1 overflow-y-scroll">

@@ -121,28 +121,6 @@ body {
 .yesNoBtn[disabled] {
   background-color: transparent !important;
 }
-// .yes-btn,
-// .no-btn {
-//   width: min(15vh, 85px);
-//   height: min(15vh, 85px);
-//   display: grid;
-//   place-items: center;
-//   border-radius: 1rem;
-//   position: relative;
-
-//   &.active {
-//     border-bottom: none;
-//     top: 3px;
-//   }
-// }
-
-// .yes-btn.active {
-//   background-color: #65b36d;
-// }
-
-// .no-btn.active {
-//   background-color: #e67955;
-// }
 
 .four-answer-btn {
   @apply w-full !text-base bg-[var(--dark-blue-color)] text-white h-[68px] overflow-hidden text-ellipsis border-b-4 border-[#252D7C] px-4 leading-5;

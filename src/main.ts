@@ -29,6 +29,7 @@ import LeagueProgress from "@/components/LeagueProgress.vue";
 import Notification from "@/components/Notification.vue";
 import Tooltip from "@/components/Tooltip.vue";
 import BackendModal from "@/components/UI/BackendModal.vue";
+import CircleCountdown from "@/components/UI/CircleCountdown.vue";
 
 // modals
 import ChangeMechanic from "@/components/modals/ChangeMechanic.vue";
@@ -74,6 +75,7 @@ app
   .component("Notification", Notification)
   .component("Tooltip", Tooltip)
   .component("TaskCountdown", TaskCountdown)
+  .component("CircleCountdown", CircleCountdown)
   .component("BackendModal", BackendModal);
 
 app.mount("#app");

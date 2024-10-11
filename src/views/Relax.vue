@@ -7,80 +7,34 @@
     <ProfileWidget />
 
     <!-- battle controls -->
-    <div
-      class="top-btns grid grid-cols-2 gap-4 pr-1 relative bg-[var(--grey-dark)] rounded-[15px] py-1 z-10"
-    >
-      <Button
-        class="bg-[var(--grey-dark)] text-white fira-condensed-bold leading-4 !px-4"
-        activeColor="#444"
-        @click="onChangeMech"
-      >
+    <div class="top-btns grid grid-cols-2 gap-4 pr-1 relative bg-[var(--grey-dark)] rounded-[15px] py-1 z-10">
+      <Button class="bg-[var(--grey-dark)] text-white fira-condensed-bold leading-4 !px-4" activeColor="#444" @click="onChangeMech">
         <div class="flex gap-4 items-center justify-end">
           <div v-if="width > 410" class="icon">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="10.8387" height="10.8387" rx="2" fill="white" />
-              <rect
-                y="13.1613"
-                width="10.8387"
-                height="10.8387"
-                rx="2"
-                fill="white"
-              />
-              <rect
-                x="13.1611"
-                width="10.8387"
-                height="10.8387"
-                rx="2"
-                fill="white"
-              />
-              <rect
-                x="13.1611"
-                y="13.1613"
-                width="10.8387"
-                height="10.8387"
-                rx="2"
-                fill="white"
-              />
+              <rect y="13.1613" width="10.8387" height="10.8387" rx="2" fill="white" />
+              <rect x="13.1611" width="10.8387" height="10.8387" rx="2" fill="white" />
+              <rect x="13.1611" y="13.1613" width="10.8387" height="10.8387" rx="2" fill="white" />
             </svg>
           </div>
-          <span class="text-base leading-4">{{
-            locale?.["button_change_mech"]
-          }}</span>
+          <span class="text-base leading-4">{{ locale?.["button_change_mech"] }}</span>
           <!-- chevron down -->
-          <svg
-            width="14"
-            height="8"
-            viewBox="0 0 14 8"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M7 8L0 0.982456L0.98 0L7 6.03509L13.02 0L14 0.982456L7 8Z"
-              fill="white"
-            />
+          <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 8L0 0.982456L0.98 0L7 6.03509L13.02 0L14 0.982456L7 8Z" fill="white" />
           </svg>
         </div>
       </Button>
       <ChallengeButton class="text-base" @challenge="openBoosterModal" />
-      <div
-        class="relax-topbar flex flex-col items-end justify-between w-full absolute -bottom-[35px] px-4"
-      ></div>
+      <div class="relax-topbar flex flex-col items-end justify-between w-full absolute -bottom-[35px] px-4"></div>
     </div>
 
     <BackgroundPill class="flex-1 !p-4 z-10 rounded-[15px] relative" dark>
-      <div class="header flex items-center justify-between">
-        <span class="fira-bold text-lg text-[#B7B7B7]"
-          >{{ locale?.[`yesno_title`] || "Yes-no" }} battle</span
-        >
+      <div class="header flex items-center justify-between mb-4">
+        <span class="fira-regular text-lg text-[#B7B7B7]">{{ locale?.[`yesno_title`] || "Yes-no" }} battle</span>
         <div class="right flex items-center gap-3">
-          <!-- <CircleProgress class="text-white" :strokeWidth="2" color="grey" :size="20" /> -->
-          <VolumeControl class="scale-75" />
+          <CircleCountdown class="" :strokeWidth="2" color="grey" :size="20" />
+          <VolumeControl />
         </div>
       </div>
 
@@ -98,37 +52,21 @@
         </RouterView>
 
         <Transition name="correct-text" mode="out-in">
-          <div
-            v-if="isCorrectTextShown"
-            class="correct-text absolute z-20 inset-0 grid place-items-center pointer-events-none"
-          >
-            <span class="block text-[10vw] exo-black text-[#1fe525] mb-8">{{
-              locale?.["is_correct_answer"] || "Yes!"
-            }}</span>
+          <div v-if="isCorrectTextShown" class="correct-text absolute z-20 inset-0 grid place-items-center pointer-events-none">
+            <span class="block text-[12vw] exo-black text-[#1fe525] mb-8">{{ locale?.["is_correct_answer"] || "Yes!" }}</span>
           </div>
-          <div
-            v-else-if="isWrongTextShown"
-            class="correct-text absolute z-20 inset-0 grid place-items-center pointer-events-none"
-          >
-            <span class="block text-[10vw] exo-black text-[red] mb-8">{{
-              locale?.["is_wrong_answer"] || "No!"
-            }}</span>
+          <div v-else-if="isWrongTextShown" class="correct-text absolute z-20 inset-0 grid place-items-center pointer-events-none">
+            <span class="block text-[12vw] exo-black text-[red] mb-8">{{ locale?.["is_wrong_answer"] || "No!" }}</span>
           </div>
         </Transition>
       </div>
 
-      <TaskCountdown
-        class="absolute top-0 left-0 right-0 px-4"
-        color="#a5a5a5"
-      />
+      <!-- <TaskCountdown class="absolute top-[60px] left-0 right-0 px-4" color="#a5a5a5" /> -->
     </BackgroundPill>
 
     <!-- mechanic change modal -->
     <Teleport to="#modals">
-      <Modal
-        id="mechanic-change-modal"
-        v-model:visible="isChangeMechModalVisible"
-      >
+      <Modal id="mechanic-change-modal" v-model:visible="isChangeMechModalVisible">
         <ChangeMechanic @close="() => closeModal('changeMechanic')" />
       </Modal>
     </Teleport>
@@ -136,10 +74,7 @@
     <!-- no energy modal -->
     <Teleport to="#modals">
       <Modal id="no-energy-modal" v-model:visible="isNoEnergyVisible" sticky>
-        <NoEnergy
-          @challenge="openBoosterModal"
-          @close="() => closeModal('noEnergy')"
-        />
+        <NoEnergy @challenge="openBoosterModal" @close="() => closeModal('noEnergy')" />
       </Modal>
     </Teleport>
 
@@ -152,19 +87,15 @@
 
     <!-- afk modal -->
     <Teleport to="#modals">
-      <!-- <Modal id="afk-modal" v-model:visible="isAFKModalVisible" sticky>
+      <Modal id="afk-modal" v-model:visible="isAFKModalVisible" sticky>
         <AFK @close="onAfkModalClose" />
-      </Modal> -->
+      </Modal>
     </Teleport>
 
     <!-- waiting modal -->
     <Teleport to="#modals">
       <Modal id="waiting-modal" v-model:visible="isWaitingModalVisible" sticky>
-        <Waiting
-          :challengeProps="challengeProps"
-          @countdownComplete="onStartChallenge"
-          @abort="onAbortWaiting"
-        />
+        <Waiting :challengeProps="challengeProps" @countdownComplete="onStartChallenge" @abort="onAbortWaiting" />
       </Modal>
     </Teleport>
   </div>
@@ -191,16 +122,7 @@ const route = useRoute();
 
 const { data, afkCounter } = storeToRefs(dataStore.battles);
 const { battles: locale } = storeToRefs(localeStore);
-const {
-  startBreakpoint,
-  stopBreakpoint,
-  startTaskTimeout,
-  stopTaskTimeout,
-  setTaskTimeoutCounter,
-  resetBattleStats,
-  resetAfkCounter,
-  getCurrentMechanicName,
-} = dataStore.battles;
+const { startBreakpoint, stopBreakpoint, startTaskTimeout, stopTaskTimeout, setTaskTimeoutCounter, resetBattleStats, resetAfkCounter, getCurrentMechanicName } = dataStore.battles;
 const { redirectTo, fetchRelaxPageData, resetPageKey } = mainStore;
 
 const isCorrectTextShown = ref(false);
@@ -222,31 +144,22 @@ await fetchRelaxPageData();
 const isAFKModalVisible = computed(() => afkCounter.value >= 3);
 
 // stop questions when modals are open
-watch(
-  [
-    isChangeMechModalVisible,
-    isNoEnergyVisible,
-    isBoostersModalVisible,
-    isAFKModalVisible,
-    isWaitingModalVisible,
-  ],
-  (val) => {
-    if (val.some((modal) => modal)) {
-      if (!val[3]) {
-        resetAfkCounter();
-      }
-
-      setTaskTimeoutCounter(1);
-    } else {
+watch([isChangeMechModalVisible, isNoEnergyVisible, isBoostersModalVisible, isAFKModalVisible, isWaitingModalVisible], (val) => {
+  if (val.some((modal) => modal)) {
+    if (!val[3]) {
       resetAfkCounter();
+    }
 
-      if (data.value?.energy > 0) {
-        setTaskTimeoutCounter(null);
-        startTaskTimeout();
-      }
+    setTaskTimeoutCounter(1);
+  } else {
+    resetAfkCounter();
+
+    if (data.value?.energy > 0) {
+      setTaskTimeoutCounter(null);
+      startTaskTimeout();
     }
   }
-);
+});
 
 // watch energy
 watch(
@@ -280,6 +193,8 @@ const openBoosterModal = () => {
 };
 
 const onAnswer = (_data) => {
+  resetAfkCounter();
+
   if (data.value.energy === 0) {
     isNoEnergyVisible.value = true;
   }

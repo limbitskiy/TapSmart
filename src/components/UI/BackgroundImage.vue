@@ -1,33 +1,8 @@
 <template>
-  <div
-    v-if="type === 'blue'"
-    class="bg-image absolute inset-0 pointer-events-none"
-    style="
-      background: linear-gradient(180deg, #3585df 0%, #1758a0 100%);
-      z-index: -1;
-    "
-  ></div>
-  <div
-    v-else-if="type === 'red'"
-    class="bg-image absolute inset-0 pointer-events-none"
-    style="
-      background: linear-gradient(180deg, #d26542 0%, #8f3c21 100%);
-      z-index: -1;
-    "
-  ></div>
-  <div
-    v-else-if="type === 'purple'"
-    class="bg-image absolute inset-0 pointer-events-none"
-    style="
-      background: linear-gradient(180deg, #824ea2 0%, #562475 100%);
-      z-index: -1;
-    "
-  ></div>
-  <div
-    class="bg-image absolute inset-0 pointer-events-none"
-    style="z-index: 0"
-    :style="`background: url(${getAsset('pattern_paws_blue')})`"
-  ></div>
+  <div v-if="type === 'blue'" class="bg-image absolute inset-0 pointer-events-none" style="background: linear-gradient(180deg, #3585df 0%, #1758a0 100%); z-index: -1"></div>
+  <div v-else-if="type === 'red'" class="bg-image absolute inset-0 pointer-events-none" style="background: linear-gradient(180deg, #d26542 0%, #822000 100%); z-index: -1"></div>
+  <div v-else-if="type === 'purple'" class="bg-image absolute inset-0 pointer-events-none" style="background: linear-gradient(180deg, #824ea2 0%, #562475 100%); z-index: -1"></div>
+  <div class="bg-image absolute inset-0 pointer-events-none" style="z-index: 0" :style="`background: url(${getAsset('pattern_paws_blue')})`"></div>
 </template>
 
 <script setup lang="ts">
