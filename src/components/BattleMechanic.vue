@@ -13,7 +13,12 @@
   </Transition>
 
   <Teleport to="#modals">
-    <div v-for="bonus in bonuses" :key="bonus.id" class="bonus bonus-animate z-20 flex gap-1 items-center absolute" :style="{ left: bonus.x + 'px', top: bonus.y + 'px' }">
+    <div
+      v-for="bonus in bonuses"
+      :key="bonus.id"
+      class="bonus bonus-animate z-20 flex gap-1 items-center absolute"
+      :style="{ left: bonus.x + 'px', top: bonus.y + 'px' }"
+    >
       <img class="h-4" :src="getAsset('bolt')" />
       <span class="font-bold">+2</span>
     </div>
@@ -45,11 +50,11 @@ interface AnswerProps {
 const store = useMainStore();
 
 const { battles: locale } = storeToRefs(store.localeStore);
-const { energy, сurrentMechanicName, currentTask, currentBattleMode } = storeToRefs(store.battleStore);
+const { energy, сurrentMechanicName, currentTask, currentBattleMode } =
+  storeToRefs(store.battleStore);
 const { handleBattleAnswer, startRelax, stopRelax } = store.battleStore;
 
 const bonuses = ref<Bonus[]>([]);
-let answerInProgress = false;
 
 const mechMap = {
   yesno: YesNo,
@@ -58,17 +63,16 @@ const mechMap = {
 
 const mountedMechanic = computed(() => mechMap[сurrentMechanicName.value]);
 
-const onAnswer = async ({ isCorrect, answer, event, drawBonus = true }: AnswerProps) => {
-  if (answerInProgress) return;
-
-  answerInProgress = true;
-
+const onAnswer = async ({
+  isCorrect,
+  answer,
+  event,
+  drawBonus = true,
+}: AnswerProps) => {
   if (isCorrect && drawBonus) {
     drawBonusAnimation(event);
   }
   handleBattleAnswer({ isCorrect, answerString: answer });
-
-  answerInProgress = false;
 };
 
 const drawBonusAnimation = ({ x, y }: { x: number; y: number }) => {

@@ -1,7 +1,20 @@
 <template>
-  <div class="ad-card relative flex flex-col gap-2 items-center px-4 py-4 text-center w-[70vw] border-2 border-[var(--accent-color)] rounded-2xl bg-[var(--grey-light)]">
-    <div v-if="tooltip" ref="el" class="info-btn absolute top-2 right-2" @click="onTooltipClick">
-      <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <div
+    class="ad-card relative flex flex-col gap-2 items-center px-4 py-4 text-center w-[70vw] border-2 border-[var(--accent-color)] rounded-2xl bg-[var(--grey-light)]"
+  >
+    <div
+      v-if="locale?.['tooltip_battle_results_ad']"
+      ref="el"
+      class="info-btn absolute top-2 right-2"
+      @click="onTooltipClick"
+    >
+      <svg
+        width="23"
+        height="23"
+        viewBox="0 0 23 23"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
         <path
           d="M11.5 21.5625C8.83126 21.5625 6.27182 20.5023 4.38474 18.6153C2.49765 16.7282 1.4375 14.1687 1.4375 11.5C1.4375 8.83126 2.49765 6.27182 4.38474 4.38474C6.27182 2.49765 8.83126 1.4375 11.5 1.4375C14.1687 1.4375 16.7282 2.49765 18.6153 4.38474C20.5023 6.27182 21.5625 8.83126 21.5625 11.5C21.5625 14.1687 20.5023 16.7282 18.6153 18.6153C16.7282 20.5023 14.1687 21.5625 11.5 21.5625ZM11.5 23C14.55 23 17.4751 21.7884 19.6317 19.6317C21.7884 17.4751 23 14.55 23 11.5C23 8.45001 21.7884 5.52494 19.6317 3.36827C17.4751 1.2116 14.55 0 11.5 0C8.45001 0 5.52494 1.2116 3.36827 3.36827C1.2116 5.52494 0 8.45001 0 11.5C0 14.55 1.2116 17.4751 3.36827 19.6317C5.52494 21.7884 8.45001 23 11.5 23Z"
           fill="#CFCFCF"
@@ -12,12 +25,26 @@
         />
       </svg>
     </div>
-    <div v-if="image === 'progress'" class="w-20 h-20">
-      <CircleProgress :size="80" :progress="data?.['battle_results_ad_percent'] || 0" />
+    <div
+      v-if="data?.['battle_results_ad_image'] === 'progress'"
+      class="w-20 h-20"
+    >
+      <CircleProgress :size="80" :progress="progressValue" />
     </div>
-    <img v-else class="h-12 my-3" :src="getAsset(image)" />
-    <span class="fira-bold text-lg">{{ title }}</span>
-    <span class="inline-svg" v-html="textWithSpecialSymbols || 'Ad text is located around here somewhere'"></span>
+    <img
+      v-else
+      class="h-12 my-3"
+      :src="getAsset(data?.['battle_results_ad_image'])"
+    />
+    <span class="fira-bold text-lg">{{
+      locale?.["battle_results_ad_title"]
+    }}</span>
+    <span
+      class="inline-svg"
+      v-html="
+        textWithSpecialSymbols || 'Ad text is located around here somewhere'
+      "
+    ></span>
   </div>
 </template>
 
@@ -28,30 +55,32 @@ import { storeToRefs } from "pinia";
 
 // store
 import { useMainStore } from "@/store/main";
-import { useDataStore } from "@/store/data";
 
-const mainStore = useMainStore();
-const dataStore = useDataStore();
+const store = useMainStore();
 
-const { data } = storeToRefs(dataStore.battles);
-const { showTooltip } = mainStore;
+const { data } = storeToRefs(store.battleStore);
+const { showTooltip } = store;
+const { battles: locale } = storeToRefs(store.localeStore);
 
 const el = ref();
+const progressValue = ref(0);
 
-const props = defineProps<{
-  image?: string;
-  title?: string;
-  text?: string;
-  tooltip?: string;
-}>();
+setTimeout(() => {
+  progressValue.value = data?.value?.["battle_results_ad_percent"];
+}, 1000);
 
-const textWithSpecialSymbols = computed(() => props.text?.replace(/<bolt>/, getSpecialSymbol("bolt")));
+const textWithSpecialSymbols = computed(() =>
+  locale?.value?.["battle_results_ad_text"]?.replace(
+    /<bolt>/,
+    getSpecialSymbol("bolt")
+  )
+);
 
 const onTooltipClick = () => {
-  if (props.tooltip?.length) {
+  if (locale?.value?.["tooltip_battle_results_ad"]?.length) {
     showTooltip({
       element: el.value,
-      text: props.tooltip,
+      text: locale?.value?.["tooltip_battle_results_ad"],
     });
   }
 };

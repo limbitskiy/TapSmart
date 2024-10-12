@@ -31,12 +31,7 @@
         </div>
 
         <div class="ad flex flex-col items-center justify-center mt-8">
-          <Ad
-            :image="data?.['battle_results_ad_image']"
-            :title="locale?.['battle_results_ad_title']"
-            :text="locale?.['battle_results_ad_text']"
-            :tooltip="locale?.['tooltip_battle_results_ad']"
-          />
+          <Ad />
         </div>
       </div>
 
@@ -72,16 +67,12 @@ import { getAsset } from "@/utils";
 import { storeToRefs } from "pinia";
 
 // stores
-import { useLocaleStore } from "@/store/locale";
-import { useDataStore } from "@/store/data";
 import { useMainStore } from "@/store/main";
 
-const localeStore = useLocaleStore();
-const dataStore = useDataStore();
-const mainStore = useMainStore();
+const store = useMainStore();
 
-const { data } = storeToRefs(dataStore.battles);
-const { battles: locale } = storeToRefs(localeStore);
+const { data } = storeToRefs(store.battleStore);
+const { battles: locale } = storeToRefs(store.localeStore);
 
 const leaderboardSorted = computed(() => {
   if (!data.value.battle_results_leaderboard?.length) return [];
