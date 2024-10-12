@@ -32,17 +32,16 @@ const props = defineProps<{
   color?: string;
 }>();
 
-const css = useCssModule();
 const dataStore = useDataStore();
 
 const { currentTaskTimeout } = storeToRefs(dataStore.battles);
 
-const progress = ref(0.01);
+// const progress = ref(0.01);
 const circleRef = ref();
 
 const radius = computed(() => (props.size - (props.strokeWidth ?? 6)) / 2);
 const circumference = computed(() => radius.value * Math.PI * 2);
-const dash = computed(() => (progress.value * circumference.value) / 100);
+// const dash = computed(() => (progress.value * circumference.value) / 100);
 
 const startAnimation = (duration: number) => {
   circleRef.value?.animate([{ strokeDasharray: `${circumference.value} 0` }, { strokeDasharray: `0 ${circumference.value}` }], duration);

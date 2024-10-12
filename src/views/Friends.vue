@@ -1,10 +1,10 @@
 <template>
-  <div id="friends" class="mb-[150px]">
-    <div class="top-part p-5">
+  <div id="friends" class="flex flex-col gap-4 p-4 mb-[130px]">
+    <div class="top-part">
       <div class="page-title mb-2">{{ locale?.["title"] }}</div>
       <div class="page-subtitle text-gray-200" v-html="locale?.['subtitle']"></div>
 
-      <div class="pills flex flex-col gap-4 my-4">
+      <div class="pills flex flex-col gap-4 mt-4">
         <IconPill color="dark">
           <template #start>
             <img class="h-[39px]" :src="getAsset('telegram')" />
@@ -71,7 +71,7 @@
     </BackgroundPill>
 
     <!-- friends -->
-    <BackgroundPill class="py-8 mt-12 relative">
+    <BackgroundPill class="py-8 relative">
       <div class="header flex items-center justify-between">
         <div class="title flex items-center gap-2">
           <span class="bg-pill-title">{{ locale?.["friends_title"] }}</span>
@@ -105,12 +105,12 @@
     </BackgroundPill>
 
     <!-- invite buttons -->
-    <div class="invite-btn-cnt fixed bottom-16 w-full p-4 flex justify-between gap-3 z-10">
+    <div class="invite-btn-cnt fixed bottom-20 left-4 right-4 flex justify-between gap-3 z-10">
       <Button class="flex-1" @click="onInviteFriend">
         <span class="text-xl">{{ locale?.["invite_a_friend"] }}</span>
         <!-- <img :src="getAsset('paw')" /> -->
       </Button>
-      <Button class="!px-5 border border-gray-800" dark @click="onCopyToClipboard"><img :src="getAsset('copy')" /></Button>
+      <Button class="!px-4 border border-gray-800" dark @click="onCopyToClipboard"><img :src="getAsset('copy')" /></Button>
     </div>
   </div>
 </template>

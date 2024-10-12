@@ -2,10 +2,7 @@ import { computed, ref, watch, Ref } from "vue";
 import { defineStore } from "pinia";
 
 // common
-import {
-  Interval as BreakpointInterval,
-  Timer as TaskTimer,
-} from "@/common/interval";
+import { Interval as BreakpointInterval, Timer as TaskTimer } from "@/common/interval";
 
 // stores
 import { useDataStore } from "@/store/data";
@@ -55,19 +52,14 @@ export const useBattleStore = defineStore("battle", () => {
   const bonusesUsed = ref({});
   const afkCounter = ref(0);
 
-  // temp
-  // const playerPositions = ref([]);
-
+  const battleStarted = ref(false);
   let battleStartTime = null;
-  let challengeStarted = ref(false);
-  let battleTypeHasChanged = ref(false);
 
   let currentBreakpointInterval = {
     fn: <BreakpointInterval | null>null,
     type: <string | null>null,
   };
   const currentTaskTimeout: Ref<TaskTimer | null> = ref(null);
-  let taskTimeoutCounter: number | null = null;
 
   const state = ref({
     battleData: <BattleState>{},
@@ -83,28 +75,15 @@ export const useBattleStore = defineStore("battle", () => {
   const currentBattleType = computed(() => state.value.battleData.battle_type);
 
   // returns "yesno" || "4answers" etc.
-  const сurrentMechanicName = computed(
-    () => battleTypes[currentBattleType.value]
-  );
+  const сurrentMechanicName = computed(() => battleTypes[currentBattleType.value]);
 
   // returns { api, correct, id, key, task: {} }
-  const currentTask = computed(
-    () => state.value.battleData.data?.[taskIndex.value]
-  );
+  const currentTask = computed(() => battleStarted.value && state.value.battleData.data?.[taskIndex.value]);
 
   // returns { bolts_bonus, disabled, id, order, timeout }
-  const currentMechanic = computed(
-    () =>
-      state.value.battleData.mechanics?.[
-        getMechanicName(state.value.battleData.battle_type)
-      ]
-  );
+  const currentMechanic = computed(() => state.value.battleData.mechanics?.[getMechanicName(state.value.battleData.battle_type)]);
 
-  const currentCalcPoint = computed(
-    () =>
-      data.value.calc_points[correctStreak.value] ??
-      data.value.calc_points[data.value.calc_points.length - 1]
-  );
+  const currentCalcPoint = computed(() => data.value.calc_points[correctStreak.value] ?? data.value.calc_points[data.value.calc_points.length - 1]);
 
   const energy = computed(() => state.value.battleData.energy);
   const playerProgress = computed(() => state.value.battleData.player_progress);
@@ -120,19 +99,12 @@ export const useBattleStore = defineStore("battle", () => {
       }
 
       if (key === "data") {
-        resetTaskIndex();
+        taskIndex.value = 0;
       }
 
       // restart working breakpoint if new breakpoint time recieved
-      if (
-        key === "breakpoint" ||
-        key === "challenge_breakpoint" ||
-        key === "waiting_breakpoint"
-      ) {
-        if (
-          currentBreakpointInterval.fn &&
-          data[key] !== state.value.battleData[key]
-        ) {
+      if (key === "breakpoint" || key === "challenge_breakpoint" || key === "waiting_breakpoint") {
+        if (currentBreakpointInterval.fn && data[key] !== state.value.battleData[key]) {
           if (key === "breakpoint") {
             onCompleteHook = () => {
               startBreakpoint("battle");
@@ -148,19 +120,6 @@ export const useBattleStore = defineStore("battle", () => {
           }
         }
       }
-
-      // auto redirect on battle mode change
-      // if (key === "battle_mode") {
-      //   if (data["battle_mode"] === "relax") {
-      //     mainStore.redirectTo(
-      //       `/home/relax/${battleTypes[data["battle_type"]]}`
-      //     );
-      //   } else if (data["battle_mode"] === "challenge") {
-      //     mainStore.redirectTo(
-      //       `/challenge/${battleTypes[data["battle_type"]]}`
-      //     );
-      //   }
-      // }
 
       // if no such key - create an empty object
       if (!state.value.battleData[key]) {
@@ -188,14 +147,9 @@ export const useBattleStore = defineStore("battle", () => {
     const _currentId = currentTask.value.id;
 
     Object.keys(data).forEach((key) => {
-      if (
-        state.value.battleData[key] &&
-        Array.isArray(state.value.battleData[key])
-      ) {
+      if (state.value.battleData[key] && Array.isArray(state.value.battleData[key])) {
         data[key].forEach((item) => {
-          const foundIdx = state.value.battleData[key].findIndex(
-            (storeItem) => storeItem.id === item.id
-          );
+          const foundIdx = state.value.battleData[key].findIndex((storeItem) => storeItem.id === item.id);
 
           if (foundIdx != -1) {
             state.value.battleData[key].splice(foundIdx, 1);
@@ -209,33 +163,24 @@ export const useBattleStore = defineStore("battle", () => {
     });
 
     state.value.battleData.data.sort((a, b) => a.id - b.id);
-    taskIndex.value = state.value.battleData.data.findIndex(
-      (task) => task.id === _currentId
-    );
+    taskIndex.value = state.value.battleData.data.findIndex((task) => task.id === _currentId);
 
     // console.log("expanded battle store:", state.value.battleData);
   };
 
   // breakpoints/timers
   const startTaskTimeout = () => {
-    if (
-      !currentMechanic.value?.timeout ||
-      currentTaskTimeout.value ||
-      taskTimeoutCounter === 0
-    )
-      return;
+    if (!currentMechanic.value?.timeout || currentTaskTimeout.value || !energy.value || afkCounter.value >= 3) return;
 
     const callback = () => {
       stopTaskTimeout();
-      handleRelaxAnswer({
+      handleBattleAnswer({
         isCorrect: false,
         answerString: "",
         subtractEnergyAmount: 0,
       });
       afkCounter.value += 1;
     };
-
-    // console.log(`new timeout: ${currentMechanic.value.timeout}`);
 
     const taskTimeout = new TaskTimer(currentMechanic.value?.timeout, callback);
     currentTaskTimeout.value = taskTimeout;
@@ -247,14 +192,15 @@ export const useBattleStore = defineStore("battle", () => {
       currentTaskTimeout.value.stop();
       currentTaskTimeout.value = null;
 
-      if (taskTimeoutCounter) {
-        taskTimeoutCounter -= 1;
-      }
+      // if (taskTimeoutCounter) {
+      //   taskTimeoutCounter -= 1;
+      // }
     }
   };
 
-  const setTaskTimeoutCounter = (value: number | null) => {
-    taskTimeoutCounter = value;
+  const restartTaskTimeout = () => {
+    stopTaskTimeout();
+    startTaskTimeout();
   };
 
   const startBreakpoint = (type: string) => {
@@ -290,6 +236,7 @@ export const useBattleStore = defineStore("battle", () => {
 
     if (interval < 1000) {
       console.error(`Interval is too small: ${interval}`);
+      interval = 1000;
     }
 
     // console.log(`Starting breakpoint: ${type}`);
@@ -311,9 +258,7 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const storeAnswer = (answerString: string, msec?: number) => {
-    const foundIdx = answers.value.findIndex(
-      (answer) => answer.id === currentTask.value!.id
-    );
+    const foundIdx = answers.value.findIndex((answer) => answer.id === currentTask.value!.id);
 
     if (foundIdx !== -1) {
       answers.value[foundIdx] = {
@@ -333,11 +278,7 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   // answer handlers
-  const handleRelaxAnswer = ({
-    isCorrect,
-    answerString,
-    subtractEnergyAmount = 3,
-  }: AnswerProps) => {
+  const handleBattleAnswer = ({ isCorrect, answerString, subtractEnergyAmount = 3 }: AnswerProps) => {
     if (data.value.energy === 0) return;
 
     if (!currentTask.value) {
@@ -348,24 +289,52 @@ export const useBattleStore = defineStore("battle", () => {
     // set lastTaskId
     lastTaskId.value = currentTask.value!.id;
 
-    // store answer
-    storeAnswer(answerString);
+    // in a relax battle
+    if (currentBattleMode.value === "relax") {
+      // store answer
+      storeAnswer(answerString);
 
-    // call api
-    if (currentTask.value.api) {
-      mainStore.callApi({ api: currentTask.value.api });
+      // process correct/wrong anwser
+      if (isCorrect) {
+        afkCounter.value = 0;
+        // mainStore.onVibrate("correct");
+        const multiplier = calculateRelaxMultiplierAmount();
+        correctStreak.value += 1;
+        dataStore.addBolts(multiplier);
+        addEnergy(1);
+      } else {
+        if (subtractEnergyAmount) {
+          addEnergy(-subtractEnergyAmount);
+        }
+        // mainStore.onVibrate("wrong");
+        correctStreak.value = 0;
+      }
+
+      // in a challenge battle
+    } else if (currentBattleMode.value === "challenge") {
+      let msec;
+
+      if (battleStartTime) {
+        msec = Date.now() - +battleStartTime;
+      }
+
+      storeAnswer(answerString, msec);
+
+      if (isCorrect) {
+        challengeScore.value += currentCalcPoint.value;
+        correctStreak.value += 1;
+      } else {
+        if (data.value.battle_extra_mistake && !bonusesUsed.value["extra_mistake"]) {
+          bonusesUsed.value["extra_mistake"] = true;
+        } else {
+          correctStreak.value = 0;
+        }
+      }
     }
 
-    if (isCorrect) {
-      const multiplier = calculateRelaxMultiplierAmount();
-      onCorrectAnswer();
-      dataStore.addBolts(multiplier);
-      changeEnergy(1);
-    } else {
-      if (subtractEnergyAmount) {
-        changeEnergy(-subtractEnergyAmount);
-      }
-      onWrongRelaxAnswer();
+    // call api if needed
+    if (currentTask.value.api) {
+      mainStore.useFetch({ key: currentTask.value.api });
     }
 
     incrementTaskIndex();
@@ -374,63 +343,7 @@ export const useBattleStore = defineStore("battle", () => {
       state.value.battleData.questions_left -= 1;
     }
 
-    startTaskTimeout();
-
-    // console.log(answers.value);
-  };
-
-  const handleChallengeAnswer = ({ isCorrect, answerString }: AnswerProps) => {
-    const currentDataItem = state.value.battleData.data?.[taskIndex.value];
-
-    if (!currentDataItem) {
-      console.error(`Could not find current item`);
-      return;
-    }
-
-    // set lastTaskId
-    lastTaskId.value = currentDataItem!.id;
-
-    // store answer
-    let msec;
-
-    if (battleStartTime) {
-      msec = Date.now() - +battleStartTime;
-    }
-
-    storeAnswer(answerString, msec);
-
-    if (isCorrect) {
-      addToChallengeScore(currentCalcPoint.value);
-      onCorrectAnswer();
-    } else {
-      onWrongChallengeAnswer();
-    }
-
-    // call api
-    if (currentDataItem.api) {
-      mainStore.callApi({ api: currentDataItem.api });
-    }
-
-    incrementTaskIndex();
-  };
-
-  const onCorrectAnswer = () => {
-    correctStreak.value += 1;
-  };
-
-  const onWrongRelaxAnswer = () => {
-    correctStreak.value = 0;
-  };
-
-  const onWrongChallengeAnswer = () => {
-    if (
-      data.value.battle_extra_mistake &&
-      !bonusesUsed.value["extra_mistake"]
-    ) {
-      bonusesUsed.value["extra_mistake"] = true;
-    } else {
-      correctStreak.value = 0;
-    }
+    restartTaskTimeout();
   };
 
   // task index helpers
@@ -440,12 +353,8 @@ export const useBattleStore = defineStore("battle", () => {
     if (state.value.battleData.data[newIdx]) {
       taskIndex.value = newIdx;
     } else {
-      resetTaskIndex();
+      taskIndex.value = 0;
     }
-  };
-
-  const resetTaskIndex = () => {
-    taskIndex.value = 0;
   };
 
   // mechanic
@@ -454,10 +363,6 @@ export const useBattleStore = defineStore("battle", () => {
       key: "battle_init",
       data: { battle_type: mechId },
     });
-    // state.value.battleData.battle_type = mechId;
-
-    // await mainStore.fetchRelaxPageData();
-    // mainStore.redirectTo(`/home/relax/${battleTypes[mechId]}`);
 
     // resetBattleStats();
     // stopTaskTimeout();
@@ -467,6 +372,17 @@ export const useBattleStore = defineStore("battle", () => {
   const getMechanicName = (mechId: number): string => battleTypes[mechId];
 
   // misc
+  const setRelaxModal = (value: "open" | "closed") => {
+    if (value === "open") {
+      stopTaskTimeout();
+      stopBreakpoint();
+    } else if (value === "closed") {
+      afkCounter.value = 0;
+      startTaskTimeout();
+      startBreakpoint("battle");
+    }
+  };
+
   const resetBattleStats = () => {
     taskIndex.value = 0;
     lastTaskId.value = null;
@@ -474,9 +390,10 @@ export const useBattleStore = defineStore("battle", () => {
     // answers.value = [];
     challengeScore.value = 0;
     bonusesUsed.value = {};
+    afkCounter.value = 0;
   };
 
-  const changeEnergy = (value: number) => {
+  const addEnergy = (value: number) => {
     state.value.battleData.energy += value;
 
     if (state.value.battleData.energy < 0) {
@@ -497,10 +414,6 @@ export const useBattleStore = defineStore("battle", () => {
       return multiplicator * calcPoints[idx];
     }
     return 0;
-  };
-
-  const addToChallengeScore = (value: number) => {
-    challengeScore.value += value;
   };
 
   const decreaseWaitingTimer = () => {
@@ -532,21 +445,30 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const startChallenge = () => {
+    battleStarted.value = true;
     resetBattleStats();
     battleStartTime = Date.now();
     startBreakpoint("battle");
-    challengeStarted.value = true;
   };
 
   const stopChallenge = () => {
+    battleStarted.value = false;
     resetBattleStats();
     battleStartTime = null;
     stopBreakpoint();
-    challengeStarted.value = false;
   };
 
-  const resetAfkCounter = () => {
-    afkCounter.value = 0;
+  const startRelax = () => {
+    battleStarted.value = true;
+    resetBattleStats();
+    startBreakpoint("battle");
+    startTaskTimeout();
+  };
+
+  const stopRelax = () => {
+    battleStarted.value = false;
+    stopBreakpoint();
+    stopTaskTimeout();
   };
 
   return {
@@ -562,28 +484,25 @@ export const useBattleStore = defineStore("battle", () => {
     currentBattleMode,
     currentBattleType,
     afkCounter,
-    battleTypeHasChanged,
     сurrentMechanicName,
-    // playerPositions,
     playerProgress,
     set,
     expand,
     pauseBattle,
     resumeBattle,
-    handleRelaxAnswer,
-    handleChallengeAnswer,
+    handleBattleAnswer,
     changeMechanic,
     getMechanicName,
     startTaskTimeout,
     stopTaskTimeout,
-    setTaskTimeoutCounter,
     startBreakpoint,
     stopBreakpoint,
     decreaseWaitingTimer,
-    resetTaskIndex,
     resetBattleStats,
     startChallenge,
     stopChallenge,
-    resetAfkCounter,
+    startRelax,
+    stopRelax,
+    setRelaxModal,
   };
 });

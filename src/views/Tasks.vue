@@ -1,5 +1,5 @@
 <template>
-  <div id="tasks" class="flex-1 mb-16">
+  <div id="tasks" class="flex-1 p-4 mb-16">
     <div class="top-part p-5 mb-2">
       <div class="page-title mb-2">{{ locale?.["title"] || "Tasks" }}</div>
       <div class="page-subtitle" v-html="locale?.['subtitle'] || 'Our new section! Complete tasks and get something! Maybe bolts, maybe nuts, maybe fame - who knows?'"></div>

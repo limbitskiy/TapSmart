@@ -1,74 +1,55 @@
 <template>
-  <BackgroundPill class="flex-1 !p-4 z-10 rounded-[15px] relative" dark>
-    <div class="header flex items-center justify-between mb-4">
-      <span class="fira-regular text-lg text-[#B7B7B7]"
-        >{{ locale?.[`yesno_title`] || "Yes-no" }} battle</span
-      >
-      <div class="right flex items-center gap-3">
-        <CircleCountdown class="" :strokeWidth="2" color="grey" :size="20" />
-        <VolumeControl />
-      </div>
-    </div>
+  <Transition name="fade" mode="out-in">
+    <component
+      :is="mountedMechanic"
+      :type="currentBattleMode"
+      :task="currentTask"
+      :locales="locale"
+      :energy="energy"
+      @answer="onAnswer"
+      @mounted="onMechanicMounted"
+      @unmounted="onMechanicUnmounted"
+    />
+  </Transition>
 
-    <!-- battle body -->
-    <div class="battle-body flex-1 flex relative overflow-hidden">
-      <!-- <RouterView v-slot="{ Component }" type="relax" @answer="onAnswer" @mounted="onMechanicMounted" @unmounted="onMechanicUnmounted">
-          <template v-if="Component">
-            <Transition name="fade" mode="out-in">
-              <Suspense suspensible>
-                <component :is="Component" />
-                <template #fallback><Loader /></template>
-              </Suspense>
-            </Transition>
-          </template>
-        </RouterView> -->
-      <Transition name="fade" mode="out-in">
-        <component
-          :is="mountedMechanic"
-          :task="currentTask"
-          :locales="locale"
-          @mounted="onMechanicMounted"
-          @unmounted="onMechanicUnmounted"
-        />
-      </Transition>
+  <Teleport to="#modals">
+    <div v-for="bonus in bonuses" :key="bonus.id" class="bonus bonus-animate z-20 flex gap-1 items-center absolute" :style="{ left: bonus.x + 'px', top: bonus.y + 'px' }">
+      <img class="h-4" :src="getAsset('bolt')" />
+      <span class="font-bold">+2</span>
     </div>
-  </BackgroundPill>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch, onBeforeUnmount, computed } from "vue";
+import { ref, computed } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
-import { useRoute } from "vue-router";
+
+// types
+import { Bonus } from "@/types";
 
 // stores
-import { useDataStore } from "@/store/data";
 import { useMainStore } from "@/store/main";
-import { useLocaleStore } from "@/store/locale";
 
 // battle mechanics
 import YesNo from "@/components/battles/YesNo.vue";
 import FourAnswers from "@/components/battles/FourAnswers.vue";
 
-const dataStore = useDataStore();
-const mainStore = useMainStore();
-const localeStore = useLocaleStore();
+interface AnswerProps {
+  isCorrect: boolean;
+  answer: string;
+  event: MouseEvent;
+  drawBonus?: boolean;
+}
 
-const route = useRoute();
-const {} = mainStore;
-const { battles: locale } = storeToRefs(localeStore);
-const { сurrentMechanicName, currentTask, data, afkCounter } = storeToRefs(
-  dataStore.battles
-);
-const {
-  startBreakpoint,
-  stopBreakpoint,
-  startTaskTimeout,
-  stopTaskTimeout,
-  setTaskTimeoutCounter,
-  resetBattleStats,
-  resetAfkCounter,
-} = dataStore.battles;
+const store = useMainStore();
+
+const { battles: locale } = storeToRefs(store.localeStore);
+const { energy, сurrentMechanicName, currentTask, currentBattleMode } = storeToRefs(store.battleStore);
+const { handleBattleAnswer, startRelax, stopRelax } = store.battleStore;
+
+const bonuses = ref<Bonus[]>([]);
+let answerInProgress = false;
 
 const mechMap = {
   yesno: YesNo,
@@ -77,16 +58,43 @@ const mechMap = {
 
 const mountedMechanic = computed(() => mechMap[сurrentMechanicName.value]);
 
+const onAnswer = async ({ isCorrect, answer, event, drawBonus = true }: AnswerProps) => {
+  if (answerInProgress) return;
+
+  answerInProgress = true;
+
+  if (isCorrect && drawBonus) {
+    drawBonusAnimation(event);
+  }
+  handleBattleAnswer({ isCorrect, answerString: answer });
+
+  answerInProgress = false;
+};
+
+const drawBonusAnimation = ({ x, y }: { x: number; y: number }) => {
+  const id = Date.now();
+
+  bonuses.value.push({
+    id,
+    x: x - 20,
+    y: y - 60,
+  });
+
+  setTimeout(() => {
+    const idx = bonuses.value.findIndex((item) => item.id === id);
+    bonuses.value.splice(idx, 1);
+  }, 700);
+
+  return true;
+};
+
 const onMechanicMounted = () => {
-  startBreakpoint("battle");
-  setTaskTimeoutCounter(null);
-  startTaskTimeout();
-  resetBattleStats();
+  setTimeout(() => {
+    startRelax();
+  }, 1000);
 };
 
 const onMechanicUnmounted = () => {
-  resetAfkCounter();
-  stopBreakpoint();
-  setTaskTimeoutCounter(1);
+  stopRelax();
 };
 </script>
