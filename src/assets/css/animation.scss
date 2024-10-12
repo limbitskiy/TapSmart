@@ -29,10 +29,10 @@
 }
 
 .challenge-bonus-1-enter-active {
-  animation: lightSpeedInLeft 0.5s ease-in;
+  animation: bounceIn 0.5s ease-in;
 }
 .challenge-bonus-1-leave-active {
-  animation: lightSpeedOutRight 0.5s ease-in;
+  animation: correctTextLeave 0.3s ease-out;
 }
 // .challenge-bonus-1-enter-from {
 //   opacity: 1;

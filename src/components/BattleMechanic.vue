@@ -12,21 +12,36 @@
     />
   </Transition>
 
+  <!-- bolt bonuses -->
   <Teleport to="#modals">
-    <div
-      v-for="bonus in bonuses"
-      :key="bonus.id"
-      class="bonus bonus-animate z-20 flex gap-1 items-center absolute"
-      :style="{ left: bonus.x + 'px', top: bonus.y + 'px' }"
-    >
+    <div v-for="bonus in bonuses" :key="bonus.id" class="bonus bonus-animate z-20 flex gap-1 items-center absolute" :style="{ left: bonus.x + 'px', top: bonus.y + 'px' }">
       <img class="h-4" :src="getAsset('bolt')" />
       <span class="font-bold">+2</span>
     </div>
   </Teleport>
+
+  <!-- onscreen booster usage -->
+  <div v-if="currentBattleMode === 'challenge'" class="boosters-cnt">
+    <Transition name="challenge-bonus-1">
+      <div v-if="boosterState.isShown" class="booster absolute top-[45dvh] left-0 right-0 grid place-items-center z-30">
+        <div class="bonus">
+          <span
+            class="text-[8vw] exo-bold text-[#edaa38]"
+            style="
+              background: linear-gradient(to top left, #ff75c3, #ffa647, #ffe83f, #9fff5b, #70e2ff, #cd93ff);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+            "
+            >{{ boosterState.text }}</span
+          >
+        </div>
+      </div>
+    </Transition>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 
@@ -50,11 +65,16 @@ interface AnswerProps {
 const store = useMainStore();
 
 const { battles: locale } = storeToRefs(store.localeStore);
-const { energy, сurrentMechanicName, currentTask, currentBattleMode } =
-  storeToRefs(store.battleStore);
-const { handleBattleAnswer, startRelax, stopRelax } = store.battleStore;
+const { energy, сurrentMechanicName, currentTask, currentBattleMode, boostersUsed } = storeToRefs(store.battleStore);
+const { handleBattleAnswer, startRelax, stopRelax, startChallenge, stopChallenge } = store.battleStore;
 
 const bonuses = ref<Bonus[]>([]);
+
+const boosterState = ref({
+  text: "",
+  isShown: false,
+  used: {},
+});
 
 const mechMap = {
   yesno: YesNo,
@@ -63,12 +83,7 @@ const mechMap = {
 
 const mountedMechanic = computed(() => mechMap[сurrentMechanicName.value]);
 
-const onAnswer = async ({
-  isCorrect,
-  answer,
-  event,
-  drawBonus = true,
-}: AnswerProps) => {
+const onAnswer = async ({ isCorrect, answer, event, drawBonus = true }: AnswerProps) => {
   if (isCorrect && drawBonus) {
     drawBonusAnimation(event);
   }
@@ -94,11 +109,51 @@ const drawBonusAnimation = ({ x, y }: { x: number; y: number }) => {
 
 const onMechanicMounted = () => {
   setTimeout(() => {
-    startRelax();
+    if (currentBattleMode.value === "relax") {
+      startRelax();
+    } else if (currentBattleMode.value === "challenge") {
+      startChallenge();
+    }
   }, 1000);
 };
 
 const onMechanicUnmounted = () => {
-  stopRelax();
+  if (currentBattleMode.value === "relax") {
+    stopRelax();
+  } else if (currentBattleMode.value === "challenge") {
+    stopChallenge();
+  }
 };
+
+const onBoosterUsed = (bonusName: string) => {
+  const bonusLocale = locale?.value[`${bonusName}_title`];
+  console.log(bonusLocale);
+
+  boosterState.value.text = bonusLocale;
+  boosterState.value.isShown = true;
+
+  setTimeout(() => {
+    boosterState.value.text = "";
+    boosterState.value.isShown = false;
+
+    boosterState.value.used[bonusName] = true;
+  }, 1000);
+};
+
+// watch boosters
+watch(
+  boostersUsed,
+  (val) => {
+    if (Object.keys(val).length) {
+      Object.keys(val).forEach((bonus) => {
+        if (!boosterState.value.used[bonus]) {
+          onBoosterUsed(bonus);
+        }
+      });
+    }
+  },
+  {
+    deep: true,
+  }
+);
 </script>

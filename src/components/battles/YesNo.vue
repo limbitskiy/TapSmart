@@ -1,16 +1,10 @@
 <template>
   <div class="battle-body flex-1 flex relative">
     <BackgroundPill class="flex-1 m-[2px] !p-4 z-10 rounded-[15px] relative overflow-hidden" style="background: linear-gradient(180deg, #363636 0%, #272727 100%)" dark>
-      <!-- animated border -->
-
-      <!-- <svg class="absolute inset-0 z-20" height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
-      <rect rx="15" ry="15" class="line" height="100%" width="100%" stroke-linejoin="round" style="stroke-width: 3px; fill: transparent; stroke: #2ce72c" />
-    </svg> -->
-
       <div class="header flex items-center justify-between mb-4">
         <span class="fira-regular text-lg text-[#B7B7B7]">{{ locale?.[`yesno_title`] || "Yes-no" }} battle</span>
         <div class="right flex items-center gap-3">
-          <CircleCountdown class="" :strokeWidth="2" color="grey" :size="20" />
+          <CircleCountdown v-if="type === 'relax'" :strokeWidth="2" color="grey" :size="20" />
           <VolumeControl />
         </div>
       </div>

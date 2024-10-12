@@ -4,7 +4,7 @@
     <div class="enemy-markers relative h-4">
       <div
         v-for="enemy in computedEnemies"
-        :key="enemy.id"
+        :key="enemy?.id"
         class="marker absolute"
         :style="{
           transform: `translateX(${getEnemyPosition(enemy)}px)`,
@@ -27,17 +27,15 @@
     </div>
 
     <!-- player -->
-    <div class="player-marker h-4">
-      <div v-if="computedPlayer" class="player-marker">
-        <div
-          class="marker w-[14px]"
-          :style="{
-            transform: `translateX(${computedPlayerProgress - 7}px)`,
-            transition: '1s linear',
-          }"
-        >
-          <img class="h-4 scale-[1.4]" :src="getAsset('player-marker')" />
-        </div>
+    <div class="player-marker-cnt h-4">
+      <div
+        class="marker w-[14px]"
+        :style="{
+          transform: `translateX(${computedPlayerProgress - 7}px)`,
+          transition: '1s linear',
+        }"
+      >
+        <img class="h-4 scale-[1.4]" :src="getAsset('player-marker')" />
       </div>
     </div>
   </BackgroundPill>
@@ -61,9 +59,7 @@ import { storeToRefs } from "pinia";
 import { getAsset } from "../utils";
 
 // stores
-import { useDataStore } from "@/store/data";
 import { useMainStore } from "@/store/main";
-import { useLocaleStore } from "@/store/locale";
 
 const props = defineProps<{
   timer: number;
@@ -81,14 +77,13 @@ const colors = {
   4: "3C4FF9",
   5: "FFFFFF",
   6: "24CAFF",
+  999: "dfe0df",
 };
 
-const dataStore = useDataStore();
-const mainStore = useMainStore();
-const localeStore = useLocaleStore();
+const store = useMainStore();
 
-const { data, playerProgress, playerPositions } = storeToRefs(dataStore.battles);
-const { battles: locale } = storeToRefs(localeStore);
+const { data, playerProgress } = storeToRefs(store.battleStore);
+const { battles: locale } = storeToRefs(store.localeStore);
 
 const gaugeRef = ref();
 const progressRef = ref();
@@ -96,8 +91,6 @@ const progressRef = ref();
 const positions = ref([]);
 
 const timer = computed(() => props.timer);
-
-// playerPositions.value = [];
 
 watch(
   timer,
@@ -136,7 +129,11 @@ watch(
 );
 
 const computedPlayer = computed(() => positions.value.find((position) => position?.isPlayer));
-const computedEnemies = computed(() => positions.value.filter((player) => !player?.isPlayer));
+const computedEnemies = computed(() => {
+  if (positions.value?.length) {
+    return positions.value.filter((player) => !player?.isPlayer);
+  } else return [{ id: 999, progress: 0 }];
+});
 const progressPercent = computed(() => ((data.value?.["battle_duration"] - props.timer) * 100) / data.value?.["battle_duration"]);
 
 const computedPlayerProgress = computed(() => {
@@ -149,7 +146,7 @@ const computedPlayerProgress = computed(() => {
 
 const getEnemyPosition = (enemy) => {
   const coef = gaugeRef.value?.getBoundingClientRect()?.width / (data?.value?.["battle_duration"] / 1000);
-  if (!coef) return 0;
+  if (!coef) return -6;
   return enemy?.progress * coef - 6;
 };
 

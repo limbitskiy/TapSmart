@@ -46,15 +46,13 @@ import { useScreenSafeArea } from "@vueuse/core";
 
 // store
 import { useMainStore } from "@/store/main";
-import { useDataStore } from "@/store/data";
 
 const { top, right, bottom, left } = useScreenSafeArea();
 
-const mainStore = useMainStore();
-const dataStore = useDataStore();
+const store = useMainStore();
 
-const { pauseBattle, resumeBattle } = dataStore.battles;
-const { tooltip, modal } = storeToRefs(mainStore);
+const { tooltip, modal } = storeToRefs(store);
+const { pauseBattle, resumeBattle } = store.battleStore;
 
 const handleVisibilityChange = () => {
   if (document.hidden) {
