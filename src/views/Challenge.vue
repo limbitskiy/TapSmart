@@ -8,16 +8,19 @@
       <ProgressBar :timer="timer || 0" />
     </div>
 
-    <BackgroundPill class="flex-1 z-10 rounded-[15px] relative" dark>
+    <!-- <BackgroundPill class="flex-1 z-10 rounded-[15px] relative" dark>
       <div class="header flex items-center justify-between">
         <span class="fira-bold text-lg text-[#B7B7B7]">{{ locale?.[`yesno_title`] || "Yes-no" }} battle</span>
         <div class="right flex items-center gap-3">
           <VolumeControl class="scale-75" />
         </div>
-      </div>
+      </div> -->
 
-      <!-- battle body -->
-      <div class="battle-body flex-1 flex relative overflow-hidden">
+    <!-- battle mechanic -->
+    <BattleMechanic />
+
+    <!-- battle body -->
+    <!-- <div class="battle-body flex-1 flex relative overflow-hidden">
         <RouterView v-slot="{ Component }" type="challenge" @answer="onAnswer">
           <template v-if="Component">
             <Transition name="fade" mode="out-in">
@@ -37,8 +40,8 @@
             <span class="block text-[10vw] exo-black text-[red] mb-8">{{ locale?.["is_wrong_answer"] || "No!" }}</span>
           </div>
         </Transition>
-      </div>
-    </BackgroundPill>
+      </div> -->
+    <!-- </BackgroundPill> -->
 
     <!-- onscreen bonuses -->
     <Transition name="challenge-bonus-1">

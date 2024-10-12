@@ -1,7 +1,6 @@
 <template>
   <div class="battle-body flex-1 flex relative">
-    <div class="pulse-shadow absolute inset-0 rounded-[15px] bg-green-500" :class="{ pulse: pulseAnimation }"></div>
-    <BackgroundPill class="flex-1 m-[2px] !p-4 z-10 rounded-[15px] relative" style="background: linear-gradient(180deg, #363636 0%, #272727 100%)" dark>
+    <BackgroundPill class="flex-1 m-[2px] !p-4 z-10 rounded-[15px] relative overflow-hidden" style="background: linear-gradient(180deg, #363636 0%, #272727 100%)" dark>
       <!-- animated border -->
 
       <!-- <svg class="absolute inset-0 z-20" height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
@@ -18,8 +17,8 @@
 
       <div class="yes-no-battle flex-1 flex flex-col">
         <!-- question -->
-        <div class="question-cnt flex flex-col flex-1 relative">
-          <div class="question-content grid grid-rows-[1fr_4fr] flex-1 justify-items-center overflow-hidden">
+        <div class="question-cnt flex flex-col flex-1">
+          <div class="question-content grid grid-rows-[1fr_4fr] flex-1 justify-items-center">
             <div class="title-cnt flex-1 flex flex-col justify-center">
               <Pill class="!py-2 rounded-xl bg-[#222]">
                 <span class="question-title text-center">{{ locales?.["mechanics_1_task"] || "Is this translation correct??" }}</span>
@@ -50,13 +49,24 @@
           </div>
         </div>
 
+        <div
+          class="no-btn-pulse absolute bottom-5 rounded-full left-10 h-10 w-10 z-[-1]"
+          :class="{ pulse: noBtnAnimation.shown }"
+          :style="noBtnAnimation.color === 'red' ? 'background-color: rgb(239 68 68)' : 'background-color: rgb(34 197 94)'"
+        ></div>
+        <div
+          class="yes-btn-pulse absolute bottom-5 rounded-full right-10 h-10 w-10 z-[-1]"
+          :class="{ pulse: yesBtnAnimation.shown }"
+          :style="yesBtnAnimation.color === 'red' ? 'background-color: rgb(239 68 68)' : 'background-color: rgb(34 197 94)'"
+        ></div>
+
         <!-- buttons -->
         <div class="answer-buttons flex gap-4 justify-evenly mt-4">
           <Button
             activeColor="#97482f"
-            :disabled="type === 'relax' && energy <= 0"
+            :disabled="(type === 'relax' && energy <= 0) || buttonsBlocked"
             class="flex-1 flex justify-center bg-[var(--red-color)]"
-            @click="(event) => handleAnswer(task?.task?.variants[1], event)"
+            @click="(event) => handleAnswer(task?.task?.variants[1], event, 'no')"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M3 3L21 21" stroke="white" stroke-width="5" stroke-linecap="round" />
@@ -65,9 +75,9 @@
           </Button>
           <Button
             activeColor="#38703d"
-            :disabled="type === 'relax' && energy <= 0"
+            :disabled="(type === 'relax' && energy <= 0) || buttonsBlocked"
             class="flex-1 flex justify-center bg-[var(--green-color)]"
-            @click="(event) => handleAnswer(task?.task?.variants[0], event)"
+            @click="(event) => handleAnswer(task?.task?.variants[0], event, 'yes')"
           >
             <svg width="29" height="23" viewBox="0 0 29 23" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M3 11L10.5922 19L26.4667 3" stroke="white" stroke-width="5" stroke-linecap="round" />
@@ -105,12 +115,33 @@ const props = defineProps<{
   energy: number;
 }>();
 
-const isCorrectTextShown = ref(false);
-const isWrongTextShown = ref(false);
+const buttonsBlocked = ref(false);
 
-const pulseAnimation = ref(false);
+const noBtnAnimation = ref({
+  shown: false,
+  color: null,
+});
 
-const handleAnswer = (answer: string, event) => {
+const yesBtnAnimation = ref({
+  shown: false,
+  color: null,
+});
+
+if (props.type === "relax") {
+  watch(
+    () => props.task,
+    (val) => {
+      if (val) {
+        buttonsBlocked.value = true;
+        setTimeout(() => {
+          buttonsBlocked.value = false;
+        }, 500);
+      }
+    }
+  );
+}
+
+const handleAnswer = (answer: string, event, type) => {
   if (props.type === "relax" && props.energy <= 0) return;
 
   const isCorrect = answer === props.task.correct;
@@ -118,25 +149,21 @@ const handleAnswer = (answer: string, event) => {
   emit("answer", { isCorrect, answer, event, drawBonus: true });
 
   // custom correct/wrong animation
-  if (isCorrect) {
-    isCorrectTextShown.value = true;
-
+  if (type === "no") {
+    noBtnAnimation.value.color = isCorrect ? "green" : "red";
+    noBtnAnimation.value.shown = true;
     setTimeout(() => {
-      isCorrectTextShown.value = false;
-    }, 300);
-  } else {
-    isWrongTextShown.value = true;
-
+      noBtnAnimation.value.shown = false;
+      noBtnAnimation.value.color = null;
+    }, 1000);
+  } else if (type === "yes") {
+    yesBtnAnimation.value.color = isCorrect ? "green" : "red";
+    yesBtnAnimation.value.shown = true;
     setTimeout(() => {
-      isWrongTextShown.value = false;
-    }, 300);
+      yesBtnAnimation.value.shown = false;
+      yesBtnAnimation.value.color = null;
+    }, 1000);
   }
-
-  pulseAnimation.value = true;
-
-  setTimeout(() => {
-    pulseAnimation.value = false;
-  }, 1000);
 };
 
 onMounted(() => {

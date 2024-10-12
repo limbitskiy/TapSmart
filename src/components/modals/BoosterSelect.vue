@@ -241,8 +241,6 @@ const onStartBattle = ({ friendsOnly }) => {
     paramString += "&friends_only=1";
   }
 
-  console.log(paramString);
-
   redirectTo(`/waiting${paramString}`);
 };
 
