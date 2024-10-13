@@ -135,16 +135,14 @@ const correctAnswer = ref({
   timeout: null,
 });
 
-const currentTask = ref(props.task)
-
-
+const currentTask = ref(props.task);
 
 const handleAnswer = (answer: string, event, type) => {
   if (props.type === "relax" && props.energy <= 0) return;
 
   const isCorrect = answer === props.task.correct;
 
-  emit("answer", { isCorrect, answer, event, drawBonus: true, nextTaskDelay: isCorrect ? 0 :  });
+  emit("answer", { isCorrect, answer, event, drawBonus: true, nextTaskDelay: isCorrect ? 0 : 2000 });
 
   // custom correct/wrong animation
   if (type === "no") {
