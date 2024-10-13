@@ -1,6 +1,6 @@
 <template>
   <div class="battle-body flex-1 flex relative">
-    <BackgroundPill class="flex-1 m-[2px] !p-4 z-10 rounded-[15px] relative overflow-hidden" style="background: linear-gradient(180deg, #363636 0%, #272727 100%)" dark>
+    <BackgroundPill class="flex-1 !p-4 z-10 rounded-[15px] relative overflow-hidden" style="background: linear-gradient(180deg, #363636 0%, #272727 100%)" dark>
       <div class="header flex items-center justify-between mb-4">
         <span class="fira-regular text-lg text-[#B7B7B7]">{{ locale?.[`yesno_title`] || "Yes-no" }} battle</span>
         <div class="right flex items-center gap-3">
@@ -11,23 +11,21 @@
 
       <div class="yes-no-battle flex-1 flex flex-col">
         <!-- question -->
-        <div class="question-cnt flex flex-col flex-1">
-          <div class="question-content grid grid-rows-[1fr_4fr] flex-1 justify-items-center">
-            <div class="title-cnt flex-1 flex flex-col justify-center">
+        <div class="question-cnt flex-1 flex flex-col">
+          <div class="question-content grid grid-rows-[40px_auto_56px] flex-1 justify-items-center">
+            <div class="title-cnt flex flex-col justify-center">
               <Pill class="!py-2 rounded-xl bg-[#222]">
                 <span class="question-title text-center">{{ locales?.["mechanics_1_task"] || "Is this translation correct??" }}</span>
               </Pill>
             </div>
 
-            <div class="slide-cnt flex-1 flex flex-col justify-center mb-[3dvh]">
+            <div class="slide-cnt flex flex-col justify-center">
               <!-- question card -->
               <Transition name="question-slide" mode="out-in">
-                <Pill
-                  v-if="task"
-                  :key="task?.task?.question"
-                  class="question min-w-[60vw] w-fit flex flex-col gap-2 items-center text-center py-0 px-8 overflow-x-hidden text-ellipsis !bg-[transparent]"
-                >
-                  <span class="fira-condensed-black" style="font-size: clamp(28px, 10vw, 42px)">{{ task?.task?.question }}</span>
+                <Pill v-if="task" :key="task?.task?.question" class="max-w-[calc(100vw-4rem)] flex flex-col gap-2 items-center text-center !p-0 !bg-[transparent]">
+                  <div class="question-cnt overflow-x-hidden text-ellipsis whitespace-nowrap w-full">
+                    <span class="fira-condensed-black" style="font-size: clamp(28px, 10vw, 42px)">{{ task?.task?.question }}</span>
+                  </div>
                   <div class="arrow">
                     <svg width="16" height="26" viewBox="0 0 16 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -36,13 +34,24 @@
                       />
                     </svg>
                   </div>
-                  <span class="fira-condensed-black text-gray-400" style="font-size: clamp(26px, 8vw, 42px)">{{ task?.task?.answer }}</span>
+                  <div class="question-cnt overflow-x-hidden text-ellipsis whitespace-nowrap w-full">
+                    <span class="fira-condensed-black text-gray-400" style="font-size: clamp(26px, 8vw, 42px)">{{ task?.task?.answer }}</span>
+                  </div>
                 </Pill>
               </Transition>
             </div>
+
+            <!-- correct answer  -->
+            <Transition name="popup-slideup" mode="out-in">
+              <Pill v-if="correctAnswer.shown" class="bg-red-500 py-2 flex flex-col items-center justify-center rounded-[10px] w-fit m-auto fira-condensed">
+                <span class="text-sm inline-block">Error! Correct answer was: </span>
+                <span class="text-sm inline-block fira-condensed-bold">'{{ correctAnswer.text }}'</span>
+              </Pill>
+            </Transition>
           </div>
         </div>
 
+        <!-- button press animations -->
         <div
           class="no-btn-pulse absolute bottom-5 rounded-full left-10 h-10 w-10 z-[-1]"
           :class="{ pulse: noBtnAnimation.shown }"
@@ -55,7 +64,7 @@
         ></div>
 
         <!-- buttons -->
-        <div class="answer-buttons flex gap-4 justify-evenly mt-4">
+        <div class="answer-buttons flex gap-4 justify-evenly mt-4 z-10">
           <Button
             activeColor="#97482f"
             :disabled="(type === 'relax' && energy <= 0) || buttonsBlocked"
@@ -107,9 +116,8 @@ const props = defineProps<{
   task: {};
   locales: {};
   energy: number;
+  buttonsBlocked: boolean;
 }>();
-
-const buttonsBlocked = ref(false);
 
 const noBtnAnimation = ref({
   shown: false,
@@ -121,19 +129,11 @@ const yesBtnAnimation = ref({
   color: null,
 });
 
-if (props.type === "relax") {
-  watch(
-    () => props.task,
-    (val) => {
-      if (val) {
-        buttonsBlocked.value = true;
-        setTimeout(() => {
-          buttonsBlocked.value = false;
-        }, 500);
-      }
-    }
-  );
-}
+const correctAnswer = ref({
+  shown: false,
+  text: null,
+  timeout: null,
+});
 
 const handleAnswer = (answer: string, event, type) => {
   if (props.type === "relax" && props.energy <= 0) return;
@@ -157,6 +157,18 @@ const handleAnswer = (answer: string, event, type) => {
       yesBtnAnimation.value.shown = false;
       yesBtnAnimation.value.color = null;
     }, 1000);
+  }
+
+  if (props.type === "relax" && !isCorrect) {
+    clearTimeout(correctAnswer.value.timeout);
+
+    correctAnswer.value.shown = true;
+    correctAnswer.value.text = props.task.correct;
+
+    correctAnswer.value.timeout = setTimeout(() => {
+      correctAnswer.value.shown = false;
+      correctAnswer.value.text = "";
+    }, 2000);
   }
 };
 

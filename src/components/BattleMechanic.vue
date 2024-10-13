@@ -6,6 +6,7 @@
       :task="currentTask"
       :locales="locale"
       :energy="energy"
+      :buttonsBlocked="buttonsBlocked"
       @answer="onAnswer"
       @mounted="onMechanicMounted"
       @unmounted="onMechanicUnmounted"
@@ -64,8 +65,9 @@ interface AnswerProps {
 
 const store = useMainStore();
 
+const { useFetch, redirectTo } = store;
 const { battles: locale } = storeToRefs(store.localeStore);
-const { energy, сurrentMechanicName, currentTask, currentBattleMode, boostersUsed } = storeToRefs(store.battleStore);
+const { energy, сurrentMechanicName, currentTask, currentBattleMode, boostersUsed, challengeTimer } = storeToRefs(store.battleStore);
 const { handleBattleAnswer, startRelax, stopRelax, startChallenge, stopChallenge } = store.battleStore;
 
 const bonuses = ref<Bonus[]>([]);
@@ -80,6 +82,8 @@ const mechMap = {
   yesno: YesNo,
   "4answers": FourAnswers,
 };
+
+const buttonsBlocked = ref(false);
 
 const mountedMechanic = computed(() => mechMap[сurrentMechanicName.value]);
 
@@ -108,13 +112,13 @@ const drawBonusAnimation = ({ x, y }: { x: number; y: number }) => {
 };
 
 const onMechanicMounted = () => {
-  setTimeout(() => {
-    if (currentBattleMode.value === "relax") {
+  if (currentBattleMode.value === "relax") {
+    setTimeout(() => {
       startRelax();
-    } else if (currentBattleMode.value === "challenge") {
-      startChallenge();
-    }
-  }, 1000);
+    }, 1000);
+  } else if (currentBattleMode.value === "challenge") {
+    startChallenge();
+  }
 };
 
 const onMechanicUnmounted = () => {
@@ -140,20 +144,48 @@ const onBoosterUsed = (bonusName: string) => {
   }, 1000);
 };
 
-// watch boosters
-watch(
-  boostersUsed,
-  (val) => {
-    if (Object.keys(val).length) {
-      Object.keys(val).forEach((bonus) => {
-        if (!boosterState.value.used[bonus]) {
-          onBoosterUsed(bonus);
-        }
-      });
+if (currentBattleMode.value === "challenge") {
+  // watch boosters
+  watch(
+    boostersUsed,
+    (val) => {
+      if (Object.keys(val).length) {
+        Object.keys(val).forEach((bonus) => {
+          if (!boosterState.value.used[bonus]) {
+            onBoosterUsed(bonus);
+          }
+        });
+      }
+    },
+    {
+      deep: true,
     }
-  },
-  {
-    deep: true,
-  }
-);
+  );
+
+  watch(challengeTimer, (val) => {
+    if (val === 0) {
+      onEndChallenge();
+    }
+
+    if (val === 1000) {
+      buttonsBlocked.value = true;
+    }
+  });
+}
+
+if (currentBattleMode.value === "relax") {
+  watch(currentTask, (val) => {
+    if (val) {
+      buttonsBlocked.value = true;
+      setTimeout(() => {
+        buttonsBlocked.value = false;
+      }, 500);
+    }
+  });
+}
+
+const onEndChallenge = () => {
+  useFetch({ key: "battle_breakpoint", data: { final: 1 } });
+  redirectTo("/battle-complete-animation");
+};
 </script>

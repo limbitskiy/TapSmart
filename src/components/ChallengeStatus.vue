@@ -8,7 +8,7 @@
 
     <!-- timer -->
     <div class="timer flex text-4xl">
-      <span>{{ formattedTime(time) ?? "00:00" }}</span>
+      <span>{{ formattedTime(challengeTimer) ?? "00:00" }}</span>
     </div>
 
     <!-- place -->
@@ -26,15 +26,11 @@ import { storeToRefs } from "pinia";
 import { formattedTime } from "@/utils";
 
 // stores
-import { useDataStore } from "@/store/data";
+import { useMainStore } from "@/store/main";
 
-const props = defineProps<{
-  time: number;
-}>();
+const store = useMainStore();
 
-const dataStore = useDataStore();
-
-const { data, challengeScore: score, currentCalcPoint } = storeToRefs(dataStore.battles);
+const { data, challengeScore: score, currentCalcPoint, challengeTimer } = storeToRefs(store.battleStore);
 
 const el = ref();
 

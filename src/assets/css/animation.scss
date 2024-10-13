@@ -48,6 +48,7 @@
   animation: pulse 0.5s ease-out forwards;
 }
 
+// grow
 .grow-enter-active,
 .grow-leave-active {
   transition: all 1s ease;
@@ -60,6 +61,17 @@
 .grow-leave-to {
   opacity: 0;
   transform: scale(4);
+}
+
+// popup-slideup
+.popup-slideup-enter-active,
+.popup-slideup-leave-active {
+  transition: all 0.3s ease;
+}
+.popup-slideup-enter-from,
+.popup-slideup-leave-to {
+  opacity: 0;
+  transform: translateY(100%);
 }
 
 // correct text animation

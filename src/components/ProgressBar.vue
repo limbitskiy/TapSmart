@@ -61,14 +61,6 @@ import { getAsset } from "../utils";
 // stores
 import { useMainStore } from "@/store/main";
 
-const props = defineProps<{
-  timer: number;
-}>();
-
-// :timer="timer || 0"
-// :initialTimerValue="data['battle_duration']!"
-// :players="data?.['player_progress'] || []"
-
 const colors = {
   0: "F01515",
   1: "519A58",
@@ -82,7 +74,7 @@ const colors = {
 
 const store = useMainStore();
 
-const { data, playerProgress } = storeToRefs(store.battleStore);
+const { data, playerProgress, challengeTimer } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
 
 const gaugeRef = ref();
@@ -90,17 +82,15 @@ const progressRef = ref();
 
 const positions = ref([]);
 
-const timer = computed(() => props.timer);
-
 watch(
-  timer,
+  challengeTimer,
   () => {
     const players = playerProgress.value;
 
     if (!players) return;
 
     const highestScore = players.sort((a, b) => b.score - a.score)[0].score;
-    const secId = (data?.value?.["battle_duration"] - timer.value) / 1000;
+    const secId = (data?.value?.["battle_duration"] - challengeTimer.value) / 1000;
 
     players.forEach((player) => {
       const playerPosition = positions.value.find((position) => position?.id === player?.id);
@@ -134,7 +124,7 @@ const computedEnemies = computed(() => {
     return positions.value.filter((player) => !player?.isPlayer);
   } else return [{ id: 999, progress: 0 }];
 });
-const progressPercent = computed(() => ((data.value?.["battle_duration"] - props.timer) * 100) / data.value?.["battle_duration"]);
+const progressPercent = computed(() => ((data.value?.["battle_duration"] - challengeTimer.value) * 100) / data.value?.["battle_duration"] ?? 0);
 
 const computedPlayerProgress = computed(() => {
   const coef = gaugeRef.value?.getBoundingClientRect()?.width / (data?.value?.["battle_duration"] / 1000);

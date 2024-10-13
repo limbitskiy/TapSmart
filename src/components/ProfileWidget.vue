@@ -8,6 +8,8 @@
         <img class="w-[90px] h-[90px]" :src="getAsset('avatar1')" />
       </div>
     </div>
+
+    <!-- league & boost -->
     <div class="data flex-1 flex flex-col bg-[var(--grey-dark)] rounded-xl">
       <div class="top flex">
         <div class="margin w-[55px]"></div>
@@ -20,6 +22,8 @@
           </Button>
         </div>
       </div>
+
+      <!-- stats -->
       <div class="bottom grid grid-cols-[3fr_2fr_2fr] bg-[var(--grey-light)] py-1 rounded-xl pl-[55px]">
         <div class="bolts flex-1 flex items-center gap-1 relative justify-center">
           <img class="h-4" :src="getAsset('bolt')" />
@@ -46,21 +50,17 @@ import { storeToRefs } from "pinia";
 import { getAsset, shortenNumber } from "@/utils";
 
 // stores
-import { useDataStore } from "@/store/data";
-import { useLocaleStore } from "@/store/locale";
 import { useMainStore } from "@/store/main";
 
 // components
 import LeagueProgress from "@/components/LeagueProgress.vue";
 
-const dataStore = useDataStore();
-const localeStore = useLocaleStore();
-const mainStore = useMainStore();
+const store = useMainStore();
 
-const { showTooltip } = mainStore;
+const { showTooltip } = store;
 
-const { profile: profileData, battles: battleData } = storeToRefs(dataStore);
-const { profile: profileLocale, battles: battleLocale } = storeToRefs(localeStore);
+const { profile: profileData, battles: battleData } = storeToRefs(store.dataStore);
+const { profile: profileLocale, battles: battleLocale } = storeToRefs(store.localeStore);
 
 const onTooltip = (event: MouseEvent) => {
   const locales = {

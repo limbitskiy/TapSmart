@@ -22,7 +22,6 @@
 </template>
 
 <script setup lang="ts">
-// stroke-dasharray="10 361.25"
 import { computed, onMounted, ref } from "vue";
 
 const props = defineProps<{

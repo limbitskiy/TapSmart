@@ -8,6 +8,7 @@
       dark ? 'bg-black' : grey ? 'bg-[var(--grey-light)]' : !unstyled && 'bg-[var(--accent-color)] text-black',
       font ? font : 'fira-bold',
       data?.disabled ?? disabled ? '!bg-gray-500 bg-none' : '',
+      data?.accent === 'orange' ? 'bg-[var(--accent-color)] text-black' : data?.accent === 'purple' ? 'bg-gradient-to-r from-[#408CFF] to-[#894899] text-white' : '',
     ]"
     :disabled="data?.disabled ?? disabled"
     @touchstart="btnTouchstart"
@@ -26,11 +27,23 @@ import { ref, useCssModule } from "vue";
 // stores
 import { useMainStore } from "@/store/main";
 
+interface ButtonProps {
+  hidden: boolean;
+  disabled: boolean;
+  route?: string;
+  api?: string;
+  data?: {};
+  label: string;
+  isClose: boolean;
+  showModal: { title: string; subtitle: string; buttons: {} };
+  accent: "orange" | "purple";
+}
+
 const { active: activeClass } = useCssModule();
 
 const mainStore = useMainStore();
 
-const { redirectTo, callApi, callApiSync, setRouteData, showModal } = mainStore;
+const { redirectTo, callApiSync, setRouteData, showModal } = mainStore;
 
 const btnRef = ref();
 
@@ -42,16 +55,7 @@ const props = defineProps<{
   dark?: boolean;
   grey?: boolean;
   font?: string;
-  data?: {
-    hidden: boolean;
-    disabled: boolean;
-    route?: string;
-    api?: string;
-    data?: {};
-    label: string;
-    isClose: boolean;
-    showModal: { title: string; subtitle: string; buttons: {} };
-  };
+  data?: ButtonProps;
   activeColor?: string;
   unstyled?: boolean;
   disabled?: boolean;

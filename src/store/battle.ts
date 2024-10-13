@@ -55,6 +55,10 @@ export const useBattleStore = defineStore("battle", () => {
   const battleStarted = ref(false);
   let battleStartTime = null;
 
+  // challenge vars
+  const challengeTimer = ref(null);
+  let challengeTimerInterval = null;
+
   let currentBreakpointInterval = {
     fn: <BreakpointInterval | null>null,
     type: <string | null>null,
@@ -443,6 +447,16 @@ export const useBattleStore = defineStore("battle", () => {
     resetBattleStats();
     battleStartTime = Date.now();
     startBreakpoint("battle");
+    challengeTimer.value = data.value?.battle_duration;
+
+    challengeTimerInterval = setInterval(() => {
+      if (challengeTimer.value === 0) {
+        clearInterval(challengeTimerInterval);
+        challengeTimer.value = null;
+        return;
+      }
+      challengeTimer.value -= 1000;
+    }, 1000);
   };
 
   const stopChallenge = () => {
@@ -480,6 +494,8 @@ export const useBattleStore = defineStore("battle", () => {
     afkCounter,
     сurrentMechanicName,
     playerProgress,
+    challengeTimer,
+    battleStarted,
     set,
     expand,
     pauseBattle,
