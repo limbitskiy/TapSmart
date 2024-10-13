@@ -2,7 +2,10 @@ import { computed, ref, watch, Ref } from "vue";
 import { defineStore } from "pinia";
 
 // common
-import { Interval as BreakpointInterval, Timer as TaskTimer } from "@/common/interval";
+import {
+  Interval as BreakpointInterval,
+  Timer as TaskTimer,
+} from "@/common/interval";
 
 // stores
 import { useDataStore } from "@/store/data";
@@ -81,15 +84,31 @@ export const useBattleStore = defineStore("battle", () => {
   const currentBattleType = computed(() => state.value.battleData.battle_type);
 
   // returns "yesno" || "4answers" etc.
-  const сurrentMechanicName = computed(() => battleTypes[currentBattleType.value]);
+  const сurrentMechanicName = computed(
+    () => battleTypes[currentBattleType.value]
+  );
 
   // returns { api, correct, id, key, task: {} }
-  const currentTask = computed(() => battleStarted.value && !pauseCurrentTask.value && state.value.battleData.data?.[taskIndex.value]);
+  const currentTask = computed(
+    () =>
+      battleStarted.value &&
+      !pauseCurrentTask.value &&
+      state.value.battleData.data?.[taskIndex.value]
+  );
 
   // returns { bolts_bonus, disabled, id, order, timeout }
-  const currentMechanic = computed(() => state.value.battleData.mechanics?.[getMechanicName(state.value.battleData.battle_type)]);
+  const currentMechanic = computed(
+    () =>
+      state.value.battleData.mechanics?.[
+        getMechanicName(state.value.battleData.battle_type)
+      ]
+  );
 
-  const currentCalcPoint = computed(() => data.value.calc_points[correctStreak.value] ?? data.value.calc_points[data.value.calc_points.length - 1]);
+  const currentCalcPoint = computed(
+    () =>
+      data.value.calc_points[correctStreak.value] ??
+      data.value.calc_points[data.value.calc_points.length - 1]
+  );
 
   const energy = computed(() => state.value.battleData.energy);
   const playerProgress = computed(() => state.value.battleData.player_progress);
@@ -109,8 +128,15 @@ export const useBattleStore = defineStore("battle", () => {
       }
 
       // restart working breakpoint if new breakpoint time recieved
-      if (key === "breakpoint" || key === "challenge_breakpoint" || key === "waiting_breakpoint") {
-        if (currentBreakpointInterval.fn && data[key] !== state.value.battleData[key]) {
+      if (
+        key === "breakpoint" ||
+        key === "challenge_breakpoint" ||
+        key === "waiting_breakpoint"
+      ) {
+        if (
+          currentBreakpointInterval.fn &&
+          data[key] !== state.value.battleData[key]
+        ) {
           if (key === "breakpoint") {
             onCompleteHook = () => {
               startBreakpoint("battle");
@@ -153,9 +179,14 @@ export const useBattleStore = defineStore("battle", () => {
     const _currentId = currentTask.value.id;
 
     Object.keys(data).forEach((key) => {
-      if (state.value.battleData[key] && Array.isArray(state.value.battleData[key])) {
+      if (
+        state.value.battleData[key] &&
+        Array.isArray(state.value.battleData[key])
+      ) {
         data[key].forEach((item) => {
-          const foundIdx = state.value.battleData[key].findIndex((storeItem) => storeItem.id === item.id);
+          const foundIdx = state.value.battleData[key].findIndex(
+            (storeItem) => storeItem.id === item.id
+          );
 
           if (foundIdx != -1) {
             state.value.battleData[key].splice(foundIdx, 1);
@@ -169,14 +200,22 @@ export const useBattleStore = defineStore("battle", () => {
     });
 
     state.value.battleData.data.sort((a, b) => a.id - b.id);
-    taskIndex.value = state.value.battleData.data.findIndex((task) => task.id === _currentId);
+    taskIndex.value = state.value.battleData.data.findIndex(
+      (task) => task.id === _currentId
+    );
 
     // console.log("expanded battle store:", state.value.battleData);
   };
 
   // breakpoints/timers
   const startTaskTimeout = () => {
-    if (!currentMechanic.value?.timeout || currentTaskTimeout.value || !energy.value || afkCounter.value >= 3) return;
+    if (
+      !currentMechanic.value?.timeout ||
+      currentTaskTimeout.value ||
+      !energy.value ||
+      afkCounter.value >= 3
+    )
+      return;
 
     const callback = () => {
       stopTaskTimeout();
@@ -260,19 +299,23 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const storeAnswer = (answerString: string, msec?: number) => {
-    const foundIdx = answers.value.findIndex((answer) => answer.id === currentTask.value!.id);
+    const task = state.value.battleData.data?.[taskIndex.value];
+
+    const foundIdx = answers.value.findIndex(
+      (answer) => answer.id === task!.id
+    );
 
     if (foundIdx !== -1) {
       answers.value[foundIdx] = {
-        id: currentTask.value.id,
-        key: currentTask.value.key,
+        id: task.id,
+        key: task.key,
         answer: answerString,
         msec,
       };
     } else {
       answers.value.push({
-        id: currentTask.value.id,
-        key: currentTask.value.key,
+        id: task.id,
+        key: task.key,
         answer: answerString,
         msec,
       });
@@ -280,7 +323,12 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   // answer handlers
-  const handleBattleAnswer = async ({ isCorrect, answerString, subtractEnergyAmount = 3, nextTaskDelay = 0 }: AnswerProps) => {
+  const handleBattleAnswer = async ({
+    isCorrect,
+    answerString,
+    subtractEnergyAmount = 3,
+    nextTaskDelay = 0,
+  }: AnswerProps) => {
     if (currentBattleMode.value === "relax" && data.value.energy === 0) return;
 
     if (!currentTask.value) {
@@ -336,7 +384,10 @@ export const useBattleStore = defineStore("battle", () => {
         correctStreak.value += 1;
         mainStore.onVibrate("correct");
       } else {
-        if (data.value.battle_extra_mistake && !boostersUsed.value["extra_mistake"]) {
+        if (
+          data.value.battle_extra_mistake &&
+          !boostersUsed.value["extra_mistake"]
+        ) {
           boostersUsed.value["extra_mistake"] = true;
         } else {
           correctStreak.value = 0;

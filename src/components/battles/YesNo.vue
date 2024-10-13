@@ -114,7 +114,7 @@
           :style="
             yesBtnAnimation.color === 'red'
               ? 'background-color: rgb(239 68 68)'
-              : noBtnAnimation.color === 'green'
+              : yesBtnAnimation.color === 'green'
               ? 'background-color: rgb(34 197 94)'
               : ''
           "
