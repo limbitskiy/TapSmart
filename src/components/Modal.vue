@@ -9,7 +9,7 @@
         color="dark"
         :style="{ maxHeight: height ?? sticky ? '85dvh' : 'calc(100dvh - 67px)' }"
       >
-        <div class="w-8 h-1 bg-gray-500 rounded-full m-auto relative -top-4"></div>
+        <div class="w-8 h-1 bg-gray-600 rounded-full m-auto relative -top-2"></div>
         <div class="modal-scroll flex overflow-y-scroll">
           <slot></slot>
         </div>

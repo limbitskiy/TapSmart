@@ -92,12 +92,12 @@
   }
 }
 
-// question card slide
+// question slide
 .question-slide-enter-active {
-  animation: lightSpeedInRight 0.2s ease-in;
+  animation: 0.2s ease-in lightSpeedInRight;
 }
 .question-slide-leave-active {
-  animation: lightSpeedOutLeft 0.2s ease-out;
+  animation: 0.2s ease-out lightSpeedOutLeft;
 }
 
 @keyframes questionEnter {

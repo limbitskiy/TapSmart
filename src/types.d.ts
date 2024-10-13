@@ -143,6 +143,7 @@ export interface AnswerProps {
   isCorrect: boolean;
   answerString: string;
   subtractEnergyAmount?: number;
+  nextTaskDelay?: number;
 }
 
 export interface Answer {

@@ -22,7 +22,7 @@
             <div class="slide-cnt flex flex-col justify-center">
               <!-- question card -->
               <Transition name="question-slide" mode="out-in">
-                <Pill v-if="task" :key="task?.task?.question" class="max-w-[calc(100vw-4rem)] flex flex-col gap-2 items-center text-center !p-0 !bg-[transparent]">
+                <div v-if="task" :key="task?.task?.question" class="max-w-[calc(100vw-4rem)] flex flex-col gap-2 items-center text-center">
                   <div class="question-cnt overflow-x-hidden text-ellipsis whitespace-nowrap w-full">
                     <span class="fira-condensed-black" style="font-size: clamp(28px, 10vw, 42px)">{{ task?.task?.question }}</span>
                   </div>
@@ -37,7 +37,7 @@
                   <div class="question-cnt overflow-x-hidden text-ellipsis whitespace-nowrap w-full">
                     <span class="fira-condensed-black text-gray-400" style="font-size: clamp(26px, 8vw, 42px)">{{ task?.task?.answer }}</span>
                   </div>
-                </Pill>
+                </div>
               </Transition>
             </div>
 
@@ -102,7 +102,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { getAsset } from "@/utils";
 
 const emit = defineEmits<{
@@ -135,12 +135,16 @@ const correctAnswer = ref({
   timeout: null,
 });
 
+const currentTask = ref(props.task)
+
+
+
 const handleAnswer = (answer: string, event, type) => {
   if (props.type === "relax" && props.energy <= 0) return;
 
   const isCorrect = answer === props.task.correct;
 
-  emit("answer", { isCorrect, answer, event, drawBonus: true });
+  emit("answer", { isCorrect, answer, event, drawBonus: true, nextTaskDelay: isCorrect ? 0 :  });
 
   // custom correct/wrong animation
   if (type === "no") {

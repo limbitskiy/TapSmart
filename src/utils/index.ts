@@ -64,7 +64,7 @@ export const formattedTime = (timer: number) => {
     }
   } else {
     const min = Math.trunc(timer / 60000);
-    let sec = (timer % 60000) / 1000 + "";
+    let sec = Math.round((timer % 60000) / 1000) + "";
     if (sec.length === 1) {
       sec = "0" + sec;
     }

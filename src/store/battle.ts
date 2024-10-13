@@ -10,6 +10,7 @@ import { useMainStore } from "@/store/main";
 
 // types
 import { BattleTypes, BattleState, AnswerProps, Answer } from "@/types";
+import { waitFor } from "@/utils";
 
 export const useBattleStore = defineStore("battle", () => {
   const dataStore = useDataStore();
@@ -27,20 +28,20 @@ export const useBattleStore = defineStore("battle", () => {
   // callbacks
   const breakpointCb = () => {
     const score = Math.round(challengeScore.value) || undefined;
-    mainStore.callApi({
-      api: "battle_breakpoint",
+    mainStore.useFetch({
+      key: "battle_breakpoint",
       data: { score },
     });
     return;
   };
 
   const challengeCb = () => {
-    mainStore.callApi({ api: "challenge_breakpoint" });
+    mainStore.useFetch({ key: "challenge_breakpoint" });
     return;
   };
 
   const waitingCb = () => {
-    mainStore.callApi({ api: "waiting_breakpoint" });
+    mainStore.useFetch({ key: "waiting_breakpoint" });
     return;
   };
 
@@ -53,9 +54,10 @@ export const useBattleStore = defineStore("battle", () => {
   const afkCounter = ref(0);
 
   const battleStarted = ref(false);
-  let battleStartTime = null;
+  const pauseCurrentTask = ref(false);
 
   // challenge vars
+  let battleStartTime = null;
   const challengeTimer = ref(null);
   let challengeTimerInterval = null;
 
@@ -82,7 +84,7 @@ export const useBattleStore = defineStore("battle", () => {
   const сurrentMechanicName = computed(() => battleTypes[currentBattleType.value]);
 
   // returns { api, correct, id, key, task: {} }
-  const currentTask = computed(() => battleStarted.value && state.value.battleData.data?.[taskIndex.value]);
+  const currentTask = computed(() => battleStarted.value && !pauseCurrentTask.value && state.value.battleData.data?.[taskIndex.value]);
 
   // returns { bolts_bonus, disabled, id, order, timeout }
   const currentMechanic = computed(() => state.value.battleData.mechanics?.[getMechanicName(state.value.battleData.battle_type)]);
@@ -278,7 +280,7 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   // answer handlers
-  const handleBattleAnswer = ({ isCorrect, answerString, subtractEnergyAmount = 3 }: AnswerProps) => {
+  const handleBattleAnswer = async ({ isCorrect, answerString, subtractEnergyAmount = 3, nextTaskDelay = 0 }: AnswerProps) => {
     if (currentBattleMode.value === "relax" && data.value.energy === 0) return;
 
     if (!currentTask.value) {
@@ -286,8 +288,17 @@ export const useBattleStore = defineStore("battle", () => {
       return;
     }
 
+    stopTaskTimeout();
+
     // set lastTaskId
     lastTaskId.value = currentTask.value!.id;
+
+    // call api if needed
+    if (currentTask.value.api) {
+      mainStore.useFetch({ key: currentTask.value.api });
+    }
+
+    pauseCurrentTask.value = true;
 
     // in a relax battle
     if (currentBattleMode.value === "relax") {
@@ -334,18 +345,19 @@ export const useBattleStore = defineStore("battle", () => {
       }
     }
 
-    // call api if needed
-    if (currentTask.value.api) {
-      mainStore.useFetch({ key: currentTask.value.api });
+    if (nextTaskDelay) {
+      await waitFor(nextTaskDelay);
     }
 
     incrementTaskIndex();
+
+    pauseCurrentTask.value = false;
 
     if (state.value.battleData.questions_left > 0) {
       state.value.battleData.questions_left -= 1;
     }
 
-    restartTaskTimeout();
+    startTaskTimeout();
   };
 
   // task index helpers
