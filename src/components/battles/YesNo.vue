@@ -1,21 +1,10 @@
 <template>
   <div class="battle-body flex-1 flex relative">
-    <BackgroundPill
-      class="flex-1 !p-4 z-10 rounded-[15px] relative overflow-hidden"
-      style="background: linear-gradient(180deg, #363636 0%, #272727 100%)"
-      dark
-    >
+    <BackgroundPill class="flex-1 !p-4 z-10 rounded-[15px] relative overflow-hidden" style="background: linear-gradient(180deg, #363636 0%, #272727 100%)" dark>
       <div class="header flex items-center justify-between mb-4">
-        <span class="fira-regular text-lg text-[#B7B7B7]"
-          >{{ locale?.[`yesno_title`] || "Yes-no" }} battle</span
-        >
+        <span class="fira-regular text-lg text-[#B7B7B7]">{{ locale?.[`yesno_title`] || "Yes-no" }} battle</span>
         <div class="right flex items-center gap-3">
-          <CircleCountdown
-            v-if="type === 'relax'"
-            :strokeWidth="2"
-            color="grey"
-            :size="20"
-          />
+          <CircleCountdown v-if="type === 'relax'" :strokeWidth="2" color="grey" :size="20" />
           <VolumeControl />
         </div>
       </div>
@@ -23,57 +12,30 @@
       <div class="yes-no-battle flex-1 flex flex-col">
         <!-- question -->
         <div class="question-cnt flex-1 flex flex-col">
-          <div
-            class="question-content grid grid-rows-[40px_auto_56px] flex-1 justify-items-center"
-          >
+          <div class="question-content grid grid-rows-[40px_auto_56px] flex-1 justify-items-center">
             <div class="title-cnt flex flex-col justify-center">
               <Pill class="!py-2 rounded-xl bg-[#222]">
-                <span class="question-title text-center">{{
-                  locales?.["mechanics_1_task"] ||
-                  "Is this translation correct??"
-                }}</span>
+                <span class="question-title text-center">{{ locales?.["mechanics_1_task"] || "Is this translation correct??" }}</span>
               </Pill>
             </div>
 
             <div class="slide-cnt flex flex-col justify-center">
               <!-- question card -->
               <Transition name="question-slide" mode="out-in">
-                <div
-                  v-if="task"
-                  :key="task?.task?.question"
-                  class="max-w-[calc(100vw-4rem)] flex flex-col gap-2 items-center text-center"
-                >
-                  <div
-                    class="question-cnt overflow-x-hidden text-ellipsis whitespace-nowrap w-full"
-                  >
-                    <span
-                      class="fira-condensed-black"
-                      style="font-size: clamp(28px, 10vw, 42px)"
-                      >{{ task?.task?.question }}</span
-                    >
+                <div v-if="task" :key="task?.task?.question" class="max-w-[calc(100vw-4rem)] flex flex-col gap-2 items-center text-center">
+                  <div class="question-cnt overflow-x-hidden text-ellipsis whitespace-nowrap w-full">
+                    <span class="fira-condensed-black" style="font-size: clamp(28px, 10vw, 42px)">{{ task?.task?.question }}</span>
                   </div>
                   <div class="arrow">
-                    <svg
-                      width="16"
-                      height="26"
-                      viewBox="0 0 16 26"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
+                    <svg width="16" height="26" viewBox="0 0 16 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
                         d="M7.29289 25.7071C7.68342 26.0976 8.31658 26.0976 8.70711 25.7071L15.0711 19.3431C15.4616 18.9526 15.4616 18.3195 15.0711 17.9289C14.6805 17.5384 14.0474 17.5384 13.6569 17.9289L8 23.5858L2.34315 17.9289C1.95262 17.5384 1.31946 17.5384 0.928932 17.9289C0.538408 18.3195 0.538408 18.9526 0.928932 19.3431L7.29289 25.7071ZM7 0V25H9V0H7Z"
                         fill="#BCBCBC"
                       />
                     </svg>
                   </div>
-                  <div
-                    class="question-cnt overflow-x-hidden text-ellipsis whitespace-nowrap w-full"
-                  >
-                    <span
-                      class="fira-condensed-black text-gray-400"
-                      style="font-size: clamp(26px, 8vw, 42px)"
-                      >{{ task?.task?.answer }}</span
-                    >
+                  <div class="question-cnt overflow-x-hidden text-ellipsis whitespace-nowrap w-full">
+                    <span class="fira-condensed-black text-gray-400" style="font-size: clamp(26px, 8vw, 42px)">{{ task?.task?.answer }}</span>
                   </div>
                 </div>
               </Transition>
@@ -100,24 +62,12 @@
         <div
           class="no-btn-pulse absolute bottom-5 rounded-full left-10 h-10 w-10 z-[-1]"
           :class="{ pulse: noBtnAnimation.shown }"
-          :style="
-            noBtnAnimation.color === 'red'
-              ? 'background-color: rgb(239 68 68)'
-              : noBtnAnimation.color === 'green'
-              ? 'background-color: rgb(34 197 94)'
-              : ''
-          "
+          :style="noBtnAnimation.color === 'red' ? 'background-color: rgb(239 68 68)' : noBtnAnimation.color === 'green' ? 'background-color: rgb(34 197 94)' : ''"
         ></div>
         <div
           class="yes-btn-pulse absolute bottom-5 rounded-full right-10 h-10 w-10 z-[-1]"
           :class="{ pulse: yesBtnAnimation.shown }"
-          :style="
-            yesBtnAnimation.color === 'red'
-              ? 'background-color: rgb(239 68 68)'
-              : yesBtnAnimation.color === 'green'
-              ? 'background-color: rgb(34 197 94)'
-              : ''
-          "
+          :style="yesBtnAnimation.color === 'red' ? 'background-color: rgb(239 68 68)' : yesBtnAnimation.color === 'green' ? 'background-color: rgb(34 197 94)' : ''"
         ></div>
 
         <!-- buttons -->
@@ -126,52 +76,21 @@
             activeColor="#97482f"
             :disabled="(type === 'relax' && energy <= 0) || buttonsBlocked"
             class="flex-1 flex justify-center bg-[var(--red-color)]"
-            @click="
-              (event) => handleAnswer(task?.task?.variants[1], event, 'no')
-            "
+            @click="(event) => handleAnswer(task?.task?.variants[1], event, 'no')"
           >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M3 3L21 21"
-                stroke="white"
-                stroke-width="5"
-                stroke-linecap="round"
-              />
-              <path
-                d="M21 3L3 21"
-                stroke="white"
-                stroke-width="5"
-                stroke-linecap="round"
-              />
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 3L21 21" stroke="white" stroke-width="5" stroke-linecap="round" />
+              <path d="M21 3L3 21" stroke="white" stroke-width="5" stroke-linecap="round" />
             </svg>
           </Button>
           <Button
             activeColor="#38703d"
             :disabled="(type === 'relax' && energy <= 0) || buttonsBlocked"
             class="flex-1 flex justify-center bg-[var(--green-color)]"
-            @click="
-              (event) => handleAnswer(task?.task?.variants[0], event, 'yes')
-            "
+            @click="(event) => handleAnswer(task?.task?.variants[0], event, 'yes')"
           >
-            <svg
-              width="29"
-              height="23"
-              viewBox="0 0 29 23"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M3 11L10.5922 19L26.4667 3"
-                stroke="white"
-                stroke-width="5"
-                stroke-linecap="round"
-              />
+            <svg width="29" height="23" viewBox="0 0 29 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 11L10.5922 19L26.4667 3" stroke="white" stroke-width="5" stroke-linecap="round" />
             </svg>
           </Button>
         </div>
@@ -180,18 +99,10 @@
           <!-- <div v-if="isCorrectTextShown" class="correct-text absolute z-20 inset-0 grid place-items-center pointer-events-none">
         <span class="block text-[12vw] exo-black text-[#1fe525] mb-8">{{ locales?.["is_correct_answer"] || "Yes!" }}</span>
       </div> -->
-          <div
-            v-if="correctAnswer.shown"
-            class="wrong-text absolute z-20 inset-0 grid place-items-center pointer-events-none mb-8"
-          >
+          <div v-if="correctAnswer.shown" class="wrong-text absolute z-20 inset-0 grid place-items-center pointer-events-none mb-8">
             <div class="text flex flex-col items-center">
-              <span class="block text-[12vw] exo-black text-[var(--red-color)]"
-                >{{ correctAnswer.question }}:</span
-              >
-              <span
-                class="block text-[10vw] exo-black text-[var(--red-color)]"
-                >{{ correctAnswer.answer }}</span
-              >
+              <span class="fira-condensed-black text-red-500" style="font-size: clamp(28px, 10vw, 42px)">{{ correctAnswer.question }}</span>
+              <span class="fira-condensed-black text-red-400" style="font-size: clamp(26px, 8vw, 42px)">{{ correctAnswer.answer }}</span>
             </div>
           </div>
         </Transition>
@@ -242,20 +153,12 @@ const correctAnswer = ref({
   timeout: null,
 });
 
-const currentTask = ref(props.task);
-
 const handleAnswer = (answer: string, event, type) => {
   if (props.type === "relax" && props.energy <= 0) return;
 
   const isCorrect = answer === props.task.correct;
 
-  emit("answer", {
-    isCorrect,
-    answer,
-    event,
-    drawBonus: true,
-    nextTaskDelay: isCorrect ? 0 : 2000,
-  });
+  let taskDelay;
 
   // custom correct/wrong animation
   if (type === "no") {
@@ -275,6 +178,10 @@ const handleAnswer = (answer: string, event, type) => {
   }
 
   if (props.type === "relax" && !isCorrect) {
+    // wrong answer in relax mode creates a 2s delay
+    taskDelay = 2000;
+
+    // wrong answer in relax mode creates correct answer popup
     clearTimeout(correctAnswer.value.timeout);
 
     correctAnswer.value.shown = true;
@@ -283,9 +190,12 @@ const handleAnswer = (answer: string, event, type) => {
 
     correctAnswer.value.timeout = setTimeout(() => {
       correctAnswer.value.shown = false;
-      correctAnswer.value.text = "";
+      correctAnswer.value.question = "";
+      correctAnswer.value.answer = "";
     }, 1500);
   }
+
+  emit("answer", { isCorrect, answer, event, drawBonus: true, nextTaskDelay: taskDelay });
 };
 
 onMounted(() => {
