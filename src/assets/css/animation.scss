@@ -24,15 +24,23 @@
   pointer-events: none;
 }
 
+.spinning-bg {
+  animation: spin 45s linear infinite;
+}
+
 .pulse {
   animation: pulse 0.3s ease;
+}
+
+.front-center {
+  transform: scale(3);
 }
 
 .challenge-bonus-1-enter-active {
   animation: bounceIn 0.5s ease-in;
 }
 .challenge-bonus-1-leave-active {
-  animation: correctTextLeave 0.3s ease-out;
+  animation: scaleOut 0.3s ease-out;
 }
 // .challenge-bonus-1-enter-from {
 //   opacity: 1;
@@ -80,16 +88,8 @@
 }
 .correct-text-leave-active {
   animation-duration: 0.4s;
-  animation-name: correctTextLeave;
+  animation-name: scaleOut;
   animation-delay: 0.5s;
-}
-@keyframes correctTextLeave {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(0);
-  }
 }
 
 // question slide
@@ -98,6 +98,43 @@
 }
 .question-slide-leave-active {
   animation: 0.2s ease-out lightSpeedOutLeft;
+}
+
+// closeup score
+.closeup-score-enter-active {
+  animation: 0.8s ease-in bounceInDown;
+}
+.closeup-score-leave-active {
+  animation: 0.8s ease-out bounceOutUp;
+}
+
+// fade 800
+.fade-800-enter-active,
+.fade-800-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-800-enter-from,
+.fade-800-leave-to {
+  opacity: 0;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes scaleOut {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
 }
 
 @keyframes questionEnter {
@@ -270,34 +307,6 @@
   animation: heartBeat 0.5s;
 }
 
-// @keyframes bounceIn {
-//   from,
-//   20%,
-//   40%,
-//   60%,
-//   80%,
-//   to {
-//     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-//   }
-
-//   0% {
-//     opacity: 0;
-//     transform: scale3d(0.3, 0.3, 0.3);
-//   }
-
-//   40% {
-//     transform: scale3d(1.1, 1.1, 1.1);
-//   }
-
-//   70% {
-//     transform: scale3d(0.9, 0.9, 0.9);
-//   }
-
-//   to {
-//     opacity: 1;
-//     transform: scale3d(1, 1, 1);
-//   }
-// }
 @keyframes bounceIn {
   from,
   20%,
@@ -333,6 +342,55 @@
   to {
     opacity: 1;
     transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes bounceInDown {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -3000px, 0) scaleY(3);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translate3d(0, 25px, 0) scaleY(0.9);
+  }
+
+  75% {
+    transform: translate3d(0, -10px, 0) scaleY(0.95);
+  }
+
+  90% {
+    transform: translate3d(0, 5px, 0) scaleY(0.985);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes bounceOutUp {
+  20% {
+    transform: translate3d(0, -10px, 0) scaleY(0.985);
+  }
+
+  40%,
+  45% {
+    opacity: 1;
+    transform: translate3d(0, 20px, 0) scaleY(0.9);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(0, -2000px, 0) scaleY(3);
   }
 }
 

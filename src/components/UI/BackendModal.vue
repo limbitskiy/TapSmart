@@ -18,29 +18,22 @@ import { getAsset } from "@/utils";
 
 // store
 import { useMainStore } from "@/store/main";
-import { useDataStore } from "@/store/data";
 
-// components
-import Button from "@/components/UI/Button.vue";
+const store = useMainStore();
 
-const mainStore = useMainStore();
-const dataStore = useDataStore();
-
-const { startTaskTimeout, setTaskTimeoutCounter, startBreakpoint, stopBreakpoint } = dataStore.battles;
-const { modal } = storeToRefs(mainStore);
-const { hideModal } = mainStore;
+const { hideModal } = store;
+const { modal } = storeToRefs(store);
+const { startTaskTimeout, startBreakpoint, stopBreakpoint } = store.battleStore;
 
 onMounted(() => {
-  console.log(`mounted`);
+  // console.log(`mounted`);
 
-  setTaskTimeoutCounter(1);
   stopBreakpoint();
 });
 
 onBeforeUnmount(() => {
-  console.log(`unmounted`);
+  // console.log(`unmounted`);
 
-  setTaskTimeoutCounter(null);
   startTaskTimeout();
   startBreakpoint("battle");
 });

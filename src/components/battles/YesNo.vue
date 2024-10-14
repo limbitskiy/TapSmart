@@ -74,7 +74,7 @@
         <div class="answer-buttons flex gap-4 justify-evenly mt-4 z-10">
           <Button
             activeColor="#97482f"
-            :disabled="(type === 'relax' && energy <= 0) || buttonsBlocked"
+            :disabled="(type === 'relax' && energy <= 0) || buttonsBlocked || !task"
             class="flex-1 flex justify-center bg-[var(--red-color)]"
             @click="(event) => handleAnswer(task?.task?.variants[1], event, 'no')"
           >
@@ -85,7 +85,7 @@
           </Button>
           <Button
             activeColor="#38703d"
-            :disabled="(type === 'relax' && energy <= 0) || buttonsBlocked"
+            :disabled="(type === 'relax' && energy <= 0) || buttonsBlocked || !task"
             class="flex-1 flex justify-center bg-[var(--green-color)]"
             @click="(event) => handleAnswer(task?.task?.variants[0], event, 'yes')"
           >
@@ -167,14 +167,14 @@ const handleAnswer = (answer: string, event, type) => {
     setTimeout(() => {
       noBtnAnimation.value.shown = false;
       noBtnAnimation.value.color = null;
-    }, 1000);
+    }, 500);
   } else if (type === "yes") {
     yesBtnAnimation.value.color = isCorrect ? "green" : "red";
     yesBtnAnimation.value.shown = true;
     setTimeout(() => {
       yesBtnAnimation.value.shown = false;
       yesBtnAnimation.value.color = null;
-    }, 1000);
+    }, 500);
   }
 
   if (props.type === "relax" && !isCorrect) {

@@ -24,10 +24,10 @@
   <!-- onscreen booster usage -->
   <div v-if="currentBattleMode === 'challenge'" class="boosters-cnt">
     <Transition name="challenge-bonus-1">
-      <div v-if="boosterState.isShown" class="booster absolute top-[45dvh] left-0 right-0 grid place-items-center z-30">
+      <div v-if="boosterState.isShown" class="booster absolute top-[40dvh] left-0 right-0 grid place-items-center z-30">
         <div class="bonus">
           <span
-            class="text-[8vw] exo-bold text-[#edaa38]"
+            class="text-[8vw] exo-black text-[#edaa38]"
             style="
               background: linear-gradient(to top left, #ff75c3, #ffa647, #ffe83f, #9fff5b, #70e2ff, #cd93ff);
               -webkit-background-clip: text;
@@ -164,12 +164,15 @@ if (currentBattleMode.value === "challenge") {
 
   watch(challengeTimer, (val) => {
     if (val === 0) {
-      onEndChallenge();
+      setTimeout(() => {
+        onEndChallenge();
+      }, 500);
     }
 
-    if (val === 1000) {
-      buttonsBlocked.value = true;
-    }
+    // block buttons before challenge end
+    // if (val === 1000) {
+    //   buttonsBlocked.value = true;
+    // }
   });
 }
 
