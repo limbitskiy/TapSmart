@@ -1,8 +1,11 @@
 <template>
-  <div id="tasks" class="flex flex-col gap-4 flex-1 p-4 mb-16">
+  <div id="tasks" class="flex flex-col gap-4 flex-1 p-4">
     <div class="top-part">
-      <div class="page-title mb-2">{{ locale?.["title"] || "Tasks" }}</div>
-      <div class="page-subtitle" v-html="locale?.['subtitle'] || 'Our new section! Complete tasks and get something! Maybe bolts, maybe nuts, maybe fame - who knows?'"></div>
+      <div class="icon-and-title flex items-center gap-4">
+        <img class="h-[60px]" :src="getAsset('tasks')" />
+        <div class="page-title mb-2">{{ locale?.["title"] || "Tasks" }}</div>
+      </div>
+      <div class="page-subtitle mt-2" v-html="locale?.['subtitle'] || 'Our new section! Complete tasks and get something! Maybe bolts, maybe nuts, maybe fame - who knows?'"></div>
     </div>
 
     <div class="flex-1 flex flex-col gap-4">
@@ -316,4 +319,8 @@ tasks.value.data.forEach((section) => {
 });
 
 // console.log(activeFilters.value);
+onMounted(() => {
+  // scroll to top on mounted
+  window.scrollTo(0, 0);
+});
 </script>

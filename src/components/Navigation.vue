@@ -1,17 +1,30 @@
 <template>
-  <nav class="fixed bottom-0 left-0 right-0 w-full z-10">
-    <ul class="flex items-center justify-around bg-black text-white py-1" :style="`padding-bottom: ${bottom ?? 0}px`">
-      <RouterLink v-for="menuItem in data?.items" :to="menuItem.link" class="w-16 h-16 rounded-xl">
-        <div class="nav-item flex flex-col items-center justify-center gap-1 p-1 relative">
+  <nav
+    class="fixed bottom-0 left-0 right-0 w-full z-10 flex flex-col"
+    style="background: linear-gradient(92.34deg, #1d1d1d 3.3%, #0c0c0c 97.43%)"
+    :style="`padding-bottom: ${bottom ?? 0}px`"
+  >
+    <!-- active indicator -->
+    <div ref="stripeRef" class="active-stripe h-[2px] w-full">
+      <div
+        class="indicator h-full bg-[var(--accent-color)]"
+        style="transition: 0.6s ease; box-shadow: 0px 8px 29px 2px #feac3e"
+        :style="`width: ${indicatorWidth}px; transform: translateX(${indicatorWidth * currentRoute}px)`"
+      ></div>
+    </div>
+
+    <ul class="flex items-center justify-around text-[#939393] h-[70px]">
+      <RouterLink v-for="menuItem in data?.items" :to="menuItem.link" class="flex flex-1 items-center justify-center h-full pt-[4px] grayscale transition-all">
+        <div class="nav-item flex flex-col items-center justify-center gap-1 relative">
           <div
             v-if="getBadge(menuItem.id)?.value"
-            class="badge absolute px-[5px] py-1 h-4 rounded-full bg-[var(--accent-color)] text-[10px] text-black exo-black top-1 right-1"
+            class="badge absolute px-[5px] py-1 h-4 rounded-full bg-[var(--accent-color)] text-[10px] text-black exo-black top-0 right-0"
             style="line-height: 8px"
           >
             {{ getBadge(menuItem.id)?.value }}
           </div>
-          <img :src="'/' + menuItem.icon + '.png'" class="h-8 object-contain" />
-          <span class="fira-condensed-bold text-sm">{{ menuItem.title }}</span>
+          <img :src="getAsset(menuItem.icon)" class="h-7 object-contain" />
+          <span class="fira-condensed text-sm">{{ menuItem.title }}</span>
         </div>
       </RouterLink>
     </ul>
@@ -19,18 +32,31 @@
 </template>
 
 <script setup lang="ts">
+import { computed, onMounted, ref } from "vue";
 import { storeToRefs } from "pinia";
+import { getAsset } from "@/utils";
 import { useScreenSafeArea } from "@vueuse/core";
+import { useRoute } from "vue-router";
 
 // stores
-import { useDataStore } from "@/store/data";
+import { useMainStore } from "@/store/main";
 
-const dataStore = useDataStore();
+const store = useMainStore();
+const route = useRoute();
 
+const { menu: data } = storeToRefs(store.dataStore);
 const { bottom } = useScreenSafeArea();
-const { menu: data } = storeToRefs(dataStore);
+
+const stripeRef = ref();
+
+const state = ref({});
+
+const indicatorWidth = computed(() => stripeRef.value?.getBoundingClientRect()?.width / data.value?.items?.length ?? 0);
+const currentRoute = computed(() => data.value?.items?.findIndex((item) => item.link === route.path));
 
 const getBadge = (menuItemId: number) => {
   return data.value?.badges?.find((badge) => badge.id == menuItemId);
 };
+
+onMounted(() => {});
 </script>

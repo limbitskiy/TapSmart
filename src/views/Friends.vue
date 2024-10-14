@@ -1,8 +1,11 @@
 <template>
-  <div id="friends" class="flex flex-col gap-4 p-4 mb-[130px]">
+  <div id="friends" class="flex flex-col gap-4 p-4 mb-[60px]">
     <div class="top-part">
-      <div class="page-title mb-2">{{ locale?.["title"] }}</div>
-      <div class="page-subtitle text-gray-200" v-html="locale?.['subtitle']"></div>
+      <div class="icon-and-title flex items-center gap-4">
+        <img class="h-[60px]" :src="getAsset('friends')" />
+        <div class="page-title mb-2">{{ locale?.["title"] }}</div>
+      </div>
+      <div class="page-subtitle text-gray-200 mt-2" v-html="locale?.['subtitle']"></div>
 
       <div class="pills flex flex-col gap-4 mt-4">
         <IconPill color="dark">
@@ -123,29 +126,16 @@ import { storeToRefs } from "pinia";
 
 // store
 import { useMainStore } from "@/store/main";
-import { useDataStore } from "@/store/data";
-import { useLocaleStore } from "@/store/locale";
 
-// components
-import Button from "@/components/UI/Button.vue";
-import IconPill from "@/components/UI/IconPill.vue";
-import Pill from "@/components/UI/Pill.vue";
-import FriendPill from "@/components/UI/FriendPill.vue";
-import BackgroundPill from "@/components/UI/BackgroundPill.vue";
-import Badge from "@/components/UI/Badge.vue";
+const store = useMainStore();
 
-const mainStore = useMainStore();
-const dataStore = useDataStore();
-const localeStore = useLocaleStore();
-
-const { friends: data } = storeToRefs(dataStore);
-const { friends: locale } = storeToRefs(localeStore);
-
-const { fetchFriendsList } = mainStore;
+const { fetchFriendsList } = store;
+const { friends: data } = storeToRefs(store.dataStore);
+const { friends: locale } = storeToRefs(store.localeStore);
 
 const el = ref();
 
-await fetchFriendsList();
+fetchFriendsList();
 
 const filters = ref({
   online: false,
@@ -200,5 +190,8 @@ const onCopyToClipboard = () => {
   }
 };
 
-onMounted(() => {});
+onMounted(() => {
+  // scroll to top on mounted
+  window.scrollTo(0, 0);
+});
 </script>

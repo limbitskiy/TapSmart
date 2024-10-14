@@ -24,15 +24,15 @@
   // --grey-darker: #0f0f0f;
 }
 
-body {
-  height: 100dvh;
-  overflow: hidden;
-}
+// body {
+//   height: 100dvh;
+//   overflow: hidden;
+// }
 
-#app {
-  height: 100%;
-  overflow-y: scroll;
-}
+// #app {
+//   height: 100%;
+//   overflow-y: scroll;
+// }
 
 .generic-btn[disabled] {
   color: #a9a9a9 !important;
@@ -113,8 +113,7 @@ body {
 
 // navigation
 .router-link-active {
-  outline: 1px solid var(--accent-color);
-  filter: none;
+  filter: none !important;
 }
 
 // battles

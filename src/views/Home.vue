@@ -1,5 +1,5 @@
 <template>
-  <div class="home-page flex-1 flex">
+  <div class="home-page flex-1 flex mb-[70px]">
     <RouterView v-slot="{ Component }">
       <template v-if="Component">
         <Transition name="fade" mode="out-in">

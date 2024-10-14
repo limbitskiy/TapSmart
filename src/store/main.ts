@@ -7,6 +7,7 @@ import { useVibrate } from "@vueuse/core";
 import { useDataStore } from "@/store/data";
 import { useBattleStore } from "@/store/battle";
 import { useLocaleStore } from "@/store/locale";
+import { useSoundStore } from "@/store/sound";
 
 // types
 import { NotificationProps, ResponseObject, ResponseData, MainState, TooltipProps, ModalProps } from "@/types";
@@ -49,6 +50,7 @@ export const useMainStore = defineStore("main", () => {
   const dataStore = useDataStore();
   const battleStore = useBattleStore();
   const localeStore = useLocaleStore();
+  const soundStore = useSoundStore();
 
   const isAppLoaded = ref(false);
 
@@ -321,6 +323,7 @@ export const useMainStore = defineStore("main", () => {
     localeStore,
     dataStore,
     battleStore,
+    soundStore,
     notification,
     tooltip,
     modal,

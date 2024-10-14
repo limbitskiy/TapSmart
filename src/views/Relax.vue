@@ -1,5 +1,5 @@
 <template>
-  <div class="home-main p-4 flex-1 overflow-auto flex flex-col gap-2 mb-[72px]">
+  <div id="relax" class="p-4 flex-1 flex flex-col gap-2">
     <!-- bg image -->
     <BackgroundImage type="blue" />
 

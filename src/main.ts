@@ -32,6 +32,9 @@ import Tooltip from "@/components/Tooltip.vue";
 import BackendModal from "@/components/UI/BackendModal.vue";
 import CircleCountdown from "@/components/UI/CircleCountdown.vue";
 import MechanicCard from "@/components/MechanicCard.vue";
+import IconPill from "@/components/UI/IconPill.vue";
+import FriendPill from "@/components/UI/FriendPill.vue";
+import Badge from "@/components/UI/Badge.vue";
 
 // modals
 import ChangeMechanic from "@/components/modals/ChangeMechanic.vue";
@@ -80,6 +83,9 @@ app
   .component("CircleCountdown", CircleCountdown)
   .component("MechanicCard", MechanicCard)
   .component("TaskModal", TaskModal)
+  .component("IconPill", IconPill)
+  .component("Badge", Badge)
+  .component("FriendPill", FriendPill)
   .component("BackendModal", BackendModal);
 
 app.mount("#app");

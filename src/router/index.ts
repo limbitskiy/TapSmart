@@ -131,15 +131,16 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
+  // scrollBehavior(to, from, savedPosition) {
+  //   return { top: 0 };
+  // },
 });
 
 // access only through /init
 router.beforeEach((to, from) => {
-  const dataStore = useDataStore();
-  const mainStore = useMainStore();
-  const { battles } = dataStore;
+  const store = useMainStore();
 
-  mainStore.hideTooltip();
+  store.hideTooltip();
 
   // init is the only entrypoint
   if (to.path !== "/init" && from.path === "/") {

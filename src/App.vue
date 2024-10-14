@@ -1,6 +1,6 @@
 <template>
   <div
-    class="main-page flex w-full min-h-[100dvh] relative overflow-x-hidden"
+    class="main-page flex flex-col min-h-[100dvh]"
     :style="{
       'padding-left': left,
       'padding-right': right,
