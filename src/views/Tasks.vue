@@ -1,12 +1,12 @@
 <template>
-  <div id="tasks" class="flex-1 p-4 mb-16">
-    <div class="top-part p-5 mb-2">
+  <div id="tasks" class="flex flex-col gap-4 flex-1 p-4 mb-16">
+    <div class="top-part">
       <div class="page-title mb-2">{{ locale?.["title"] || "Tasks" }}</div>
       <div class="page-subtitle" v-html="locale?.['subtitle'] || 'Our new section! Complete tasks and get something! Maybe bolts, maybe nuts, maybe fame - who knows?'"></div>
     </div>
 
-    <div class="flex-1 flex flex-col gap-12">
-      <BackgroundPill v-for="section in tasks.data" :key="section.id" class="task-section overflow-y-hidden flex-1">
+    <div class="flex-1 flex flex-col gap-4">
+      <BackgroundPill v-for="section in tasks.data" :key="section.id" class="task-section flex-1">
         <div class="pill-header flex items-center justify-between">
           <span class="bg-pill-title">{{ section.title }}</span>
         </div>
@@ -76,15 +76,6 @@ import { storeToRefs } from "pinia";
 
 // store
 import { useMainStore } from "@/store/main";
-import { useDataStore } from "@/store/data";
-import { useLocaleStore } from "@/store/locale";
-
-// components
-import Button from "@/components/UI/Button.vue";
-import Pill from "@/components/UI/Pill.vue";
-import BackgroundPill from "@/components/UI/BackgroundPill.vue";
-import TaskModal from "@/components/modals/TaskModal.vue";
-import Modal from "@/components/Modal.vue";
 
 interface Filter {
   key: string;
@@ -92,13 +83,11 @@ interface Filter {
   selected: boolean;
 }
 
-const mainStore = useMainStore();
-const dataStore = useDataStore();
-const localeStore = useLocaleStore();
+const store = useMainStore();
 
-const { tasks } = storeToRefs(dataStore);
-const { tasks: locale } = storeToRefs(localeStore);
-const { fetchTasksList } = mainStore;
+const { fetchTasksList } = store;
+const { tasks } = storeToRefs(store.dataStore);
+const { tasks: locale } = storeToRefs(store.localeStore);
 
 await fetchTasksList();
 

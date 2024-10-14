@@ -1,5 +1,5 @@
 <template>
-  <div class="battle-body flex-1 flex relative">
+  <div class="battle-body flex-1 flex">
     <BackgroundPill class="flex-1 !p-4 z-10 rounded-[15px] relative overflow-hidden" style="background: linear-gradient(180deg, #363636 0%, #272727 100%)" dark>
       <div class="header flex items-center justify-between mb-4">
         <span class="fira-regular text-lg text-[#B7B7B7]">{{ locale?.[`yesno_title`] || "Yes-no" }} battle</span>
@@ -40,21 +40,6 @@
                 </div>
               </Transition>
             </div>
-
-            <!-- correct answer  -->
-            <!-- <Transition name="popup-slideup" mode="out-in">
-              <Pill
-                v-if="correctAnswer.shown"
-                class="bg-red-500 py-2 flex flex-col items-center justify-center rounded-[10px] w-fit m-auto fira-condensed"
-              >
-                <span class="text-sm inline-block"
-                  >Error! Correct answer was:
-                </span>
-                <span class="text-sm inline-block fira-condensed-bold"
-                  >'{{ correctAnswer.text }}'</span
-                >
-              </Pill>
-            </Transition> -->
           </div>
         </div>
 

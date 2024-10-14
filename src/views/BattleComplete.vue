@@ -192,7 +192,7 @@ setTimeout(() => {
     spread: 70,
     origin: { y: 0.6 },
   });
-}, 500);
+}, 1000);
 
 setTimeout(() => {
   isCloseup.value = false;

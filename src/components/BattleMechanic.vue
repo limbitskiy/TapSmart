@@ -14,12 +14,10 @@
   </Transition>
 
   <!-- bolt bonuses -->
-  <Teleport to="#modals">
-    <div v-for="bonus in bonuses" :key="bonus.id" class="bonus bonus-animate z-20 flex gap-1 items-center absolute" :style="{ left: bonus.x + 'px', top: bonus.y + 'px' }">
-      <img class="h-4" :src="getAsset('bolt')" />
-      <span class="font-bold">+2</span>
-    </div>
-  </Teleport>
+  <div v-for="bonus in bonuses" :key="bonus.id" class="bonus bonus-animate z-20 flex gap-2 items-center absolute" :style="{ left: bonus.x + 'px', top: bonus.y + 'px' }">
+    <img class="h-4 scale-150" :src="getAsset('bolt')" />
+    <span class="font-bold text-xl">+2</span>
+  </div>
 
   <!-- onscreen booster usage -->
   <div v-if="currentBattleMode === 'challenge'" class="boosters-cnt">
