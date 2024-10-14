@@ -39,6 +39,7 @@ import NoEnergy from "@/components/modals/NoEnergy.vue";
 import Errors from "@/components/modals/Errors.vue";
 import BoosterSelect from "@/components/modals/BoosterSelect.vue";
 import AFK from "@/components/modals/AFK.vue";
+import TaskModal from "@/components/modals/TaskModal.vue";
 
 const pinia = createPinia();
 const app = createApp(App);
@@ -78,6 +79,7 @@ app
   .component("BattleMechanic", BattleMechanic)
   .component("CircleCountdown", CircleCountdown)
   .component("MechanicCard", MechanicCard)
+  .component("TaskModal", TaskModal)
   .component("BackendModal", BackendModal);
 
 app.mount("#app");

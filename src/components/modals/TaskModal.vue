@@ -34,11 +34,7 @@ import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils/index";
 
 // stores
-import { useDataStore } from "@/store/data";
-import { useLocaleStore } from "@/store/locale";
-
-// components
-import Button from "@/components/UI/Button.vue";
+import { useMainStore } from "@/store/main";
 
 const props = defineProps<{
   data: {
@@ -54,15 +50,8 @@ const emit = defineEmits<{
   close: [];
 }>();
 
-const dataStore = useDataStore();
-const localeStore = useLocaleStore();
+const store = useMainStore();
 
-const { battles: locale } = storeToRefs(localeStore);
-// const { data } = storeToRefs(dataStore.battles);
-const {} = dataStore.battles;
-const { profile } = storeToRefs(dataStore);
-
-onMounted(() => {});
-
-onBeforeUnmount(() => {});
+const { battles: locale } = storeToRefs(store.localeStore);
+const { profile } = storeToRefs(store.dataStore);
 </script>
