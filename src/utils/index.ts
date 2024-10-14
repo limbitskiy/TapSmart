@@ -57,7 +57,11 @@ export const formattedTime = (timer: number) => {
   if (!timer) return "00:00";
 
   if (timer < 60000) {
-    const roundedTimer = Math.round(timer / 1000);
+    let roundedTimer = Math.round(timer / 1000);
+
+    if (roundedTimer < 0) {
+      roundedTimer = 0;
+    }
 
     if (timer > 9000) {
       return "00:" + roundedTimer;

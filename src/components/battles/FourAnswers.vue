@@ -2,7 +2,7 @@
   <div class="battle-body flex-1 flex">
     <BackgroundPill ref="pillRef" class="flex-1 !p-4 z-10 rounded-[15px] relative overflow-hidden" style="background: linear-gradient(180deg, #363636 0%, #272727 100%)" dark>
       <div class="header flex items-center justify-between mb-4">
-        <span class="fira-regular text-lg text-[#B7B7B7]">{{ locale?.[`yesno_title`] || "Yes-no" }} battle</span>
+        <span class="fira-regular text-lg text-[#B7B7B7]">{{ locales?.[`4answers_title`] || "Four answers" }} battle</span>
         <div class="right flex items-center gap-3">
           <CircleCountdown v-if="type === 'relax'" :strokeWidth="2" color="grey" :size="20" />
           <VolumeControl />
@@ -15,7 +15,7 @@
           <div class="question-content grid grid-rows-[40px_auto] flex-1 justify-items-center">
             <div class="title-cnt flex flex-col justify-center">
               <Pill class="!py-2 rounded-xl bg-[#222]">
-                <span class="question-title text-center">{{ locales?.["mechanics_1_task"] || "Is this translation correct??" }}</span>
+                <span class="question-title text-center">{{ locales?.["mechanics_2_task"] || "Is this translation correct??" }}</span>
               </Pill>
             </div>
 
@@ -40,14 +40,14 @@
         ></div>
 
         <!-- buttons -->
-        <div class="answer-buttons grid w-full grid-cols-2 grid-rows-2 gap-4 leading-5">
+        <div v-if="buttonValues[0]" class="answer-buttons grid w-full grid-cols-2 grid-rows-2 gap-4 leading-5">
           <Button
             activeColor="#2c3382"
             :disabled="(type === 'relax' && energy <= 0) || buttonsBlocked || !task"
             class="four-answer-btn"
             @click="(event) => handleAnswer(task?.task?.variants[0], event)"
           >
-            {{ task?.task?.variants[0] }}
+            {{ buttonValues[0] }}
           </Button>
           <Button
             activeColor="#2c3382"
@@ -55,7 +55,7 @@
             class="four-answer-btn"
             @click="(event) => handleAnswer(task?.task?.variants[1], event)"
           >
-            {{ task?.task?.variants[1] }}
+            {{ buttonValues[1] }}
           </Button>
           <Button
             activeColor="#2c3382"
@@ -63,7 +63,7 @@
             class="four-answer-btn"
             @click="(event) => handleAnswer(task?.task?.variants[2], event)"
           >
-            {{ task?.task?.variants[2] }}
+            {{ buttonValues[2] }}
           </Button>
           <Button
             activeColor="#2c3382"
@@ -71,7 +71,7 @@
             class="four-answer-btn"
             @click="(event) => handleAnswer(task?.task?.variants[3], event)"
           >
-            {{ task?.task?.variants[3] }}
+            {{ buttonValues[3] }}
           </Button>
         </div>
 
@@ -89,12 +89,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref, onMounted, onBeforeUnmount, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
-
-// stores
-import { useMainStore } from "@/store/main";
 
 const emit = defineEmits<{
   answer: [
@@ -121,6 +118,13 @@ const answerAnimation = ref({
   shown: false,
   color: null,
   coords: { x: null, y: null },
+});
+
+const buttonValues = ref({
+  0: props.task?.task?.variants[0],
+  1: props.task?.task?.variants[1],
+  2: props.task?.task?.variants[2],
+  3: props.task?.task?.variants[3],
 });
 
 const pillRef = ref();
@@ -175,6 +179,18 @@ const handleAnswer = (answer: string, event) => {
 
   emit("answer", { isCorrect, answer, event, drawBonus: true, nextTaskDelay: taskDelay });
 };
+
+watch(
+  () => props.task,
+  (val) => {
+    if (val) {
+      buttonValues.value[0] = val.task.variants[0];
+      buttonValues.value[1] = val.task.variants[1];
+      buttonValues.value[2] = val.task.variants[2];
+      buttonValues.value[3] = val.task.variants[3];
+    }
+  }
+);
 
 onMounted(() => {
   emit("mounted");

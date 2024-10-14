@@ -13,9 +13,9 @@
       <Transition name="closeup-score" mode="out-in">
         <div v-if="isCloseup" class="place-icon-text-cnt absolute inset-0 grid place-items-center z-[999]">
           <div class="place-icon-text flex flex-col gap-1 items-center justify-center w-full">
-            <span class="fira-condensed-bold text-4xl text-[var(--accent-color)]">Congratulations!</span>
+            <span class="fira-condensed-bold text-4xl text-[var(--accent-color)]">{{ locale?.["battle_complete_modal_title"] || "Congrats!" }} </span>
             <div class="place flex flex-col gap-2 items-center">
-              <span class="fira-semibold text-2xl">{{ data?.["completed_place1"] || "Your place is:" }}</span>
+              <span class="fira-semibold text-2xl">{{ locale?.["battle_complete_modal_subtitle"] || "Your place is:" }}</span>
               <img v-if="data?.['battle_complete_place'] === 1" class="h-12 scale-150" :src="getAsset('1st_place')" />
               <img v-if="data?.['battle_complete_place'] === 2" class="h-12 scale-150" :src="getAsset('2nd_place')" />
               <img v-if="data?.['battle_complete_place'] === 3" class="h-12 scale-150" :src="getAsset('3rd_place')" />
@@ -63,7 +63,7 @@
                       </defs>
                     </svg>
 
-                    <span class="text-xl exo-black">{{ data["battle_complete_score"] || 0 }}</span>
+                    <span class="text-xl exo-black">{{ data?.["battle_complete_score"] || 0 }}</span>
                   </div>
 
                   <div class="mult flex gap-1 items-baseline">
@@ -75,14 +75,14 @@
                       />
                     </svg>
 
-                    <span class="text-xl exo-black">{{ data["battle_complete_multiplicator"] || 0 }}</span>
+                    <span class="text-xl exo-black">{{ data?.["battle_complete_multiplicator"] || 0 }}</span>
                   </div>
 
                   <span class="leading-[28px]"> = </span>
 
                   <div class="bolts flex gap-2 items-center ml-1">
                     <img class="h-4 scale-150" :src="getAsset('bolt')" />
-                    <span class="text-xl exo-black">{{ data["battle_complete_bolts"] || 0 }}</span>
+                    <span class="text-xl exo-black">{{ data?.["battle_complete_bolts"] || 0 }}</span>
                   </div>
                 </div>
               </div>
@@ -157,19 +157,15 @@ import { setThemeColor } from "@/api/telegram";
 // import confetti from ;
 
 // stores
-import { useDataStore } from "@/store/data";
-import { useLocaleStore } from "@/store/locale";
 import { useMainStore } from "@/store/main";
 
 setThemeColor("#222");
 
-const localeStore = useLocaleStore();
-const mainStore = useMainStore();
-const dataStore = useDataStore();
+const store = useMainStore();
 
-const { data } = storeToRefs(dataStore.battles);
-const { battles: locale } = storeToRefs(localeStore);
-const { fetchBattleCompleteData } = mainStore;
+const { fetchBattleCompleteData } = store;
+const { data } = storeToRefs(store.battleStore);
+const { battles: locale } = storeToRefs(store.localeStore);
 
 const isErrorModalOpen = ref(false);
 const isCloseupAnimation = ref(true);
