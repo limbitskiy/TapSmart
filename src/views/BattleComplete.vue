@@ -203,7 +203,6 @@ setTimeout(() => {
 
 setTimeout(() => {
   isBackdrop.value = false;
-  console.log(`removing bg`);
 }, 6000);
 
 const getBtnTextArr = (text: string) => text?.split("<separate>");

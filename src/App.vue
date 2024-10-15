@@ -55,8 +55,7 @@ const { top, right, bottom, left } = useScreenSafeArea();
 
 const store = useMainStore();
 
-const { notification } = storeToRefs(store);
-const { tooltip, modal } = storeToRefs(store);
+const { notification, tooltip, modal } = storeToRefs(store);
 const { pauseBattle, resumeBattle } = store.battleStore;
 
 const handleVisibilityChange = () => {
