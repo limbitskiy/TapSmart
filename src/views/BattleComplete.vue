@@ -1,5 +1,5 @@
 <template>
-  <div id="battle-complete" class="flex-1 flex p-4 flex-col">
+  <div id="battle-complete" class="flex-1 flex p-4 max-h-dvh flex-col overflow-hidden">
     <template v-if="isCloseupAnimation">
       <Transition name="fade-800" mode="out-in" appear>
         <div

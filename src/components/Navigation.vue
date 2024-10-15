@@ -14,7 +14,7 @@
     </div>
 
     <ul class="flex items-center justify-around text-[#939393] h-[70px]">
-      <RouterLink v-for="menuItem in data?.items" :to="menuItem.link" class="flex flex-1 items-center justify-center h-full pt-[4px] grayscale transition-all">
+      <RouterLink v-for="menuItem in data?.items" :to="menuItem.link" class="flex flex-1 items-center justify-center h-full pt-[4px] transition-all">
         <div class="nav-item flex flex-col items-center justify-center gap-1 relative">
           <div
             v-if="getBadge(menuItem.id)?.value"
@@ -23,7 +23,7 @@
           >
             {{ getBadge(menuItem.id)?.value }}
           </div>
-          <img :src="getAsset(menuItem.icon)" class="h-7 object-contain" />
+          <img :src="getAsset(menuItem.icon)" class="h-7 object-contain grayscale" />
           <span class="fira-condensed text-sm">{{ menuItem.title }}</span>
         </div>
       </RouterLink>
