@@ -36,6 +36,7 @@ import IconPill from "@/components/UI/IconPill.vue";
 import FriendPill from "@/components/UI/FriendPill.vue";
 import Badge from "@/components/UI/Badge.vue";
 import BattleCompleteAnimation from "@/components/UI/BattleCompleteAnimation.vue";
+import TutorialSlide from "@/components/TutorialSlide.vue";
 
 // modals
 import ChangeMechanic from "@/components/modals/ChangeMechanic.vue";
@@ -88,6 +89,7 @@ app
   .component("Badge", Badge)
   .component("FriendPill", FriendPill)
   .component("BattleCompleteAnimation", BattleCompleteAnimation)
+  .component("TutorialSlide", TutorialSlide)
   .component("BackendModal", BackendModal);
 
 app.mount("#app");

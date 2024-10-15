@@ -35,7 +35,8 @@
     <span
       class="inline-svg"
       v-html="
-        textWithSpecialSymbols || 'Ad text is located around here somewhere'
+        replaceWithSpecialSymbols(text) ||
+        'Ad text is located around here somewhere'
       "
     ></span>
   </div>
@@ -43,7 +44,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { getAsset, getSpecialSymbol } from "@/utils";
+import { getAsset, replaceWithSpecialSymbols } from "@/utils";
 import { storeToRefs } from "pinia";
 
 // store
@@ -72,9 +73,9 @@ setTimeout(() => {
   progressValue.value = data?.value?.["battle_results_ad_percent"];
 }, 500);
 
-const textWithSpecialSymbols = computed(() =>
-  props.text?.replace(/<bolt>/, getSpecialSymbol("bolt"))
-);
+// const textWithSpecialSymbols = computed(() =>
+//   replaceWithSpecialSymbols(props.text)
+// );
 
 const onTooltipClick = () => {
   if (props.tooltip?.length) {

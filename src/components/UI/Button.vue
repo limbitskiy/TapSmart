@@ -5,10 +5,18 @@
     :class="[
       'generic-btn',
       !unstyled && 'rounded-xl font-bold py-3 px-8 text-xl leading-6',
-      dark ? 'bg-black' : grey ? 'bg-[var(--grey-light)]' : !unstyled && 'bg-[var(--accent-color)] text-black',
+      dark
+        ? 'bg-black'
+        : grey
+        ? 'bg-[var(--grey-light)]'
+        : !unstyled && 'bg-[var(--accent-color)] text-black',
       font ? font : 'fira-bold',
       data?.disabled ?? disabled ? '!bg-gray-500 bg-none' : '',
-      data?.accent === 'orange' ? 'bg-[var(--accent-color)] text-black' : data?.accent === 'purple' ? 'bg-gradient-to-r from-[#408CFF] to-[#894899] text-white' : '',
+      data?.accent === 'orange'
+        ? 'bg-[var(--accent-color)] text-black'
+        : data?.accent === 'purple'
+        ? 'bg-gradient-to-r from-[#408CFF] to-[#894899] text-white'
+        : '',
     ]"
     :disabled="data?.disabled ?? disabled"
     @touchstart="btnTouchstart"
@@ -16,13 +24,18 @@
     @click="onClick"
   >
     <slot>
-      <span :class="[font]" v-if="data?.label">{{ data.label }}</span>
+      <span
+        :class="[font]"
+        v-if="data?.label"
+        v-html="replaceWithSpecialSymbols(data.label)"
+      />
     </slot>
   </button>
 </template>
 
 <script setup lang="ts">
 import { ref, useCssModule } from "vue";
+import { replaceWithSpecialSymbols } from "@/utils";
 
 // stores
 import { useMainStore } from "@/store/main";
