@@ -1,5 +1,5 @@
 <template>
-  <div class="animation-cnt w-full grid place-items-center">
+  <div class="animation-cnt w-full flex-1 grid place-items-center">
     <Vue3Lottie :animationData="Animation" :height="200" :width="200" :loop="false" />
   </div>
 </template>

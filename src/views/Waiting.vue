@@ -125,7 +125,7 @@ onMounted(() => {
   startBreakpoint("waiting");
 
   interval = setInterval(() => {
-    if (data.value.waiting_timer === 0 && interval) {
+    if (data.value.waiting_timer < 0 && interval) {
       clearInterval(interval);
       redirectTo("/challenge");
       return;
