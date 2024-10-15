@@ -21,7 +21,11 @@
       </template>
     </RouterView>
 
-    <Notification />
+    <Teleport to="#modals">
+      <Transition name="toast-slide">
+        <Notification v-if="notification.isShown" />
+      </Transition>
+    </Teleport>
 
     <!-- tooltip -->
     <Teleport to="#tooltip">
@@ -51,6 +55,7 @@ const { top, right, bottom, left } = useScreenSafeArea();
 
 const store = useMainStore();
 
+const { notification } = storeToRefs(store);
 const { tooltip, modal } = storeToRefs(store);
 const { pauseBattle, resumeBattle } = store.battleStore;
 

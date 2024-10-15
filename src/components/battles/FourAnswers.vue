@@ -25,9 +25,9 @@
             <div class="slide-cnt flex flex-col justify-center">
               <!-- question card -->
               <Transition name="question-slide" mode="out-in">
-                <div v-if="task" :key="task?.task?.question" class="max-w-[calc(100vw-4rem)] flex flex-col gap-2 items-center text-center">
-                  <div class="question-cnt overflow-x-hidden text-ellipsis whitespace-nowrap w-full">
-                    <span class="fira-condensed-black" style="font-size: clamp(30px, 9vw, 46px)">{{ task?.task?.question || "Question not found" }}</span>
+                <div v-if="task" :key="task?.task?.question" class="max-w-[calc(100vw-4rem)] flex flex-col gap-2 items-center text-center leading-10">
+                  <div class="question-cnt">
+                    <span class="fira-condensed-black line-clamp-2" style="font-size: clamp(30px, 9vw, 46px)">{{ task?.task?.question }}</span>
                   </div>
                 </div>
               </Transition>
@@ -80,9 +80,9 @@
 
         <Transition name="correct-text" mode="out-in">
           <div v-if="correctAnswer.shown" class="wrong-text absolute z-20 inset-0 grid place-items-center pointer-events-none mb-14">
-            <div class="text flex flex-col items-center mb-5">
-              <span class="fira-condensed-black text-red-500" style="font-size: clamp(28px, 10vw, 42px)">{{ correctAnswer.question }}</span>
-              <span class="fira-condensed-black text-red-400" style="font-size: clamp(26px, 8vw, 42px)">{{ correctAnswer.answer }}</span>
+            <div class="text flex flex-col gap-2 items-center justify-center text-center mb-5">
+              <span class="fira-condensed-black text-red-500 line-clamp-2 leading-10" style="font-size: clamp(28px, 10vw, 42px)">{{ correctAnswer.question }}</span>
+              <span class="fira-condensed-black text-red-400 line-clamp-2 leading-8" style="font-size: clamp(26px, 8vw, 42px)">{{ correctAnswer.answer }}</span>
             </div>
           </div>
         </Transition>

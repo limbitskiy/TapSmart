@@ -1,7 +1,9 @@
 <template>
   <div class="challenge-main flex-1 overflow-y-auto overflow-x-hidden flex flex-col gap-2 relative p-4">
+    <!-- bg pattern & color -->
     <BackgroundImage type="red" />
 
+    <!-- battle stats -->
     <div class="challenge-stats z-10 flex flex-col gap-2 min-h-[136px]">
       <Transition name="fade" mode="out-in">
         <ChallengeStatus v-if="battleStarted" />
@@ -27,9 +29,8 @@ import { useMainStore } from "@/store/main";
 
 const store = useMainStore();
 
-const { fetchChallengePageData, useFetch, redirectTo } = store;
-const { data, challengeTimer, battleStarted } = storeToRefs(store.battleStore);
-const { battles: locale } = storeToRefs(store.localeStore);
+const { fetchChallengePageData } = store;
+const { battleStarted } = storeToRefs(store.battleStore);
 
 // setThemeColor("#D26542");
 

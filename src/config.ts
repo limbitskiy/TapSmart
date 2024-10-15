@@ -39,7 +39,7 @@ export const images = {
   mult: "/mult.svg",
   new_level: "/new_level.png",
   new_league: "/new_league.png",
-  rays_green: "/rays_green.png",
+  rays_purple: "/rays_purple.png",
   pattern_paws_blue: "/pattern-paws-blue.png",
 };
 

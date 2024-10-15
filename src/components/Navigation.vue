@@ -5,7 +5,7 @@
     :style="`padding-bottom: ${bottom ?? 0}px`"
   >
     <!-- active indicator -->
-    <div ref="stripeRef" class="active-stripe h-[2px] w-full">
+    <div ref="stripeRef" class="active-stripe h-[2px] w-full rounded">
       <div
         class="indicator h-full bg-[var(--accent-color)]"
         style="transition: 0.6s ease; box-shadow: 0px 8px 29px 2px #feac3e"

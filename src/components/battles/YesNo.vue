@@ -12,11 +12,11 @@
         </div>
       </div>
 
-      <div class="yes-no-battle flex-1 flex flex-col">
-        <!-- question -->
-        <div class="question-cnt flex-1 flex flex-col">
-          <div class="question-content grid grid-rows-[40px_auto_56px] flex-1 justify-items-center">
-            <div class="title-cnt flex flex-col justify-center">
+      <div class="flex-1 flex flex-col">
+        <!-- task -->
+        <div class="task-cnt flex-1 flex flex-col">
+          <div class="task-content grid grid-rows-[40px_auto_56px] flex-1 justify-items-center">
+            <div class="task-title-cnt flex flex-col justify-center">
               <Pill class="!py-2 rounded-xl bg-[#222]">
                 <span class="question-title text-center">{{ locales?.["mechanics_1_task"] || "Is this translation correct??" }}</span>
               </Pill>
@@ -26,8 +26,8 @@
               <!-- question card -->
               <Transition name="question-slide" mode="out-in">
                 <div v-if="task" :key="task?.task?.question" class="max-w-[calc(100vw-4rem)] flex flex-col gap-2 items-center text-center">
-                  <div class="question-cnt overflow-x-hidden text-ellipsis whitespace-nowrap w-full">
-                    <span class="fira-condensed-black" style="font-size: clamp(28px, 10vw, 42px)">{{ task?.task?.question }}</span>
+                  <div class="question-cnt">
+                    <span class="fira-condensed-black leading-10 line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)">{{ task?.task?.question }}</span>
                   </div>
                   <div class="arrow">
                     <svg width="16" height="26" viewBox="0 0 16 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -37,8 +37,8 @@
                       />
                     </svg>
                   </div>
-                  <div class="question-cnt overflow-x-hidden text-ellipsis whitespace-nowrap w-full">
-                    <span class="fira-condensed-black text-gray-400" style="font-size: clamp(26px, 8vw, 42px)">{{ task?.task?.answer }}</span>
+                  <div class="question-cnt">
+                    <span class="fira-condensed-black text-gray-400 line-clamp-2" style="font-size: clamp(26px, 8vw, 42px)">{{ task?.task?.answer }}</span>
                   </div>
                 </div>
               </Transition>
@@ -84,13 +84,10 @@
         </div>
 
         <Transition name="correct-text" mode="out-in">
-          <!-- <div v-if="isCorrectTextShown" class="correct-text absolute z-20 inset-0 grid place-items-center pointer-events-none">
-        <span class="block text-[12vw] exo-black text-[#1fe525] mb-8">{{ locales?.["is_correct_answer"] || "Yes!" }}</span>
-      </div> -->
-          <div v-if="correctAnswer.shown" class="wrong-text absolute z-20 inset-0 grid place-items-center pointer-events-none mb-8">
-            <div class="text flex flex-col items-center">
-              <span class="fira-condensed-black text-red-500" style="font-size: clamp(28px, 10vw, 42px)">{{ correctAnswer.question }}</span>
-              <span class="fira-condensed-black text-red-400" style="font-size: clamp(26px, 8vw, 42px)">{{ correctAnswer.answer }}</span>
+          <div v-if="correctAnswer.shown" class="correct-answer absolute z-20 inset-0 grid place-items-center pointer-events-none mb-8">
+            <div class="text flex flex-col items-center justify-center text-center">
+              <span class="fira-condensed-black text-red-500 line-clamp-2 leading-10" style="font-size: clamp(28px, 10vw, 42px)">{{ correctAnswer.question }}</span>
+              <span class="fira-condensed-black text-red-400 line-clamp-2 leading-8" style="font-size: clamp(26px, 8vw, 42px)">{{ correctAnswer.answer }}</span>
             </div>
           </div>
         </Transition>

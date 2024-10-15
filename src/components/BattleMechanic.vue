@@ -187,6 +187,6 @@ if (currentBattleMode.value === "relax") {
 
 const onEndChallenge = () => {
   useFetch({ key: "battle_breakpoint", data: { final: 1 } });
-  redirectTo("/battle-complete-animation");
+  redirectTo("/battle-complete");
 };
 </script>

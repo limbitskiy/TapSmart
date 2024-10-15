@@ -7,7 +7,7 @@
     <ProfileWidget />
 
     <!-- battle controls -->
-    <div class="top-btns grid grid-cols-2 gap-4 pr-1 relative bg-[var(--grey-dark)] rounded-[15px] py-1 z-10">
+    <div class="top-btns grid grid-cols-2 gap-4 px-1 relative bg-[var(--grey-dark)] rounded-[15px] py-1 z-10">
       <Button class="bg-[var(--grey-dark)] text-white fira-condensed-bold leading-4 !px-4" activeColor="#444" @click="onChangeMech">
         <div class="flex gap-4 items-center justify-end">
           <div v-if="width > 410" class="icon">

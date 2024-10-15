@@ -25,6 +25,7 @@ export const useMainStore = defineStore("main", () => {
     },
     isShown: false,
     fn: null,
+    timeout: null,
   });
 
   const tooltip = ref<TooltipProps>({
@@ -118,6 +119,7 @@ export const useMainStore = defineStore("main", () => {
     notification.value.subtitle = subtitle;
     notification.value.buttons = buttons;
     notification.value.isShown = true;
+    notification.value.timeout = timeout;
 
     hideTooltip();
 
