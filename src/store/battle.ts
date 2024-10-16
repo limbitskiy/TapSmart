@@ -273,6 +273,7 @@ export const useBattleStore = defineStore("battle", () => {
       console.error(`Could not find current item`);
       return;
     }
+    console.log(`old index: ${taskIndex.value}`);
 
     stopTaskTimeout();
 
@@ -344,6 +345,8 @@ export const useBattleStore = defineStore("battle", () => {
     }
 
     startTaskTimeout();
+
+    console.log(`new index: ${taskIndex.value}`);
   };
 
   // task index helpers
@@ -392,6 +395,8 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const resetBattleStats = () => {
+    console.log(`resetting battle stats`);
+
     resetTaskIndex();
     lastTaskId.value = null;
     correctStreak.value = 0;

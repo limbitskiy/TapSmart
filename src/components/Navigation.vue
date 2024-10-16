@@ -49,9 +49,9 @@ const { bottom } = useScreenSafeArea();
 
 const stripeRef = ref();
 
-const state = ref({});
+const elementWidth = ref(0);
 
-const indicatorWidth = computed(() => stripeRef.value?.getBoundingClientRect()?.width / data.value?.items?.length ?? 0);
+const indicatorWidth = computed(() => elementWidth.value / data.value?.items?.length ?? 0);
 const currentRoute = computed(() => data.value?.items?.findIndex((item) => item.link === route.path));
 
 const getBadge = (menuItemId: number) => {
@@ -59,7 +59,6 @@ const getBadge = (menuItemId: number) => {
 };
 
 onMounted(() => {
-  // console.log(indicatorWidth.value);
-  // console.log(currentRoute.value);
+  elementWidth.value = stripeRef.value?.getBoundingClientRect()?.width;
 });
 </script>
