@@ -1,6 +1,7 @@
 <template>
   <Transition name="fade" mode="out-in">
     <component
+      v-if="mountedMechanic"
       :is="mountedMechanic"
       :type="currentBattleMode"
       :task="currentTask"
@@ -11,6 +12,7 @@
       @mounted="onMechanicMounted"
       @unmounted="onMechanicUnmounted"
     />
+    <Loader v-else />
   </Transition>
 
   <!-- bolt bonuses -->
@@ -63,7 +65,7 @@ interface AnswerProps {
 
 const store = useMainStore();
 
-const { useFetch, redirectTo } = store;
+// const { useFetch, redirectTo } = store;
 const { battles: locale } = storeToRefs(store.localeStore);
 const { energy, сurrentMechanicName, currentTask, currentBattleMode, boostersUsed, challengeTimer } = storeToRefs(store.battleStore);
 const { handleBattleAnswer, startRelax, stopRelax, startChallenge, stopChallenge } = store.battleStore;
@@ -111,9 +113,9 @@ const drawBonusAnimation = ({ x, y }: { x: number; y: number }) => {
 
 const onMechanicMounted = () => {
   if (currentBattleMode.value === "relax") {
-    setTimeout(() => {
-      startRelax();
-    }, 1000);
+    startRelax();
+    // setTimeout(() => {
+    // }, 1000);
   } else if (currentBattleMode.value === "challenge") {
     startChallenge();
   }
@@ -161,12 +163,11 @@ if (currentBattleMode.value === "challenge") {
   );
 
   watch(challengeTimer, (val) => {
-    if (val === 0) {
-      setTimeout(() => {
-        onEndChallenge();
-      }, 500);
-    }
-
+    // if (val === 0) {
+    //   setTimeout(() => {
+    //     onEndChallenge();
+    //   }, 500);
+    // }
     // block buttons before challenge end
     // if (val === 1000) {
     //   buttonsBlocked.value = true;
@@ -185,8 +186,8 @@ if (currentBattleMode.value === "relax") {
   });
 }
 
-const onEndChallenge = () => {
-  useFetch({ key: "battle_breakpoint", data: { final: 1 } });
-  redirectTo("/battle-complete");
-};
+// const onEndChallenge = async () => {
+//   await useFetch({ key: "battle_breakpoint", data: { final: 1 } });
+//   redirectTo("/battle-complete");
+// };
 </script>

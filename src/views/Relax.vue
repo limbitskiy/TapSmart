@@ -85,7 +85,7 @@ const isBoostersModalVisible = ref(false);
 
 setThemeColor("#222");
 
-await fetchRelaxPageData();
+fetchRelaxPageData();
 
 const isAFKModalVisible = computed(() => afkCounter.value >= 3);
 

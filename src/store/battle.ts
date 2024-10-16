@@ -58,7 +58,7 @@ export const useBattleStore = defineStore("battle", () => {
 
   // challenge vars
   let battleStartTime = null;
-  const challengeTimer = ref(null);
+  const challengeTimer = ref(0);
   let challengeTimerInterval = null;
 
   let currentBreakpointInterval = {
@@ -198,11 +198,6 @@ export const useBattleStore = defineStore("battle", () => {
       currentTaskTimeout.value.stop();
       currentTaskTimeout.value = null;
     }
-  };
-
-  const restartTaskTimeout = () => {
-    stopTaskTimeout();
-    startTaskTimeout();
   };
 
   const startBreakpoint = (type: string) => {
@@ -457,6 +452,8 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const startChallenge = () => {
+    console.log(`starting challenge`);
+
     battleStarted.value = true;
     resetBattleStats();
     battleStartTime = Date.now();
@@ -466,21 +463,30 @@ export const useBattleStore = defineStore("battle", () => {
     challengeTimerInterval = setInterval(() => {
       if (challengeTimer.value === 0) {
         clearInterval(challengeTimerInterval);
-        challengeTimer.value = null;
+        challengeTimer.value = 0;
+        stopChallenge();
         return;
       }
       challengeTimer.value -= 1000;
     }, 1000);
   };
 
-  const stopChallenge = () => {
+  const stopChallenge = async () => {
+    if (!battleStarted.value) return;
+
+    console.log(`stopping challenge`);
+
     battleStarted.value = false;
     resetBattleStats();
     battleStartTime = null;
     stopBreakpoint();
+
+    await mainStore.useFetch({ key: "battle_breakpoint", data: { final: 1 } });
+    mainStore.redirectTo("/battle-complete");
   };
 
   const startRelax = () => {
+    console.log(`starting relax`);
     battleStarted.value = true;
     resetBattleStats();
     startBreakpoint("battle");
@@ -488,6 +494,7 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const stopRelax = () => {
+    console.log(`stopping relax`);
     battleStarted.value = false;
     stopBreakpoint();
     stopTaskTimeout();

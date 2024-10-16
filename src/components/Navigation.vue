@@ -23,8 +23,8 @@
           >
             {{ getBadge(menuItem.id)?.value }}
           </div>
-          <img :src="getAsset(menuItem.icon)" class="h-7 object-contain grayscale" />
-          <span class="fira-condensed text-sm">{{ menuItem.title }}</span>
+          <img :src="getAsset(menuItem.icon)" class="nav-icon h-7 object-contain grayscale" />
+          <span class="nav-text fira-condensed text-sm">{{ menuItem.title }}</span>
         </div>
       </RouterLink>
     </ul>

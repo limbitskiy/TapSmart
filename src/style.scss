@@ -111,9 +111,15 @@
   transform: rotate(0deg);
 }
 
-// navigation
-.router-link-active img {
-  filter: none !important;
+// active navigation item
+.router-link-active {
+  .nav-icon {
+    filter: none !important;
+  }
+
+  .nav-text {
+    color: var(--accent-color);
+  }
 }
 
 // battles

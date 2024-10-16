@@ -227,7 +227,12 @@ export const useMainStore = defineStore("main", () => {
   };
 
   const fetchChallengePageData = async () => {
-    return await useFetch({ key: "battle_init" });
+    const res = await useFetch({ key: "battle_init" });
+
+    if (res?.data?.battles?.store?.battle_mode === "relax") {
+      redirectTo("/home/relax");
+    }
+    return;
   };
 
   const fetchProfilePageData = async () => {
@@ -280,7 +285,7 @@ export const useMainStore = defineStore("main", () => {
             delete state.value.routeData;
           }
 
-          res(true);
+          res(result.data);
         } catch (error) {
           rej(error?.response?.data?.error?.message || error?.message || error);
         }

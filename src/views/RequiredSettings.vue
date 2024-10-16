@@ -1,22 +1,15 @@
 <template>
-  <div id="required-settings" class="flex-1">
-    <div class="top-part p-5 mb-4">
+  <div id="required-settings" class="flex-1 p-4">
+    <div class="top-part mb-4">
       <div class="page-title mb-2">{{ locale?.["title"] }}</div>
       <div class="page-subtitle">{{ locale?.["subtitle"] }}</div>
     </div>
 
     <LanguageSettings @change="onSettingsChange" />
 
-    <div class="bnt-cnt flex justify-between absolute bottom-0 w-full">
-      <Button
-        class="w-full py-3"
-        activeColor="#fcdcb0"
-        label="Next"
-        @click="onNext"
-      >
-        <span class="text-xl leading-4">{{
-          locale?.["button_next"] || "Next"
-        }}</span>
+    <div class="bnt-cnt flex justify-between absolute bottom-4 left-4 right-4">
+      <Button class="w-full py-3" activeColor="#fcdcb0" label="Next" @click="onNext">
+        <span class="text-xl leading-4">{{ locale?.["button_next"] || "Next" }}</span>
       </Button>
     </div>
   </div>
@@ -28,30 +21,15 @@ import { storeToRefs } from "pinia";
 import { tg, getUserId } from "@/api/telegram";
 
 // stores
-import { useDataStore } from "@/store/data";
 import { useMainStore } from "@/store/main";
-import { useLocaleStore } from "@/store/locale";
 
-// components
-import Button from "@/components/UI/Button.vue";
-import LanguageSettings from "@/components/LanguageSettings.vue";
+const store = useMainStore();
 
-const dataStore = useDataStore();
-const localeStore = useLocaleStore();
-const mainStore = useMainStore();
+const { setLanguages, redirectTo } = store;
+const { requiredSettings: data } = storeToRefs(store.dataStore);
+const { requiredSettings: locale } = storeToRefs(store.localeStore);
 
-const { requiredSettings: data } = storeToRefs(dataStore);
-const { requiredSettings: locale } = storeToRefs(localeStore);
-
-const { setLanguages, redirectTo } = mainStore;
-
-const onSettingsChange = ({
-  setting,
-  value,
-}: {
-  setting: string;
-  value: number;
-}) => {
+const onSettingsChange = ({ setting, value }: { setting: string; value: number }) => {
   setLanguages({ [setting]: value });
 };
 
