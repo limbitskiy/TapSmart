@@ -30,13 +30,14 @@ import { useMainStore } from "@/store/main";
 
 const store = useMainStore();
 
-const { data, challengeScore: score, currentCalcPoint, challengeTimer } = storeToRefs(store.battleStore);
+const { data, challengeScore: score, challengeTimer } = storeToRefs(store.battleStore);
+const { calculateCalcPoint } = store.battleStore;
 
 const el = ref();
 
 const multiplierColor = computed(() => {
   playMultAnimation();
-  const mult = currentCalcPoint.value;
+  const mult = calculateCalcPoint();
   if (mult <= 3) {
     return "#28ad28";
   } else if (mult > 3 && mult <= 8) {

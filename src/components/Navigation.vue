@@ -58,5 +58,8 @@ const getBadge = (menuItemId: number) => {
   return data.value?.badges?.find((badge) => badge.id == menuItemId);
 };
 
-onMounted(() => {});
+onMounted(() => {
+  // console.log(indicatorWidth.value);
+  // console.log(currentRoute.value);
+});
 </script>

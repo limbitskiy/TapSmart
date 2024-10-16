@@ -28,7 +28,6 @@ import { useDataStore } from "@/store/data";
 import { useMainStore } from "@/store/main";
 
 const routes = [
-  { path: "/:pathMatch(.*)*", component: NotFound },
   { path: "/", redirect: "/init" },
   {
     path: "/init",
@@ -126,14 +125,12 @@ const routes = [
     path: "/waiting",
     component: Waiting,
   },
+  { path: "/:pathMatch(.*)*", component: NotFound },
 ];
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes,
-  // scrollBehavior(to, from, savedPosition) {
-  //   return { top: 0 };
-  // },
 });
 
 // access only through /init

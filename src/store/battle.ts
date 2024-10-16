@@ -84,12 +84,10 @@ export const useBattleStore = defineStore("battle", () => {
   const сurrentMechanicName = computed(() => battleTypes[currentBattleType.value]);
 
   // returns { api, correct, id, key, task: {} }
-  const currentTask = computed(() => battleStarted.value && !pauseCurrentTask.value && state.value.battleData.data?.[taskIndex.value]);
+  const currentTask = computed(() => battleStarted.value && !pauseCurrentTask.value && state.value.battleData.data?.find((task) => task.id === taskIndex.value));
 
   // returns { bolts_bonus, disabled, id, order, timeout }
   const currentMechanic = computed(() => state.value.battleData.mechanics?.[getMechanicName(state.value.battleData.battle_type)]);
-
-  const currentCalcPoint = computed(() => data.value.calc_points[correctStreak.value] ?? data.value.calc_points[data.value.calc_points.length - 1]);
 
   const energy = computed(() => state.value.battleData.energy);
   const playerProgress = computed(() => state.value.battleData.player_progress);
@@ -102,10 +100,6 @@ export const useBattleStore = defineStore("battle", () => {
       if (key === "cleanAnswers" && data["cleanAnswers"]) {
         lastTaskId.value = null;
         answers.value = [];
-      }
-
-      if (key === "data") {
-        taskIndex.value = 0;
       }
 
       // restart working breakpoint if new breakpoint time recieved
@@ -136,22 +130,21 @@ export const useBattleStore = defineStore("battle", () => {
       state.value.battleData[key] = data[key];
     });
 
-    if (state.value.battleData.data?.length) {
-      state.value.battleData.data.sort((a, b) => a.id - b.id);
+    // reset task index
+    if (state.value.battleData?.data?.length) {
+      resetTaskIndex();
     }
 
     if (onCompleteHook) {
       onCompleteHook();
       onCompleteHook = () => {};
     }
+
     // console.log("set battle store:", state.value.battleData);
   };
 
   const expand = (data) => {
     // console.log(`expand`);
-
-    const _currentId = currentTask.value.id;
-
     Object.keys(data).forEach((key) => {
       if (state.value.battleData[key] && Array.isArray(state.value.battleData[key])) {
         data[key].forEach((item) => {
@@ -167,10 +160,6 @@ export const useBattleStore = defineStore("battle", () => {
         console.error(`Error trying to expand battle store`);
       }
     });
-
-    state.value.battleData.data.sort((a, b) => a.id - b.id);
-    taskIndex.value = state.value.battleData.data.findIndex((task) => task.id === _currentId);
-
     // console.log("expanded battle store:", state.value.battleData);
   };
 
@@ -255,7 +244,7 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const storeAnswer = (answerString: string, msec?: number) => {
-    const task = state.value.battleData.data?.[taskIndex.value];
+    const task = state.value.battleData.data?.find((task) => task.id === taskIndex.value);
 
     const foundIdx = answers.value.findIndex((answer) => answer.id === task!.id);
 
@@ -329,7 +318,7 @@ export const useBattleStore = defineStore("battle", () => {
       storeAnswer(answerString, msec);
 
       if (isCorrect) {
-        challengeScore.value += currentCalcPoint.value;
+        challengeScore.value += calculateCalcPoint();
         correctStreak.value += 1;
         mainStore.onVibrate("correct");
       } else {
@@ -358,13 +347,25 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   // task index helpers
-  const incrementTaskIndex = () => {
-    const newIdx = taskIndex.value + 1;
+  const resetTaskIndex = () => {
+    const clone = JSON.parse(JSON.stringify(data.value.data));
 
-    if (state.value.battleData.data[newIdx]) {
-      taskIndex.value = newIdx;
+    clone.sort((a, b) => a.id - b.id);
+    taskIndex.value = clone[0].id;
+  };
+
+  const incrementTaskIndex = () => {
+    const clone = JSON.parse(JSON.stringify(data.value.data));
+    clone.sort((a, b) => a.id - b.id);
+
+    const idx = clone.findIndex((task) => task.id === taskIndex.value);
+
+    const newIdx = idx + 1;
+
+    if (clone[newIdx]) {
+      taskIndex.value = clone[newIdx].id;
     } else {
-      taskIndex.value = 0;
+      resetTaskIndex();
     }
   };
 
@@ -391,7 +392,7 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const resetBattleStats = () => {
-    taskIndex.value = 0;
+    resetTaskIndex();
     lastTaskId.value = null;
     correctStreak.value = 0;
     // answers.value = [];
@@ -500,6 +501,8 @@ export const useBattleStore = defineStore("battle", () => {
     stopTaskTimeout();
   };
 
+  const calculateCalcPoint = () => data.value.calc_points?.[correctStreak.value] ?? data.value.calc_points?.[data.value.calc_points.length - 1] ?? 1;
+
   return {
     data,
     currentTask,
@@ -507,7 +510,6 @@ export const useBattleStore = defineStore("battle", () => {
     answers,
     challengeScore,
     boostersUsed,
-    currentCalcPoint,
     energy,
     currentTaskTimeout,
     currentBattleMode,
@@ -535,5 +537,6 @@ export const useBattleStore = defineStore("battle", () => {
     startRelax,
     stopRelax,
     setRelaxModal,
+    calculateCalcPoint,
   };
 });

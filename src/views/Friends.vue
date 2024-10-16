@@ -115,6 +115,7 @@
       </Button>
       <Button class="!px-4 border border-gray-800" dark @click="onCopyToClipboard"><img :src="getAsset('copy')" /></Button>
     </div>
+    <button @click="onBack">back</button>
   </div>
 </template>
 
@@ -129,7 +130,7 @@ import { useMainStore } from "@/store/main";
 
 const store = useMainStore();
 
-const { fetchFriendsList } = store;
+const { fetchFriendsList, redirectTo } = store;
 const { friends: data } = storeToRefs(store.dataStore);
 const { friends: locale } = storeToRefs(store.localeStore);
 
@@ -188,6 +189,15 @@ const onCopyToClipboard = () => {
   if (navigator?.clipboard) {
     navigator.clipboard.writeText(link);
   }
+};
+
+const onBack = () => {
+  // const from = route.query.from;
+  // if (from === "/battle-complete") {
+  //   router.push("/battle-complete?nofetch=true");
+  // } else {
+  redirectTo("/profile");
+  // }
 };
 
 onMounted(() => {
