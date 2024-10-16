@@ -5,8 +5,8 @@
     <span class="text-3xl fira-bold text-gray-100" v-html="modal.title"></span>
     <span class="text-lg px-[10vw] text-gray-300" v-html="modal.subtitle"></span>
     <div class="btns flex justify-end gap-4 mt-4">
-      <Button v-if="!modal.buttons?.left?.hidden" class="!py-1 bg-[var(--red-color)] text-white" :data="modal.buttons.left" :defaultAction="hideModal" />
-      <Button v-if="!modal.buttons?.right?.hidden" class="!py-1 bg-[var(--green-color)] text-white" :data="modal.buttons.right" :defaultAction="hideModal" />
+      <Button v-if="!modal.buttons?.left?.hidden" class="!py-2 bg-[var(--red-color)] text-white" :data="modal.buttons.left" :defaultAction="hideModal" />
+      <Button v-if="!modal.buttons?.right?.hidden" class="!py-2 bg-[var(--green-color)] text-white" :data="modal.buttons.right" :defaultAction="hideModal" />
     </div>
   </div>
 </template>
@@ -23,11 +23,11 @@ const store = useMainStore();
 
 const { hideModal } = store;
 const { modal } = storeToRefs(store);
-const { startTaskTimeout, startBreakpoint, stopBreakpoint } = store.battleStore;
+const { startTaskTimeout, stopTaskTimeout, startBreakpoint, stopBreakpoint } = store.battleStore;
 
 onMounted(() => {
   // console.log(`mounted`);
-
+  stopTaskTimeout();
   stopBreakpoint();
 });
 
