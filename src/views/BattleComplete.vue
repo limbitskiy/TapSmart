@@ -160,6 +160,7 @@ import { ref } from "vue";
 import { getAsset, waitFor } from "@/utils";
 import { storeToRefs } from "pinia";
 import { setThemeColor } from "@/api/telegram";
+import { useRoute } from "vue-router";
 
 // stores
 import { useMainStore } from "@/store/main";
@@ -169,6 +170,8 @@ const store = useMainStore();
 const { fetchBattleCompleteData } = store;
 const { data } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
+
+const route = useRoute();
 
 const isErrorModalOpen = ref(false);
 const isBackdrop = ref(true);
@@ -198,34 +201,16 @@ const animationProgression = async () => {
   await waitFor(2000);
   isCloseup.value = false;
 
-  await waitFor(1500);
+  await waitFor(1000);
   isBackdrop.value = false;
 };
 
-animationProgression();
-
-// setTimeout(() => {
-//   isAnimation.value = false;
-//   fetchBattleCompleteData();
-// }, 3000);
-
-// setTimeout(() => {
-//   isCloseup.value = true;
-
-//   confetti?.default({
-//     particleCount: 100,
-//     spread: 70,
-//     origin: { y: 0.6 },
-//   });
-// }, 3500);
-
-// setTimeout(() => {
-//   isCloseup.value = false;
-// }, 5500);
-
-// setTimeout(() => {
-//   isBackdrop.value = false;
-// }, 6000);
+if (!route.query.nofetch) {
+  animationProgression();
+} else {
+  isAnimation.value = false;
+  isBackdrop.value = false;
+}
 
 const getBtnTextArr = (text: string) => text?.split("<separate>");
 

@@ -38,7 +38,8 @@ export const waitFor = (ms: number) => {
   });
 };
 
-export const shortenNumber = (num: number) => {
+export const shortenNumber = (num?: number) => {
+  if (!num) return 0;
   if (num <= 999999) {
     return showFormattedNumber(num);
   } else {
@@ -71,7 +72,8 @@ export const formattedTime = (timer: number) => {
   }
 };
 
-export const replaceWithSpecialSymbols = (text: string) => {
+export const replaceWithSpecialSymbols = (text?: string) => {
+  if (!text) return "";
   let result = text;
 
   Object.keys(specialSymbols).forEach((symbol) => {

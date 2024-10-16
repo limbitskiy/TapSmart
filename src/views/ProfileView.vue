@@ -226,6 +226,7 @@
 
     <Button @click="onFeedback">{{ locale?.["feedback"] }}</Button>
   </div>
+  <button @click="onBack">back</button>
 </template>
 
 <script setup lang="ts">
@@ -246,13 +247,29 @@ const { profile: data } = storeToRefs(store.dataStore);
 const { profile: locale } = storeToRefs(store.localeStore);
 
 const router = useRouter();
+const route = useRoute();
 
 tg.BackButton.show();
 
 tg.BackButton.onClick(() => {
   tg.BackButton.hide();
-  router.back();
+
+  const from = route.query.from;
+  if (from === "/battle-complete") {
+    router.push("/battle-complete?nofetch=true");
+  } else {
+    router.back();
+  }
 });
+
+// const onBack = () => {
+//   const from = route.query.from;
+//   if (from === "/battle-complete") {
+//     router.push("/battle-complete");
+//   } else {
+//     router.back();
+//   }
+// };
 
 await fetchProfilePageData();
 
