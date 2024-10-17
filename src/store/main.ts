@@ -247,6 +247,10 @@ export const useMainStore = defineStore("main", () => {
     return await useFetch({ key: "battle_completed" });
   };
 
+  const fetchBattleResultsData = async () => {
+    return await useFetch({ key: "battle_results" });
+  };
+
   const getOnlineFriends = async () => {
     await useFetch({ key: "get_online_friends" });
     return;
@@ -343,6 +347,7 @@ export const useMainStore = defineStore("main", () => {
     fetchChallengePageData,
     fetchTasksList,
     fetchBattleCompleteData,
+    fetchBattleResultsData,
     setLanguages,
     initialFetch,
     useFetch,

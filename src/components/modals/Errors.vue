@@ -4,10 +4,11 @@
 
     <div class="error-list flex flex-col gap-2 flex-1 mt-2 overflow-scroll">
       <Pill v-for="error in data?.['error_data']">
-        <div class="error-content flex items-center justify-between fira-condensed-bold">
+        <div class="error-content grid grid-cols-[1fr_24px_1fr] items-center">
           <span>{{ error.question }}</span>
-          <span>→</span>
-          <span>{{ error.answer }}</span>
+          <!-- <span class="scale-150">→</span> -->
+          <img class="" :src="getAsset('arrow_right')" />
+          <span class="text-end">{{ error.answer }}</span>
         </div>
       </Pill>
     </div>
@@ -19,6 +20,7 @@
 <script setup lang="ts">
 import { onMounted, onBeforeUnmount } from "vue";
 import { storeToRefs } from "pinia";
+import { getAsset } from "@/utils";
 
 // stores
 import { useDataStore } from "@/store/data";

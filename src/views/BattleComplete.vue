@@ -14,13 +14,13 @@
 
       <div class="scrollable-cnt flex flex-col gap-2 flex-1 overflow-y-auto mt-2">
         <div class="battle-rewards flex flex-col gap-1 pt-4">
-          <Pill class="!py-2">
-            <div class="content flex flex-col gap-0 items-center justify-between">
+          <Pill class="!py-1">
+            <div class="content flex flex-col items-center justify-between">
               <div class="place-icon-text flex gap-2 items-center">
                 <span class="fira-bold text-2xl">{{ data?.["completed_place"] || "Place:" }}</span>
-                <img v-if="data?.['battle_complete_place'] === 1" class="h-12" :src="getAsset('1st_place')" />
-                <img v-if="data?.['battle_complete_place'] === 2" class="h-12" :src="getAsset('2nd_place')" />
-                <img v-if="data?.['battle_complete_place'] === 3" class="h-12" :src="getAsset('3rd_place')" />
+                <img v-if="data?.['battle_complete_place'] === 1" class="h-10" :src="getAsset('1st_place')" />
+                <img v-if="data?.['battle_complete_place'] === 2" class="h-10" :src="getAsset('2nd_place')" />
+                <img v-if="data?.['battle_complete_place'] === 3" class="h-10" :src="getAsset('3rd_place')" />
               </div>
 
               <div class="rewards flex item-center gap-2">
@@ -72,8 +72,8 @@
         <div v-if="data?.['error_data']?.length" class="errors">
           <Pill class="!py-2 flex flex-col gap-2">
             <div class="stat flex gap-4 items-center justify-between">
-              <span class="fira-condensed-bold text-xl text-[var(--red-color)]">{{ locale?.["error_data_title"] || "Errors" }}</span>
-              <span class="text-xl exo-black">{{ data?.["error_data"]?.length || 0 }}</span>
+              <span class="fira-condensed text-lg">{{ locale?.["error_data_title"] || "Errors" }}</span>
+              <span class="text-xl exo-black text-red-600">{{ data?.["error_data"]?.length || 0 }}</span>
             </div>
             <Button
               class="bg-[var(--grey-dark)] text-white flex-1"
@@ -89,7 +89,7 @@
         </div>
 
         <!-- ad -->
-        <div class="ad flex items-center justify-center mt-8">
+        <div class="ad flex items-center justify-center mt-4">
           <Ad image="x2" :text="locale?.['battle_complete_ad_text']" :tooltip="locale?.['tooltip_battle_complete_ad']" />
         </div>
       </div>
@@ -181,10 +181,6 @@ const isAnimation = ref(true);
 
 let confetti;
 
-if (data?.value?.["battle_complete_place"] === 1) {
-  confetti = await import("canvas-confetti");
-}
-
 const animationProgression = async () => {
   await waitFor(3000);
 
@@ -193,6 +189,10 @@ const animationProgression = async () => {
 
   await waitFor(500);
   isCloseup.value = true;
+
+  if (data?.value?.["battle_complete_place"] === 1) {
+    confetti = await import("canvas-confetti");
+  }
   confetti?.default({
     particleCount: 100,
     spread: 70,

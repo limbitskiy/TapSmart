@@ -32,14 +32,14 @@
       <div class="ad-btns w-full flex gap-4 justify-between mt-6">
         <Button
           v-if="data?.battle_results_buttons?.left"
-          class="flex-1 !py-3 !px-0 text-white bg-[var(--grey-light)] !text-base !inline-block !leading-4"
+          class="flex-1 !py-3 !px-0 text-white bg-[var(--grey-light)] !text-lg !inline-block !leading-4"
           activeColor="#525252"
           :data="data.battle_results_buttons.left"
         >
         </Button>
         <Button
           v-if="data?.battle_results_buttons?.right"
-          class="flex-1 !py-3 !px-0 !text-base !inline-block !leading-4"
+          class="flex-1 !py-3 !px-0 !text-lg !inline-block !leading-4"
           activeColor="#fcdcb0"
           :data="data.battle_results_buttons.right"
         >
@@ -50,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, onUnmounted } from "vue";
 import { getAsset } from "@/utils";
 import { storeToRefs } from "pinia";
 import { replaceWithSpecialSymbols } from "@/utils";
@@ -60,8 +60,11 @@ import { useMainStore } from "@/store/main";
 
 const store = useMainStore();
 
+const { fetchBattleResultsData } = store;
 const { data } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
+
+await fetchBattleResultsData();
 
 const leaderboardSorted = computed(() => {
   if (!data.value.battle_results_leaderboard?.length) return [];
