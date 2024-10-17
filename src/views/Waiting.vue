@@ -70,11 +70,11 @@
       </ul>
 
       <div v-if="challengeProps.friends_only" class="btns w-full flex gap-4 mt-8">
-        <Button class="flex-1 py-3 !px-0" activeColor="#525252" @click="onInviteFriend" :dark="data?.['players_waiting']?.length > 1">
-          <span class="text-lg leading-4">{{ locale?.["button_waiting_invite"] || "Invite" }}</span>
+        <Button class="flex-1 !py-2 !px-0" activeColor="#525252" @click="onInviteFriend" :dark="data?.['players_waiting']?.length > 1">
+          <span class="text-lg leading-5 inline-block">{{ locale?.["button_waiting_invite"] || "Invite" }}</span>
         </Button>
-        <Button class="flex-1 py-3 !px-0" activeColor="#fcdcb0" @click="onFriendStart" :disabled="data?.['players_waiting']?.length <= 1">
-          <span class="text-lg leading-4">{{ locale?.["button_waiting_run"] || "Start" }}</span>
+        <Button class="flex-1 !py-2 !px-0" activeColor="#fcdcb0" @click="onFriendStart" :disabled="data?.['players_waiting']?.length <= 1 || startBtnBlocked">
+          <span class="text-lg leading-5 inline-block">{{ locale?.["button_waiting_run"] || "Start" }}</span>
         </Button>
       </div>
     </BackgroundPill>
@@ -104,6 +104,8 @@ const { data } = storeToRefs(store.battleStore);
 const { startBreakpoint, stopBreakpoint, decreaseWaitingTimer } = store.battleStore;
 const { battles: locale } = storeToRefs(store.localeStore);
 
+const startBtnBlocked = ref(false);
+
 await fetchWaitingData(challengeProps.value);
 
 let interval: ReturnType<typeof setInterval> | undefined;
@@ -120,6 +122,7 @@ const onInviteFriend = () => {
 
 const onFriendStart = () => {
   useFetch({ key: "waiting_run" });
+  startBtnBlocked.value = true;
 };
 
 onMounted(() => {

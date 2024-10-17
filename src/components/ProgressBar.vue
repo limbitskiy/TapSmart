@@ -74,7 +74,7 @@ const colors = {
 
 const store = useMainStore();
 
-const { data, playerProgress, challengeTimer } = storeToRefs(store.battleStore);
+const { data, challengeTimer } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
 
 const gaugeRef = ref();
@@ -85,7 +85,9 @@ const positions = ref([]);
 watch(
   challengeTimer,
   () => {
-    const players = playerProgress.value;
+    const players = data.value?.["player_progress"];
+    console.log(players);
+    console.log(players?.length);
 
     if (!players) return;
 
@@ -124,6 +126,7 @@ const computedEnemies = computed(() => {
     return positions.value.filter((player) => !player?.isPlayer);
   } else return [{ id: 999, progress: 0 }];
 });
+
 const progressPercent = computed(() => ((data.value?.["battle_duration"] - challengeTimer.value) * 100) / data.value?.["battle_duration"] ?? 0);
 
 const computedPlayerProgress = computed(() => {

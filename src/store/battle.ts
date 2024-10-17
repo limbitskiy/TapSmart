@@ -92,7 +92,7 @@ export const useBattleStore = defineStore("battle", () => {
   // returns { bolts_bonus, disabled, id, order, timeout }
   const currentMechanic = computed(() => state.value.battleData.mechanics?.[getMechanicName(state.value.battleData.battle_type)]);
 
-  const playerProgress = computed(() => state.value.battleData.player_progress);
+  // const playerProgress = computed(() => state.value.battleData.player_progress);
 
   // setter/getter
   const set = (data) => {
@@ -472,7 +472,6 @@ export const useBattleStore = defineStore("battle", () => {
     currentBattleType,
     afkCounter,
     сurrentMechanicName,
-    playerProgress,
     challengeTimer,
     battleStarted,
     set,
