@@ -82,12 +82,12 @@ const progressRef = ref();
 
 const positions = ref([]);
 
+data.value["player_progress"] = null;
+
 watch(
   challengeTimer,
   () => {
     const players = data.value?.["player_progress"];
-    console.log(players);
-    console.log(players?.length);
 
     if (!players) return;
 

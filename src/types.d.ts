@@ -85,7 +85,7 @@ export interface NotificationProps {
   buttons: {
     [key in "left" | "right"]: { hidden?: boolean; route?: string; api?: string; data?: {}; label?: string };
   };
-  timeout?: number | undefined;
+  timeout?: number | null;
   isShown: boolean;
   fn: ReturnType<typeof setTimeout> | null;
 }
