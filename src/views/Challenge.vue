@@ -14,7 +14,7 @@
     </div>
 
     <!-- battle mechanic -->
-    <BattleMechanic />
+    <BattleMechanic v-show="battleStarted" />
   </div>
 </template>
 

@@ -27,7 +27,7 @@
               <Transition name="question-slide" mode="out-in">
                 <div v-if="task" :key="task?.task?.question" class="max-w-[calc(100vw-4rem)] flex flex-col gap-2 items-center text-center">
                   <div class="question-cnt">
-                    <span class="fira-condensed-black leading-10 line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)">{{ task?.task?.question }}</span>
+                    <span class="fira-condensed-black leading-[3rem] line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)">{{ task?.task?.question }}</span>
                   </div>
                   <div class="arrow">
                     <svg width="16" height="26" viewBox="0 0 16 26" fill="none" xmlns="http://www.w3.org/2000/svg">

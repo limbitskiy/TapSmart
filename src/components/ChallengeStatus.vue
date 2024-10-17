@@ -2,7 +2,7 @@
   <BackgroundPill id="challenge-statusbar" class="flex !flex-row rounded-xl gap-4 items-center justify-between exo-black !py-2">
     <!-- bolts amount -->
     <div class="bolts flex items-baseline gap-2">
-      <div class="multiplier text-sm" :style="{ color: multiplierColor }">{{ "x" + Math.round(currentCalcPoint) }}</div>
+      <div class="multiplier text-sm" :style="{ color: multiplierColor }">{{ "x" + Math.round(calculateCalcPoint()) }}</div>
       <span class="text-xl w-1/2 text-center">{{ Math.round(score) || 0 }}</span>
     </div>
 
@@ -38,6 +38,7 @@ const el = ref();
 const multiplierColor = computed(() => {
   playMultAnimation();
   const mult = calculateCalcPoint();
+
   if (mult <= 3) {
     return "#28ad28";
   } else if (mult > 3 && mult <= 8) {

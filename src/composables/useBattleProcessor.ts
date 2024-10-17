@@ -3,22 +3,24 @@ import { ref, computed } from "vue";
 // types
 import { BattleTypes, BattleState, AnswerProps, Answer } from "@/types";
 
-const battleProcessor = (data) => {
-  console.log(data);
+export const useBattleProcessor = (battleData) => {
+  // console.log(data?.data);
 
   const taskIndex = ref<number | null>(null);
   const answers = ref<Answer[]>([]);
 
   const resetTaskIndex = () => {
-    if (!data) return;
-    const clone = JSON.parse(JSON.stringify(data));
+    console.log(`resetting`);
+
+    if (!battleData.data) return;
+    const clone = JSON.parse(JSON.stringify(battleData.data));
 
     clone.sort((a, b) => a.id - b.id);
     taskIndex.value = clone[0].id;
   };
 
   const incrementTaskIndex = () => {
-    const clone = JSON.parse(JSON.stringify(data));
+    const clone = JSON.parse(JSON.stringify(battleData.data));
     clone.sort((a, b) => a.id - b.id);
 
     const idx = clone.findIndex((task) => task.id === taskIndex.value);
@@ -33,11 +35,9 @@ const battleProcessor = (data) => {
   };
 
   const storeAnswer = (answerString: string, msec?: number) => {
-    const task = data.find((task) => task.id === taskIndex.value);
+    const task = battleData.data.find((task) => task.id === taskIndex.value);
 
-    const foundIdx = answers.value.findIndex(
-      (answer) => answer.id === task!.id
-    );
+    const foundIdx = answers.value.findIndex((answer) => answer.id === task!.id);
 
     if (foundIdx !== -1) {
       answers.value[foundIdx] = {
@@ -56,11 +56,7 @@ const battleProcessor = (data) => {
     }
   };
 
-  const _currentTask = computed(() => {
-    console.log(data);
-
-    return data?.find((task) => task.id === taskIndex.value);
-  });
+  const _currentTask = computed(() => battleData.data?.find((task) => task.id === taskIndex.value));
 
   return {
     resetTaskIndex,
@@ -70,5 +66,3 @@ const battleProcessor = (data) => {
     answers,
   };
 };
-
-export default battleProcessor;
