@@ -7,6 +7,7 @@
     <!-- active indicator -->
     <div ref="stripeRef" class="active-stripe h-[2px] w-full rounded">
       <div
+        v-if="isHome"
         class="indicator h-full bg-[var(--accent-color)]"
         style="transition: 0.6s ease; box-shadow: 0px 8px 29px 2px #feac3e"
         :style="`width: ${indicatorWidth}px; transform: translateX(${indicatorWidth * currentRoute}px)`"
@@ -53,6 +54,7 @@ const elementWidth = ref(0);
 
 const indicatorWidth = computed(() => elementWidth.value / data.value?.items?.length ?? 0);
 const currentRoute = computed(() => data.value?.items?.findIndex((item) => item.link === route.path));
+const isHome = computed(() => route.path.includes("home"));
 
 const getBadge = (menuItemId: number) => {
   return data.value?.badges?.find((badge) => badge.id == menuItemId);

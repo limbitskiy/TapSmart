@@ -26,6 +26,7 @@
               <div class="rewards flex item-center gap-2">
                 <div class="score flex gap-1 items-center">
                   <!-- <img class="h-4 scale-150" :src="getAsset('score')" /> -->
+                  <!-- score icon -->
                   <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_582_1683)">
                       <circle cx="8.5" cy="8.5" r="8.5" fill="#3C95E3" />

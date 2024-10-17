@@ -38,6 +38,7 @@ export const images = {
   new_level: "/new_level.png",
   new_league: "/new_league.png",
   rays_purple: "/rays_purple.png",
+  bolt_earned: "/bolt_earned.png",
   pattern_paws_blue: "/pattern-paws-blue.png",
 };
 
