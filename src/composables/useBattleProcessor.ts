@@ -10,8 +10,6 @@ export const useBattleProcessor = (battleData) => {
   const answers = ref<Answer[]>([]);
 
   const resetTaskIndex = () => {
-    console.log(`resetting`);
-
     if (!battleData.data) return;
     const clone = JSON.parse(JSON.stringify(battleData.data));
 
@@ -37,7 +35,9 @@ export const useBattleProcessor = (battleData) => {
   const storeAnswer = (answerString: string, msec?: number) => {
     const task = battleData.data.find((task) => task.id === taskIndex.value);
 
-    const foundIdx = answers.value.findIndex((answer) => answer.id === task!.id);
+    const foundIdx = answers.value.findIndex(
+      (answer) => answer.id === task!.id
+    );
 
     if (foundIdx !== -1) {
       answers.value[foundIdx] = {
@@ -56,7 +56,9 @@ export const useBattleProcessor = (battleData) => {
     }
   };
 
-  const _currentTask = computed(() => battleData.data?.find((task) => task.id === taskIndex.value));
+  const _currentTask = computed(() =>
+    battleData.data?.find((task) => task.id === taskIndex.value)
+  );
 
   return {
     resetTaskIndex,
