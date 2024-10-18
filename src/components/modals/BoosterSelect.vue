@@ -2,15 +2,10 @@
   <div id="booster-select" class="flex-1 py-1 flex flex-col gap-4">
     <div class="pill-header flex items-center justify-between">
       <span class="bg-pill-title">{{ locale?.["booster_select_title"] || "Challenge" }}</span>
-      <!-- <div class="nuts flex items-center gap-1">
-        <img class="h-4" :src="getAsset('nut')" />
-        <span class="exo-black">{{ showFormattedNumber(profile?.["nuts"]) }}</span>
-      </div> -->
     </div>
 
     <div class="battle-rewards text-center">
       <Pill class="!py-2 rounded-[10px]">
-        <!-- <span class="fira-bold">Battle rewards:</span> -->
         <div class="rewards flex items-center justify-center">
           <div class="mult flex gap-4 items-baseline justify-between">
             <div class="label">
@@ -194,65 +189,53 @@ import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset, showFormattedNumber } from "@/utils";
 
-// components
-import Pill from "@/components/UI/Pill.vue";
-import Button from "@/components/UI/Button.vue";
-import Badge from "@/components/UI/Badge.vue";
-
 // stores
-import { useDataStore } from "@/store/data";
-import { useLocaleStore } from "@/store/locale";
 import { useMainStore } from "@/store/main";
-
-// const emit = defineEmits<{
-//   startBattle: [payload: {}];
-// }>();
 
 const pickedBonuses = ref({
   mistake: false,
   time: false,
 });
 
-const dataStore = useDataStore();
-const localeStore = useLocaleStore();
-const mainStore = useMainStore();
+const store = useMainStore();
 
-const { battles: locale } = storeToRefs(localeStore);
-const { profile, friends } = storeToRefs(dataStore);
-const { onlineFriends } = dataStore;
-const { data } = storeToRefs(dataStore.battles);
-const { stopBreakpoint, startBreakpoint } = dataStore.battles;
-const { getOnlineFriends, redirectTo } = mainStore;
+const { getOnlineFriends, redirectTo } = store;
+const { onlineFriends } = store.dataStore;
+// const { stopBreakpoint, startBreakpoint } = store.battleStore;
+const { battles: locale } = storeToRefs(store.localeStore);
+const { data } = storeToRefs(store.battleStore);
 
 getOnlineFriends();
 
 const onStartBattle = ({ friendsOnly }) => {
-  let paramString = "?";
+  const params = new URLSearchParams();
 
   if (pickedBonuses.value.time) {
-    paramString += "extra_time=1";
+    params.append("extra_time", "1");
   }
 
   if (pickedBonuses.value.mistake) {
-    paramString += "&extra_mistake=1";
+    params.append("extra_mistake", "1");
   }
 
   if (friendsOnly) {
-    paramString += "&friends_only=1";
+    params.append("friends_only", "1");
   }
 
-  redirectTo(`/waiting${paramString}`);
+  const queryString = params.toString();
+
+  redirectTo(`/waiting${queryString ? "?" + queryString : ""}`);
 };
 
 // const onInviteFriends = () => {
 //   inviteFriend(locale.value?.["challenge_message"] || "Invite message");
 // };
 
-onMounted(() => {
-  startBreakpoint("challenge");
-});
+// onMounted(() => {
+//   startBreakpoint("challenge");
+// });
 
-onBeforeUnmount(() => {
-  startBreakpoint("battle");
-});
+// onBeforeUnmount(() => {
+//   startBreakpoint("battle");
+// });
 </script>

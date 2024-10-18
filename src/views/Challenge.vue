@@ -5,16 +5,23 @@
 
     <!-- battle stats -->
     <div class="challenge-stats z-10 flex flex-col gap-2 min-h-[136px]">
-      <Transition name="fade" mode="out-in">
-        <ChallengeStatus v-if="battleStarted" />
+      <Transition name="fade">
+        <ChallengeStatus />
       </Transition>
-      <Transition name="fade" mode="out-in">
-        <ProgressBar v-if="battleStarted" />
+      <Transition name="fade">
+        <ProgressBar />
       </Transition>
     </div>
 
     <!-- battle mechanic -->
-    <BattleMechanic v-show="battleStarted" />
+    <BattleMechanic />
+
+    <!-- end challenge animation -->
+    <Transition name="fade-800">
+      <div v-if="showEndChallengeAnimation" class="animation-cnt absolute inset-0 grid place-items-center z-[30] bg-black">
+        <BattleCompleteAnimation />
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -30,7 +37,7 @@ import { useMainStore } from "@/store/main";
 const store = useMainStore();
 
 const { fetchChallengePageData } = store;
-const { battleStarted } = storeToRefs(store.battleStore);
+const { battleStarted, showEndChallengeAnimation } = storeToRefs(store.battleStore);
 
 // setThemeColor("#D26542");
 

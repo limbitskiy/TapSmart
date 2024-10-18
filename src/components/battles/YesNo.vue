@@ -38,7 +38,7 @@
                     </svg>
                   </div>
                   <div class="question-cnt">
-                    <span class="fira-condensed-black text-gray-400 line-clamp-2" style="font-size: clamp(26px, 8vw, 42px)">{{ task?.task?.answer }}</span>
+                    <span class="fira-condensed-black text-gray-400 line-clamp-2 leading-8" style="font-size: clamp(26px, 8vw, 42px)">{{ task?.task?.answer }}</span>
                   </div>
                 </div>
               </Transition>

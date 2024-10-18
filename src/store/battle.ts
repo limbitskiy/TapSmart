@@ -3,17 +3,14 @@ import { defineStore } from "pinia";
 import { useBattleProcessor } from "@/composables/useBattleProcessor";
 
 // common
-import {
-  Interval as BreakpointInterval,
-  Timer as TaskTimer,
-} from "@/common/interval";
+import { Interval as BreakpointInterval, Timer as TaskTimer } from "@/common/interval";
 
 // stores
 import { useDataStore } from "@/store/data";
 import { useMainStore } from "@/store/main";
 
 // types
-import { BattleTypes, BattleState, AnswerProps, Answer } from "@/types";
+import { BattleTypes, BattleState, AnswerProps } from "@/types";
 import { waitFor } from "@/utils";
 
 export const useBattleStore = defineStore("battle", () => {
@@ -61,8 +58,9 @@ export const useBattleStore = defineStore("battle", () => {
 
   // challenge vars
   let battleStartTime = null;
-  const challengeTimer = ref(0);
+  const challengeTimer = ref();
   let challengeTimerInterval = null;
+  const showEndChallengeAnimation = ref(false);
 
   let currentBreakpointInterval = {
     fn: <BreakpointInterval | null>null,
@@ -84,33 +82,16 @@ export const useBattleStore = defineStore("battle", () => {
   const currentBattleType = computed(() => state.value.battleData.battle_type);
 
   // returns "yesno" || "4answers" etc.
-  const сurrentMechanicName = computed(
-    () => battleTypes[currentBattleType.value]
-  );
+  const сurrentMechanicName = computed(() => battleTypes[currentBattleType.value]);
 
   // --- battle processor
-  const {
-    resetTaskIndex,
-    incrementTaskIndex,
-    storeAnswer,
-    answers,
-    _currentTask,
-  } = useBattleProcessor(state.value.battleData);
+  const { resetTaskIndex, incrementTaskIndex, storeAnswer, answers, _currentTask } = useBattleProcessor(state.value.battleData);
 
   // returns { api, correct, id, key, task: {} }
-  const currentTask = computed(
-    () => battleStarted.value && !pauseCurrentTask.value && _currentTask.value
-  );
+  const currentTask = computed(() => battleStarted.value && !pauseCurrentTask.value && _currentTask.value);
 
   // returns { bolts_bonus, disabled, id, order, timeout }
-  const currentMechanic = computed(
-    () =>
-      state.value.battleData.mechanics?.[
-        getMechanicName(state.value.battleData.battle_type)
-      ]
-  );
-
-  // const playerProgress = computed(() => state.value.battleData.player_progress);
+  const currentMechanic = computed(() => state.value.battleData.mechanics?.[getMechanicName(state.value.battleData.battle_type)]);
 
   // setter/getter
   const set = (data) => {
@@ -123,15 +104,8 @@ export const useBattleStore = defineStore("battle", () => {
       }
 
       // restart working breakpoint if new breakpoint time recieved
-      if (
-        key === "breakpoint" ||
-        key === "challenge_breakpoint" ||
-        key === "waiting_breakpoint"
-      ) {
-        if (
-          currentBreakpointInterval.fn &&
-          data[key] !== state.value.battleData[key]
-        ) {
+      if (key === "breakpoint" || key === "challenge_breakpoint" || key === "waiting_breakpoint") {
+        if (currentBreakpointInterval.fn && data[key] !== state.value.battleData[key]) {
           if (key === "breakpoint") {
             onCompleteHook = () => {
               startBreakpoint("battle");
@@ -172,14 +146,9 @@ export const useBattleStore = defineStore("battle", () => {
   const expand = (data) => {
     // console.log(`expand`);
     Object.keys(data).forEach((key) => {
-      if (
-        state.value.battleData[key] &&
-        Array.isArray(state.value.battleData[key])
-      ) {
+      if (state.value.battleData[key] && Array.isArray(state.value.battleData[key])) {
         data[key].forEach((item) => {
-          const foundIdx = state.value.battleData[key].findIndex(
-            (storeItem) => storeItem.id === item.id
-          );
+          const foundIdx = state.value.battleData[key].findIndex((storeItem) => storeItem.id === item.id);
 
           if (foundIdx != -1) {
             state.value.battleData[key].splice(foundIdx, 1);
@@ -196,13 +165,7 @@ export const useBattleStore = defineStore("battle", () => {
 
   // breakpoints/timers
   const startTaskTimeout = () => {
-    if (
-      !currentMechanic.value?.timeout ||
-      currentTaskTimeout.value ||
-      !data?.value?.energy ||
-      afkCounter.value >= 3
-    )
-      return;
+    if (!currentMechanic.value?.timeout || currentTaskTimeout.value || !data?.value?.energy || afkCounter.value >= 3) return;
 
     const callback = () => {
       stopTaskTimeout();
@@ -281,12 +244,7 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   // answer handlers
-  const handleBattleAnswer = async ({
-    isCorrect,
-    answerString,
-    subtractEnergyAmount = 3,
-    nextTaskDelay = 0,
-  }: AnswerProps) => {
+  const handleBattleAnswer = async ({ isCorrect, answerString, subtractEnergyAmount = 3, nextTaskDelay = 0 }: AnswerProps) => {
     if (currentBattleMode.value === "relax" && data.value.energy === 0) return;
 
     if (!currentTask.value) {
@@ -342,10 +300,7 @@ export const useBattleStore = defineStore("battle", () => {
         correctStreak.value += 1;
         mainStore.onVibrate("correct");
       } else {
-        if (
-          data.value.battle_extra_mistake &&
-          !boostersUsed.value["extra_mistake"]
-        ) {
+        if (data.value.battle_extra_mistake && !boostersUsed.value["extra_mistake"]) {
           boostersUsed.value["extra_mistake"] = true;
         } else {
           correctStreak.value = 0;
@@ -384,10 +339,12 @@ export const useBattleStore = defineStore("battle", () => {
     if (value === "open") {
       stopTaskTimeout();
       stopBreakpoint();
+      battleStarted.value = false;
     } else if (value === "closed") {
       afkCounter.value = 0;
       startTaskTimeout();
       startBreakpoint("battle");
+      battleStarted.value = true;
     }
   };
 
@@ -424,7 +381,6 @@ export const useBattleStore = defineStore("battle", () => {
     resetTaskIndex();
     lastTaskId.value = null;
     correctStreak.value = 0;
-    // answers.value = [];
     challengeScore.value = 0;
     boostersUsed.value = {};
     afkCounter.value = 0;
@@ -455,8 +411,8 @@ export const useBattleStore = defineStore("battle", () => {
   const startChallenge = () => {
     console.log(`starting challenge: stats reset`);
 
-    battleStarted.value = true;
     resetBattleStats();
+    battleStarted.value = true;
     battleStartTime = Date.now();
     startBreakpoint("battle");
 
@@ -465,7 +421,8 @@ export const useBattleStore = defineStore("battle", () => {
     challengeTimerInterval = setInterval(() => {
       if (challengeTimer.value === 0) {
         clearInterval(challengeTimerInterval);
-        challengeTimer.value = 0;
+        challengeTimerInterval = null;
+        challengeTimer.value = undefined;
         stopChallenge();
         return;
       }
@@ -479,16 +436,24 @@ export const useBattleStore = defineStore("battle", () => {
     console.log(`stopping challenge`);
 
     battleStarted.value = false;
-    resetBattleStats();
     battleStartTime = null;
     stopBreakpoint();
 
+    showEndChallengeAnimation.value = true;
     await mainStore.useFetch({ key: "battle_breakpoint", data: { final: 1 } });
-    mainStore.redirectTo("/battle-complete");
+
+    setTimeout(() => {
+      mainStore.redirectTo("/battle-complete");
+    }, 3000);
+
+    setTimeout(() => {
+      showEndChallengeAnimation.value = false;
+    }, 4000);
   };
 
   const startRelax = () => {
     console.log(`starting relax: battle stats reset`);
+
     battleStarted.value = true;
     resetBattleStats();
     startBreakpoint("battle");
@@ -502,10 +467,7 @@ export const useBattleStore = defineStore("battle", () => {
     stopTaskTimeout();
   };
 
-  const calculateCalcPoint = () =>
-    data.value.calc_points?.[correctStreak.value] ??
-    data.value.calc_points?.[data.value.calc_points.length - 1] ??
-    1;
+  const calculateCalcPoint = () => data.value.calc_points?.[correctStreak.value] ?? data.value.calc_points?.[data.value.calc_points.length - 1] ?? 1;
 
   return {
     data,
@@ -521,6 +483,7 @@ export const useBattleStore = defineStore("battle", () => {
     сurrentMechanicName,
     challengeTimer,
     battleStarted,
+    showEndChallengeAnimation,
     set,
     expand,
     pauseBattle,

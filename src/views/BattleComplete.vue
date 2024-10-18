@@ -141,12 +141,6 @@
       </div>
     </Transition>
 
-    <Transition name="fade-800">
-      <div v-if="isAnimation" class="animation-cnt absolute inset-0 grid place-items-center z-[30] bg-black">
-        <BattleCompleteAnimation />
-      </div>
-    </Transition>
-
     <!-- errors modal -->
     <Teleport to="#modals">
       <Modal v-model:visible="isErrorModalOpen">
@@ -177,17 +171,11 @@ const route = useRoute();
 const isErrorModalOpen = ref(false);
 const isBackdrop = ref(true);
 const isCloseup = ref(false);
-const isAnimation = ref(true);
 
 let confetti;
 
 const animationProgression = async () => {
-  await waitFor(3000);
-
   await fetchBattleCompleteData();
-  isAnimation.value = false;
-
-  await waitFor(500);
   isCloseup.value = true;
 
   if (data?.value?.["battle_complete_place"] === 1) {
@@ -209,7 +197,6 @@ const animationProgression = async () => {
 if (!route.query.nofetch) {
   animationProgression();
 } else {
-  isAnimation.value = false;
   isBackdrop.value = false;
 }
 

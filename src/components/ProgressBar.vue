@@ -127,7 +127,7 @@ const computedEnemies = computed(() => {
   } else return [{ id: 999, progress: 0 }];
 });
 
-const progressPercent = computed(() => ((data.value?.["battle_duration"] - challengeTimer.value) * 100) / data.value?.["battle_duration"] ?? 0);
+const progressPercent = computed(() => ((data.value?.["battle_duration"] - challengeTimer.value) * 100) / data.value?.["battle_duration"]);
 
 const computedPlayerProgress = computed(() => {
   const coef = gaugeRef.value?.getBoundingClientRect()?.width / (data?.value?.["battle_duration"] / 1000);

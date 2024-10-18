@@ -16,12 +16,7 @@
   </Transition>
 
   <!-- bolt bonuses -->
-  <div
-    v-for="bonus in bonuses"
-    :key="bonus.id"
-    class="bonus bonus-animate z-20 flex gap-2 items-center absolute"
-    :style="{ left: bonus.x + 'px', top: bonus.y + 'px' }"
-  >
+  <div v-for="bonus in bonuses" :key="bonus.id" class="bonus bonus-animate z-20 flex gap-2 items-center absolute" :style="{ left: bonus.x + 'px', top: bonus.y + 'px' }">
     <img class="h-4 scale-150" :src="getAsset('bolt')" />
     <span class="font-bold text-xl">+2</span>
   </div>
@@ -29,23 +24,12 @@
   <!-- onscreen booster usage -->
   <div v-if="currentBattleMode === 'challenge'" class="boosters-cnt">
     <Transition name="challenge-bonus-1">
-      <div
-        v-if="boosterState.isShown"
-        class="booster absolute top-[40dvh] left-0 right-0 grid place-items-center z-30"
-      >
+      <div v-if="boosterState.isShown" class="booster absolute top-[40dvh] left-0 right-0 grid place-items-center z-30">
         <div class="bonus">
           <span
             class="text-[8vw] exo-black text-[#edaa38]"
             style="
-              background: linear-gradient(
-                to top left,
-                #ff75c3,
-                #ffa647,
-                #ffe83f,
-                #9fff5b,
-                #70e2ff,
-                #cd93ff
-              );
+              background: linear-gradient(to top left, #ff75c3, #ffa647, #ffe83f, #9fff5b, #70e2ff, #cd93ff);
               -webkit-background-clip: text;
               -webkit-text-fill-color: transparent;
             "
@@ -83,21 +67,8 @@ const store = useMainStore();
 
 // const { useFetch, redirectTo } = store;
 const { battles: locale } = storeToRefs(store.localeStore);
-const {
-  data,
-  сurrentMechanicName,
-  currentTask,
-  currentBattleMode,
-  boostersUsed,
-  challengeTimer,
-} = storeToRefs(store.battleStore);
-const {
-  handleBattleAnswer,
-  startRelax,
-  stopRelax,
-  startChallenge,
-  stopChallenge,
-} = store.battleStore;
+const { data, сurrentMechanicName, currentTask, currentBattleMode, boostersUsed, challengeTimer } = storeToRefs(store.battleStore);
+const { handleBattleAnswer, startRelax, stopRelax, startChallenge, stopChallenge } = store.battleStore;
 
 const bonuses = ref<Bonus[]>([]);
 
@@ -116,13 +87,7 @@ const buttonsBlocked = ref(false);
 
 const mountedMechanic = computed(() => mechMap[сurrentMechanicName.value]);
 
-const onAnswer = async ({
-  isCorrect,
-  answer,
-  event,
-  drawBonus = true,
-  nextTaskDelay,
-}: AnswerProps) => {
+const onAnswer = async ({ isCorrect, answer, event, drawBonus = true, nextTaskDelay }: AnswerProps) => {
   if (isCorrect && drawBonus) {
     drawBonusAnimation(event);
   }
@@ -149,8 +114,6 @@ const drawBonusAnimation = ({ x, y }: { x: number; y: number }) => {
 const onMechanicMounted = () => {
   if (currentBattleMode.value === "relax") {
     startRelax();
-    // setTimeout(() => {
-    // }, 1000);
   } else if (currentBattleMode.value === "challenge") {
     startChallenge();
   }
@@ -159,8 +122,6 @@ const onMechanicMounted = () => {
 const onMechanicUnmounted = () => {
   if (currentBattleMode.value === "relax") {
     stopRelax();
-  } else if (currentBattleMode.value === "challenge") {
-    stopChallenge();
   }
 };
 
@@ -220,9 +181,4 @@ if (currentBattleMode.value === "relax") {
     }
   });
 }
-
-// const onEndChallenge = async () => {
-//   await useFetch({ key: "battle_breakpoint", data: { final: 1 } });
-//   redirectTo("/battle-complete");
-// };
 </script>

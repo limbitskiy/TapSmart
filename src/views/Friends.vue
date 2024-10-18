@@ -115,7 +115,6 @@
       </Button>
       <Button class="!px-4 border border-gray-800" dark @click="onCopyToClipboard"><img :src="getAsset('copy')" /></Button>
     </div>
-    <button @click="onBack">back</button>
   </div>
 </template>
 
@@ -163,7 +162,7 @@ const filteredFriends = computed(() => {
   return friendList;
 });
 
-const onlineFriends = computed(() => data.value.friendList.filter((friend) => friend.isOnline));
+const onlineFriends = computed(() => data.value?.friendList.filter((friend) => friend.isOnline));
 
 const onRefreshFriends = () => {
   fetchFriendsList();
@@ -189,15 +188,6 @@ const onCopyToClipboard = () => {
   if (navigator?.clipboard) {
     navigator.clipboard.writeText(link);
   }
-};
-
-const onBack = () => {
-  // const from = route.query.from;
-  // if (from === "/battle-complete") {
-  //   router.push("/battle-complete?nofetch=true");
-  // } else {
-  redirectTo("/profile");
-  // }
 };
 
 onMounted(() => {
