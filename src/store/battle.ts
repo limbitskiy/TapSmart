@@ -61,6 +61,7 @@ export const useBattleStore = defineStore("battle", () => {
   const challengeTimer = ref();
   let challengeTimerInterval = null;
   const showEndChallengeAnimation = ref(false);
+  const showStartChallengeAnimation = ref(false);
 
   let currentBreakpointInterval = {
     fn: <BreakpointInterval | null>null,
@@ -411,23 +412,28 @@ export const useBattleStore = defineStore("battle", () => {
   const startChallenge = () => {
     console.log(`starting challenge: stats reset`);
 
-    resetBattleStats();
-    battleStarted.value = true;
-    battleStartTime = Date.now();
-    startBreakpoint("battle");
+    showStartChallengeAnimation.value = true;
 
-    challengeTimer.value = data.value?.battle_duration;
+    setTimeout(() => {
+      showStartChallengeAnimation.value = false;
+      challengeTimer.value = data.value?.battle_duration;
 
-    challengeTimerInterval = setInterval(() => {
-      if (challengeTimer.value === 0) {
-        clearInterval(challengeTimerInterval);
-        challengeTimerInterval = null;
-        challengeTimer.value = undefined;
-        stopChallenge();
-        return;
-      }
-      challengeTimer.value -= 1000;
-    }, 1000);
+      resetBattleStats();
+      battleStarted.value = true;
+      battleStartTime = Date.now();
+      startBreakpoint("battle");
+
+      challengeTimerInterval = setInterval(() => {
+        if (challengeTimer.value === 0) {
+          clearInterval(challengeTimerInterval);
+          challengeTimerInterval = null;
+          challengeTimer.value = undefined;
+          stopChallenge();
+          return;
+        }
+        challengeTimer.value -= 1000;
+      }, 1000);
+    }, 4000);
   };
 
   const stopChallenge = async () => {
@@ -484,6 +490,7 @@ export const useBattleStore = defineStore("battle", () => {
     challengeTimer,
     battleStarted,
     showEndChallengeAnimation,
+    showStartChallengeAnimation,
     set,
     expand,
     pauseBattle,

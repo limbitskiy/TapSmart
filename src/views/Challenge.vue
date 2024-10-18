@@ -3,6 +3,8 @@
     <!-- bg pattern & color -->
     <BackgroundImage type="red" />
 
+    <BattleStartAnimation v-if="showStartChallengeAnimation" />
+
     <!-- battle stats -->
     <div class="challenge-stats z-10 flex flex-col gap-2 min-h-[136px]">
       <Transition name="fade">
@@ -37,7 +39,7 @@ import { useMainStore } from "@/store/main";
 const store = useMainStore();
 
 const { fetchChallengePageData } = store;
-const { battleStarted, showEndChallengeAnimation } = storeToRefs(store.battleStore);
+const { showStartChallengeAnimation, showEndChallengeAnimation } = storeToRefs(store.battleStore);
 
 // setThemeColor("#D26542");
 

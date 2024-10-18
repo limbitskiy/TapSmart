@@ -99,7 +99,7 @@ challengeProps.value = route.query;
 
 const store = useMainStore();
 
-const { fetchWaitingData, useFetch, redirectTo } = store;
+const { fetchWaitingData, useFetch, redirectTo, sendInviteAnalitycsData } = store;
 const { data } = storeToRefs(store.battleStore);
 const { startBreakpoint, stopBreakpoint, decreaseWaitingTimer } = store.battleStore;
 const { battles: locale } = storeToRefs(store.localeStore);
@@ -117,6 +117,7 @@ const onAbort = () => {
 };
 
 const onInviteFriend = () => {
+  sendInviteAnalitycsData(route.path);
   inviteFriend(locale.value?.["challenge_message"] || "Invite message");
 };
 

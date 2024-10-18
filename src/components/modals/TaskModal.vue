@@ -12,7 +12,7 @@
       <div class="rewards-inner">
         <div v-if="data.bolts" class="bolts flex gap-2 text-center items-center justify-center">
           <img class="h-6" :src="getAsset('bolt')" />
-          <span class="exo-black text-2xl">{{ data.bolts }}</span>
+          <span class="exo-black text-2xl">{{ showFormattedNumber(data.bolts) }}</span>
         </div>
         <div v-if="data.nuts" class="nuts flex gap-2 text-center items-center justify-center">
           <img class="h-6" :src="getAsset('nut')" />
@@ -22,8 +22,8 @@
     </div>
 
     <div class="tsk-btns flex flex-col gap-2 w-full">
-      <Button v-if="data?.buttons?.top" class="w-full text-white bg-[var(--grey-light)]" activeColor="#525252" :data="data.buttons.top" />
-      <Button v-if="data?.buttons?.bottom" class="w-full" activeColor="#fcdcb0" :data="data.buttons.bottom" />
+      <Button v-if="data?.buttons?.top" class="w-full" activeColor="#525252" :data="data.buttons.top" @click="() => emit('close')" />
+      <Button v-if="data?.buttons?.bottom" class="w-full text-white bg-[var(--grey-light)]" activeColor="#fcdcb0" :data="data.buttons.bottom" @click="() => emit('close')" />
     </div>
   </div>
 </template>
@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted } from "vue";
 import { storeToRefs } from "pinia";
-import { getAsset } from "@/utils/index";
+import { getAsset, showFormattedNumber } from "@/utils";
 
 // stores
 import { useMainStore } from "@/store/main";

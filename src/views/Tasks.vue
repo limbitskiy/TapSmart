@@ -38,19 +38,19 @@
             })"
             :key="task.id"
             class="!py-2 rounded-xl"
-            color="light"
             @click="() => onTaskClick(task)"
+            light
           >
             <div class="content flex gap-2 items-center justify-between">
               <div class="start flex gap-4 items-center">
                 <div class="flex gap-2 items-center p-2">
-                  <img class="h-4 scale-[2]" :src="getAsset('cup')" />
+                  <img class="h-4 scale-[2]" :src="getAsset(task.icon)" />
                 </div>
                 <div class="task-meta">
                   <span class="text-lg fira-regular text-gray-300">{{ task.title }}</span>
                   <div class="reward flex items-center gap-2 ml-1 h-6">
                     <img class="h-4 scale-125" :src="getAsset('bolt')" />
-                    <span class="text-lg exo-bold text-[var(--accent-color)]">+{{ task.bolts }}</span>
+                    <span class="text-lg exo-bold text-[var(--accent-color)]">+{{ showFormattedNumber(task.bolts) }}</span>
                   </div>
                 </div>
               </div>
@@ -65,7 +65,7 @@
 
     <Teleport to="#modals">
       <Modal id="task-modal" v-model:visible="isTaskModal">
-        <TaskModal :data="selectedTask" />
+        <TaskModal :data="selectedTask" @close="() => (isTaskModal = false)" />
       </Modal>
     </Teleport>
   </div>
@@ -74,7 +74,7 @@
 <script setup lang="ts">
 import { computed, ref, onMounted } from "vue";
 import { tg, getUserId } from "@/api/telegram";
-import { getAsset } from "@/utils";
+import { getAsset, showFormattedNumber } from "@/utils";
 import { storeToRefs } from "pinia";
 
 // store

@@ -123,13 +123,15 @@ import { computed, ref, onMounted } from "vue";
 import { generateShareLink, inviteFriend } from "@/api/telegram";
 import { getAsset } from "@/utils";
 import { storeToRefs } from "pinia";
+import { useRoute } from "vue-router";
 
 // store
 import { useMainStore } from "@/store/main";
 
+const route = useRoute();
 const store = useMainStore();
 
-const { fetchFriendsList, redirectTo } = store;
+const { fetchFriendsList, sendInviteAnalitycsData } = store;
 const { friends: data } = storeToRefs(store.dataStore);
 const { friends: locale } = storeToRefs(store.localeStore);
 
@@ -178,6 +180,7 @@ const onBattlesFilter = () => {
 };
 
 const onInviteFriend = () => {
+  sendInviteAnalitycsData(route.path);
   inviteFriend(locale.value?.["invite_message"] || "Invite message");
 };
 

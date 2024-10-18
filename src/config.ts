@@ -1,8 +1,8 @@
 export const images = {
   favicon: "/favicon.svg",
   "avatar-placeholder": "/avatar-placeholder.svg",
+  subscribe_tapsmart: "/subscribe_tapsmart.png",
   battles: "/battles.png",
-  point: "/point.png",
   book: "/book.png",
   friends: "/friends.png",
   leaders: "/leaders.png",
@@ -40,6 +40,10 @@ export const images = {
   rays_purple: "/rays_purple.png",
   bolt_earned: "/bolt_earned.png",
   arrow_right: "/arrow_right.png",
+  play_battle: "/play_battle.png",
+  pass_exam: "/pass_exam.png",
+  status_completed: "/status_completed.png",
+  subscribe_telegram: "/subscribe_telegram.png",
   pattern_paws_blue: "/pattern-paws-blue.png",
 };
 

@@ -82,6 +82,17 @@
   transform: translateY(100%);
 }
 
+// scale-in-out
+.scale-in-out-enter-active,
+.scale-in-out-leave-active {
+  transition: transform 0.3s ease;
+}
+.scale-in-out-enter-from,
+.scale-in-out-leave-to {
+  opacity: 0;
+  transform: scale(0);
+}
+
 // correct text animation
 .correct-text-enter-active {
   animation: bounceIn 0.4s ease-in;

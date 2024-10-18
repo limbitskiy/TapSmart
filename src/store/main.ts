@@ -10,14 +10,7 @@ import { useLocaleStore } from "@/store/locale";
 import { useSoundStore } from "@/store/sound";
 
 // types
-import {
-  NotificationProps,
-  ResponseObject,
-  ResponseData,
-  MainState,
-  TooltipProps,
-  ModalProps,
-} from "@/types";
+import { NotificationProps, ResponseObject, ResponseData, MainState, TooltipProps, ModalProps } from "@/types";
 
 // api
 import { makeRequest } from "@/api/server";
@@ -79,21 +72,19 @@ export const useMainStore = defineStore("main", () => {
   const parseResponse = (response: ResponseObject) => {
     (Object.keys(response) as Array<keyof ResponseObject>).forEach((key) => {
       if (key === "data") {
-        (Object.keys(response.data) as Array<keyof ResponseData>).forEach(
-          (section) => {
-            const sectionData = response.data[section];
+        (Object.keys(response.data) as Array<keyof ResponseData>).forEach((section) => {
+          const sectionData = response.data[section];
 
-            if (sectionData === null) return;
+          if (sectionData === null) return;
 
-            if (section === "notification") {
-              showNotification(sectionData as NotificationProps);
-            } else if (section === "modal") {
-              showModal(sectionData as ModalProps);
-            } else {
-              dataStore.set(section, sectionData);
-            }
+          if (section === "notification") {
+            showNotification(sectionData as NotificationProps);
+          } else if (section === "modal") {
+            showModal(sectionData as ModalProps);
+          } else {
+            dataStore.set(section, sectionData);
           }
-        );
+        });
       } else if (key === "entryPoint" && isAppLoaded.value) {
         redirectTo(response.entryPoint);
       } else if (key === "externalUrl") {
@@ -114,12 +105,7 @@ export const useMainStore = defineStore("main", () => {
     }
   };
 
-  const showNotification = ({
-    title,
-    subtitle,
-    buttons,
-    timeout,
-  }: NotificationProps) => {
+  const showNotification = ({ title, subtitle, buttons, timeout }: NotificationProps) => {
     if (notification.value.isShown) {
       hideNotification();
 
@@ -152,13 +138,7 @@ export const useMainStore = defineStore("main", () => {
     notification.value.fn = null;
   };
 
-  const showTooltip = ({
-    element,
-    text,
-  }: {
-    element: HTMLElement;
-    text: string;
-  }) => {
+  const showTooltip = ({ element, text }: { element: HTMLElement; text: string }) => {
     if (element === tooltip.value.element) {
       return;
     }
@@ -280,6 +260,10 @@ export const useMainStore = defineStore("main", () => {
     return await useFetch({ key: "profile_set", data });
   };
 
+  const sendInviteAnalitycsData = (route) => {
+    return useFetch({ key: "invite_click", data: { route } });
+  };
+
   const useFetch = ({ key, data }: { key?: string; data?: {} }) => {
     if (requestQueue.value.length > 3) return;
 
@@ -368,6 +352,7 @@ export const useMainStore = defineStore("main", () => {
     fetchTasksList,
     fetchBattleCompleteData,
     fetchBattleResultsData,
+    sendInviteAnalitycsData,
     setLanguages,
     initialFetch,
     useFetch,

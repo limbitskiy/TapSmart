@@ -8,11 +8,11 @@ import { storeToRefs } from "pinia";
 import { inviteFriend } from "@/api/telegram";
 
 // store
-import { useLocaleStore } from "@/store/locale";
+import { useMainStore } from "@/store/main";
 
-const localeStore = useLocaleStore();
+const store = useMainStore();
 
-const { friends: locale } = storeToRefs(localeStore);
+const { friends: locale } = storeToRefs(store.localeStore);
 
 inviteFriend(locale.value?.["invite_message"] || "Invite message");
 </script>
