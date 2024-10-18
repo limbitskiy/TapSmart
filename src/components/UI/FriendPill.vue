@@ -1,31 +1,20 @@
 <template>
   <Pill class="!py-3" color="light">
-    <div class="pill-content flex items-center justify-between">
+    <div class="pill-content flex items-center justify-between w-full">
       <!-- <slot name="start"> -->
-      <div class="start flex items-center gap-3">
+      <div class="start flex items-center gap-3 flex-1">
         <!-- avatar -->
         <div class="avatar flex">
           <img class="h-[55px]" :src="getAsset('avatar-placeholder')" />
         </div>
 
         <!-- meta -->
-        <div class="friend-meta flex flex-col justify-between">
-          <!-- name -->
-          <div class="name flex gap-1">
-            <span class="text-lg fira-condensed-bold leading-5">{{ data.name }}</span>
-            <span class="status w-2 h-2 rounded-full" :class="data.isOnline ? 'bg-green-600' : 'bg-gray-400'"></span>
-          </div>
-
-          <!-- title -->
-          <div class="title-money flex items-center gap-2">
-            <span class="text-sm text-[var(--accent-color)]">{{ data.title }}</span>
-          </div>
-
-          <!-- money & score -->
-          <div class="wrap flex items-center gap-4">
-            <div class="money flex items-center gap-1">
-              <img class="scale-75" :src="getAsset('bolt')" />
-              <span class="text-sm exo-bold">{{ shortenNumber(data.bolts) || 0 }}</span>
+        <div class="friend-meta flex flex-col justify-between flex-1">
+          <!-- name + score -->
+          <div class="name-score flex items-center justify-between">
+            <div class="name flex gap-1">
+              <span class="text-lg fira-condensed-bold leading-5">{{ sliceTextAmount(data.name, 15) }}</span>
+              <span class="status w-2 h-2 rounded-full" :class="data.isOnline ? 'bg-green-600' : 'bg-gray-400'"></span>
             </div>
             <div class="scores">
               <div v-show="battleFilter" class="battles-played flex items-center gap-2">
@@ -44,12 +33,29 @@
                     </clipPath>
                   </defs>
                 </svg>
-                <span class="text-sm exo-bold">{{ data.points_earned || 0 }}</span>
+                <span class="text-lg exo-bold">{{ data.points_earned || 0 }}</span>
               </div>
               <div v-show="!battleFilter" class="money-earned flex items-center">
                 <img class="scale-75" :src="getAsset('bolt_earned')" />
-                <span class="text-sm exo-bold">{{ data.bolts_earned || 0 }}</span>
+                <span class="text-lg exo-bold">{{ data.bolts_earned || 0 }}</span>
               </div>
+            </div>
+          </div>
+
+          <!-- title -->
+          <div class="title-money flex items-center gap-2">
+            <span class="text-sm text-[var(--accent-color)]">{{ data.title }}</span>
+          </div>
+
+          <!-- money & score -->
+          <div class="wrap flex items-center gap-4">
+            <div class="money flex items-center gap-1">
+              <img class="scale-75" :src="getAsset('bolt')" />
+              <span class="text-sm exo-bold">{{ shortenNumber(data.bolts) || 0 }}</span>
+            </div>
+            <div class="battle quan flex items-center">
+              <img class="scale-75" :src="getAsset('swords')" />
+              <span class="text-sm exo-bold">{{ data.battle_quan || 0 }}</span>
             </div>
           </div>
         </div>
@@ -61,7 +67,7 @@
 </template>
 
 <script setup lang="ts">
-import { getAsset, shortenNumber } from "@/utils";
+import { getAsset, shortenNumber, sliceTextAmount } from "@/utils";
 
 defineProps<{
   data: {

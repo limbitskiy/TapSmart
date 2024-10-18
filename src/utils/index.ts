@@ -82,3 +82,8 @@ export const replaceWithSpecialSymbols = (text?: string) => {
 
   return result;
 };
+
+export const sliceTextAmount = (text: string, charLength?: number) => {
+  if (!charLength || text.length <= charLength) return text;
+  return text.slice(0, charLength) + "...";
+};
