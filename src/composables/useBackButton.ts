@@ -10,10 +10,11 @@ export const useBackButton = () => {
   tg.BackButton.onClick(() => {
     tg.BackButton.hide();
 
-    console.log(route.query.from);
+    const from = route.query.from;
 
-    if (route.query.from) {
-      console.log(`pushing`);
+    if (from === "/battle-complete") {
+      router.push("/battle-complete?nofetch=true");
+    } else {
       router.push(route.query.from);
     }
   });

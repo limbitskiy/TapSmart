@@ -225,7 +225,7 @@ import { tg, setThemeColor } from "@/api/telegram";
 import constants from "@/constants";
 
 // composables
-import preloadAssets from "@/composables/preloadAssets";
+import preloadAssets from "@/utils/preloadAssets";
 
 // stores
 import { useMainStore } from "@/store/main";

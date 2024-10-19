@@ -17,14 +17,12 @@ import BattleResults from "@/views/BattleResults.vue";
 import BattleComplete from "@/views/BattleComplete.vue";
 import InviteFriend from "@/views/InviteFriend.vue";
 import Waiting from "@/views/Waiting.vue";
-import BattleCompleteAnimation from "@/views/BattleCompleteAnimation.vue";
 
 // battles
 import YesNo from "@/components/battles/YesNo.vue";
 import FourAnswers from "@/components/battles/FourAnswers.vue";
 
 // stores
-import { useDataStore } from "@/store/data";
 import { useMainStore } from "@/store/main";
 
 const routes = [
@@ -108,10 +106,6 @@ const routes = [
   {
     path: "/battle-complete",
     component: BattleComplete,
-  },
-  {
-    path: "/battle-complete-animation",
-    component: BattleCompleteAnimation,
   },
   {
     path: "/battle-results",

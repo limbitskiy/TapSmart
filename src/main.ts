@@ -23,7 +23,7 @@ import Ad from "@/components/UI/Ad.vue";
 import BackgroundPill from "@/components/UI/BackgroundPill.vue";
 import CircleProgress from "@/components/UI/CircleProgress.vue";
 import ChallengeStatus from "@/components/ChallengeStatus.vue";
-import ProgressBar from "@/components/ProgressBar.vue";
+import ChallengeProgressBar from "@/components/ChallengeProgressBar.vue";
 import LanguageSettings from "@/components/LanguageSettings.vue";
 import LeagueProgress from "@/components/LeagueProgress.vue";
 import Notification from "@/components/Notification.vue";
@@ -76,7 +76,7 @@ app
   .component("CircleProgress", CircleProgress)
   .component("Errors", Errors)
   .component("ChallengeStatus", ChallengeStatus)
-  .component("ProgressBar", ProgressBar)
+  .component("ChallengeProgressBar", ChallengeProgressBar)
   .component("LanguageSettings", LanguageSettings)
   .component("LeagueProgress", LeagueProgress)
   .component("Notification", Notification)
