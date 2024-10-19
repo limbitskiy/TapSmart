@@ -83,11 +83,12 @@
           </Button>
         </div>
 
+        <!-- correct answer -->
         <Transition name="correct-text" mode="out-in">
           <div v-if="correctAnswer.shown" class="correct-answer absolute z-20 inset-0 grid place-items-center pointer-events-none mb-8">
             <div class="text flex flex-col items-center justify-center text-center">
               <span class="fira-condensed-black text-red-500 line-clamp-2 leading-10" style="font-size: clamp(28px, 10vw, 42px)">{{ correctAnswer.question }}</span>
-              <span class="fira-condensed-black text-red-400 line-clamp-2 leading-8" style="font-size: clamp(26px, 8vw, 42px)">{{ correctAnswer.answer }}</span>
+              <span class="fira-condensed-black text-red-400 line-clamp-2 leading-9" style="font-size: clamp(26px, 8vw, 42px)">{{ correctAnswer.answer }}</span>
             </div>
           </div>
         </Transition>
