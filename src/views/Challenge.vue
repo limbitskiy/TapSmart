@@ -8,15 +8,15 @@
     <!-- battle stats -->
     <div class="challenge-stats z-10 flex flex-col gap-2 min-h-[136px]">
       <Transition name="fade">
-        <ChallengeStatus />
+        <ChallengeStatus :timer="challengeTimer" />
       </Transition>
       <Transition name="fade">
-        <ProgressBar />
+        <ChallengeProgressBar :timer="challengeTimer" />
       </Transition>
     </div>
 
     <!-- battle mechanic -->
-    <BattleMechanic />
+    <BattleMechanic @mechMounted="onMechMounted" @mechUnmounted="onMechUnmounted" />
 
     <!-- end challenge animation -->
     <Transition name="fade-800">
@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 import { tg, setThemeColor } from "@/api/telegram";
@@ -36,12 +36,61 @@ import { tg, setThemeColor } from "@/api/telegram";
 // stores
 import { useMainStore } from "@/store/main";
 
+console.log(`challenge created`);
+
 const store = useMainStore();
 
-const { fetchChallengePageData } = store;
-const { showStartChallengeAnimation, showEndChallengeAnimation } = storeToRefs(store.battleStore);
+const { fetchChallengePageData, redirectTo } = store;
+const { startChallenge, stopChallenge } = store.battleStore;
+const { data } = storeToRefs(store.battleStore);
 
-// setThemeColor("#D26542");
+// animation flags
+const showEndChallengeAnimation = ref(false);
+const showStartChallengeAnimation = ref(false);
+
+// challenge interval
+const challengeTimer = ref();
+let challengeTimerInterval = null;
 
 await fetchChallengePageData();
+
+const onMechMounted = () => {};
+
+const onMechUnmounted = () => {
+  // optional
+  stopChallenge();
+};
+
+onMounted(() => {
+  console.log(`challenge mounted`);
+
+  showStartChallengeAnimation.value = true;
+
+  setTimeout(() => {
+    showStartChallengeAnimation.value = false;
+    startChallenge();
+
+    challengeTimer.value = data.value?.battle_duration;
+
+    challengeTimerInterval = setInterval(() => {
+      if (challengeTimer.value === 0) {
+        clearInterval(challengeTimerInterval);
+        challengeTimerInterval = null;
+        challengeTimer.value = undefined;
+        showEndChallengeAnimation.value = true;
+        stopChallenge();
+
+        setTimeout(() => {
+          redirectTo("/battle-complete");
+        }, 3000);
+
+        setTimeout(() => {
+          showEndChallengeAnimation.value = false;
+        }, 4000);
+        return;
+      }
+      challengeTimer.value -= 1000;
+    }, 1000);
+  }, 4000);
+});
 </script>

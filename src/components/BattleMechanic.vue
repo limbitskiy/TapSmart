@@ -9,8 +9,6 @@
       :energy="data?.energy"
       :buttonsBlocked="buttonsBlocked"
       @answer="onAnswer"
-      @mounted="onMechanicMounted"
-      @unmounted="onMechanicUnmounted"
     />
     <Loader v-else />
   </Transition>
@@ -42,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 
@@ -56,6 +54,8 @@ import { useMainStore } from "@/store/main";
 import YesNo from "@/components/battles/YesNo.vue";
 import FourAnswers from "@/components/battles/FourAnswers.vue";
 
+console.log(`Battle Mech created`);
+
 interface AnswerProps {
   isCorrect: boolean;
   answer: string;
@@ -67,8 +67,8 @@ const store = useMainStore();
 
 // const { useFetch, redirectTo } = store;
 const { battles: locale } = storeToRefs(store.localeStore);
-const { data, сurrentMechanicName, currentTask, currentBattleMode, boostersUsed, challengeTimer } = storeToRefs(store.battleStore);
-const { handleBattleAnswer, startRelax, stopRelax, startChallenge, stopChallenge } = store.battleStore;
+const { data, сurrentMechanicName, currentTask, currentBattleMode, boostersUsed } = storeToRefs(store.battleStore);
+const { handleBattleAnswer } = store.battleStore;
 
 const bonuses = ref<Bonus[]>([]);
 
@@ -111,20 +111,6 @@ const drawBonusAnimation = ({ x, y }: { x: number; y: number }) => {
   return true;
 };
 
-const onMechanicMounted = () => {
-  if (currentBattleMode.value === "relax") {
-    startRelax();
-  } else if (currentBattleMode.value === "challenge") {
-    startChallenge();
-  }
-};
-
-const onMechanicUnmounted = () => {
-  if (currentBattleMode.value === "relax") {
-    stopRelax();
-  }
-};
-
 const onBoosterUsed = (bonusName: string) => {
   const bonusLocale = locale?.value[`${bonusName}_title`];
   console.log(bonusLocale);
@@ -158,17 +144,17 @@ if (currentBattleMode.value === "challenge") {
     }
   );
 
-  watch(challengeTimer, (val) => {
-    // if (val === 0) {
-    //   setTimeout(() => {
-    //     onEndChallenge();
-    //   }, 500);
-    // }
-    // block buttons before challenge end
-    // if (val === 1000) {
-    //   buttonsBlocked.value = true;
-    // }
-  });
+  // watch(challengeTimer, (val) => {
+  // if (val === 0) {
+  //   setTimeout(() => {
+  //     onEndChallenge();
+  //   }, 500);
+  // }
+  // block buttons before challenge end
+  // if (val === 1000) {
+  //   buttonsBlocked.value = true;
+  // }
+  // });
 }
 
 if (currentBattleMode.value === "relax") {
@@ -181,4 +167,8 @@ if (currentBattleMode.value === "relax") {
     }
   });
 }
+
+onMounted(() => {
+  console.log(`Battle Mech mounted`);
+});
 </script>

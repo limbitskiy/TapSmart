@@ -58,10 +58,6 @@ export const useBattleStore = defineStore("battle", () => {
 
   // challenge vars
   let battleStartTime = null;
-  const challengeTimer = ref();
-  let challengeTimerInterval = null;
-  const showEndChallengeAnimation = ref(false);
-  const showStartChallengeAnimation = ref(false);
 
   let currentBreakpointInterval = {
     fn: <BreakpointInterval | null>null,
@@ -167,6 +163,7 @@ export const useBattleStore = defineStore("battle", () => {
   // breakpoints/timers
   const startTaskTimeout = () => {
     if (!currentMechanic.value?.timeout || currentTaskTimeout.value || !data?.value?.energy || afkCounter.value >= 3) return;
+    // console.log(`starting task timeout`);
 
     const callback = () => {
       stopTaskTimeout();
@@ -185,6 +182,7 @@ export const useBattleStore = defineStore("battle", () => {
 
   const stopTaskTimeout = () => {
     if (currentTaskTimeout.value) {
+      // console.log(`stopping task timeout`);
       currentTaskTimeout.value.stop();
       currentTaskTimeout.value = null;
     }
@@ -327,10 +325,15 @@ export const useBattleStore = defineStore("battle", () => {
 
   // mechanic
   const changeMechanic = async (mechId: number) => {
-    return await mainStore.useFetch({
+    await mainStore.useFetch({
       key: "battle_init",
       data: { battle_type: mechId },
     });
+
+    // start things after new response data recieved
+    stopTaskTimeout();
+    startTaskTimeout();
+    return;
   };
 
   const getMechanicName = (mechId: number): string => battleTypes[mechId];
@@ -412,28 +415,10 @@ export const useBattleStore = defineStore("battle", () => {
   const startChallenge = () => {
     console.log(`starting challenge: stats reset`);
 
-    showStartChallengeAnimation.value = true;
-
-    setTimeout(() => {
-      showStartChallengeAnimation.value = false;
-      challengeTimer.value = data.value?.battle_duration;
-
-      resetBattleStats();
-      battleStarted.value = true;
-      battleStartTime = Date.now();
-      startBreakpoint("battle");
-
-      challengeTimerInterval = setInterval(() => {
-        if (challengeTimer.value === 0) {
-          clearInterval(challengeTimerInterval);
-          challengeTimerInterval = null;
-          challengeTimer.value = undefined;
-          stopChallenge();
-          return;
-        }
-        challengeTimer.value -= 1000;
-      }, 1000);
-    }, 4000);
+    resetBattleStats();
+    battleStarted.value = true;
+    battleStartTime = Date.now();
+    startBreakpoint("battle");
   };
 
   const stopChallenge = async () => {
@@ -445,16 +430,7 @@ export const useBattleStore = defineStore("battle", () => {
     battleStartTime = null;
     stopBreakpoint();
 
-    showEndChallengeAnimation.value = true;
     await mainStore.useFetch({ key: "battle_breakpoint", data: { final: 1 } });
-
-    setTimeout(() => {
-      mainStore.redirectTo("/battle-complete");
-    }, 3000);
-
-    setTimeout(() => {
-      showEndChallengeAnimation.value = false;
-    }, 4000);
   };
 
   const startRelax = () => {
@@ -487,10 +463,7 @@ export const useBattleStore = defineStore("battle", () => {
     currentBattleType,
     afkCounter,
     сurrentMechanicName,
-    challengeTimer,
     battleStarted,
-    showEndChallengeAnimation,
-    showStartChallengeAnimation,
     set,
     expand,
     pauseBattle,

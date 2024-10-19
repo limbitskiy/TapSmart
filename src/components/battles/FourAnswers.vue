@@ -92,7 +92,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, watch } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 
@@ -105,8 +105,6 @@ const emit = defineEmits<{
       drawBonus: boolean;
     }
   ];
-  mounted: [];
-  unmounted: [];
 }>();
 
 const props = defineProps<{
@@ -137,6 +135,8 @@ const correctAnswer = ref({
   answer: "",
   timeout: null,
 });
+
+console.log(`4answers created`);
 
 const handleAnswer = (answer: string, event) => {
   if (props.type === "relax" && props.energy <= 0) return;
@@ -196,10 +196,6 @@ watch(
 );
 
 onMounted(() => {
-  emit("mounted");
-});
-
-onBeforeUnmount(() => {
-  emit("unmounted");
+  console.log(`4answers mounted`);
 });
 </script>

@@ -3,7 +3,9 @@
     <RouterView v-slot="{ Component }">
       <template v-if="Component">
         <Transition name="fade" mode="out-in">
-          <Suspense suspensible timeout="1000">
+          <!-- makes relax render twice -->
+          <!-- <Suspense suspensible timeout="1000"> -->
+          <Suspense timeout="1000">
             <component :is="Component" />
             <template #fallback>
               <Loader />

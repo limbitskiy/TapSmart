@@ -98,7 +98,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { getAsset } from "@/utils";
 
 const emit = defineEmits<{
@@ -110,8 +110,6 @@ const emit = defineEmits<{
       drawBonus: boolean;
     }
   ];
-  mounted: [];
-  unmounted: [];
 }>();
 
 const props = defineProps<{
@@ -138,6 +136,8 @@ const correctAnswer = ref({
   answer: "",
   timeout: null,
 });
+
+console.log(`yes-no created`);
 
 const handleAnswer = (answer: string, event, type) => {
   if (props.type === "relax" && props.energy <= 0) return;
@@ -185,10 +185,6 @@ const handleAnswer = (answer: string, event, type) => {
 };
 
 onMounted(() => {
-  emit("mounted");
-});
-
-onBeforeUnmount(() => {
-  emit("unmounted");
+  console.log(`yes-no mounted`);
 });
 </script>

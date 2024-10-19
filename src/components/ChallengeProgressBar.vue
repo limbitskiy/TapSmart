@@ -38,6 +38,7 @@
     <!-- main progress -->
     <div ref="gaugeRef" class="gauge h-2 bg-[var(--grey-light)] rounded-full w-full">
       <div ref="progressRef" class="gauge-value h-2 bg-[var(--accent-color)] rounded-full" :style="{ width: progressPercent + '%', transition: '1s linear' }"></div>
+      <!-- <span>{{ progressPercent }}</span> -->
     </div>
 
     <!-- player -->
@@ -68,12 +69,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, computed } from "vue";
+import { ref, watch, onMounted, computed, onUpdated } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "../utils";
 
 // stores
 import { useMainStore } from "@/store/main";
+
+const props = defineProps<{
+  timer?: number;
+}>();
 
 const colors = {
   0: "F01515",
@@ -88,7 +93,7 @@ const colors = {
 
 const store = useMainStore();
 
-const { data, challengeTimer } = storeToRefs(store.battleStore);
+const { data } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
 
 const gaugeRef = ref();
@@ -96,43 +101,8 @@ const progressRef = ref();
 
 const positions = ref([]);
 
+// reset previous battle players progress
 data.value["player_progress"] = null;
-
-watch(
-  challengeTimer,
-  () => {
-    const players = data.value?.["player_progress"];
-
-    if (!players) return;
-
-    const highestScore = players.sort((a, b) => b.score - a.score)[0].score;
-    const secId = (data?.value?.["battle_duration"] - challengeTimer.value) / 1000;
-
-    players.forEach((player) => {
-      const playerPosition = positions.value.find((position) => position?.id === player?.id);
-
-      if (!playerPosition) {
-        positions.value.push({ ...player, progress: 0 });
-        return;
-      }
-
-      if (player.score === 0) return;
-
-      if (player.score === highestScore) {
-        playerPosition.progress = secId;
-        playerPosition.score = player.score;
-        return;
-      }
-
-      // X_new = X + (S_new - S) / (S_leader_new - S) * (Sec_id - X)
-      playerPosition.progress += ((player.score - playerPosition.score) / (highestScore - playerPosition.score)) * (secId - playerPosition.progress);
-      playerPosition.score = player.score;
-    });
-  },
-  {
-    deep: true,
-  }
-);
 
 const computedPlayer = computed(() => positions.value.find((position) => position?.isPlayer));
 const computedEnemies = computed(() => {
@@ -141,7 +111,7 @@ const computedEnemies = computed(() => {
   } else return [{ id: 999, progress: 0 }];
 });
 
-const progressPercent = computed(() => ((data.value?.["battle_duration"] - challengeTimer.value) * 100) / data.value?.["battle_duration"]);
+const progressPercent = computed(() => ((data.value?.["battle_duration"] - props.timer) * 100) / data.value?.["battle_duration"]);
 
 const computedPlayerProgress = computed(() => {
   const coef = gaugeRef.value?.getBoundingClientRect()?.width / (data?.value?.["battle_duration"] / 1000);
@@ -160,4 +130,36 @@ const getEnemyPosition = (enemy) => {
 const getMarkerColor = (id: string) => {
   return "#" + colors[+id];
 };
+
+onUpdated(() => {
+  // console.log(`change`);
+
+  const players = data.value?.["player_progress"];
+
+  if (!players) return;
+
+  const highestScore = players.sort((a, b) => b.score - a.score)[0].score;
+  const secId = (data?.value?.["battle_duration"] - props.timer) / 1000;
+
+  players.forEach((player) => {
+    const playerPosition = positions.value.find((position) => position?.id === player?.id);
+
+    if (!playerPosition) {
+      positions.value.push({ ...player, progress: 0 });
+      return;
+    }
+
+    if (player.score === 0) return;
+
+    if (player.score === highestScore) {
+      playerPosition.progress = secId;
+      playerPosition.score = player.score;
+      return;
+    }
+
+    // X_new = X + (S_new - S) / (S_leader_new - S) * (Sec_id - X)
+    playerPosition.progress += ((player.score - playerPosition.score) / (highestScore - playerPosition.score)) * (secId - playerPosition.progress);
+    playerPosition.score = player.score;
+  });
+});
 </script>

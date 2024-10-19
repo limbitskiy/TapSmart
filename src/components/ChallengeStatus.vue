@@ -8,7 +8,7 @@
 
     <!-- timer -->
     <div class="timer flex text-4xl">
-      <span>{{ formattedTime(challengeTimer) ?? "00:00" }}</span>
+      <span>{{ formattedTime(timer) ?? "00:00" }}</span>
     </div>
 
     <!-- place -->
@@ -28,9 +28,13 @@ import { formattedTime } from "@/utils";
 // stores
 import { useMainStore } from "@/store/main";
 
+const { timer = 0 } = defineProps<{
+  timer?: number;
+}>();
+
 const store = useMainStore();
 
-const { data, challengeScore: score, challengeTimer } = storeToRefs(store.battleStore);
+const { data, challengeScore: score } = storeToRefs(store.battleStore);
 const { calculateCalcPoint } = store.battleStore;
 
 const el = ref();

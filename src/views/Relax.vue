@@ -63,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, onMounted, onBeforeMount, onUnmounted } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 import { tg, setThemeColor } from "@/api/telegram";
@@ -72,12 +72,14 @@ import { useWindowSize } from "@vueuse/core";
 // stores
 import { useMainStore } from "@/store/main";
 
+console.log(`relax created`);
+
 const store = useMainStore();
 
 const { fetchRelaxPageData } = store;
 const { battles: locale } = storeToRefs(store.localeStore);
 const { data, afkCounter } = storeToRefs(store.battleStore);
-const { setRelaxModal } = store.battleStore;
+const { startRelax, stopRelax, setRelaxModal } = store.battleStore;
 
 const isChangeMechModalVisible = ref(false);
 const isNoEnergyVisible = ref(false);
@@ -85,7 +87,7 @@ const isBoostersModalVisible = ref(false);
 
 setThemeColor("#222");
 
-fetchRelaxPageData();
+await fetchRelaxPageData();
 
 const isAFKModalVisible = computed(() => afkCounter.value >= 3);
 
@@ -131,4 +133,14 @@ const openBoosterModal = () => {
 const onAfkModalClose = () => {
   afkCounter.value = 0;
 };
+
+onMounted(() => {
+  console.log(`relax mounted`);
+
+  startRelax();
+});
+
+onUnmounted(() => {
+  stopRelax();
+});
 </script>
