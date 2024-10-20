@@ -106,7 +106,17 @@ const { battles: locale } = storeToRefs(store.localeStore);
 
 const startBtnBlocked = ref(false);
 
-await fetchWaitingData(route.query ? { routeData: route.query } : challengeProps.value);
+let payload = {};
+
+// const params = Object.fromEntries(new URLSearchParams(route.query));
+
+if (route.query.mode) {
+  payload.routeData = route.query;
+} else {
+  payload = route.query;
+}
+
+await fetchWaitingData(payload);
 
 let interval: ReturnType<typeof setInterval> | undefined;
 
