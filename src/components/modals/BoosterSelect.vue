@@ -165,7 +165,7 @@
     <div class="bottom-btns flex flex-col gap-2">
       <Button
         class="flex-1 py-4 rounded-lg"
-        :style="onlineFriends.length ? 'background-color: black; color: white' : 'background-color: var(--accent-color); color: black'"
+        :style="data?.['friends_online'] ? 'background-color: black; color: white' : 'background-color: var(--accent-color); color: black'"
         activeColor="#5a5a5a"
         @click="onStartBattle"
       >
@@ -173,10 +173,10 @@
           <span class="text-xl leading-4">{{ locale?.["button_booster_select"] || "Challenge" }}</span>
         </div>
       </Button>
-      <Button class="" :class="onlineFriends.length ? '' : '!bg-black !text-white'" :badge="onlineFriends" @click="() => onStartBattle({ friendsOnly: true })">
+      <Button class="" :class="data?.['friends_online'] ? '' : '!bg-black !text-white'" @click="() => onStartBattle({ friendsOnly: true })">
         <div class="flex gap-1 justify-center">
           <span class="">{{ locale?.["button_booster_friends"] || "Challenge friends" }}</span>
-          <Badge class="bg-green-500" :data="onlineFriends?.length" grey />
+          <Badge class="bg-green-500" :data="data?.['friends_online']" grey />
         </div>
       </Button>
     </div>
@@ -200,8 +200,6 @@ const pickedBonuses = ref({
 const store = useMainStore();
 
 const { getOnlineFriends, redirectTo } = store;
-const { onlineFriends } = store.dataStore;
-// const { stopBreakpoint, startBreakpoint } = store.battleStore;
 const { battles: locale } = storeToRefs(store.localeStore);
 const { data } = storeToRefs(store.battleStore);
 

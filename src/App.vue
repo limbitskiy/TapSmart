@@ -23,7 +23,7 @@
 
     <Teleport to="#modals">
       <Transition name="toast-slide">
-        <Notification v-if="notification.isShown" />
+        <Notification v-if="notification.isShown" :data="notification" :hideNotification="hideNotification" />
       </Transition>
     </Teleport>
 
@@ -55,6 +55,7 @@ const { top, right, bottom, left } = useScreenSafeArea();
 
 const store = useMainStore();
 
+const { hideNotification } = store;
 const { notification, tooltip, modal } = storeToRefs(store);
 const { pauseBattle, resumeBattle } = store.battleStore;
 

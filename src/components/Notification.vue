@@ -21,34 +21,22 @@
         </svg>
       </div>
       <div class="text flex flex-col">
-        <span class="text-xl fira-condensed-bold text-gray-100">{{ notification.title }}</span>
-        <span class="fira-condensed text-sm inline-svg svg-top-margin my-1" v-html="replaceWithSpecialSymbols(notification.subtitle)"></span>
+        <span class="text-xl fira-condensed-bold text-gray-100">{{ data.title }}</span>
+        <span class="fira-condensed text-sm inline-svg svg-top-margin my-1" v-html="replaceWithSpecialSymbols(data.subtitle)"></span>
       </div>
     </div>
 
     <!-- buttons -->
     <div class="btns flex justify-end gap-8 px-2">
-      <Button
-        v-if="!notification.buttons?.left?.hidden"
-        class="text-base text-[var(--red-color)]"
-        :data="notification.buttons.left"
-        :defaultAction="hideNotification"
-        unstyled
-      ></Button>
-      <Button
-        v-if="!notification.buttons?.right?.hidden"
-        class="text-base text-[var(--green-color)]"
-        :data="notification.buttons.right"
-        :defaultAction="hideNotification"
-        unstyled
-      ></Button>
+      <Button v-if="!data.buttons?.left?.hidden" class="text-base text-[var(--red-color)]" :data="data.buttons.left" :defaultAction="hideNotification" unstyled></Button>
+      <Button v-if="!data.buttons?.right?.hidden" class="text-base text-[var(--green-color)]" :data="data.buttons.right" :defaultAction="hideNotification" unstyled></Button>
     </div>
 
     <!-- timeout progress -->
     <div
       class="timeout-progress h-[2px] bg-red-500 absolute left-0 bottom-0 right-0 rounded"
       style="transform-origin: left"
-      :style="{ transition: `transform ${timeout}s linear`, transform: start ? 'scaleX(0)' : null }"
+      :style="{ transition: `transform ${timeout}s linear`, transform: `scaleX(${scaleX})` }"
     ></div>
   </div>
 </template>
@@ -59,22 +47,27 @@ import { onMounted, ref, computed } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset, replaceWithSpecialSymbols } from "@/utils";
 
+const props = defineProps<{
+  data: {};
+  hideNotification: () => void;
+}>();
+
 // store
-import { useMainStore } from "@/store/main";
+// import { useMainStore } from "@/store/main";
 
-const start = ref(false);
-const timeout = computed(() => notification.value?.timeout / 1000);
+const start = ref(true);
+const timeout = computed(() => props.data?.timeout / 1000);
+const scaleX = computed(() => (timeout.value ? 0 : 100));
 
-const store = useMainStore();
-const { notification } = storeToRefs(store);
-const { hideNotification } = store;
+// const store = useMainStore();
+// const { notification } = storeToRefs(store);
+// const { hideNotification } = store;
 
 onMounted(() => {
   // console.log(`notification mounted`);
   // console.log(`timeout: `, notification.value.timeout);
-
-  setTimeout(() => {
-    start.value = true;
-  }, 100);
+  // start.value = true;
+  // setTimeout(() => {
+  // }, 100);
 });
 </script>

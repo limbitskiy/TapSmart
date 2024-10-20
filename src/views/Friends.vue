@@ -87,7 +87,7 @@
 
       <template v-if="data?.friendList?.length">
         <div class="switches flex justify-start gap-3">
-          <Button class="!py-0 !px-3 !rounded-lg" :class="filters.online ? '' : 'bg-gray-500 text-white'" :badge="onlineFriends" @click="onOnlineFilter">
+          <Button class="!py-0 !px-3 !rounded-lg" :class="filters.online ? '' : 'bg-gray-500 text-white'" @click="onOnlineFilter">
             <div class="flex gap-1">
               <span class="fira-regular text-base">{{ locale?.["online"] }}</span>
               <Badge :data="onlineFriends.length" :dark="filters.online" :grey="!filters.online" />
