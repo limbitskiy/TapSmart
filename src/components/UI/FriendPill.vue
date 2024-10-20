@@ -1,5 +1,5 @@
 <template>
-  <Pill class="!py-3" color="light">
+  <Pill class="!py-2">
     <div class="pill-content flex items-center justify-between w-full">
       <!-- <slot name="start"> -->
       <div class="start flex items-center gap-3 flex-1">
@@ -13,7 +13,7 @@
           <!-- name + score -->
           <div class="name-score flex items-center justify-between">
             <div class="name flex gap-1">
-              <span class="text-lg fira-condensed-bold leading-5">{{ sliceTextAmount(data.name, 15) }}</span>
+              <span class="fira-condensed-bold leading-5">{{ sliceTextAmount(data.name, 15) }}</span>
               <span class="status w-2 h-2 rounded-full" :class="data.isOnline ? 'bg-green-600' : 'bg-gray-400'"></span>
             </div>
             <div class="scores">
@@ -33,11 +33,11 @@
                     </clipPath>
                   </defs>
                 </svg>
-                <span class="text-lg exo-bold">{{ data.points_earned || 0 }}</span>
+                <span class="exo-bold">{{ shortenNumber(data.points_earned) || 0 }}</span>
               </div>
               <div v-show="!battleFilter" class="money-earned flex items-center">
                 <img class="scale-75" :src="getAsset('bolt_earned')" />
-                <span class="text-lg exo-bold">{{ data.bolts_earned || 0 }}</span>
+                <span class="exo-bold">{{ shortenNumber(data.bolts_earned) || 0 }}</span>
               </div>
             </div>
           </div>

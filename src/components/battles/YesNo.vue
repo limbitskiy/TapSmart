@@ -4,7 +4,7 @@
       <div class="header flex items-center justify-between mb-4">
         <div class="mech-title flex gap-1 items-center">
           <img class="h-8" :src="getAsset(`mech_1`)" />
-          <span class="fira-regular text-lg text-[#B7B7B7]">{{ locale?.[`yesno_title`] || "Yes-no" }} battle</span>
+          <span class="fira-regular text-lg text-[#B7B7B7]">{{ locale?.[`yesno_title`] || "Yes-no" }}</span>
         </div>
         <div class="right flex items-center gap-3">
           <CircleCountdown v-if="type === 'relax'" :strokeWidth="2" color="grey" :size="20" />

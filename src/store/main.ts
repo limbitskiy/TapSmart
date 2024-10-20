@@ -85,8 +85,8 @@ export const useMainStore = defineStore("main", () => {
             dataStore.set(section, sectionData);
           }
         });
-      } else if (key === "entryPoint" && isAppLoaded.value) {
-        redirectTo(response.entryPoint);
+      } else if (key === "route" && isAppLoaded.value) {
+        redirectTo(response.route);
       } else if (key === "externalUrl") {
         location.href = response.externalUrl;
       } else {
@@ -98,10 +98,10 @@ export const useMainStore = defineStore("main", () => {
   const startApp = () => {
     isAppLoaded.value = true;
 
-    const entryPoint = state.value.entryPoint;
+    const route = state.value.route;
 
-    if (entryPoint) {
-      redirectTo(entryPoint);
+    if (route) {
+      redirectTo(route);
     }
   };
 

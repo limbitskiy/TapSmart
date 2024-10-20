@@ -74,7 +74,7 @@
     </BackgroundPill>
 
     <!-- friends -->
-    <BackgroundPill class="py-8 relative">
+    <BackgroundPill class="flex flex-col gap-4 py-8 relative">
       <div class="header flex items-center justify-between">
         <div class="title flex items-center gap-2">
           <span class="bg-pill-title">{{ locale?.["friends_title"] }}</span>
@@ -86,7 +86,7 @@
       </div>
 
       <template v-if="data?.friendList?.length">
-        <div class="switches flex justify-start gap-3 mt-4">
+        <div class="switches flex justify-start gap-3">
           <Button class="!py-0 !px-3 !rounded-lg" :class="filters.online ? '' : 'bg-gray-500 text-white'" :badge="onlineFriends" @click="onOnlineFilter">
             <div class="flex gap-1">
               <span class="fira-regular text-base">{{ locale?.["online"] }}</span>
@@ -98,7 +98,7 @@
           </Button>
         </div>
 
-        <TransitionGroup class="friend-list flex flex-col gap-4 my-4" name="list" tag="div">
+        <TransitionGroup class="friend-list flex flex-col gap-2" name="list" tag="div">
           <FriendPill v-for="friend in filteredFriends" :key="friend.id" :data="friend" :battleFilter="filters.battles" />
         </TransitionGroup>
       </template>
