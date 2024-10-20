@@ -15,7 +15,7 @@
       <div class="flex-1 flex flex-col">
         <!-- task -->
         <div class="task-cnt flex-1 flex flex-col">
-          <div class="task-content grid grid-rows-[40px_auto_56px] flex-1 justify-items-center">
+          <div class="task-content grid grid-rows-[40px_auto_56px] flex-1 justify-items-center px-2">
             <div class="task-title-cnt flex flex-col justify-center">
               <Pill class="!py-2 rounded-xl bg-[#222]">
                 <span class="question-title text-center">{{ locales?.["mechanics_1_task"] || "Is this translation correct??" }}</span>

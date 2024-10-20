@@ -32,6 +32,7 @@ export const useMainStore = defineStore("main", () => {
     text: null,
     element: null,
     isShown: false,
+    timeout: null,
   });
 
   const modal = ref<ModalProps>({
@@ -155,11 +156,11 @@ export const useMainStore = defineStore("main", () => {
     hideTooltip();
 
     setTimeout(() => {
+      clearTimeout(tooltip.value.timeout);
       tooltip.value.text = text;
       tooltip.value.element = element;
       tooltip.value.isShown = true;
-
-      setTimeout(hideTooltip, 5000);
+      tooltip.value.timeout = setTimeout(hideTooltip, 5000);
     }, 100);
   };
 

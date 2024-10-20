@@ -99,12 +99,14 @@ challengeProps.value = route.query;
 
 const store = useMainStore();
 
-const { fetchWaitingData, useFetch, redirectTo, sendInviteAnalitycsData } = store;
+const { fetchWaitingData, useFetch, redirectTo, sendInviteAnalitycsData, hideNotification } = store;
 const { data } = storeToRefs(store.battleStore);
 const { startBreakpoint, stopBreakpoint, decreaseWaitingTimer } = store.battleStore;
 const { battles: locale } = storeToRefs(store.localeStore);
 
 const startBtnBlocked = ref(false);
+
+hideNotification();
 
 await fetchWaitingData(route.query);
 

@@ -94,6 +94,7 @@ export interface TooltipProps {
   text: null | string;
   element: null | HTMLElement;
   isShown: boolean;
+  timeout: ReturnType<typeof setTimeout>;
 }
 
 export interface ModalProps {

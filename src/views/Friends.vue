@@ -18,7 +18,7 @@
               <span class="text-lg pill-title">{{ locale?.["premium_pill_title"] }}</span>
               <div class="flex items-center gap-2 h-4 mb-1">
                 <img class="h-4 scale-150" :src="getAsset('bolt')" />
-                <span class="text-gray-400 exo-bold" v-html="locale?.['premium_pill_subtitle']"></span>
+                <span class="exo-black" v-html="locale?.['premium_pill_subtitle']"></span>
               </div>
             </div>
           </template>
@@ -34,7 +34,7 @@
               <span class="text-lg pill-title">{{ locale?.["tg_pill_title"] }}</span>
               <div class="flex items-center gap-2 h-4 mb-1">
                 <img class="h-4 scale-150" :src="getAsset('bolt')" />
-                <span class="text-gray-400 exo-bold" v-html="locale?.['tg_pill_subtitle']"></span>
+                <span class="exo-black" v-html="locale?.['tg_pill_subtitle']"></span>
               </div>
             </div>
           </template>
@@ -52,7 +52,7 @@
             <span class="text-lg text-gray-300">{{ locale?.["bolts_earned"] || "Bolts earned" }}</span>
             <div class="price flex gap-2 items-center">
               <img class="h-4 scale-150" :src="getAsset('bolt')" />
-              <span class="text-lg font-bold exo-bold">{{ data?.["income"] || 0 }}</span>
+              <span class="text-lg font-bold exo-bold">{{ shortenNumber(data?.["income"]) || 0 }}</span>
             </div>
           </div>
         </Pill>
@@ -121,7 +121,7 @@
 <script setup lang="ts">
 import { computed, ref, onMounted } from "vue";
 import { generateShareLink, inviteFriend } from "@/api/telegram";
-import { getAsset } from "@/utils";
+import { getAsset, shortenNumber } from "@/utils";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 
