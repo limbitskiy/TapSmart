@@ -204,6 +204,10 @@
   transform: translateY(-100%);
 }
 
+.timeout-progress.started {
+  transform: scaleX(0);
+}
+
 // friends-list
 .list-move,
 .list-enter-active,

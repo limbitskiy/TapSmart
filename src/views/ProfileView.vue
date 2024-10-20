@@ -248,7 +248,21 @@ const { profile: locale } = storeToRefs(store.localeStore);
 const router = useRouter();
 const route = useRoute();
 
-useBackButton();
+// useBackButton();
+
+tg.BackButton.show();
+
+tg.BackButton.onClick(() => {
+  tg.BackButton.hide();
+
+  const from = route.query.from;
+
+  if (from === "/battle-complete") {
+    router.push("/battle-complete?nofetch=true");
+  } else {
+    router.push(route.query.from);
+  }
+});
 
 await fetchProfilePageData();
 

@@ -31,14 +31,6 @@ export const useDataStore = defineStore("data", () => {
   const leaders = computed(() => state.value.leaders);
   const market = computed(() => state.value.market);
 
-  const onlineFriends = computed(() => {
-    if (!state.value.friends?.friendList) {
-      return [];
-    } else {
-      return state.value.friends?.friendList?.filter((friend) => friend.isOnline);
-    }
-  });
-
   const set = (section: DataSections, data: { locale: {}; store: {}; expand: {} }) => {
     if (data.locale) {
       locale.set(section, data.locale);
@@ -79,5 +71,5 @@ export const useDataStore = defineStore("data", () => {
     state.value.settings[key] = value;
   };
 
-  return { menu, tutorial, profile, battles, friends, settings, tasks, leaders, market, onlineFriends, set, setSettings, addBolts };
+  return { menu, tutorial, profile, battles, friends, settings, tasks, leaders, market, set, setSettings, addBolts };
 });

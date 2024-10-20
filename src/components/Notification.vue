@@ -1,6 +1,6 @@
 <template>
   <div
-    class="notification flex flex-col text-lg fixed top-0 left-0 right-0 p-4 text-white transition-transform z-50"
+    class="notification flex flex-col justify-between text-lg fixed top-0 left-0 right-0 h-[22dvh] p-4 text-white transition-transform z-50"
     style="background: linear-gradient(103.32deg, #353535 6.07%, #1a1a1a 98.61%)"
   >
     <!-- title & subtitle -->
@@ -34,17 +34,16 @@
 
     <!-- timeout progress -->
     <div
-      class="timeout-progress h-[2px] bg-red-500 absolute left-0 bottom-0 right-0 rounded"
+      class="timeout-progress h-[3px] bg-[#bc3c3c] absolute left-0 bottom-0 right-0 rounded"
+      :class="{ started: started }"
       style="transform-origin: left"
-      :style="{ transition: `transform ${timeout}s linear`, transform: `scaleX(${scaleX})` }"
+      :style="{ transition: `transform ${data.timeout - 100}ms linear` }"
     ></div>
   </div>
 </template>
 
 <script setup lang="ts">
-// :style="{ transition: `transform ${timeout}s linear`, transform: start ? 'scaleX(0)' : null }"
 import { onMounted, ref, computed } from "vue";
-import { storeToRefs } from "pinia";
 import { getAsset, replaceWithSpecialSymbols } from "@/utils";
 
 const props = defineProps<{
@@ -52,22 +51,13 @@ const props = defineProps<{
   hideNotification: () => void;
 }>();
 
-// store
-// import { useMainStore } from "@/store/main";
-
-const start = ref(true);
-const timeout = computed(() => props.data?.timeout / 1000);
-const scaleX = computed(() => (timeout.value ? 0 : 100));
-
-// const store = useMainStore();
-// const { notification } = storeToRefs(store);
-// const { hideNotification } = store;
+const started = ref(false);
 
 onMounted(() => {
   // console.log(`notification mounted`);
   // console.log(`timeout: `, notification.value.timeout);
-  // start.value = true;
-  // setTimeout(() => {
-  // }, 100);
+  setTimeout(() => {
+    started.value = true;
+  }, 100);
 });
 </script>
