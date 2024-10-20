@@ -54,9 +54,12 @@ const onClick = () => {
   hideTooltip();
 };
 
-const onScroll = () => {
-  hideTooltip();
-};
+// const onScroll = () => {
+//   console.log(`scroll
+//   `);
+
+//   hideTooltip();
+// };
 
 onMounted(() => {
   // original tooltip position! probably not the same after all checks
@@ -89,10 +92,10 @@ onMounted(() => {
 
   params.value.center = triangleDeltaX + elementRect.width / 2;
 
-  document.querySelector("#app")?.addEventListener("scroll", onScroll);
+  // document.querySelector("#app")?.addEventListener("scroll", onScroll);
 });
 
 onBeforeUnmount(() => {
-  removeEventListener("scroll", onScroll);
+  // removeEventListener("scroll", onScroll);
 });
 </script>
