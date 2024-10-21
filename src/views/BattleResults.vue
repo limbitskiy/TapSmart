@@ -68,7 +68,9 @@ const { fetchBattleResultsData } = store;
 const { data } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
 
-await fetchBattleResultsData(route.query);
+if (!route.query.nofetch) {
+  await fetchBattleResultsData(route.query);
+}
 
 const colors = {
   0: "F01515",
