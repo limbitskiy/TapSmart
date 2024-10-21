@@ -5,18 +5,10 @@
     :class="[
       'generic-btn',
       !unstyled && 'rounded-xl font-bold py-3 px-8 text-xl leading-6',
-      dark
-        ? 'bg-black'
-        : grey
-        ? 'bg-[var(--grey-light)]'
-        : !unstyled && 'bg-[var(--accent-color)] text-black',
+      dark ? 'bg-black' : grey ? 'bg-[var(--grey-light)]' : !unstyled && 'bg-[var(--accent-color)] text-black',
       font ? font : 'fira-bold',
       data?.disabled ?? disabled ? '!bg-gray-500 bg-none' : '',
-      data?.accent === 'orange'
-        ? 'bg-[var(--accent-color)] text-black'
-        : data?.accent === 'purple'
-        ? 'bg-gradient-to-r from-[#408CFF] to-[#894899] text-white'
-        : '',
+      data?.accent === 'orange' ? 'bg-[var(--accent-color)] text-black' : data?.accent === 'purple' ? 'bg-gradient-to-r from-[#408CFF] to-[#894899] text-white' : '',
     ]"
     :disabled="data?.disabled ?? disabled"
     @touchstart="btnTouchstart"
@@ -24,11 +16,7 @@
     @click="onClick"
   >
     <slot>
-      <span
-        :class="[font, 'inline-svg']"
-        v-if="data?.label"
-        v-html="replaceWithSpecialSymbols(data.label)"
-      />
+      <span :class="[font, 'inline-svg']" v-if="data?.label" v-html="replaceWithSpecialSymbols(data.label)" />
     </slot>
   </button>
 </template>
@@ -50,8 +38,8 @@ interface ButtonProps {
   api?: string;
   data?: {};
   label: string;
-  isClose: boolean;
-  showModal: { title: string; subtitle: string; buttons: {} };
+  // isClose: boolean;
+  // showModal: { title: string; subtitle: string; buttons: {} };
   accent: "orange" | "purple";
   action?: "invite";
 }
@@ -65,9 +53,10 @@ const { friends: friendsLocale } = storeToRefs(store.localeStore);
 
 const {
   redirectTo,
-  callApiSync,
-  setRouteData,
-  showModal,
+  useFetch,
+  // callApiSync,
+  // setRouteData,
+  // showModal,
   sendInviteAnalitycsData,
 } = store;
 
@@ -85,7 +74,7 @@ const props = defineProps<{
   activeColor?: string;
   unstyled?: boolean;
   disabled?: boolean;
-  defaultAction?: () => void;
+  // defaultAction?: () => void;
 }>();
 
 const onClick = () => {
@@ -95,24 +84,23 @@ const onClick = () => {
   }
 
   if (props.data?.api) {
-    callApiSync({ api: props.data.api, data: props.data.data });
+    useFetch({ key: props.data.api, data: props.data.data });
   }
 
   if (props.data?.route) {
-    if (props.data?.routeData) {
-      setRouteData(props.data?.routeData);
-    }
-
     redirectTo(props.data.route);
+    // if (props.data?.routeData) {
+    //   setRouteData(props.data?.routeData);
+    // }
   }
 
-  if (props.defaultAction) {
-    props.defaultAction();
-  }
+  // if (props.defaultAction) {
+  //   props.defaultAction();
+  // }
 
-  if (props.data?.showModal) {
-    showModal(props.data.showModal);
-  }
+  // if (props.data?.showModal) {
+  //   showModal(props.data.showModal);
+  // }
 };
 
 const btnTouchstart = (event: TouchEvent) => {

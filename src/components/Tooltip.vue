@@ -21,16 +21,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 
 // store
 import { useMainStore } from "@/store/main";
 
-const mainStore = useMainStore();
+const store = useMainStore();
 
-const { tooltip } = storeToRefs(mainStore);
-const { hideTooltip } = mainStore;
+const { hideTooltip } = store;
+const { tooltip } = storeToRefs(store);
 
 const tooltipRef = ref();
 
@@ -53,13 +53,6 @@ const params = ref({
 const onClick = () => {
   hideTooltip();
 };
-
-// const onScroll = () => {
-//   console.log(`scroll
-//   `);
-
-//   hideTooltip();
-// };
 
 onMounted(() => {
   // original tooltip position! probably not the same after all checks
@@ -91,11 +84,5 @@ onMounted(() => {
   const triangleDeltaX = elementRect.left - params.value.x;
 
   params.value.center = triangleDeltaX + elementRect.width / 2;
-
-  // document.querySelector("#app")?.addEventListener("scroll", onScroll);
-});
-
-onBeforeUnmount(() => {
-  // removeEventListener("scroll", onScroll);
 });
 </script>

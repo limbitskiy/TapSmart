@@ -55,10 +55,12 @@
 import { computed, onUnmounted } from "vue";
 import { getAsset } from "@/utils";
 import { storeToRefs } from "pinia";
-import { replaceWithSpecialSymbols } from "@/utils";
+import { useRoute } from "vue-router";
 
 // stores
 import { useMainStore } from "@/store/main";
+
+const route = useRoute();
 
 const store = useMainStore();
 
@@ -66,7 +68,7 @@ const { fetchBattleResultsData } = store;
 const { data } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
 
-await fetchBattleResultsData();
+await fetchBattleResultsData(route.query);
 
 const colors = {
   0: "F01515",

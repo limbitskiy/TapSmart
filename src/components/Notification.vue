@@ -11,14 +11,14 @@
     </div>
 
     <!-- content -->
-    <div class="content text-center px-2 pt-2 pb-0 leading-4">
+    <div class="content flex-1 text-center px-2 pt-2 pb-0 leading-4">
       <span class="fira-condensed text-sm text-gray-300 inline-svg svg-top-margin" v-html="replaceWithSpecialSymbols(data.subtitle)"></span>
     </div>
 
     <!-- buttons -->
     <div class="btns flex justify-around p-2 pb-4">
-      <Button v-if="!data.buttons?.left?.hidden" class="text-[var(--red-color)]" :data="data.buttons.left" :defaultAction="hideNotification" unstyled></Button>
-      <Button v-if="!data.buttons?.right?.hidden" class="text-[var(--green-color)]" :data="data.buttons.right" :defaultAction="hideNotification" unstyled></Button>
+      <Button v-if="!data.buttons?.left?.hidden" class="text-[var(--red-color)]" :data="data.buttons.left" unstyled @click="hideNotification"></Button>
+      <Button v-if="!data.buttons?.right?.hidden" class="text-[var(--green-color)]" :data="data.buttons.right" unstyled @click="hideNotification"></Button>
     </div>
 
     <!-- timeout progress -->

@@ -194,9 +194,9 @@ export const useMainStore = defineStore("main", () => {
     await useFetch({ key: api, data });
   };
 
-  const callApiSync = ({ api, data }: { api: string; data?: {} }) => {
-    useFetch({ key: api, data });
-  };
+  // const callApiSync = ({ api, data }: { api: string; data?: {} }) => {
+  //   useFetch({ key: api, data });
+  // };
 
   const onVibrate = (type: string) => {
     if (dataStore.settings.vibro) {
@@ -257,8 +257,8 @@ export const useMainStore = defineStore("main", () => {
     return await useFetch({ key: "battle_completed" });
   };
 
-  const fetchBattleResultsData = async () => {
-    return await useFetch({ key: "battle_results" });
+  const fetchBattleResultsData = async (data: {}) => {
+    return await useFetch({ key: "battle_results", data });
   };
 
   const getOnlineFriends = async () => {
@@ -290,7 +290,7 @@ export const useMainStore = defineStore("main", () => {
                 ...data,
                 answers: battleStore.answers,
                 lastTaskId: battleStore.lastTaskId,
-                routeData: state.value.routeData,
+                // routeData: state.value.routeData,
               },
               service: state.value.service,
             },
@@ -299,9 +299,9 @@ export const useMainStore = defineStore("main", () => {
           parseResponse(result.data);
 
           // clean route data
-          if (state.value.routeData) {
-            delete state.value.routeData;
-          }
+          // if (state.value.routeData) {
+          //   delete state.value.routeData;
+          // }
 
           res(result.data);
         } catch (error) {
@@ -340,9 +340,9 @@ export const useMainStore = defineStore("main", () => {
     router.push(location);
   };
 
-  const setRouteData = (value: any) => {
-    state.value.routeData = value;
-  };
+  // const setRouteData = (value: any) => {
+  //   state.value.routeData = value;
+  // };
 
   return {
     localeStore,
@@ -369,13 +369,13 @@ export const useMainStore = defineStore("main", () => {
     showNotification,
     hideNotification,
     callApi,
-    callApiSync,
+    // callApiSync,
     showTooltip,
     hideTooltip,
     hideModal,
     redirectTo,
     onVibrate,
-    setRouteData,
+    // setRouteData,
     showModal,
   };
 });
