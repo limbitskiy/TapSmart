@@ -259,8 +259,8 @@ tg.BackButton.onClick(() => {
 
   if (from === "/battle-complete") {
     router.push("/battle-complete?nofetch=true");
-  } else if (from === "/battle-result") {
-    router.push("/battle-result?nofetch=true");
+  } else if (from === "/battle-results") {
+    router.push("/battle-results?nofetch=true");
   } else {
     router.push(route.query.from);
   }
