@@ -18,7 +18,6 @@
 <script setup lang="ts">
 import { computed, ref, onMounted } from "vue";
 import { storeToRefs } from "pinia";
-import { tg, getUserId } from "@/api/telegram";
 
 // stores
 import { useMainStore } from "@/store/main";

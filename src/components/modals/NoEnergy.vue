@@ -5,13 +5,13 @@
       <div class="page-subtitle text-gray-200 mb-2" v-html="locale['no_energy_subtitle']"></div>
 
       <div class="btns flex-1 flex gap-4">
-        <Button class="flex-1 py-4 bg-[var(--grey-light)] text-white" @click="onClose"
+        <Button class="flex-1 bg-[var(--grey-light)] text-white" @click="onClose"
           ><div class="flex justify-center gap-1">
             <span class="text-xl leading-4">{{ locale["no_energy_back_button"] || "Back" }}</span>
           </div>
         </Button>
 
-        <Button class="flex-1 py-4" @click="onChallengeClick"
+        <Button class="flex-1" @click="onChallengeClick"
           ><div class="flex justify-center gap-1">
             <span class="text-xl leading-4">{{ locale["no_energy_challenge_button"] }}</span>
           </div>

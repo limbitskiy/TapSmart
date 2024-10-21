@@ -42,6 +42,8 @@ export const images = {
   arrow_right: "/arrow_right.png",
   play_battle: "/play_battle.png",
   pass_exam: "/pass_exam.png",
+  clock: "/clock.png",
+  times: "/times.png",
   status_completed: "/status_completed.png",
   subscribe_telegram: "/subscribe_telegram.png",
   pattern_paws_blue: "/pattern-paws-blue.png",

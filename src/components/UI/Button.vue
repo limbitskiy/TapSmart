@@ -23,6 +23,7 @@
 
 <script setup lang="ts">
 import { ref, useCssModule } from "vue";
+import { inviteFriend } from "@/api/telegram";
 import { replaceWithSpecialSymbols } from "@/utils";
 
 // stores
@@ -38,6 +39,7 @@ interface ButtonProps {
   isClose: boolean;
   showModal: { title: string; subtitle: string; buttons: {} };
   accent: "orange" | "purple";
+  action?: "invite";
 }
 
 const { active: activeClass } = useCssModule();
@@ -64,6 +66,13 @@ const props = defineProps<{
 }>();
 
 const onClick = () => {
+  if (props.data?.action === "invite") {
+    const onInviteFriend = () => {
+      sendInviteAnalitycsData(route.path);
+      inviteFriend(locale.value?.["invite_message"] || "Invite message");
+    };
+  }
+
   if (props.data?.api) {
     callApiSync({ api: props.data.api, data: props.data.data });
   }
