@@ -283,7 +283,6 @@ export const useMainStore = defineStore("main", () => {
       });
       formData.append("upload", imageFile);
 
-      console.log(imageFile);
       const result = await makeUploadRequest({
         apiUrl: state.value.apiUrl,
         endPoint: "/ub/upload/file",

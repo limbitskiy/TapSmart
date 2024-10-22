@@ -38,8 +38,7 @@ interface ButtonProps {
   api?: string;
   data?: {};
   label: string;
-  // isClose: boolean;
-  // showModal: { title: string; subtitle: string; buttons: {} };
+  isClose: boolean;
   accent: "orange" | "purple";
   action?: "invite";
 }
@@ -51,14 +50,7 @@ const { active: activeClass } = useCssModule();
 const store = useMainStore();
 const { friends: friendsLocale } = storeToRefs(store.localeStore);
 
-const {
-  redirectTo,
-  useFetch,
-  // callApiSync,
-  // setRouteData,
-  // showModal,
-  sendInviteAnalitycsData,
-} = store;
+const { redirectTo, useFetch, sendInviteAnalitycsData } = store;
 
 const btnRef = ref();
 
@@ -74,7 +66,10 @@ const props = defineProps<{
   activeColor?: string;
   unstyled?: boolean;
   disabled?: boolean;
-  // defaultAction?: () => void;
+}>();
+
+const emit = defineEmits<{
+  close: [];
 }>();
 
 const onClick = () => {
@@ -89,18 +84,11 @@ const onClick = () => {
 
   if (props.data?.route) {
     redirectTo(props.data.route);
-    // if (props.data?.routeData) {
-    //   setRouteData(props.data?.routeData);
-    // }
   }
 
-  // if (props.defaultAction) {
-  //   props.defaultAction();
-  // }
-
-  // if (props.data?.showModal) {
-  //   showModal(props.data.showModal);
-  // }
+  if (props.data?.isClose) {
+    emit("close");
+  }
 };
 
 const btnTouchstart = (event: TouchEvent) => {

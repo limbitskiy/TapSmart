@@ -5,8 +5,8 @@
     <span class="text-3xl fira-bold text-gray-100" v-html="modal.title"></span>
     <span class="text-lg px-[10vw] text-gray-300 inline-svg" v-html="replaceWithSpecialSymbols(modal.subtitle)"></span>
     <div class="btns flex justify-end gap-4 mt-4">
-      <Button v-if="!modal.buttons?.left?.hidden" class="bg-[var(--red-color)] text-white" :data="modal.buttons.left" />
-      <Button v-if="!modal.buttons?.right?.hidden" class="bg-[var(--green-color)] text-white" :data="modal.buttons.right" />
+      <Button v-if="!modal.buttons?.left?.hidden" class="bg-[var(--red-color)] text-white" :data="modal.buttons.left" @close="() => emit('close')" />
+      <Button v-if="!modal.buttons?.right?.hidden" class="bg-[var(--green-color)] text-white" :data="modal.buttons.right" @close="() => emit('close')" />
     </div>
   </div>
 </template>
@@ -18,6 +18,10 @@ import { getAsset, replaceWithSpecialSymbols } from "@/utils";
 
 // store
 import { useMainStore } from "@/store/main";
+
+const emit = defineEmits<{
+  close: [];
+}>();
 
 const store = useMainStore();
 
