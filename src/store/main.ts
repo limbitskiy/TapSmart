@@ -282,15 +282,9 @@ export const useMainStore = defineStore("main", () => {
         type: blob.type,
       });
       formData.append("upload", imageFile);
+      formData.append("service", state.value.service);
 
-      const result = await makeUploadRequest({
-        apiUrl: state.value.apiUrl,
-        endPoint: "/ub/upload/file",
-        payload: {
-          data: formData,
-          service: state.value.service,
-        },
-      });
+      const result = await makeUploadRequest(formData);
 
       return result.data;
     } catch (error) {

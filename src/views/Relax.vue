@@ -3,7 +3,8 @@
     <!-- bg image -->
     <BackgroundImage type="blue" />
 
-    <Button class="z-10" @click="() => $router.push('/gif-creator')">Create gif</Button>
+    <!-- create gif button -->
+    <!-- <Button class="z-10" @click="() => $router.push('/gif-creator')">Create gif</Button> -->
 
     <!-- profile widget -->
     <ProfileWidget />

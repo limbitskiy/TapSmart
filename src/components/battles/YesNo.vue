@@ -27,7 +27,7 @@
               <Transition name="question-slide" mode="out-in">
                 <div v-if="task" :key="task?.task?.question" class="max-w-[calc(100vw-4rem)] flex flex-col gap-2 items-center text-center">
                   <div class="question-cnt">
-                    <span class="fira-condensed-black leading-[3rem] line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)">{{ task?.task?.question }}</span>
+                    <span class="fira-condensed-black line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)">{{ task?.task?.question }}</span>
                   </div>
                   <div class="arrow">
                     <svg width="16" height="26" viewBox="0 0 16 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -38,7 +38,7 @@
                     </svg>
                   </div>
                   <div class="question-cnt max-w-[calc(100dvw-5rem)] overflow-hidden">
-                    <span class="fira-condensed-black text-gray-400 line-clamp-2 leading-8" style="font-size: clamp(26px, 8vw, 42px)">{{ task?.task?.answer }}</span>
+                    <span class="fira-condensed-black text-gray-400 line-clamp-2" style="font-size: clamp(26px, 8vw, 42px)">{{ task?.task?.answer }}</span>
                   </div>
                 </div>
               </Transition>
@@ -87,8 +87,8 @@
         <Transition name="correct-text" mode="out-in">
           <div v-if="correctAnswer.shown" class="correct-answer absolute z-20 inset-0 grid place-items-center pointer-events-none mb-8">
             <div class="text max-w-[calc(100vw-4rem)] flex flex-col items-center justify-center text-center overflow-x-hidden break-all">
-              <span class="fira-condensed-black text-red-500 line-clamp-2 leading-10" style="font-size: clamp(28px, 10vw, 42px)">{{ correctAnswer.question }}</span>
-              <span class="fira-condensed-black text-red-400 line-clamp-2 leading-9" style="font-size: clamp(26px, 8vw, 42px)">{{ correctAnswer.answer }}</span>
+              <span class="fira-condensed-black text-red-500 line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)">{{ correctAnswer.question }}</span>
+              <span class="fira-condensed-black text-red-400 line-clamp-2" style="font-size: clamp(26px, 8vw, 42px)">{{ correctAnswer.answer }}</span>
             </div>
           </div>
         </Transition>

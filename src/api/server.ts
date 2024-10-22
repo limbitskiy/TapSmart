@@ -508,10 +508,8 @@ export const makeRequest = async ({ apiUrl, endPoint, payload }: RequestParams) 
   // };
 };
 
-export const makeUploadRequest = async ({ apiUrl, endPoint, payload }: RequestParams) => {
-  return await axios.post(`${apiUrl ?? defaultApiUrl}${endPoint ?? "/main"}`, payload, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+export const makeUploadRequest = async (formData: FormData) => {
+  return await axios.post(`${defaultApiUrl}/ub/upload/file`, formData);
 };
 
 // first res
