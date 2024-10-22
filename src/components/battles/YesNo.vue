@@ -38,9 +38,7 @@
                     </svg>
                   </div>
                   <div class="question-cnt max-w-[calc(100dvw-5rem)] overflow-hidden">
-                    <span class="fira-condensed-black text-gray-400 line-clamp-2" style="font-size: clamp(26px, 8vw, 42px)">{{
-                      task?.task?.answer + task?.task?.answer + task?.task?.answer + task?.task?.answer + task?.task?.answer + task?.task?.answer
-                    }}</span>
+                    <span class="fira-condensed-black text-gray-400 line-clamp-2" style="font-size: clamp(26px, 8vw, 42px)">{{ task?.task?.answer }}</span>
                   </div>
                 </div>
               </Transition>
