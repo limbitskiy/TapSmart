@@ -36,7 +36,8 @@
       <ul class="players flex-1 overflow-y-scroll flex flex-col gap-2">
         <li v-for="player in data?.['players_waiting'] || []" :key="player.id">
           <Pill class="flex flex-col !py-2">
-            <div class="player-data flex gap-2 items-center">
+            <!-- player data -->
+            <div class="player-data flex gap-2 items-center justify-between">
               <div class="player-name flex">
                 <div class="fixed-length-name whitespace-nowrap overflow-x-hidden text-ellipsis max-w-[50vw]">
                   <span class="fira-bold text-lg max-w-1/2 text-ellipsis">{{ player.name }}</span>
@@ -51,7 +52,14 @@
                   </svg>
                 </div>
               </div>
+
+              <div class="player-ready">
+                <span v-if="!player.isReady" class="text-[var(--red-color)]">Not ready</span>
+                <span v-else-if="player.isReady" class="text-[var(--green-color)]">Ready</span>
+              </div>
             </div>
+
+            <!-- other info -->
             <div class="other-info flex gap-2 items-center">
               <div class="league">
                 <span class="league exo-bold">L: {{ player?.league || 0 }}</span>
@@ -70,10 +78,10 @@
       </ul>
 
       <div class="btns w-full flex gap-4 mt-8">
-        <Button class="flex-1 !py-2 !px-0" activeColor="#525252" @click="onInviteFriend" dark>
+        <Button class="flex-1 !py-2 !px-0" activeColor="#525252" @click="onInviteFriend" :dark="data?.['players_waiting']?.length !== 1">
           <span class="text-lg leading-5 inline-block">{{ locale?.["button_waiting_invite"] || "Invite" }}</span>
         </Button>
-        <Button class="flex-1 !py-2 !px-0" activeColor="#fcdcb0" @click="onReadyBtn" :disabled="isReady">
+        <Button class="flex-1 !py-2 !px-0" activeColor="#fcdcb0" @click="onReadyBtn" :disabled="isReady" :dark="data?.['players_waiting']?.length === 1">
           <span class="text-lg leading-5 inline-block">{{ locale?.["button_waiting_ready"] || "Ready" }}</span>
         </Button>
       </div>
@@ -133,6 +141,12 @@ const onReadyBtn = () => {
   useFetch({ key: "waiting_ready" });
   isReady.value = true;
 };
+
+watch(data.value, (val) => {
+  if (val["final_countdown"]) {
+    console.log(`start battle!!`);
+  }
+});
 
 onMounted(() => {
   startBreakpoint("waiting");
