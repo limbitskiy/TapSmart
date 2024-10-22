@@ -1,5 +1,5 @@
 <template>
-  <div id="profile" class="flex flex-col flex-1 gap-4 p-4">
+  <div id="profile" class="flex flex-col flex-1 gap-4 p-4 relative">
     <div class="header">
       <div class="page-title mb-2">{{ locale?.["title"] || "Title" }}</div>
       <div class="page-subtitle" v-html="locale?.['subtitle']"></div>
@@ -225,6 +225,8 @@
     <LanguageSettings @change="onSettingsChange" />
 
     <Button @click="onFeedback">{{ locale?.["feedback"] }}</Button>
+
+    <div class="build-no absolute bottom-0 right-4 text-[12px] text-[white] exo-bold leading-4">build: 1</div>
   </div>
 </template>
 
