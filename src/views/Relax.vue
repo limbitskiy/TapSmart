@@ -4,7 +4,7 @@
     <BackgroundImage type="blue" />
 
     <!-- create gif button -->
-    <Button class="z-10" @click="() => $router.push('/gif-creator')">Create gif</Button>
+    <!-- <Button class="z-10" @click="() => $router.push('/gif-creator')">Create gif</Button> -->
 
     <!-- profile widget -->
     <ProfileWidget />
