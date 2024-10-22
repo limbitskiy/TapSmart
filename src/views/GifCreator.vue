@@ -50,14 +50,18 @@ import { useRoute } from "vue-router";
 import html2canvas from "html2canvas";
 import GIF from "gif.js";
 import { tg } from "@/api/telegram";
+import constants from "@/constants";
+import { makeRequest } from "@/api/server";
 
 // stores
 import { useMainStore } from "@/store/main";
 
 const route = useRoute();
+const { apiUrl } = constants;
 
 const store = useMainStore();
 
+const { uploadGif } = store;
 const { data } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
 
@@ -135,7 +139,8 @@ const generateGIF = async () => {
   }, 500);
 
   gif.on("finished", (blob) => {
-    console.log(URL.createObjectURL(blob));
+    uploadGif(blob);
+
     gifUrl.value = URL.createObjectURL(blob);
     tg.shareToStory(URL.createObjectURL(blob));
   });

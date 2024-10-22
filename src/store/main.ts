@@ -13,7 +13,7 @@ import { useSoundStore } from "@/store/sound";
 import { NotificationProps, ResponseObject, ResponseData, MainState, TooltipProps, ModalProps } from "@/types";
 
 // api
-import { makeRequest } from "@/api/server";
+import { makeRequest, makeUploadRequest } from "@/api/server";
 
 export const useMainStore = defineStore("main", () => {
   const notification = ref<NotificationProps>({
@@ -274,6 +274,31 @@ export const useMainStore = defineStore("main", () => {
     return useFetch({ key: "invite_click", data: { route } });
   };
 
+  const uploadGif = async (blob) => {
+    try {
+      const formData = new FormData();
+      const extension = blob.type.split("/")[1];
+      const imageFile = new File([blob], `${Date.now()}.${extension}`, {
+        type: blob.type,
+      });
+      formData.append("upload", imageFile);
+
+      console.log(imageFile);
+      const result = await makeUploadRequest({
+        apiUrl: state.value.apiUrl,
+        endPoint: "/ub/upload/file",
+        payload: {
+          data: formData,
+          service: state.value.service,
+        },
+      });
+
+      return result.data;
+    } catch (error) {
+      return error?.response?.data?.error?.message || error?.message || error;
+    }
+  };
+
   const useFetch = ({ key, data }: { key?: string; data?: {} }) => {
     if (requestQueue.value.length > 3) return;
 
@@ -290,7 +315,6 @@ export const useMainStore = defineStore("main", () => {
                 ...data,
                 answers: battleStore.answers,
                 lastTaskId: battleStore.lastTaskId,
-                // routeData: state.value.routeData,
               },
               service: state.value.service,
             },
@@ -298,22 +322,10 @@ export const useMainStore = defineStore("main", () => {
 
           parseResponse(result.data);
 
-          // clean route data
-          // if (state.value.routeData) {
-          //   delete state.value.routeData;
-          // }
-
           res(result.data);
         } catch (error) {
           rej(error?.response?.data?.error?.message || error?.message || error);
         }
-
-        // const redirectLocation = result.data.redirect;
-
-        // if (redirectLocation) {
-        //   console.log(`redirecting to ${redirectLocation}`);
-        //   router.push(redirectLocation);
-        // }
       });
     });
   };
@@ -377,5 +389,6 @@ export const useMainStore = defineStore("main", () => {
     onVibrate,
     // setRouteData,
     showModal,
+    uploadGif,
   };
 });

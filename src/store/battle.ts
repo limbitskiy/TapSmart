@@ -247,7 +247,7 @@ export const useBattleStore = defineStore("battle", () => {
     if (currentBattleMode.value === "relax" && data.value.energy === 0) return;
 
     if (!currentTask.value) {
-      console.error(`Could not find current item`);
+      console.error(`Could not find current item: HandleBattleAnswer`);
       return;
     }
 

@@ -7,7 +7,7 @@ const { apiUrl: defaultApiUrl } = constants;
 
 let lastCall = Date.now();
 
-export const makeRequest = async ({ apiUrl, payload }: RequestParams) => {
+export const makeRequest = async ({ apiUrl, endPoint, payload }: RequestParams) => {
   const currentTime = Date.now();
 
   const deltaTime = currentTime - lastCall;
@@ -27,7 +27,7 @@ export const makeRequest = async ({ apiUrl, payload }: RequestParams) => {
 
   lastCall = Date.now();
 
-  return await axios.post(`${apiUrl ?? defaultApiUrl}/main`, payload);
+  return await axios.post(`${apiUrl ?? defaultApiUrl}${endPoint ?? "/main"}`, payload);
   // mocking response
   // return {
   //   data: {
@@ -506,6 +506,12 @@ export const makeRequest = async ({ apiUrl, payload }: RequestParams) => {
   //     },
   //   },
   // };
+};
+
+export const makeUploadRequest = async ({ apiUrl, endPoint, payload }: RequestParams) => {
+  return await axios.post(`${apiUrl ?? defaultApiUrl}${endPoint ?? "/main"}`, payload, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
 };
 
 // first res

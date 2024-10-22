@@ -77,7 +77,7 @@
         </li>
       </ul>
 
-      <div class="btns w-full flex gap-4 mt-8">
+      <div v-if="data?.['is_friends_battle']" class="btns w-full flex gap-4 mt-8">
         <Button class="flex-1 !py-2 !px-0" activeColor="#525252" @click="onInviteFriend" :dark="data?.['players_waiting']?.length !== 1">
           <span class="text-lg leading-5 inline-block">{{ locale?.["button_waiting_invite"] || "Invite" }}</span>
         </Button>
@@ -102,8 +102,8 @@ import { useMainStore } from "@/store/main";
 
 const route = useRoute();
 
-const challengeProps = ref({});
-challengeProps.value = route.query;
+// const challengeProps = ref({});
+// challengeProps.value = route.query;
 
 const store = useMainStore();
 
@@ -142,11 +142,11 @@ const onReadyBtn = () => {
   isReady.value = true;
 };
 
-watch(data.value, (val) => {
-  if (val["final_countdown"]) {
-    console.log(`start battle!!`);
-  }
-});
+// watch(data.value, (val) => {
+//   if (val["final_countdown"]) {
+//     console.log(`start battle!!`);
+//   }
+// });
 
 onMounted(() => {
   startBreakpoint("waiting");

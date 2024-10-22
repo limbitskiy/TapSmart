@@ -1,5 +1,6 @@
 export interface RequestParams {
   apiUrl: string;
+  endPoint?: string;
   payload: {
     data: {};
     service: {};
