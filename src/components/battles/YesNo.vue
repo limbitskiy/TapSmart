@@ -25,7 +25,7 @@
             <div class="slide-cnt flex flex-col justify-center">
               <!-- question card -->
               <Transition name="question-slide" mode="out-in">
-                <div v-if="task" :key="task?.task?.question" class="max-w-[calc(100vw-4rem)] flex flex-col gap-2 items-center text-center">
+                <div v-if="task" :key="task?.task?.question" class="flex flex-col gap-2 items-center text-center">
                   <div class="question-cnt">
                     <span class="fira-condensed-black line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)">{{ task?.task?.question }}</span>
                   </div>
@@ -38,7 +38,9 @@
                     </svg>
                   </div>
                   <div class="question-cnt max-w-[calc(100dvw-5rem)] overflow-hidden">
-                    <span class="fira-condensed-black text-gray-400 line-clamp-2" style="font-size: clamp(26px, 8vw, 42px)">{{ task?.task?.answer }}</span>
+                    <span class="fira-condensed-black text-gray-400 line-clamp-2" style="font-size: clamp(26px, 8vw, 42px)">{{
+                      task?.task?.answer + task?.task?.answer + task?.task?.answer + task?.task?.answer + task?.task?.answer + task?.task?.answer
+                    }}</span>
                   </div>
                 </div>
               </Transition>
