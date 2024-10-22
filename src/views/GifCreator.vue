@@ -34,7 +34,12 @@
       </div>
     </BackgroundPill>
   </div>
-  <a v-if="gifUrl" class="absolute z-50" :href="gifUrl" download="screenshot.gif">Скачать GIF</a>
+  <div v-if="!gifUrl" class="loader absolute inset-0 bg-[#222] grid place-items-center z-[999]">Creating GIF</div>
+  <div v-if="gifUrl" class="link-cnt absolute inset-0 bg-[#222] grid place-items-center z-[999]">
+    <Button class="z-10">
+      <a class="" :href="gifUrl" download="screenshot.gif">Скачать GIF</a>
+    </Button>
+  </div>
 </template>
 
 <script setup lang="ts">

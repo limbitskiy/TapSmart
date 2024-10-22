@@ -139,9 +139,9 @@ router.beforeEach((to, from) => {
   store.hideTooltip();
 
   // init is the only entrypoint
-  // if (to.path !== "/init" && from.path === "/") {
-  //   return { path: "/init" };
-  // }
+  if (to.path !== "/init" && from.path === "/") {
+    return { path: "/init" };
+  }
 });
 
 export default router;
