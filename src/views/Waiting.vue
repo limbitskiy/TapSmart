@@ -69,12 +69,12 @@
         </li>
       </ul>
 
-      <div v-if="challengeProps.friends_only" class="btns w-full flex gap-4 mt-8">
-        <Button class="flex-1 !py-2 !px-0" activeColor="#525252" @click="onInviteFriend" :dark="data?.['players_waiting']?.length > 1">
+      <div class="btns w-full flex gap-4 mt-8">
+        <Button class="flex-1 !py-2 !px-0" activeColor="#525252" @click="onInviteFriend" dark>
           <span class="text-lg leading-5 inline-block">{{ locale?.["button_waiting_invite"] || "Invite" }}</span>
         </Button>
-        <Button class="flex-1 !py-2 !px-0" activeColor="#fcdcb0" @click="onFriendStart" :disabled="data?.['players_waiting']?.length <= 1 || startBtnBlocked">
-          <span class="text-lg leading-5 inline-block">{{ locale?.["button_waiting_run"] || "Start" }}</span>
+        <Button class="flex-1 !py-2 !px-0" activeColor="#fcdcb0" @click="onReadyBtn" :disabled="isReady">
+          <span class="text-lg leading-5 inline-block">{{ locale?.["button_waiting_ready"] || "Ready" }}</span>
         </Button>
       </div>
     </BackgroundPill>
@@ -105,6 +105,7 @@ const { startBreakpoint, stopBreakpoint, decreaseWaitingTimer } = store.battleSt
 const { battles: locale } = storeToRefs(store.localeStore);
 
 const startBtnBlocked = ref(false);
+const isReady = ref(false);
 
 hideNotification();
 
@@ -126,6 +127,11 @@ const onInviteFriend = () => {
 const onFriendStart = () => {
   useFetch({ key: "waiting_run" });
   startBtnBlocked.value = true;
+};
+
+const onReadyBtn = () => {
+  useFetch({ key: "waiting_ready" });
+  isReady.value = true;
 };
 
 onMounted(() => {

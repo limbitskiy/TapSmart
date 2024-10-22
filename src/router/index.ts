@@ -17,6 +17,7 @@ import BattleResults from "@/views/BattleResults.vue";
 import BattleComplete from "@/views/BattleComplete.vue";
 import InviteFriend from "@/views/InviteFriend.vue";
 import Waiting from "@/views/Waiting.vue";
+import GifCreator from "@/views/GifCreator.vue";
 
 // battles
 import YesNo from "@/components/battles/YesNo.vue";
@@ -119,6 +120,10 @@ const routes = [
     path: "/waiting",
     component: Waiting,
   },
+  {
+    path: "/gif-creator",
+    component: GifCreator,
+  },
   { path: "/:pathMatch(.*)*", component: NotFound },
 ];
 
@@ -134,9 +139,9 @@ router.beforeEach((to, from) => {
   store.hideTooltip();
 
   // init is the only entrypoint
-  if (to.path !== "/init" && from.path === "/") {
-    return { path: "/init" };
-  }
+  // if (to.path !== "/init" && from.path === "/") {
+  //   return { path: "/init" };
+  // }
 });
 
 export default router;
