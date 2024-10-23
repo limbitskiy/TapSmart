@@ -138,11 +138,17 @@ const generateGIF = async () => {
     }
   }, 500);
 
-  gif.on("finished", (blob) => {
-    uploadGif(blob);
+  gif.on("finished", async (blob) => {
+    const response = await uploadGif(blob);
 
-    gifUrl.value = URL.createObjectURL(blob);
-    tg.shareToStory(URL.createObjectURL(blob));
+    console.log(response);
+
+    const url = response?.httpResponse?.body?.data?.url;
+
+    console.log(url);
+
+    gifUrl.value = url;
+    tg.shareToStory(url);
   });
 };
 
