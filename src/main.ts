@@ -28,6 +28,7 @@ import LanguageSettings from "@/components/LanguageSettings.vue";
 import LeagueProgress from "@/components/LeagueProgress.vue";
 import Notification from "@/components/Notification.vue";
 import BattleMechanic from "@/components/BattleMechanic.vue";
+import BattleMechanicMock from "@/components/BattleMechanicMock.vue";
 import Tooltip from "@/components/Tooltip.vue";
 import BackendModal from "@/components/UI/BackendModal.vue";
 import CircleCountdown from "@/components/UI/CircleCountdown.vue";
@@ -83,6 +84,7 @@ app
   .component("Tooltip", Tooltip)
   .component("TaskCountdown", TaskCountdown)
   .component("BattleMechanic", BattleMechanic)
+  .component("BattleMechanicMock", BattleMechanicMock)
   .component("CircleCountdown", CircleCountdown)
   .component("MechanicCard", MechanicCard)
   .component("TaskModal", TaskModal)

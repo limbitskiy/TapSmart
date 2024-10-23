@@ -48,9 +48,15 @@
                 </div>
                 <div class="task-meta">
                   <span class="text-lg fira-regular text-gray-300">{{ task.title }}</span>
-                  <div class="reward flex items-center gap-2 ml-1 h-6">
-                    <img class="h-4 scale-125" :src="getAsset('bolt')" />
-                    <span class="text-lg exo-bold text-[var(--accent-color)]">+{{ showFormattedNumber(task.bolts) }}</span>
+                  <div class="rewards flex items-center gap-4 ml-1 h-6">
+                    <div v-if="task.nuts" class="nuts flex gap-2 items-center">
+                      <img class="h-4 scale-125" :src="getAsset('nut')" />
+                      <span class="text-lg exo-bold text-[var(--accent-color)]">{{ showFormattedNumber(task.nuts) }}</span>
+                    </div>
+                    <div class="bolts flex gap-2 items-center">
+                      <img class="h-4 scale-125" :src="getAsset('bolt')" />
+                      <span class="text-lg exo-bold text-[var(--accent-color)]">{{ showFormattedNumber(task.bolts) }}</span>
+                    </div>
                   </div>
                 </div>
               </div>
