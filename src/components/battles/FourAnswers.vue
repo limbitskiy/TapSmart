@@ -25,8 +25,8 @@
             <div class="slide-cnt flex flex-col justify-center">
               <!-- question card -->
               <Transition name="question-slide" mode="out-in">
-                <div v-if="task" :key="task?.task?.question" class="max-w-[calc(100vw-4rem)] flex flex-col gap-2 items-center text-center overflow-x-hidden break-all">
-                  <div class="question-cnt">
+                <div v-if="task" :key="task?.task?.question" class="flex flex-col gap-2 items-center text-center break-words">
+                  <div class="question-cnt max-w-[calc(100vw-5rem)]">
                     <span class="fira-condensed-black line-clamp-2" style="font-size: clamp(30px, 9vw, 46px)">{{ task?.task?.question }}</span>
                   </div>
                 </div>
@@ -45,7 +45,7 @@
         <!-- buttons -->
         <div v-if="buttonValues[0]" class="answer-buttons grid w-full grid-cols-2 grid-rows-2 gap-4 leading-5">
           <Button
-            activeColor="#2c3382"
+            activeColor="#5e5e5e"
             :disabled="(type === 'relax' && energy <= 0) || buttonsBlocked || !task"
             class="four-answer-btn"
             @click="(event) => handleAnswer(task?.task?.variants[0], event)"
@@ -53,7 +53,7 @@
             {{ buttonValues[0] }}
           </Button>
           <Button
-            activeColor="#2c3382"
+            activeColor="#5e5e5e"
             :disabled="(type === 'relax' && energy <= 0) || buttonsBlocked || !task"
             class="four-answer-btn"
             @click="(event) => handleAnswer(task?.task?.variants[1], event)"
@@ -61,7 +61,7 @@
             {{ buttonValues[1] }}
           </Button>
           <Button
-            activeColor="#2c3382"
+            activeColor="#5e5e5e"
             :disabled="(type === 'relax' && energy <= 0) || buttonsBlocked || !task"
             class="four-answer-btn"
             @click="(event) => handleAnswer(task?.task?.variants[2], event)"
@@ -69,7 +69,7 @@
             {{ buttonValues[2] }}
           </Button>
           <Button
-            activeColor="#2c3382"
+            activeColor="#5e5e5e"
             :disabled="(type === 'relax' && energy <= 0) || buttonsBlocked || !task"
             class="four-answer-btn"
             @click="(event) => handleAnswer(task?.task?.variants[3], event)"
@@ -81,11 +81,15 @@
         <Transition name="correct-text" mode="out-in">
           <div
             v-if="correctAnswer.shown"
-            class="max-w-[100%] wrong-text absolute z-20 left-0 right-0 top-0 bottom-0 grid place-items-center pointer-events-none mb-14 px-4 overflow-x-hidden break-all"
+            class="wrong-text absolute z-20 left-0 right-0 top-0 bottom-0 grid place-items-center pointer-events-none mb-14 px-4 overflow-x-hidden break-words"
           >
-            <div class="text flex flex-col gap-2 items-center justify-center text-center mb-5">
-              <span class="fira-condensed-black text-red-500 line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)">{{ correctAnswer.question }}</span>
-              <span class="fira-condensed-black text-red-400 line-clamp-2" style="font-size: clamp(26px, 8vw, 42px)">{{ correctAnswer.answer }}</span>
+            <div class="flex flex-col gap-2 items-center justify-center text-center mb-5">
+              <div class="max-w-[calc(100dvw-5rem)]">
+                <span class="fira-condensed-black text-red-500 line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)">{{ correctAnswer.question }}</span>
+              </div>
+              <div class="max-w-[calc(100dvw-5rem)]">
+                <span class="fira-condensed-black text-red-400 line-clamp-2" style="font-size: clamp(26px, 8vw, 42px)">{{ correctAnswer.answer }}</span>
+              </div>
             </div>
           </div>
         </Transition>

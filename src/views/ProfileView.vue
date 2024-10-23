@@ -226,7 +226,7 @@
 
     <Button @click="onFeedback">{{ locale?.["feedback"] }}</Button>
 
-    <div class="build-no absolute bottom-0 right-4 text-[12px] text-[white] exo-bold leading-4">build: 1</div>
+    <div class="build-no absolute bottom-0 right-4 text-[12px] text-gray-300 leading-4">build: {{ version }}</div>
   </div>
 </template>
 
@@ -237,6 +237,7 @@ import { tg } from "@/api/telegram";
 import { storeToRefs } from "pinia";
 import { getAsset, showFormattedNumber } from "@/utils";
 import { useBackButton } from "@/composables/useBackButton";
+import { version } from "../../package.json";
 
 // store
 import { useMainStore } from "@/store/main";

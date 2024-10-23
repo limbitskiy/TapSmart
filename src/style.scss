@@ -118,12 +118,12 @@
 }
 
 .four-answer-btn {
-  @apply w-full !text-base bg-[var(--dark-blue-color)] text-white h-[68px] overflow-hidden text-ellipsis border-b-4 border-[#252D7C] px-4 leading-5;
+  @apply w-full !text-base bg-[var(--grey-light)] text-white h-[68px] overflow-hidden text-ellipsis px-4 leading-5;
 
   position: relative;
 
   &[disabled] {
-    background-color: #606cec !important;
+    background-color: #505050 !important;
   }
 }
 
