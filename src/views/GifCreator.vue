@@ -258,7 +258,7 @@ const generateGIF = async () => {
 
       console.log(`images: ${imageArr.value}`);
 
-      await useFetch({ key: "tg_store", data: { images: imageArr.value } });
+      await useFetch({ key: "tg_story", data: { images: imageArr.value } });
       router.push("/home/relax");
     }
   }, 500);
