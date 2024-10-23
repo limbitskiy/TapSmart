@@ -37,9 +37,10 @@
   <div v-if="!gifUrl" class="loader absolute inset-0 bg-[#222] grid place-items-center z-[999]">Creating GIF</div>
   <div v-if="gifUrl" class="link-cnt absolute inset-0 bg-[#222] grid place-items-center z-[999]">
     <Button class="z-10">
-      <a class="" :href="gifUrl" download="screenshot.gif">Скачать GIF</a>
+      <a class="" :href="gifUrl" download="screenshot.png">Скачать</a>
     </Button>
   </div>
+  <img class="z-[1000] w-[150px]" :src="previewSrc" />
 </template>
 
 <script setup lang="ts">
@@ -64,6 +65,8 @@ const store = useMainStore();
 const { uploadGif } = store;
 const { data } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
+
+const previewSrc = ref("");
 
 const colors = {
   0: "F01515",
@@ -114,42 +117,83 @@ const getPlayerColor = (player: {}) => {
 };
 
 const generateGIF = async () => {
-  let interval = null;
+  const canvas = await html2canvas(el.value);
 
-  const gif = new GIF({
-    workers: 2,
-    quality: 10,
-  });
+  // const dataURL = canvas.toDataURL();
 
-  interval = setInterval(async () => {
-    if (currentScene.value < scenes.length) {
-      console.log(`capturing scene ${currentScene.value}`);
+  // const imageFile = new File([dataURL], `screenshot.png`, {
+  //   type: "image/png",
+  // });
 
-      const canvas = await html2canvas(el.value);
-      gif.addFrame(canvas, { delay: 2000 });
+  // Получаем Data URL (Base64)
+  const dataURL = canvas.toDataURL("image/png");
 
-      //   const newIdx = (currentScene.value + 1) % scenes.length;
-      currentScene.value += 1;
-    } else {
-      console.log(`clearing interval, rendering`);
+  // Преобразуем Data URL в двоичные данные (Blob)
+  const byteString = atob(dataURL.split(",")[1]);
+  const mimeString = dataURL.split(",")[0].split(":")[1].split(";")[0];
 
-      clearInterval(interval);
-      gif.render();
-    }
-  }, 500);
+  const byteArray = new Uint8Array(byteString.length);
+  for (let i = 0; i < byteString.length; i++) {
+    byteArray[i] = byteString.charCodeAt(i);
+  }
 
-  gif.on("finished", async (blob) => {
-    const response = await uploadGif(blob);
+  // Создаем Blob из массива байтов
+  const blob = new Blob([byteArray], { type: mimeString });
 
-    console.log(response);
+  // Создаем файл на основе Blob
+  const imageFile = new File([blob], "screenshot.png", { type: "image/png" });
 
-    const url = response?.httpResponse?.body?.data?.url;
+  previewSrc.value = dataURL;
 
-    console.log(url);
+  gifUrl.value = imageFile;
 
-    gifUrl.value = url;
-    tg.shareToStory(url);
-  });
+  // console.log(imageFile);
+
+  const response = await uploadGif(imageFile);
+
+  const url = response?.httpResponse?.body?.data?.url;
+
+  // console.log(url);
+
+  // gifUrl.value = url;
+
+  tg.shareToStory(url);
+
+  // let interval = null;
+
+  // const gif = new GIF({
+  //   workers: 2,
+  //   quality: 10,
+  // });
+
+  // interval = setInterval(async () => {
+  //   if (currentScene.value < scenes.length) {
+  //     console.log(`capturing scene ${currentScene.value}`);
+
+  //     gif.addFrame(canvas, { delay: 2000 });
+
+  //     //   const newIdx = (currentScene.value + 1) % scenes.length;
+  //     currentScene.value += 1;
+  //   } else {
+  //     console.log(`clearing interval, rendering`);
+
+  //     clearInterval(interval);
+  //     gif.render();
+  //   }
+  // }, 500);
+
+  // gif.on("finished", async (blob) => {
+  //   const response = await uploadGif(blob);
+
+  //   console.log(response);
+
+  //   const url = response?.httpResponse?.body?.data?.url;
+
+  //   console.log(url);
+
+  //   gifUrl.value = url;
+  //   tg.shareToStory(url);
+  // });
 };
 
 onMounted(() => {

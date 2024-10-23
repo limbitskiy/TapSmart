@@ -274,15 +274,17 @@ export const useMainStore = defineStore("main", () => {
     return useFetch({ key: "invite_click", data: { route } });
   };
 
-  const uploadGif = async (blob) => {
+  const uploadGif = async (file) => {
     try {
       const formData = new FormData();
-      const extension = blob.type.split("/")[1];
-      const imageFile = new File([blob], `${Date.now()}.${extension}`, {
-        type: blob.type,
-      });
-      formData.append("upload", imageFile);
+
+      // const extension = blob.type.split("/")[1];
+      // const imageFile = new File([blob], `${Date.now()}.${extension}`, {
+      //   type: blob.type,
+      // });
+      formData.append("upload", file);
       formData.append("service", state.value.service);
+      console.log(`go`);
 
       const result = await makeUploadRequest(formData);
 
@@ -290,6 +292,9 @@ export const useMainStore = defineStore("main", () => {
     } catch (error) {
       return error?.response?.data?.error?.message || error?.message || error;
     }
+    const img = new Image();
+    img.src = url;
+    img.onload = async () => {};
   };
 
   const useFetch = ({ key, data }: { key?: string; data?: {} }) => {
