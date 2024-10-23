@@ -52,7 +52,12 @@
   </div>
 
   <!-- loader -->
-  <div v-if="!gifUrl" class="loader absolute inset-0 bg-[#222] grid place-items-center z-[999]">Creating GIF</div>
+  <div v-if="!gifUrl" class="loader absolute inset-0 bg-[#222] grid place-items-center z-[999]">
+    <div class="text flex flex-col gap-2 justify-center items-center">
+      <span>Creating screenshots</span>
+      <span class="exo-black text-4xl">{{ battleScene }}</span>
+    </div>
+  </div>
 
   <!-- download button -->
   <!-- <div v-if="gifUrl" class="link-cnt absolute inset-0 bg-[#222] grid place-items-center z-[999]">
@@ -60,7 +65,7 @@
       <a class="" :href="gifUrl" download="screenshot.png">Скачать</a>
     </Button>
   </div> -->
-  <img v-if="imageArr.length" class="absolute top-0 z-[1000] w-[150px]" :src="previewSrc" />
+  <!-- <img v-if="imageArr.length" class="absolute top-0 z-[1000] w-[150px]" :src="previewSrc" /> -->
 </template>
 
 <script setup lang="ts">
@@ -250,6 +255,8 @@ const generateGIF = async () => {
 
       clearInterval(interval);
       console.log(`sending data...`);
+
+      console.log(`images: ${imageArr.value}`);
 
       await useFetch({ key: "tg_store", data: { images: imageArr.value } });
       router.push("/home/relax");
