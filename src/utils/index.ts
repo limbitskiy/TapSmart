@@ -103,17 +103,25 @@ export const takeScreenshot = (element: HTMLElement) =>
         image.onload = async () => {
           const canvas = document.createElement("canvas");
           const ctx = canvas.getContext("2d");
-          canvas.width = innerWidth;
-          canvas.height = innerHeight;
+          canvas.width = image.width;
+          canvas.height = image.height;
 
           ctx.drawImage(image, 0, 0);
 
-          ctx.fillRect(0, 0, canvas.width, 18);
+          ctx.fillRect(0, 0, image.width, 18);
           ctx.font = "14px sans-serif";
           ctx.fillStyle = "white";
-          ctx.fillText("Played at @Tapsmart in Telegram", canvas.width / 2 - 105, 14);
+          ctx.fillText("Played at @Tapsmart in Telegram", image.width / 2 - 105, 14);
 
           const resultBase64 = canvas.toDataURL("image/png");
+
+          // testing image size
+          // const testImage = new Image();
+          // testImage.src = resultBase64;
+          // testImage.onload = () => {
+          //   console.log("width:", testImage.width);
+          //   console.log("height:", testImage.height);
+          // };
 
           res(resultBase64);
         };
