@@ -1,5 +1,5 @@
 <template>
-  <div id="waiting-cnt" class="flex flex-1 p-4">
+  <div ref="waitingRef" id="waiting-cnt" class="flex flex-1 p-4">
     <BackgroundPill class="gap-4 mt-[10dvh] relative">
       <div class="header flex flex-col gap-4">
         <div class="top-row flex-1 flex items-center justify-between">
@@ -92,7 +92,7 @@
 <script setup lang="ts">
 import { ref, watch, computed, onMounted, onBeforeUnmount } from "vue";
 import { storeToRefs } from "pinia";
-import { getAsset, shortenNumber } from "@/utils";
+import { getAsset, shortenNumber, takeScreenshot } from "@/utils";
 import { tg, getUserName, inviteFriend } from "@/api/telegram";
 import { useRoute } from "vue-router";
 import { formattedTime } from "@/utils";
@@ -108,12 +108,14 @@ const route = useRoute();
 const store = useMainStore();
 
 const { fetchWaitingData, useFetch, redirectTo, sendInviteAnalitycsData, hideNotification } = store;
-const { data } = storeToRefs(store.battleStore);
+const { data, screenshotArray } = storeToRefs(store.battleStore);
 const { startBreakpoint, stopBreakpoint, decreaseWaitingTimer } = store.battleStore;
 const { battles: locale } = storeToRefs(store.localeStore);
 
 const startBtnBlocked = ref(false);
 const isReady = ref(false);
+
+const waitingRef = ref();
 
 hideNotification();
 
@@ -151,7 +153,13 @@ const onReadyBtn = () => {
 onMounted(() => {
   startBreakpoint("waiting");
 
-  interval = setInterval(() => {
+  interval = setInterval(async () => {
+    if (data.value?.waiting_timer === 1000) {
+      screenshotArray.value = [];
+      const image = await takeScreenshot(waitingRef.value);
+      screenshotArray.value?.push(image);
+    }
+
     if (data.value.waiting_timer < 1000 && interval) {
       clearInterval(interval);
       redirectTo("/challenge");

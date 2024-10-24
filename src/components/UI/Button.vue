@@ -40,7 +40,7 @@ interface ButtonProps {
   label: string;
   isClose: boolean;
   accent: "orange" | "purple";
-  action?: "invite";
+  action?: "invite" | "tg_story";
 }
 
 const route = useRoute();
@@ -48,9 +48,9 @@ const route = useRoute();
 const { active: activeClass } = useCssModule();
 
 const store = useMainStore();
-const { friends: friendsLocale } = storeToRefs(store.localeStore);
-
 const { redirectTo, useFetch, sendInviteAnalitycsData } = store;
+const { friends: friendsLocale } = storeToRefs(store.localeStore);
+const { screenshotArray } = storeToRefs(store.battleStore);
 
 const btnRef = ref();
 
@@ -72,10 +72,22 @@ const emit = defineEmits<{
   close: [];
 }>();
 
+const sendScreenshots = () => {
+  if (screenshotArray.value?.length) {
+    useFetch({ key: "tg_story", data: { images: screenshotArray.value } })?.then((res) => {
+      console.log(res);
+    });
+  }
+};
+
 const onClick = () => {
   if (props.data?.action === "invite") {
     sendInviteAnalitycsData(route.path);
     inviteFriend(friendsLocale.value?.["invite_message"] || "Invite message");
+  }
+
+  if (props.data?.action === "tg_story") {
+    sendScreenshots();
   }
 
   if (props.data?.api) {

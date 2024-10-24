@@ -1,4 +1,6 @@
 import { images, assets, sounds } from "@/config";
+import * as htmlToImage from "html-to-image";
+// import { toPng } from "html-to-image";
 
 const assetLibrary = { ...images, ...assets, ...sounds };
 
@@ -87,3 +89,36 @@ export const sliceTextAmount = (text: string, charLength?: number) => {
   if (!charLength || text.length <= charLength) return text;
   return text.slice(0, charLength) + "...";
 };
+
+export const takeScreenshot = (element: HTMLElement) =>
+  new Promise((res, rej) => {
+    console.log(`taking screenshot`);
+
+    htmlToImage
+      .toPng(element)
+      .then((dataURL) => {
+        const image = new Image();
+        image.src = dataURL;
+
+        image.onload = async () => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          canvas.width = innerWidth;
+          canvas.height = innerHeight;
+
+          ctx.drawImage(image, 0, 0);
+
+          ctx.fillRect(0, 0, canvas.width, 18);
+          ctx.font = "14px sans-serif";
+          ctx.fillStyle = "white";
+          ctx.fillText("Played at @Tapsmart in Telegram", canvas.width / 2 - 105, 14);
+
+          const resultBase64 = canvas.toDataURL("image/png");
+
+          res(resultBase64);
+        };
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  });
