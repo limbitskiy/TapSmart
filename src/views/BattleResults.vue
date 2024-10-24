@@ -64,12 +64,20 @@ const route = useRoute();
 
 const store = useMainStore();
 
-const { fetchBattleResultsData } = store;
-const { data } = storeToRefs(store.battleStore);
+const { fetchBattleResultsData, useFetch } = store;
+const { data, screenshotArray } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
+
+const sendScreenshots = async () => {
+  if (screenshotArray.value?.length) {
+    const response = await useFetch({ key: "tg_story", data: { images: screenshotArray.value } });
+    console.log(response);
+  }
+};
 
 if (!route.query.nofetch) {
   await fetchBattleResultsData(route.query);
+  sendScreenshots();
 }
 
 const colors = {

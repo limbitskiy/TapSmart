@@ -27,7 +27,7 @@
 
         <div class="challenge-stats z-10 flex flex-col gap-2 min-h-[136px]">
           <ChallengeStatus :timer="30000" :score="120" :position="[1, 2]" />
-          <ChallengeProgressBar :timer="30000" />
+          <ChallengeProgressBar :timer="30000" :progressBarValue="50" :battleDuration="45000" :playersProgress="playersProgress" />
         </div>
 
         <!-- battle mechanic -->
@@ -169,6 +169,18 @@ const colors = {
   6: "24CAFF",
 };
 const currentTask = computed(() => tasks[battleScene.value]);
+const playersProgress = ref([
+  {
+    id: 0,
+    isPlayer: true,
+    score: 20,
+  },
+  {
+    id: 2,
+    isPlayer: false,
+    score: 47,
+  },
+]);
 
 const scenes = ["vs", "battle", "leaderboard"];
 let battleScene = ref(0);

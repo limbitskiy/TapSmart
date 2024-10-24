@@ -37,7 +37,7 @@
 
     <!-- main progress -->
     <div ref="gaugeRef" class="gauge h-2 bg-[var(--grey-light)] rounded-full w-full">
-      <div ref="progressRef" class="gauge-value h-2 bg-[var(--accent-color)] rounded-full" :style="{ width: progressPercent + '%', transition: '1s linear' }"></div>
+      <div ref="progressRef" class="gauge-value h-2 bg-[var(--accent-color)] rounded-full" :style="{ width: progressBarValue + '%', transition: '1s linear' }"></div>
       <!-- <span>{{ progressPercent }}</span> -->
     </div>
 
@@ -94,16 +94,12 @@ const colors = {
   999: "dfe0df",
 };
 
-const store = useMainStore();
-
-const { data } = storeToRefs(store.battleStore);
-const { battles: locale } = storeToRefs(store.localeStore);
-
 const gaugeRef = ref();
 const progressRef = ref();
 
 const positions = ref([]);
 
+const coef = computed(() => gaugeRef.value?.getBoundingClientRect()?.width / (props.battleDuration / 1000));
 const computedPlayer = computed(() => positions.value.find((position) => position?.isPlayer));
 const computedEnemies = computed(() => {
   if (positions.value?.length) {
@@ -111,42 +107,35 @@ const computedEnemies = computed(() => {
   } else return [{ id: 999, progress: 0 }];
 });
 
-const progressPercent = computed(() => ((data.value?.["battle_duration"] - props.timer) * 100) / data.value?.["battle_duration"]);
-
 const computedPlayerProgress = computed(() => {
-  const coef = gaugeRef.value?.getBoundingClientRect()?.width / (data?.value?.["battle_duration"] / 1000);
-
-  if (!coef || !computedPlayer.value) return 0;
-
-  return computedPlayer.value?.progress * coef;
+  if (!coef.value || !computedPlayer.value) return 0;
+  return computedPlayer.value?.progress * coef.value;
 });
 
 const getEnemyPosition = (enemy) => {
-  const coef = gaugeRef.value?.getBoundingClientRect()?.width / (data?.value?.["battle_duration"] / 1000);
-  if (!coef) return -6;
-  return enemy?.progress * coef - 6;
+  if (!coef.value) return -6;
+  return enemy?.progress * coef.value - 6;
 };
 
 const getMarkerColor = (id: string) => {
   return "#" + colors[+id];
 };
 
-onUpdated(() => {
-  // console.log(`change`);
-
-  const players = data.value?.["player_progress"];
+const calculatePlayerPositions = () => {
+  const players = props.playersProgress;
 
   if (!players) return;
 
   const highestScore = players.sort((a, b) => b.score - a.score)[0].score;
-  const secId = (data?.value?.["battle_duration"] - props.timer) / 1000;
+  const secId = (props.battleDuration - props.timer) / 1000;
 
   players.forEach((player) => {
-    const playerPosition = positions.value.find((position) => position?.id === player?.id);
+    let playerPosition = positions.value.find((position) => position?.id === player?.id);
 
+    // if we don't have the position locally - create it
     if (!playerPosition) {
       positions.value.push({ ...player, progress: 0 });
-      return;
+      playerPosition = positions.value.find((position) => position?.id === player?.id);
     }
 
     if (player.score === 0) return;
@@ -161,5 +150,15 @@ onUpdated(() => {
     playerPosition.progress += ((player.score - playerPosition.score) / (highestScore - playerPosition.score)) * (secId - playerPosition.progress);
     playerPosition.score = player.score;
   });
+};
+
+onUpdated(() => {
+  // console.log(`change`);
+  calculatePlayerPositions();
 });
+
+// onMounted(() => {
+//   // console.log(`mounted`);
+//   calculatePlayerPositions();
+// });
 </script>

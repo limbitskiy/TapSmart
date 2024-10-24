@@ -56,6 +56,8 @@ export const useBattleStore = defineStore("battle", () => {
   const battleStarted = ref(false);
   const pauseCurrentTask = ref(false);
 
+  const screenshotArray = ref([]);
+
   // challenge vars
   let battleStartTime = null;
 
@@ -464,6 +466,7 @@ export const useBattleStore = defineStore("battle", () => {
     afkCounter,
     сurrentMechanicName,
     battleStarted,
+    screenshotArray,
     set,
     expand,
     pauseBattle,
