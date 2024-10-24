@@ -14,7 +14,7 @@
     <!-- place -->
     <div class="place flex items-center gap-2">
       <img class="h-4 scale-150" :src="getAsset('cup')" />
-      <span class="text-xl">{{ playerPosition[0] + "/" + playerPosition[1] }}</span>
+      <span class="text-xl">{{ position[0] + "/" + position[1] }}</span>
     </div>
   </BackgroundPill>
 </template>
@@ -28,13 +28,14 @@ import { formattedTime } from "@/utils";
 // stores
 import { useMainStore } from "@/store/main";
 
-const { timer = 0 } = defineProps<{
+const props = defineProps<{
   timer?: number;
+  score: number;
+  position: [];
 }>();
 
 const store = useMainStore();
 
-const { data, challengeScore: score } = storeToRefs(store.battleStore);
 const { calculateCalcPoint } = store.battleStore;
 
 const el = ref();
@@ -52,16 +53,6 @@ const multiplierColor = computed(() => {
   } else if (mult > 12) {
     return "#d948da";
   }
-});
-
-const playerPosition = computed(() => {
-  if (!data.value?.["player_progress"]?.length) return [0, 0];
-
-  const clone = [...data.value["player_progress"]];
-
-  const playersSorted = clone?.sort((a, b) => b.score - a.score);
-
-  return [playersSorted?.findIndex((player) => player.isPlayer) + 1 || data.value?.["player_progress"].length, data.value?.["player_progress"].length];
 });
 
 const playMultAnimation = () => {

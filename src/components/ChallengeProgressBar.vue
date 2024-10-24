@@ -78,6 +78,9 @@ import { useMainStore } from "@/store/main";
 
 const props = defineProps<{
   timer?: number;
+  battleDuration: number;
+  progressBarValue: number;
+  playersProgress: [];
 }>();
 
 const colors = {
@@ -100,9 +103,6 @@ const gaugeRef = ref();
 const progressRef = ref();
 
 const positions = ref([]);
-
-// reset previous battle players progress
-data.value["player_progress"] = null;
 
 const computedPlayer = computed(() => positions.value.find((position) => position?.isPlayer));
 const computedEnemies = computed(() => {

@@ -1,71 +1,79 @@
 <template>
-  <div ref="el" class="scene flex-1 relative">
-    <!-- vs container -->
-    <div v-if="scenes[currentScene] === 'vs'" class="vs-container w-full grid gap-8 place-items-center">
-      <div class="first-player exo-black text-[10vw]" :style="`color: ${getPlayerColor(leaderboardSorted[0])}`">
-        <span>{{ leaderboardSorted[0].name }}</span>
-      </div>
+  <div class="scene-cnt flex-1 flex">
+    <div ref="el" class="scene flex-1 relative">
+      <!-- vs container -->
+      <div v-if="scenes[currentScene] === 'vs'" class="vs-container w-full grid gap-8 place-items-center">
+        <div class="first-player exo-black text-[10vw]" :style="`color: ${getPlayerColor(leaderboardSorted[0])}`">
+          <span>{{ leaderboardSorted[0].name }}</span>
+        </div>
 
-      <div class="vs">
-        <img class="w-[40vw] contain" :src="getAsset('vs')" />
-      </div>
-      <div class="second-player exo-black text-[10vw]" :style="`color: ${getPlayerColor(leaderboardSorted[1])}`">
-        <span>{{ leaderboardSorted[1].name }}</span>
-      </div>
-    </div>
-
-    <!-- battle scene -->
-    <div v-else-if="scenes[currentScene] === 'battle'" class="battle-scene-cnt absolute inset-0 p-4 flex-1 flex flex-col">
-      <BackgroundImage type="red" />
-
-      <div class="challenge-stats z-10 flex flex-col gap-2 min-h-[136px]">
-        <ChallengeStatus :timer="30000" />
-        <ChallengeProgressBar :timer="30000" />
-      </div>
-
-      <!-- battle mechanic -->
-      <div class="battle-mech-cnt flex-1 flex mt-2">
-        <BattleMechanicMock mech="yesno" :task="currentTask" />
-      </div>
-    </div>
-
-    <!-- leaderboard -->
-    <BackgroundPill v-if="scenes[currentScene] === 'leaderboard'" class="py-8 mt-12 overflow-y-hidden flex-1 z-10 w-full">
-      <div class="pill-header flex items-center justify-between">
-        <span class="bg-pill-title">{{ locale?.["battle_results_title"] || "Battle results:" }}</span>
-      </div>
-
-      <div class="scrollable-cnt flex-1 overflow-y-auto mt-2">
-        <div class="leaderboard flex flex-col gap-1 pt-4">
-          <Pill v-for="player in leaderboardSorted" :key="player.id" class="py-2 flex items-center justify-between gap-4" color="light">
-            <div class="player-meta leading-3 flex gap-4 items-center">
-              <div class="rounded-full bg-[var(--grey-dark)] w-[30px] h-[30px] grid place-items-center">
-                <span class="league exo-black text-lg mb-[1px]" :style="`color: ${getPlayerColor(player)}`">{{ player.position }}</span>
-              </div>
-              <span class="fira-bold text-lg max-w-1/2 text-ellipsis">{{ player.name }}</span>
-            </div>
-            <span class="bolts exo-black text-[var(--accent-color)]">{{ player?.score || 0 }}</span>
-          </Pill>
+        <div class="vs">
+          <img class="w-[40vw] contain" :src="getAsset('vs')" />
+        </div>
+        <div class="second-player exo-black text-[10vw]" :style="`color: ${getPlayerColor(leaderboardSorted[1])}`">
+          <span>{{ leaderboardSorted[1].name }}</span>
         </div>
       </div>
-    </BackgroundPill>
-  </div>
 
-  <!-- loader -->
-  <div v-if="!gifUrl" class="loader absolute inset-0 bg-[#222] grid place-items-center z-[999]">
-    <div class="text flex flex-col gap-2 justify-center items-center">
-      <span>Creating screenshots</span>
-      <span class="exo-black text-4xl">{{ battleScene }}</span>
+      <!-- battle scene -->
+      <div v-else-if="scenes[currentScene] === 'battle'" class="battle-scene-cnt absolute inset-0 p-4 pt-8 flex-1 flex flex-col">
+        <div class="title text-center z-10 bg-[#222] absolute top-0 left-0 right-0">
+          <span class="text-sm exo-bold" style="background: linear-gradient(to right, #418afc, #864a9c); -webkit-background-clip: text; -webkit-text-fill-color: transparent"
+            >Played at @Tapsmart in Telegram</span
+          >
+        </div>
+
+        <BackgroundImage type="red" />
+
+        <div class="challenge-stats z-10 flex flex-col gap-2 min-h-[136px]">
+          <ChallengeStatus :timer="30000" :score="120" :position="[1, 2]" />
+          <ChallengeProgressBar :timer="30000" />
+        </div>
+
+        <!-- battle mechanic -->
+        <div class="battle-mech-cnt flex-1 flex mt-2">
+          <BattleMechanicMock mech="yesno" :task="currentTask" />
+        </div>
+      </div>
+
+      <!-- leaderboard -->
+      <BackgroundPill v-if="scenes[currentScene] === 'leaderboard'" class="py-8 mt-12 overflow-y-hidden flex-1 z-10 w-full">
+        <div class="pill-header flex items-center justify-between">
+          <span class="bg-pill-title">{{ locale?.["battle_results_title"] || "Battle results:" }}</span>
+        </div>
+
+        <div class="scrollable-cnt flex-1 overflow-y-auto mt-2">
+          <div class="leaderboard flex flex-col gap-1 pt-4">
+            <Pill v-for="player in leaderboardSorted" :key="player.id" class="py-2 flex items-center justify-between gap-4" color="light">
+              <div class="player-meta leading-3 flex gap-4 items-center">
+                <div class="rounded-full bg-[var(--grey-dark)] w-[30px] h-[30px] grid place-items-center">
+                  <span class="league exo-black text-lg mb-[1px]" :style="`color: ${getPlayerColor(player)}`">{{ player.position }}</span>
+                </div>
+                <span class="fira-bold text-lg max-w-1/2 text-ellipsis">{{ player.name }}</span>
+              </div>
+              <span class="bolts exo-black text-[var(--accent-color)]">{{ player?.score || 0 }}</span>
+            </Pill>
+          </div>
+        </div>
+      </BackgroundPill>
     </div>
-  </div>
 
-  <!-- download button -->
-  <!-- <div v-if="gifUrl" class="link-cnt absolute inset-0 bg-[#222] grid place-items-center z-[999]">
+    <!-- loader -->
+    <!-- <div v-if="!gifUrl" class="loader absolute inset-0 bg-[#222] grid place-items-center z-[999]">
+      <div class="text flex flex-col gap-2 justify-center items-center">
+        <span>Creating screenshots</span>
+        <span class="exo-black text-4xl">{{ battleScene }}</span>
+      </div>
+    </div> -->
+
+    <!-- download button -->
+    <!-- <div v-if="gifUrl" class="link-cnt absolute inset-0 bg-[#222] grid place-items-center z-[999]">
     <Button class="z-10">
       <a class="" :href="gifUrl" download="screenshot.png">Скачать</a>
     </Button>
   </div> -->
-  <!-- <img v-if="imageArr.length" class="absolute top-0 z-[1000] w-[150px]" :src="previewSrc" /> -->
+    <!-- <img v-if="imageArr.length" class="absolute top-0 z-[1000] w-[150px]" :src="previewSrc" /> -->
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -256,10 +264,10 @@ const generateGIF = async () => {
       clearInterval(interval);
       console.log(`sending data...`);
 
-      console.log(`images: ${imageArr.value}`);
+      //   console.log(`images: ${imageArr.value}`);
 
-      await useFetch({ key: "tg_story", data: { images: imageArr.value } });
-      router.push("/home/relax");
+      //   await useFetch({ key: "tg_story", data: { images: imageArr.value } });
+      //   router.push("/home/relax");
     }
   }, 500);
 

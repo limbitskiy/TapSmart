@@ -8,7 +8,7 @@
     <!-- battle stats -->
     <div class="challenge-stats z-10 flex flex-col gap-2 min-h-[136px]">
       <Transition name="fade">
-        <ChallengeStatus :timer="challengeTimer" />
+        <ChallengeStatus :timer="challengeTimer" :score="challengeScore" :position="playerPosition" />
       </Transition>
       <Transition name="fade">
         <ChallengeProgressBar :timer="challengeTimer" />
@@ -42,7 +42,7 @@ const store = useMainStore();
 
 const { fetchChallengePageData, redirectTo } = store;
 const { startChallenge, stopChallenge } = store.battleStore;
-const { data } = storeToRefs(store.battleStore);
+const { data, challengeScore } = storeToRefs(store.battleStore);
 
 // animation flags
 const showEndChallengeAnimation = ref(false);
@@ -51,6 +51,19 @@ const showStartChallengeAnimation = ref(false);
 // challenge interval
 const challengeTimer = ref();
 let challengeTimerInterval = null;
+
+// reset previous battle players progress
+data.value["player_progress"] = null;
+
+const playerPosition = computed(() => {
+  if (!data.value?.["player_progress"]?.length) return [0, 0];
+
+  const clone = [...data.value["player_progress"]];
+
+  const playersSorted = clone?.sort((a, b) => b.score - a.score);
+
+  return [playersSorted?.findIndex((player) => player.isPlayer) + 1 || data.value?.["player_progress"].length, data.value?.["player_progress"].length];
+});
 
 await fetchChallengePageData();
 
