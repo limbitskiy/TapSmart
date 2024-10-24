@@ -45,10 +45,10 @@
             </div>
           </div>
         </div>
-        <!-- white-space: normal; word-break: break-word; overflow-wrap: anywhere -->
+
         <!-- button press animations -->
         <div
-          class="no-btn-pulse absolute bottom-5 rounded-full left-10 h-10 w-10 z-[-1]"
+          class="no-btn-pulse absolute bottom-5 rounded-full left-[75px] h-10 w-10 z-[10]"
           :class="{ pulse: noBtnAnimation.shown }"
           :style="noBtnAnimation.color === 'red' ? 'background-color: rgb(239 68 68)' : noBtnAnimation.color === 'green' ? 'background-color: rgb(34 197 94)' : ''"
         ></div>
@@ -63,7 +63,7 @@
           <Button
             activeColor="#97482f"
             :disabled="(type === 'relax' && energy <= 0) || buttonsBlocked || !task"
-            class="flex-1 flex justify-center bg-[var(--red-color)]"
+            class="flex-1 flex justify-center bg-transparent border"
             @click="(event) => handleAnswer(task?.task?.variants[1], event, 'no')"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -74,7 +74,7 @@
           <Button
             activeColor="#38703d"
             :disabled="(type === 'relax' && energy <= 0) || buttonsBlocked || !task"
-            class="flex-1 flex justify-center bg-[var(--green-color)]"
+            class="flex-1 flex justify-center bg-transparent border"
             @click="(event) => handleAnswer(task?.task?.variants[0], event, 'yes')"
           >
             <svg width="29" height="23" viewBox="0 0 29 23" fill="none" xmlns="http://www.w3.org/2000/svg">

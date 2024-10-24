@@ -1,4 +1,7 @@
 <template>
+  <div v-if="debugMessages.length" class="debug-message text-sm absolute top-0 left-0 right-0 z-50 bg-black p-2 flex flex-col">
+    <span v-for="(msg, index) in debugMessages" :key="index">{{ msg }}</span>
+  </div>
   <div
     class="main-page flex flex-col min-h-[100dvh]"
     :style="{
@@ -62,7 +65,7 @@ const { top, right, bottom, left } = useScreenSafeArea();
 const store = useMainStore();
 
 const { hideNotification } = store;
-const { notification, tooltip, modal } = storeToRefs(store);
+const { notification, tooltip, modal, debugMessages } = storeToRefs(store);
 const { pauseBattle, resumeBattle } = store.battleStore;
 
 const handleVisibilityChange = () => {

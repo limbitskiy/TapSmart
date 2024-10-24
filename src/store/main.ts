@@ -44,6 +44,8 @@ export const useMainStore = defineStore("main", () => {
     isShown: false,
   });
 
+  const debugMessages = ref([]);
+
   const state = ref<MainState>({});
 
   const router = useRouter();
@@ -277,11 +279,13 @@ export const useMainStore = defineStore("main", () => {
 
   const shareToStory = async () => {
     if (battleStore.screenshotArray?.length) {
-      await useFetch({ key: "tg_story", data: { images: battleStore.screenshotArray } })?.then((res) => {
+      debugMessages.value.push("sending request");
+      useFetch({ key: "tg_story", data: { images: battleStore.screenshotArray } }).then((res) => {
         console.log(res.data.url);
+        debugMessages.value.push(`recieved url: ${res.data.url}`);
         tg.shareToStory(res.data.url, { text: "Check out my latest battle!" });
+        battleStore.screenshotArray = [];
       });
-      battleStore.screenshotArray = [];
     }
   };
 
@@ -372,6 +376,7 @@ export const useMainStore = defineStore("main", () => {
     notification,
     tooltip,
     modal,
+    debugMessages,
     startApp,
     fetchFriendsList,
     getOnlineFriends,

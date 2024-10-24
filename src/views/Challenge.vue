@@ -37,7 +37,7 @@
 
       <!-- end challenge animation -->
       <Transition name="fade-800">
-        <div v-if="showEndChallengeAnimation" class="animation-cnt absolute inset-0 grid place-items-center z-[30] bg-black">
+        <div v-if="showEndChallengeAnimation" ref="battleCompleteAnimationRef" class="animation-cnt absolute inset-0 grid place-items-center z-[30] bg-black">
           <BattleCompleteAnimation />
         </div>
       </Transition>
@@ -67,6 +67,7 @@ const showEndChallengeAnimation = ref(false);
 const showStartChallengeAnimation = ref(false);
 
 const screenshotEl = ref();
+const battleCompleteAnimationRef = ref();
 const screenshotSrc = ref();
 
 // challenge interval
@@ -128,6 +129,9 @@ onMounted(() => {
       }
 
       if (challengeTimer.value === 0) {
+        const imgData = await takeScreenshot(screenshotEl.value);
+        screenshotArray.value?.push(imgData);
+
         clearInterval(challengeTimerInterval);
         challengeTimerInterval = null;
         challengeTimer.value = undefined;
@@ -138,7 +142,9 @@ onMounted(() => {
           redirectTo("/battle-complete");
         }, 3000);
 
-        setTimeout(() => {
+        setTimeout(async () => {
+          // const imgData = await takeScreenshot(battleCompleteAnimationRef.value);
+          // screenshotArray.value?.push(imgData);
           showEndChallengeAnimation.value = false;
         }, 4000);
         return;

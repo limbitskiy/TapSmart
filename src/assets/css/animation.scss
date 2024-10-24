@@ -28,9 +28,9 @@
   animation: spin 8s linear;
 }
 
-.pulse {
-  animation: pulse 0.3s ease;
-}
+// .pulse {
+//   animation: pulse 0.3s ease;
+// }
 
 .front-center {
   transform: scale(3);
@@ -478,8 +478,8 @@
   }
 
   to {
-    opacity: 0;
-    transform: scale3d(40, 40, 1);
+    // opacity: 0;
+    transform: scale3d(5, 5, 1);
   }
 }
 

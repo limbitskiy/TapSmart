@@ -48,9 +48,8 @@ const route = useRoute();
 const { active: activeClass } = useCssModule();
 
 const store = useMainStore();
-const { redirectTo, useFetch, sendInviteAnalitycsData, shareToStory } = store;
+const { redirectTo, useFetch, sendInviteAnalitycsData } = store;
 const { friends: friendsLocale } = storeToRefs(store.localeStore);
-const { screenshotArray } = storeToRefs(store.battleStore);
 
 const btnRef = ref();
 
@@ -70,6 +69,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   close: [];
+  shareToStory: [];
 }>();
 
 const onClick = () => {
@@ -79,7 +79,9 @@ const onClick = () => {
   }
 
   if (props.data?.action === "tg_story") {
-    shareToStory();
+    console.log(`emitting`);
+
+    emit("shareToStory");
   }
 
   if (props.data?.api) {
