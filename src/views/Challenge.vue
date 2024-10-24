@@ -112,7 +112,7 @@ onMounted(() => {
   setTimeout(async () => {
     const imgData = await takeScreenshot(screenshotEl.value);
     screenshotArray.value?.push(imgData);
-  }, 3000);
+  }, 4000);
 
   setTimeout(() => {
     showStartChallengeAnimation.value = false;

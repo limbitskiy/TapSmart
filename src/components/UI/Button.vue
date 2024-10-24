@@ -48,7 +48,7 @@ const route = useRoute();
 const { active: activeClass } = useCssModule();
 
 const store = useMainStore();
-const { redirectTo, useFetch, sendInviteAnalitycsData } = store;
+const { redirectTo, useFetch, sendInviteAnalitycsData, shareToStory } = store;
 const { friends: friendsLocale } = storeToRefs(store.localeStore);
 const { screenshotArray } = storeToRefs(store.battleStore);
 
@@ -72,14 +72,6 @@ const emit = defineEmits<{
   close: [];
 }>();
 
-const sendScreenshots = () => {
-  if (screenshotArray.value?.length) {
-    useFetch({ key: "tg_story", data: { images: screenshotArray.value } })?.then((res) => {
-      console.log(res);
-    });
-  }
-};
-
 const onClick = () => {
   if (props.data?.action === "invite") {
     sendInviteAnalitycsData(route.path);
@@ -87,7 +79,7 @@ const onClick = () => {
   }
 
   if (props.data?.action === "tg_story") {
-    sendScreenshots();
+    shareToStory();
   }
 
   if (props.data?.api) {

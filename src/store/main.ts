@@ -2,6 +2,7 @@ import { computed, ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { defineStore } from "pinia";
 import { useVibrate } from "@vueuse/core";
+import { tg } from "@/api/telegram";
 
 // stores
 import { useDataStore } from "@/store/data";
@@ -274,6 +275,16 @@ export const useMainStore = defineStore("main", () => {
     return useFetch({ key: "invite_click", data: { route } });
   };
 
+  const shareToStory = async () => {
+    if (battleStore.screenshotArray?.length) {
+      await useFetch({ key: "tg_story", data: { images: battleStore.screenshotArray } })?.then((res) => {
+        console.log(res.data.url);
+        tg.shareToStory(res.data.url, { text: "Check out my latest battle!" });
+      });
+      battleStore.screenshotArray = [];
+    }
+  };
+
   const uploadGif = async (file) => {
     try {
       const formData = new FormData();
@@ -284,7 +295,6 @@ export const useMainStore = defineStore("main", () => {
       // });
       formData.append("upload", file);
       formData.append("service", state.value.service);
-      console.log(`go`);
 
       const result = await makeUploadRequest(formData);
 
@@ -388,5 +398,6 @@ export const useMainStore = defineStore("main", () => {
     // setRouteData,
     showModal,
     uploadGif,
+    shareToStory,
   };
 });
