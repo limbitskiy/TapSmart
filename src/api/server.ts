@@ -26,9 +26,9 @@ export const makeRequest = async ({ apiUrl, endPoint, payload, debugMessages }: 
   }
 
   lastCall = Date.now();
-  if (payload?.key === "tg_story") {
-    debugMessages.value.push(`sending request to ${apiUrl ?? defaultApiUrl}${endPoint ?? "/main"} with payload: ${JSON.stringify(payload?.data)}`);
-  }
+  // if (payload?.key === "tg_story") {
+  //   debugMessages.value.push(`sending request to ${apiUrl ?? defaultApiUrl}${endPoint ?? "/main"} with payload: ${JSON.stringify(payload?.data)}`);
+  // }
   return await axios.post(`${apiUrl ?? defaultApiUrl}${endPoint ?? "/main"}`, payload);
   // mocking response
   // return {
