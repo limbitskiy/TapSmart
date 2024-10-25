@@ -273,18 +273,23 @@ export const useMainStore = defineStore("main", () => {
     return useFetch({ key: "invite_click", data: { route } });
   };
 
+  // const shareToStory = () =>
+  //   new Promise((res) => {
+  //     setTimeout(res, 30000);
+  //   });
+
   const shareToStory = async () => {
     if (battleStore.screenshotArray?.length) {
-      debugMessages.value = [];
-      debugMessages.value.push("sending request");
+      // debugMessages.value = [];
+      // debugMessages.value.push("sending request");
       const res = await useFetch({ key: "tg_story", data: { images: battleStore.screenshotArray } });
       console.log(res.data.url);
-      debugMessages.value.push(`recieved url: ${res.data.url}`);
+      // debugMessages.value.push(`recieved url: ${res.data.url}`);
       try {
-        tg.shareToStory(res.data.url, { text: "Check out my latest battle!" });
+        tg.shareToStory(res.data.url, { text: battleStore.data.story_text, widgetLink: battleStore.data.story_link });
       } catch (error) {
         console.error(error);
-        debugMessages.value.push(error);
+        // debugMessages.value.push(error);
       }
       battleStore.screenshotArray = [];
     }
@@ -337,7 +342,7 @@ export const useMainStore = defineStore("main", () => {
 
           res(result.data);
         } catch (error) {
-          debugMessages.value.push("fetch error:", error);
+          // debugMessages.value.push("fetch error:", error);
           rej(error?.response?.data?.error?.message || error?.message || error);
         }
       });

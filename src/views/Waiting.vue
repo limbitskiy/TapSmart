@@ -60,7 +60,7 @@
             </div>
 
             <!-- other info -->
-            <div class="other-info flex gap-2 items-center">
+            <div class="other-info flex gap-4 items-center">
               <div class="league">
                 <span class="league exo-bold">L: {{ player?.league || 0 }}</span>
               </div>

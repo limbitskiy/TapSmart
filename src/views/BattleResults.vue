@@ -1,58 +1,67 @@
 <template>
-  <div id="battle-results" class="flex-1 flex flex-col p-4 h-dvh">
-    <BackgroundImage type="purple" />
-    <Profile />
-
-    <BackgroundPill class="py-8 mt-4 overflow-y-hidden flex-1 z-10">
-      <div class="pill-header flex items-center justify-between">
-        <span class="bg-pill-title">{{ locale?.["battle_results_title"] || "Battle results:" }}</span>
+  <div class="results-cnt">
+    <div v-if="generatingStory" class="story-generator-loader flex-1 grid h-dvh place-items-center">
+      <div class="spinner">
+        <span>Your story is being generated..</span>
       </div>
+    </div>
+    <div v-else id="battle-results" class="flex-1 flex flex-col p-4 h-dvh">
+      <BackgroundImage type="purple" />
+      <Profile />
 
-      <div class="scrollable-cnt flex-1 overflow-y-auto mt-2">
-        <div class="leaderboard flex flex-col gap-1 pt-4">
-          <Pill v-for="player in leaderboardSorted" :key="player.id" class="py-2 flex items-center justify-between gap-4" color="light">
-            <div class="player-meta leading-3 flex gap-4 items-center">
-              <div class="rounded-full bg-[var(--grey-dark)] w-[30px] h-[30px] grid place-items-center">
-                <span class="league exo-black text-lg mb-[1px]" :style="`color: ${getPlayerColor(player)}`">{{ player.position }}</span>
+      <BackgroundPill class="py-8 mt-4 overflow-y-hidden flex-1 z-10">
+        <div class="pill-header flex items-center justify-between">
+          <span class="bg-pill-title">{{ locale?.["battle_results_title"] || "Battle results:" }}</span>
+        </div>
+
+        <div class="scrollable-cnt flex-1 overflow-y-auto mt-2">
+          <div class="leaderboard flex flex-col gap-1 pt-4">
+            <Pill v-for="player in leaderboardSorted" :key="player.id" class="py-2 flex items-center justify-between gap-4" color="light">
+              <div class="player-meta leading-3 flex gap-4 items-center">
+                <div class="rounded-full bg-[var(--grey-dark)] w-[30px] h-[30px] grid place-items-center">
+                  <span class="league exo-black text-lg mb-[1px]" :style="`color: ${getPlayerColor(player)}`">{{ player.position }}</span>
+                </div>
+                <span class="fira-bold text-lg max-w-1/2 text-ellipsis">{{ player.name }}</span>
               </div>
-              <span class="fira-bold text-lg max-w-1/2 text-ellipsis">{{ player.name }}</span>
-            </div>
-            <span class="bolts exo-black text-[var(--accent-color)]">{{ player?.score || 0 }}</span>
-          </Pill>
+              <span class="bolts exo-black text-[var(--accent-color)]">{{ player?.score || 0 }}</span>
+            </Pill>
+          </div>
+
+          <!-- ad -->
+          <div class="ad flex flex-col items-center justify-center mt-8">
+            <Ad
+              :image="data?.['battle_results_ad_image']"
+              :title="locale?.['battle_results_ad_title']"
+              :text="locale?.['battle_results_ad_text']"
+              :tooltip="locale?.['tooltip_battle_results_ad']"
+            />
+          </div>
         </div>
 
-        <div class="ad flex flex-col items-center justify-center mt-8">
-          <Ad
-            :image="data?.['battle_results_ad_image']"
-            :title="locale?.['battle_results_ad_title']"
-            :text="locale?.['battle_results_ad_text']"
-            :tooltip="locale?.['tooltip_battle_results_ad']"
-          />
+        <!-- buttons -->
+        <div class="ad-btns w-full flex gap-4 justify-between mt-6">
+          <Button
+            v-if="data?.battle_results_buttons?.left"
+            class="flex-1 !py-3 !px-2 text-white bg-[var(--grey-light)] !text-lg !inline-block !leading-5"
+            activeColor="#525252"
+            :data="data.battle_results_buttons.left"
+          >
+          </Button>
+          <Button
+            v-if="data?.battle_results_buttons?.right"
+            class="flex-1 !py-3 !px-2 !text-lg !inline-block !leading-5"
+            activeColor="#fcdcb0"
+            :data="data.battle_results_buttons.right"
+          >
+          </Button>
         </div>
-      </div>
-
-      <div class="ad-btns w-full flex gap-4 justify-between mt-6">
-        <Button
-          v-if="data?.battle_results_buttons?.left"
-          class="flex-1 !py-3 !px-2 text-white bg-[var(--grey-light)] !text-lg !inline-block !leading-5"
-          activeColor="#525252"
-          :data="data.battle_results_buttons.left"
-        >
-        </Button>
-        <Button
-          v-if="data?.battle_results_buttons?.right"
-          class="flex-1 !py-3 !px-2 !text-lg !inline-block !leading-5"
-          activeColor="#fcdcb0"
-          :data="data.battle_results_buttons.right"
-        >
-        </Button>
-      </div>
-    </BackgroundPill>
+      </BackgroundPill>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onUnmounted } from "vue";
+import { computed, onUnmounted, ref } from "vue";
 import { getAsset } from "@/utils";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
@@ -68,12 +77,17 @@ const { fetchBattleResultsData, shareToStory } = store;
 const { data } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
 
+const generatingStory = ref(false);
+
 if (route.query.tg_story) {
-  try {
-    await shareToStory();
-  } catch (error) {
-    console.error(error);
-  }
+  generatingStory.value = true;
+  shareToStory()
+    .then(() => {
+      generatingStory.value = false;
+    })
+    .catch((e) => {
+      console.error(e);
+    });
 }
 
 if (!route.query.nofetch) {
