@@ -80,6 +80,7 @@ console.log(`relax created`);
 const store = useMainStore();
 
 const { fetchRelaxPageData } = store;
+const { debugMessages } = storeToRefs(store);
 const { battles: locale } = storeToRefs(store.localeStore);
 const { data, afkCounter } = storeToRefs(store.battleStore);
 const { startRelax, stopRelax, setRelaxModal } = store.battleStore;
@@ -141,6 +142,7 @@ onMounted(() => {
   console.log(`relax mounted`);
 
   startRelax();
+  debugMessages.value = [];
 });
 
 onUnmounted(() => {

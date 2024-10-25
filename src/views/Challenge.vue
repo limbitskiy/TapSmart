@@ -33,7 +33,7 @@
       </div>
 
       <!-- battle mechanic -->
-      <BattleMechanic @mechMounted="onMechMounted" @mechUnmounted="onMechUnmounted" />
+      <BattleMechanic @mechMounted="onMechMounted" @mechUnmounted="onMechUnmounted" @answer="onAnswer" />
 
       <!-- end challenge animation -->
       <Transition name="fade-800">
@@ -83,6 +83,7 @@ const playerPosition = computed(() => {
 
   return [playersSorted?.findIndex((player) => player.isPlayer) + 1 || data.value?.["player_progress"].length, data.value?.["player_progress"].length];
 });
+let needToMakeScreenshot = false;
 
 const progressBarValue = computed(() => ((data.value?.["battle_duration"] - challengeTimer.value) * 100) / data.value?.["battle_duration"]);
 
@@ -98,6 +99,14 @@ const onMechUnmounted = () => {
 const clickHandler = async () => {
   // const imgData = await takeScreenshot(screenshotEl.value);
   // screenshotSrc.value = imgData;
+};
+
+const onAnswer = async () => {
+  if (needToMakeScreenshot) {
+    const imgData = await takeScreenshot(screenshotEl.value);
+    screenshotArray.value?.push(imgData);
+  }
+  needToMakeScreenshot = false;
 };
 
 onMounted(() => {
@@ -123,9 +132,9 @@ onMounted(() => {
     const screenshotInterval = data.value?.battle_duration / 10;
 
     challengeTimerInterval = setInterval(async () => {
+      // make screenshot every (duration/screenshotInterval)
       if ((data.value?.battle_duration - challengeTimer.value) % screenshotInterval === 0 && challengeTimer.value !== 0 && data.value?.battle_duration !== challengeTimer.value) {
-        const imgData = await takeScreenshot(screenshotEl.value);
-        screenshotArray.value?.push(imgData);
+        needToMakeScreenshot = true;
       }
 
       if (challengeTimer.value === 0) {

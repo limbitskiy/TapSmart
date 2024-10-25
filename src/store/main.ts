@@ -197,10 +197,6 @@ export const useMainStore = defineStore("main", () => {
     await useFetch({ key: api, data });
   };
 
-  // const callApiSync = ({ api, data }: { api: string; data?: {} }) => {
-  //   useFetch({ key: api, data });
-  // };
-
   const onVibrate = (type: string) => {
     if (dataStore.settings.vibro) {
       let pattern;
@@ -281,7 +277,7 @@ export const useMainStore = defineStore("main", () => {
     if (battleStore.screenshotArray?.length) {
       debugMessages.value = [];
       debugMessages.value.push("sending request");
-      const res = await useFetch({ key: "tg_story", data: { images: battleStore.screenshotArray[0] } });
+      const res = await useFetch({ key: "tg_story", data: { images: battleStore.screenshotArray } });
       console.log(res.data.url);
       debugMessages.value.push(`recieved url: ${res.data.url}`);
       try {

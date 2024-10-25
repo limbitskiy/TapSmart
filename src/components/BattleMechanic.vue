@@ -63,6 +63,10 @@ interface AnswerProps {
   drawBonus?: boolean;
 }
 
+const emit = defineEmits<{
+  answer: [];
+}>();
+
 const store = useMainStore();
 
 // const { useFetch, redirectTo } = store;
@@ -92,6 +96,8 @@ const onAnswer = async ({ isCorrect, answer, event, drawBonus = true, nextTaskDe
     drawBonusAnimation(event);
   }
   handleBattleAnswer({ isCorrect, answerString: answer, nextTaskDelay });
+
+  emit("answer");
 };
 
 const drawBonusAnimation = ({ x, y }: { x: number; y: number }) => {
