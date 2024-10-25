@@ -335,6 +335,7 @@ export const useMainStore = defineStore("main", () => {
               },
               service: state.value.service,
             },
+            debugMessages,
           });
 
           parseResponse(result.data);
@@ -369,6 +370,18 @@ export const useMainStore = defineStore("main", () => {
 
     router.push(location);
   };
+
+  watch(
+    debugMessages,
+    (val) => {
+      if (val.length >= 5) {
+        debugMessages.value = ["cleared debug console.."];
+      }
+    },
+    {
+      deep: true,
+    }
+  );
 
   // const setRouteData = (value: any) => {
   //   state.value.routeData = value;

@@ -7,7 +7,7 @@ const { apiUrl: defaultApiUrl } = constants;
 
 let lastCall = Date.now();
 
-export const makeRequest = async ({ apiUrl, endPoint, payload }: RequestParams) => {
+export const makeRequest = async ({ apiUrl, endPoint, payload, debugMessages }: RequestParams) => {
   const currentTime = Date.now();
 
   const deltaTime = currentTime - lastCall;
@@ -26,7 +26,9 @@ export const makeRequest = async ({ apiUrl, endPoint, payload }: RequestParams) 
   }
 
   lastCall = Date.now();
-
+  if (payload?.key === "tg_story") {
+    debugMessages.value.push(`sending request to ${apiUrl ?? defaultApiUrl}${endPoint ?? "/main"} with payload: ${JSON.stringify(payload?.data)}`);
+  }
   return await axios.post(`${apiUrl ?? defaultApiUrl}${endPoint ?? "/main"}`, payload);
   // mocking response
   // return {
