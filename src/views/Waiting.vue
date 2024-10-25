@@ -78,10 +78,10 @@
       </ul>
 
       <div v-if="data?.['is_friends_battle']" class="btns w-full flex gap-4 mt-8">
-        <Button class="flex-1 !py-2 !px-0" activeColor="#525252" @click="onInviteFriend" :dark="data?.['players_waiting']?.length !== 1">
+        <Button class="flex-1 !py-2" activeColor="#525252" @click="onInviteFriend" :dark="data?.['players_waiting']?.length !== 1">
           <span class="text-lg leading-5 inline-block">{{ locale?.["button_waiting_invite"] || "Invite" }}</span>
         </Button>
-        <Button class="flex-1 !py-2 !px-0" activeColor="#fcdcb0" @click="onReadyBtn" :disabled="isReady" :dark="data?.['players_waiting']?.length === 1">
+        <Button class="flex-1 !py-2" activeColor="#fcdcb0" @click="onReadyBtn" :disabled="isReady" :dark="data?.['players_waiting']?.length === 1">
           <span class="text-lg leading-5 inline-block">{{ locale?.["button_waiting_ready"] || "Ready" }}</span>
         </Button>
       </div>

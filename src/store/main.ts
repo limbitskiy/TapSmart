@@ -278,38 +278,43 @@ export const useMainStore = defineStore("main", () => {
   };
 
   const shareToStory = async () => {
-    debugMessages.value.push("inside share function");
     if (battleStore.screenshotArray?.length) {
+      debugMessages.value = [];
       debugMessages.value.push("sending request");
       const res = await useFetch({ key: "tg_story", data: { images: battleStore.screenshotArray } });
       console.log(res.data.url);
       debugMessages.value.push(`recieved url: ${res.data.url}`);
-      tg.shareToStory(res.data.url, { text: "Check out my latest battle!" });
+      try {
+        tg.shareToStory(res.data.url, { text: "Check out my latest battle!" });
+      } catch (error) {
+        console.error(error);
+        debugMessages.value.push(error);
+      }
       battleStore.screenshotArray = [];
     }
   };
 
-  const uploadGif = async (file) => {
-    try {
-      const formData = new FormData();
+  // const uploadGif = async (file) => {
+  //   try {
+  //     const formData = new FormData();
 
-      // const extension = blob.type.split("/")[1];
-      // const imageFile = new File([blob], `${Date.now()}.${extension}`, {
-      //   type: blob.type,
-      // });
-      formData.append("upload", file);
-      formData.append("service", state.value.service);
+  //     // const extension = blob.type.split("/")[1];
+  //     // const imageFile = new File([blob], `${Date.now()}.${extension}`, {
+  //     //   type: blob.type,
+  //     // });
+  //     formData.append("upload", file);
+  //     formData.append("service", state.value.service);
 
-      const result = await makeUploadRequest(formData);
+  //     const result = await makeUploadRequest(formData);
 
-      return result.data;
-    } catch (error) {
-      return error?.response?.data?.error?.message || error?.message || error;
-    }
-    const img = new Image();
-    img.src = url;
-    img.onload = async () => {};
-  };
+  //     return result.data;
+  //   } catch (error) {
+  //     return error?.response?.data?.error?.message || error?.message || error;
+  //   }
+  //   const img = new Image();
+  //   img.src = url;
+  //   img.onload = async () => {};
+  // };
 
   const useFetch = ({ key, data }: { key?: string; data?: {} }) => {
     if (requestQueue.value.length > 3) return;
@@ -336,6 +341,7 @@ export const useMainStore = defineStore("main", () => {
 
           res(result.data);
         } catch (error) {
+          debugMessages.value.push("fetch error:", error);
           rej(error?.response?.data?.error?.message || error?.message || error);
         }
       });
@@ -402,7 +408,7 @@ export const useMainStore = defineStore("main", () => {
     onVibrate,
     // setRouteData,
     showModal,
-    uploadGif,
+    // uploadGif,
     shareToStory,
   };
 });

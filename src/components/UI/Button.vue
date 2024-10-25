@@ -6,7 +6,7 @@
       'generic-btn',
       !unstyled && 'rounded-xl  py-3 px-8 text-xl leading-6',
       dark ? 'bg-black' : grey ? 'bg-[var(--grey-light)]' : !unstyled && 'bg-[var(--accent-color)] text-black',
-      font ? font : 'fira-condensed',
+      font ? font : 'fira-condensed-bold',
       data?.disabled ?? disabled ? '!bg-gray-500 bg-none' : '',
       data?.accent === 'orange' ? 'bg-[var(--accent-color)] text-black' : data?.accent === 'purple' ? 'bg-gradient-to-r from-[#408CFF] to-[#894899] text-white' : '',
     ]"
