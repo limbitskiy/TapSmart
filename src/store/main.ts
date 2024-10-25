@@ -278,22 +278,24 @@ export const useMainStore = defineStore("main", () => {
   //     setTimeout(res, 30000);
   //   });
 
-  const shareToStory = async () => {
-    if (battleStore.screenshotArray?.length) {
-      // debugMessages.value = [];
-      // debugMessages.value.push("sending request");
-      const res = await useFetch({ key: "tg_story", data: { images: battleStore.screenshotArray } });
-      console.log(res.data.url);
-      // debugMessages.value.push(`recieved url: ${res.data.url}`);
-      try {
-        tg.shareToStory(res.data.url, { text: battleStore.data.story_text, widgetLink: battleStore.data.story_link });
-      } catch (error) {
-        console.error(error);
-        // debugMessages.value.push(error);
-      }
-      battleStore.screenshotArray = [];
-    }
-  };
+  // const shareToStory = () =>
+  //   new Promise((res, rej) => {
+  //     if (battleStore.screenshotArray?.length) {
+  //       useFetch({ key: "tg_story", data: { images: battleStore.screenshotArray } })
+  //         ?.then((result) => {
+  //           tg.shareToStory(result.data.url, { text: battleStore.data.story_text, widget_link: battleStore.data.story_link });
+  //           battleStore.screenshotArray = [];
+  //           res(true);
+  //         })
+  //         .catch((e) => {
+  //           rej(e);
+  //         });
+  //     } else {
+  //       rej("No screenshots to were made");
+  //     }
+  //   });
+
+  const shareToStory = async () => {};
 
   // const uploadGif = async (file) => {
   //   try {

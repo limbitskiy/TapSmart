@@ -62,6 +62,7 @@
 
 <script setup lang="ts">
 import { computed, onUnmounted, ref } from "vue";
+import { tg } from "@/api/telegram";
 import { getAsset } from "@/utils";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
@@ -73,21 +74,43 @@ const route = useRoute();
 
 const store = useMainStore();
 
-const { fetchBattleResultsData, shareToStory } = store;
-const { data } = storeToRefs(store.battleStore);
+const { fetchBattleResultsData, useFetch } = store;
+const { data, screenshotArray } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
 
 const generatingStory = ref(false);
 
+const shareToStory = async () => {
+  // generatingStory.value = true;
+
+  if (screenshotArray.value?.length) {
+    try {
+      const res = await useFetch({ key: "tg_story", data: { images: screenshotArray.value } });
+      tg.shareToStory(res.data.url, { text: data.value?.["story_text"], widget_link: data.value?.["story_link"] });
+    } catch (error) {
+      console.error(error);
+    }
+    screenshotArray.value = [];
+  }
+
+  // generatingStory.value = false;
+};
+
 if (route.query.tg_story) {
-  generatingStory.value = true;
-  shareToStory()
-    .then(() => {
-      generatingStory.value = false;
-    })
-    .catch((e) => {
-      console.error(e);
-    });
+  shareToStory();
+  // generatingStory.value = true;
+  // console.log(`starting loader`);
+
+  // shareToStory()
+  //   .then(() => {
+  //     console.log(`stopping loader`);
+  //     generatingStory.value = false;
+  //   })
+  //   .catch((e) => {
+  //     console.error(e);
+  //     console.log(`stopping loader`);
+  //     generatingStory.value = false;
+  //   });
 }
 
 if (!route.query.nofetch) {
