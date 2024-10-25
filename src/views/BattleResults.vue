@@ -69,7 +69,11 @@ const { data } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
 
 if (route.query.tg_story) {
-  await shareToStory();
+  try {
+    await shareToStory();
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 if (!route.query.nofetch) {

@@ -7,7 +7,7 @@ const { apiUrl: defaultApiUrl } = constants;
 
 let lastCall = Date.now();
 
-export const makeRequest = async ({ apiUrl, endPoint, payload, debugMessages }: RequestParams) => {
+export const makeRequest = async ({ apiUrl, endPoint, payload }: RequestParams) => {
   const currentTime = Date.now();
 
   const deltaTime = currentTime - lastCall;
