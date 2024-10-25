@@ -4,9 +4,9 @@
     ref="btnRef"
     :class="[
       'generic-btn',
-      !unstyled && 'rounded-xl font-bold py-3 px-8 text-xl leading-6',
+      !unstyled && 'rounded-xl  py-3 px-8 text-xl leading-6',
       dark ? 'bg-black' : grey ? 'bg-[var(--grey-light)]' : !unstyled && 'bg-[var(--accent-color)] text-black',
-      font ? font : 'fira-bold',
+      font ? font : 'fira-condensed',
       data?.disabled ?? disabled ? '!bg-gray-500 bg-none' : '',
       data?.accent === 'orange' ? 'bg-[var(--accent-color)] text-black' : data?.accent === 'purple' ? 'bg-gradient-to-r from-[#408CFF] to-[#894899] text-white' : '',
     ]"
@@ -40,7 +40,7 @@ interface ButtonProps {
   label: string;
   isClose: boolean;
   accent: "orange" | "purple";
-  action?: "invite" | "tg_story";
+  action?: "invite";
 }
 
 const route = useRoute();
@@ -69,19 +69,12 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   close: [];
-  shareToStory: [];
 }>();
 
 const onClick = () => {
   if (props.data?.action === "invite") {
     sendInviteAnalitycsData(route.path);
     inviteFriend(friendsLocale.value?.["invite_message"] || "Invite message");
-  }
-
-  if (props.data?.action === "tg_story") {
-    console.log(`emitting`);
-
-    emit("shareToStory");
   }
 
   if (props.data?.api) {

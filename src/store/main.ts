@@ -279,13 +279,12 @@ export const useMainStore = defineStore("main", () => {
 
   const shareToStory = async () => {
     if (battleStore.screenshotArray?.length) {
-      debugMessages.value.push("sending request");
-      useFetch({ key: "tg_story", data: { images: battleStore.screenshotArray } }).then((res) => {
-        console.log(res.data.url);
-        debugMessages.value.push(`recieved url: ${res.data.url}`);
-        tg.shareToStory(res.data.url, { text: "Check out my latest battle!" });
-        battleStore.screenshotArray = [];
-      });
+      // debugMessages.value.push("sending request");
+      const res = await useFetch({ key: "tg_story", data: { images: battleStore.screenshotArray } });
+      console.log(res.data.url);
+      // debugMessages.value.push(`recieved url: ${res.data.url}`);
+      tg.shareToStory(res.data.url, { text: "Check out my latest battle!" });
+      battleStore.screenshotArray = [];
     }
   };
 

@@ -37,7 +37,6 @@
           class="flex-1 !py-3 !px-2 text-white bg-[var(--grey-light)] !text-lg !inline-block !leading-5"
           activeColor="#525252"
           :data="data.battle_results_buttons.left"
-          :shareToStory="shareToStory"
         >
         </Button>
         <Button
@@ -45,7 +44,6 @@
           class="flex-1 !py-3 !px-2 !text-lg !inline-block !leading-5"
           activeColor="#fcdcb0"
           :data="data.battle_results_buttons.right"
-          :shareToStory="shareToStory"
         >
         </Button>
       </div>
@@ -69,6 +67,10 @@ const store = useMainStore();
 const { fetchBattleResultsData, shareToStory } = store;
 const { data } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
+
+if (route.query.tg_story) {
+  await shareToStory();
+}
 
 if (!route.query.nofetch) {
   await fetchBattleResultsData(route.query);
@@ -98,11 +100,5 @@ const getPlayerColor = (player: {}) => {
   } else {
     return "#" + colors[+player.id];
   }
-};
-
-const onShareToStory = () => {
-  console.log(`sharing to story`);
-
-  shareToStory();
 };
 </script>

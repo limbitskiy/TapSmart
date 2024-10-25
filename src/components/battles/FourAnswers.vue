@@ -24,7 +24,7 @@
 
             <div class="slide-cnt flex flex-col justify-center">
               <!-- question card -->
-              <Transition name="question-slide" mode="out-in">
+              <Transition name="fade" mode="out-in">
                 <div v-if="task" :key="task?.task?.question" class="flex flex-col gap-2 items-center text-center break-words">
                   <div class="question-cnt max-w-[calc(100vw-5rem)]">
                     <span class="fira-condensed-black line-clamp-2" style="font-size: clamp(30px, 9vw, 46px)">{{ task?.task?.question }}</span>
@@ -36,43 +36,43 @@
         </div>
 
         <!-- button press animations -->
-        <div
+        <!-- <div
           v-if="answerAnimation.shown"
           class="answer-animation absolute rounded-full h-10 w-10 z-[-1] pulse"
           :style="`background-color: ${answerAnimation.color}; left: ${answerAnimation.coords.x}px; top: ${answerAnimation.coords.y}px`"
-        ></div>
+        ></div> -->
 
         <!-- buttons -->
         <div v-if="buttonValues[0]" class="answer-buttons grid w-full grid-cols-2 grid-rows-2 gap-4 leading-5">
           <Button
-            activeColor="#5e5e5e"
-            :disabled="(type === 'relax' && energy <= 0) || buttonsBlocked || !task"
+            :disabled="type === 'relax' && energy <= 0"
             class="four-answer-btn"
-            @click="(event) => handleAnswer(task?.task?.variants[0], event)"
+            :class="{ correct: btnAnimation[0] === 'correct', wrong: btnAnimation[0] === 'wrong' }"
+            @click="(event) => handleAnswer(task?.task?.variants[0], event, 0)"
           >
             {{ buttonValues[0] }}
           </Button>
           <Button
-            activeColor="#5e5e5e"
-            :disabled="(type === 'relax' && energy <= 0) || buttonsBlocked || !task"
+            :disabled="type === 'relax' && energy <= 0"
             class="four-answer-btn"
-            @click="(event) => handleAnswer(task?.task?.variants[1], event)"
+            :class="{ correct: btnAnimation[1] === 'correct', wrong: btnAnimation[1] === 'wrong' }"
+            @click="(event) => handleAnswer(task?.task?.variants[1], event, 1)"
           >
             {{ buttonValues[1] }}
           </Button>
           <Button
-            activeColor="#5e5e5e"
-            :disabled="(type === 'relax' && energy <= 0) || buttonsBlocked || !task"
+            :disabled="type === 'relax' && energy <= 0"
             class="four-answer-btn"
-            @click="(event) => handleAnswer(task?.task?.variants[2], event)"
+            :class="{ correct: btnAnimation[2] === 'correct', wrong: btnAnimation[2] === 'wrong' }"
+            @click="(event) => handleAnswer(task?.task?.variants[2], event, 2)"
           >
             {{ buttonValues[2] }}
           </Button>
           <Button
-            activeColor="#5e5e5e"
-            :disabled="(type === 'relax' && energy <= 0) || buttonsBlocked || !task"
+            :disabled="type === 'relax' && energy <= 0"
             class="four-answer-btn"
-            @click="(event) => handleAnswer(task?.task?.variants[3], event)"
+            :class="{ correct: btnAnimation[3] === 'correct', wrong: btnAnimation[3] === 'wrong' }"
+            @click="(event) => handleAnswer(task?.task?.variants[3], event, 3)"
           >
             {{ buttonValues[3] }}
           </Button>
@@ -100,7 +100,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from "vue";
-import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 
 const emit = defineEmits<{
@@ -143,35 +142,51 @@ const correctAnswer = ref({
   timeout: null,
 });
 
+const btnAnimation = ref({
+  0: null,
+  1: null,
+  2: null,
+  3: null,
+});
+
+const settings = {
+  correctTaskDelay: 0,
+  wrongTaskDelay: 0,
+  yesBtnDelay: 0,
+  noBtnDelay: 0,
+};
+
 console.log(`4answers created`);
 
-const handleAnswer = (answer: string, event) => {
-  if (props.type === "relax" && props.energy <= 0) return;
+const handleAnswer = (answer: string, event, btnId: number) => {
+  if ((props.type === "relax" && props.energy <= 0) || !props.task) return;
 
   const isCorrect = answer === props.task.correct;
 
-  let taskDelay;
+  let taskDelay = settings.correctTaskDelay;
 
   if (isCorrect) {
-    answerAnimation.value.color = "green";
+    btnAnimation.value[btnId] = "correct";
+    setTimeout(() => {
+      btnAnimation.value[btnId] = null;
+    }, settings.yesBtnDelay);
   } else {
-    answerAnimation.value.color = "red";
+    btnAnimation.value[btnId] = "wrong";
+    setTimeout(() => {
+      btnAnimation.value[btnId] = null;
+    }, settings.noBtnDelay);
   }
 
-  const pillTop = pillRef.value.el.getBoundingClientRect().top;
-  const pillLeft = pillRef.value.el.getBoundingClientRect().left;
+  // const pillTop = pillRef.value.el.getBoundingClientRect().top;
+  // const pillLeft = pillRef.value.el.getBoundingClientRect().left;
 
-  answerAnimation.value.coords.x = event.clientX - pillLeft;
-  answerAnimation.value.coords.y = event.clientY - pillTop;
-  answerAnimation.value.shown = true;
-
-  setTimeout(() => {
-    answerAnimation.value.shown = false;
-  }, 1000);
+  // answerAnimation.value.coords.x = event.clientX - pillLeft;
+  // answerAnimation.value.coords.y = event.clientY - pillTop;
+  // answerAnimation.value.shown = true;
 
   if (props.type === "relax" && !isCorrect) {
     // wrong answer in relax mode creates a 2s delay
-    taskDelay = 2000;
+    taskDelay = settings.wrongTaskDelay;
 
     // wrong answer in relax mode creates correct answer popup
     clearTimeout(correctAnswer.value.timeout);
@@ -204,5 +219,17 @@ watch(
 
 onMounted(() => {
   console.log(`4answers mounted`);
+
+  if (props.type === "relax") {
+    settings.correctTaskDelay = 350;
+    settings.wrongTaskDelay = 2000;
+    settings.yesBtnDelay = 300;
+    settings.noBtnDelay = 2000;
+  } else if (props.type === "challenge") {
+    settings.correctTaskDelay = 0;
+    settings.wrongTaskDelay = 0;
+    settings.yesBtnDelay = 300;
+    settings.noBtnDelay = 300;
+  }
 });
 </script>

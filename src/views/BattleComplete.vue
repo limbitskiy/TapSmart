@@ -94,6 +94,7 @@
         </div>
       </div>
 
+      <!-- buttons -->
       <div class="ad-btns w-full flex gap-4 mt-8">
         <Button class="flex-1 py-3 !px-0 text-white bg-[var(--grey-light)]" activeColor="#525252" :data="data?.['button_claim']">
           <div class="flex flex-col gap-1 items-center">

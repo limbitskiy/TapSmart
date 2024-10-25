@@ -314,7 +314,7 @@ export const useBattleStore = defineStore("battle", () => {
       await waitFor(nextTaskDelay);
     }
 
-    // incrementTaskIndex();
+    incrementTaskIndex();
 
     pauseCurrentTask.value = false;
 
@@ -322,7 +322,7 @@ export const useBattleStore = defineStore("battle", () => {
       state.value.battleData.questions_left -= 1;
     }
 
-    // startTaskTimeout();
+    startTaskTimeout();
   };
 
   // mechanic

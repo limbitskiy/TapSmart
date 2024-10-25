@@ -17,7 +17,7 @@
               <span class="text-lg text-gray-300">{{ locale?.["bolts"] || "Bolts" }}</span>
               <div class="flex gap-2 items-center">
                 <img class="h-4 scale-150" :src="getAsset('bolt')" />
-                <span class="text-xl exo-black">{{ showFormattedNumber(data?.["bolts"]) || 0 }}</span>
+                <span class="text-xl exo-bold">{{ showFormattedNumber(data?.["bolts"]) || 0 }}</span>
               </div>
             </div>
           </Pill>
@@ -41,7 +41,7 @@
               <span class="text-lg text-gray-300">{{ locale?.["nuts"] || "Nuts" }}</span>
               <div class="flex gap-2 items-center">
                 <img class="h-4 scale-150" :src="getAsset('nut')" />
-                <span class="text-xl exo-black">{{ showFormattedNumber(data?.["nuts"]) || 0 }}</span>
+                <span class="text-xl exo-bold">{{ showFormattedNumber(data?.["nuts"]) || 0 }}</span>
               </div>
             </div>
           </Pill>
@@ -87,7 +87,7 @@
               <span class="text-lg text-gray-300">{{ locale?.["battles_played"] || "Battles" }}</span>
               <div class="flex gap-2 items-center">
                 <img class="h-6" :src="getAsset('swords')" />
-                <span class="text-xl exo-black">{{ data?.["battles_played"] || 0 }}</span>
+                <span class="text-xl exo-bold">{{ data?.["battles_played"] || 0 }}</span>
               </div>
             </div>
           </Pill>
@@ -117,7 +117,7 @@
               <span class="text-lg text-gray-300">{{ locale?.["questions_trained"] || "Words trained" }}</span>
               <div class="flex gap-2 items-center">
                 <img class="h-6" :src="getAsset('book')" />
-                <span class="text-xl exo-black">{{ data?.["questions_trained"] || 0 }}</span>
+                <span class="text-xl exo-bold">{{ data?.["questions_trained"] || 0 }}</span>
               </div>
             </div>
           </Pill>
@@ -140,7 +140,7 @@
               <span class="text-lg text-gray-300">{{ locale?.["questions_learned"] || "Words learned" }}</span>
               <div class="flex gap-2 items-center">
                 <img class="h-6" :src="getAsset('book')" />
-                <span class="text-xl exo-black">{{ data?.["questions_learned"] || 0 }}</span>
+                <span class="text-xl exo-bold">{{ data?.["questions_learned"] || 0 }}</span>
               </div>
             </div>
           </Pill>
@@ -163,7 +163,7 @@
               <span class="text-lg text-gray-300">{{ locale?.["questions_repetition"] || "Repetitions" }}</span>
               <div class="flex gap-2 items-center">
                 <img class="h-6" :src="getAsset('book')" />
-                <span class="text-xl exo-black">{{ data?.["questions_repetition"] || 0 }}</span>
+                <span class="text-xl exo-bold">{{ data?.["questions_repetition"] || 0 }}</span>
               </div>
             </div>
           </Pill>
@@ -186,7 +186,7 @@
               <div class="top flex items-baseline justify-between">
                 <div class="level">
                   <span class="text-lg text-gray-300">{{ locale?.["level"] }}: </span>
-                  <span class="text-base exo-black text-gray-300">{{ data?.["level"] }}</span>
+                  <span class="text-base exo-bold text-gray-300">{{ data?.["level"] }}</span>
                 </div>
                 <span class="text-[10px] exo-bold text-gray-300">{{ data?.["level_progress"] }}%</span>
               </div>

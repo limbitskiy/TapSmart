@@ -157,16 +157,16 @@ if (currentBattleMode.value === "challenge") {
   // });
 }
 
-if (currentBattleMode.value === "relax") {
-  watch(currentTask, (val) => {
-    if (val) {
-      buttonsBlocked.value = true;
-      setTimeout(() => {
-        buttonsBlocked.value = false;
-      }, 500);
-    }
-  });
-}
+// if (currentBattleMode.value === "relax") {
+//   watch(currentTask, (val) => {
+//     if (val) {
+//       buttonsBlocked.value = true;
+//       setTimeout(() => {
+//         buttonsBlocked.value = false;
+//       }, 500);
+//     }
+//   });
+// }
 
 onMounted(() => {
   console.log(`Battle Mech mounted`);

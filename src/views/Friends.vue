@@ -18,7 +18,7 @@
               <span class="text-lg pill-title">{{ locale?.["premium_pill_title"] }}</span>
               <div class="flex items-center gap-2 h-4 mb-1">
                 <img class="h-4 scale-150" :src="getAsset('bolt')" />
-                <span class="exo-black" v-html="locale?.['premium_pill_subtitle']"></span>
+                <span class="exo-bold" v-html="locale?.['premium_pill_subtitle']"></span>
               </div>
             </div>
           </template>
@@ -34,7 +34,7 @@
               <span class="text-lg pill-title">{{ locale?.["tg_pill_title"] }}</span>
               <div class="flex items-center gap-2 h-4 mb-1">
                 <img class="h-4 scale-150" :src="getAsset('bolt')" />
-                <span class="exo-black" v-html="locale?.['tg_pill_subtitle']"></span>
+                <span class="exo-bold" v-html="locale?.['tg_pill_subtitle']"></span>
               </div>
             </div>
           </template>
