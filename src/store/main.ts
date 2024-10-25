@@ -273,52 +273,6 @@ export const useMainStore = defineStore("main", () => {
     return useFetch({ key: "invite_click", data: { route } });
   };
 
-  // const shareToStory = () =>
-  //   new Promise((res) => {
-  //     setTimeout(res, 30000);
-  //   });
-
-  // const shareToStory = () =>
-  //   new Promise((res, rej) => {
-  //     if (battleStore.screenshotArray?.length) {
-  //       useFetch({ key: "tg_story", data: { images: battleStore.screenshotArray } })
-  //         ?.then((result) => {
-  //           tg.shareToStory(result.data.url, { text: battleStore.data.story_text, widget_link: battleStore.data.story_link });
-  //           battleStore.screenshotArray = [];
-  //           res(true);
-  //         })
-  //         .catch((e) => {
-  //           rej(e);
-  //         });
-  //     } else {
-  //       rej("No screenshots to were made");
-  //     }
-  //   });
-
-  const shareToStory = async () => {};
-
-  // const uploadGif = async (file) => {
-  //   try {
-  //     const formData = new FormData();
-
-  //     // const extension = blob.type.split("/")[1];
-  //     // const imageFile = new File([blob], `${Date.now()}.${extension}`, {
-  //     //   type: blob.type,
-  //     // });
-  //     formData.append("upload", file);
-  //     formData.append("service", state.value.service);
-
-  //     const result = await makeUploadRequest(formData);
-
-  //     return result.data;
-  //   } catch (error) {
-  //     return error?.response?.data?.error?.message || error?.message || error;
-  //   }
-  //   const img = new Image();
-  //   img.src = url;
-  //   img.onload = async () => {};
-  // };
-
   const useFetch = ({ key, data }: { key?: string; data?: {} }) => {
     if (requestQueue.value.length > 3) return;
 
@@ -373,17 +327,17 @@ export const useMainStore = defineStore("main", () => {
     router.push(location);
   };
 
-  watch(
-    debugMessages,
-    (val) => {
-      if (val.length >= 5) {
-        debugMessages.value = ["cleared debug console.."];
-      }
-    },
-    {
-      deep: true,
-    }
-  );
+  // watch(
+  //   debugMessages,
+  //   (val) => {
+  //     if (val.length >= 5) {
+  //       debugMessages.value = ["cleared debug console.."];
+  //     }
+  //   },
+  //   {
+  //     deep: true,
+  //   }
+  // );
 
   // const setRouteData = (value: any) => {
   //   state.value.routeData = value;
@@ -415,15 +369,11 @@ export const useMainStore = defineStore("main", () => {
     showNotification,
     hideNotification,
     callApi,
-    // callApiSync,
     showTooltip,
     hideTooltip,
     hideModal,
     redirectTo,
     onVibrate,
-    // setRouteData,
     showModal,
-    // uploadGif,
-    shareToStory,
   };
 });

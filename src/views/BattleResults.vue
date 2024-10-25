@@ -86,7 +86,7 @@ const shareToStory = async () => {
   if (screenshotArray.value?.length) {
     try {
       const res = await useFetch({ key: "tg_story", data: { images: screenshotArray.value } });
-      tg.shareToStory(res.data.url, { text: data.value?.["story_text"], widget_link: data.value?.["story_link"] });
+      tg.shareToStory(res.data.url, { text: data.value?.["story_text"], widget_link: { url: data.value?.["story_link"], name: "Подключайся к баттлам" } });
     } catch (error) {
       console.error(error);
     }
@@ -98,19 +98,6 @@ const shareToStory = async () => {
 
 if (route.query.tg_story) {
   shareToStory();
-  // generatingStory.value = true;
-  // console.log(`starting loader`);
-
-  // shareToStory()
-  //   .then(() => {
-  //     console.log(`stopping loader`);
-  //     generatingStory.value = false;
-  //   })
-  //   .catch((e) => {
-  //     console.error(e);
-  //     console.log(`stopping loader`);
-  //     generatingStory.value = false;
-  //   });
 }
 
 if (!route.query.nofetch) {
