@@ -1,11 +1,11 @@
 <template>
   <div class="results-cnt">
-    <div v-if="generatingStory" class="story-generator-loader flex-1 grid h-dvh place-items-center">
+    <div v-if="generatingStory" class="story-generator-loader flex-1 grid h-dvh bg-[#222] place-items-center">
       <div class="spinner">
         <span>Your story is being generated..</span>
       </div>
     </div>
-    <div v-else id="battle-results" class="flex-1 flex flex-col p-4 h-dvh">
+    <div id="battle-results" class="flex-1 flex flex-col p-4 h-dvh">
       <BackgroundImage type="purple" />
       <Profile />
 
@@ -15,7 +15,7 @@
         </div>
 
         <div class="scrollable-cnt flex-1 overflow-y-auto mt-2">
-          <div class="leaderboard flex flex-col gap-1 pt-4">
+          <div ref="leaderboardRef" class="leaderboard flex flex-col gap-1 pt-4">
             <Pill v-for="player in leaderboardSorted" :key="player.id" class="py-2 flex items-center justify-between gap-4" color="light">
               <div class="player-meta leading-3 flex gap-4 items-center">
                 <div class="rounded-full bg-[var(--grey-dark)] w-[30px] h-[30px] grid place-items-center">
@@ -61,9 +61,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onUnmounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import { tg } from "@/api/telegram";
-import { getAsset } from "@/utils";
+import { getAsset, takeScreenshot } from "@/utils";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 
@@ -79,26 +79,7 @@ const { data, screenshotArray } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
 
 const generatingStory = ref(false);
-
-const shareToStory = async () => {
-  // generatingStory.value = true;
-
-  if (screenshotArray.value?.length) {
-    try {
-      const res = await useFetch({ key: "tg_story", data: { images: screenshotArray.value } });
-      tg.shareToStory(res.data.url, { text: data.value?.["story_text"], widget_link: { url: data.value?.["story_link"], name: "Подключайся к баттлам" } });
-    } catch (error) {
-      console.error(error);
-    }
-    screenshotArray.value = [];
-  }
-
-  // generatingStory.value = false;
-};
-
-if (route.query.tg_story) {
-  shareToStory();
-}
+const leaderboardRef = ref();
 
 if (!route.query.nofetch) {
   await fetchBattleResultsData(route.query);
@@ -129,4 +110,33 @@ const getPlayerColor = (player: {}) => {
     return "#" + colors[+player.id];
   }
 };
+
+onMounted(() => {
+  if (route.query.tg_story) {
+    generatingStory.value = true;
+
+    takeScreenshot(leaderboardRef.value)
+      .then((image) => {
+        screenshotArray.value?.push(image);
+
+        if (screenshotArray.value?.length) {
+          useFetch({ key: "tg_story", data: { images: screenshotArray.value } })
+            ?.then((res) => {
+              tg.shareToStory(res.data.url, { text: data.value?.["story_text"], widget_link: { url: data.value?.["story_link"], name: "Подключайся к баттлам" } });
+              generatingStory.value = false;
+            })
+            .catch((error) => {
+              console.error(error);
+              generatingStory.value = false;
+            });
+
+          screenshotArray.value = [];
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        generatingStory.value = false;
+      });
+  }
+});
 </script>

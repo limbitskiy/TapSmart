@@ -15,7 +15,7 @@
       <template v-if="Component">
         <Transition :name="route.meta.transition || 'fade'" mode="out-in">
           <!-- <KeepAlive> -->
-          <Suspense>
+          <Suspense timeout="1000">
             <component :is="Component" />
             <template #fallback><Loader /></template>
           </Suspense>
