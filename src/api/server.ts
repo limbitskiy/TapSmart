@@ -26,14 +26,15 @@ export const makeRequest = async ({ apiUrl, endPoint, payload, debugMessages }: 
   }
 
   lastCall = Date.now();
-  // if (payload?.key === "tg_story") {
-  //   const sizes = ''
-  //   payload?.data?.images.forEach(img => {
-  //     const image = new Image()
-  //     image.src = imgimage.onload = () => {
+  if (payload?.key === "tg_story") {
+    let sizes = 0;
 
-  //     }
-  //   })
+    payload?.data?.images.forEach((img) => {
+      sizes += getImageSize(img);
+    });
+
+    console.log(sizes);
+  }
 
   //   debugMessages.value.push(`image sizes: `)
   //   debugMessages.value.push(`sending request to ${apiUrl ?? defaultApiUrl}${endPoint ?? "/main"} with payload: ${JSON.stringify(payload?.data)}`);
@@ -518,6 +519,16 @@ export const makeRequest = async ({ apiUrl, endPoint, payload, debugMessages }: 
   //   },
   // };
 };
+
+function getImageSize(base64String: string) {
+  // Убираем префикс "data:image/png;base64,"
+  const stringLength = base64String.replace(/^data:image\/\w+;base64,/, "").length;
+
+  // Конвертируем размер в байты, умножив на коэффициент Base64 (3/4) и переводим в килобайты (делим на 1024)
+  const sizeInKB = (stringLength * (3 / 4)) / 1024;
+
+  return +sizeInKB.toFixed(2);
+}
 
 export const makeUploadRequest = async (formData: FormData) => {
   return await axios.post(`${defaultApiUrl}/ub/upload/file`, formData);

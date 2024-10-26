@@ -92,7 +92,7 @@ export const sliceTextAmount = (text: string, charLength?: number) => {
 
 export const takeScreenshot = async (element: HTMLElement) => {
   console.log(`taking screenshot`);
-  const result = await htmlToImage.toPng(element);
+  const result = await htmlToImage.toJpeg(element, { quality: 0.85 });
   return result;
 };
 

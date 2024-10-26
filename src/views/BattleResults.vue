@@ -1,41 +1,45 @@
 <template>
-  <div class="results-cnt">
-    <div v-if="generatingStory" class="story-generator-loader flex-1 grid h-dvh bg-[#222] place-items-center">
-      <div class="spinner">
-        <span>Your story is being generated..</span>
+  <div class="results-cnt relative">
+    <Transition name="fade">
+      <div v-if="generatingStory" class="story-generator-loader absolute inset-0 flex-1 grid h-dvh z-50 bg-[#222] place-items-center">
+        <div class="spinner">
+          <span class="z-50">Your story is being generated..</span>
+        </div>
       </div>
-    </div>
+    </Transition>
     <div id="battle-results" class="flex-1 flex flex-col p-4 h-dvh">
       <BackgroundImage type="purple" />
       <Profile />
 
       <BackgroundPill class="py-8 mt-4 overflow-y-hidden flex-1 z-10">
-        <div class="pill-header flex items-center justify-between">
-          <span class="bg-pill-title">{{ locale?.["battle_results_title"] || "Battle results:" }}</span>
+        <div ref="leaderboardRef" class="final-screenshot bg-[var(--grey-dark)]">
+          <div class="pill-header flex items-center justify-between">
+            <span class="bg-pill-title">{{ locale?.["battle_results_title"] || "Battle results:" }}</span>
+          </div>
+
+          <div class="scrollable-cnt flex-1 overflow-y-auto mt-2">
+            <div class="leaderboard flex flex-col gap-1 pt-4">
+              <Pill v-for="player in leaderboardSorted" :key="player.id" class="py-2 flex items-center justify-between gap-4" color="light">
+                <div class="player-meta leading-3 flex gap-4 items-center">
+                  <div class="rounded-full bg-[var(--grey-dark)] w-[30px] h-[30px] grid place-items-center">
+                    <span class="league exo-black text-lg mb-[1px]" :style="`color: ${getPlayerColor(player)}`">{{ player.position }}</span>
+                  </div>
+                  <span class="fira-bold text-lg max-w-1/2 text-ellipsis">{{ player.name }}</span>
+                </div>
+                <span class="bolts exo-black text-[var(--accent-color)]">{{ player?.score || 0 }}</span>
+              </Pill>
+            </div>
+          </div>
         </div>
 
-        <div class="scrollable-cnt flex-1 overflow-y-auto mt-2">
-          <div ref="leaderboardRef" class="leaderboard flex flex-col gap-1 pt-4">
-            <Pill v-for="player in leaderboardSorted" :key="player.id" class="py-2 flex items-center justify-between gap-4" color="light">
-              <div class="player-meta leading-3 flex gap-4 items-center">
-                <div class="rounded-full bg-[var(--grey-dark)] w-[30px] h-[30px] grid place-items-center">
-                  <span class="league exo-black text-lg mb-[1px]" :style="`color: ${getPlayerColor(player)}`">{{ player.position }}</span>
-                </div>
-                <span class="fira-bold text-lg max-w-1/2 text-ellipsis">{{ player.name }}</span>
-              </div>
-              <span class="bolts exo-black text-[var(--accent-color)]">{{ player?.score || 0 }}</span>
-            </Pill>
-          </div>
-
-          <!-- ad -->
-          <div class="ad flex flex-col items-center justify-center mt-8">
-            <Ad
-              :image="data?.['battle_results_ad_image']"
-              :title="locale?.['battle_results_ad_title']"
-              :text="locale?.['battle_results_ad_text']"
-              :tooltip="locale?.['tooltip_battle_results_ad']"
-            />
-          </div>
+        <!-- ad -->
+        <div class="ad flex flex-col flex-1 items-center justify-center mt-8">
+          <Ad
+            :image="data?.['battle_results_ad_image']"
+            :title="locale?.['battle_results_ad_title']"
+            :text="locale?.['battle_results_ad_text']"
+            :tooltip="locale?.['tooltip_battle_results_ad']"
+          />
         </div>
 
         <!-- buttons -->
@@ -78,11 +82,15 @@ const { fetchBattleResultsData, useFetch } = store;
 const { data, screenshotArray } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
 
-const generatingStory = ref(false);
+const generatingStory = ref(true);
 const leaderboardRef = ref();
 
 if (!route.query.nofetch) {
+  console.log(`fetching results data`);
+
   await fetchBattleResultsData(route.query);
+
+  console.log(`finished fetching results data`);
 }
 
 const colors = {
@@ -111,32 +119,74 @@ const getPlayerColor = (player: {}) => {
   }
 };
 
+const createFinalImage = (image) =>
+  new Promise((res, rej) => {
+    const bgSrc = getAsset("battle_results_final");
+
+    const fgImage = new Image();
+    fgImage.src = image;
+    const bgImage = new Image();
+    bgImage.src = bgSrc;
+
+    fgImage.onload = () => {
+      bgImage.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = innerWidth;
+        canvas.height = innerHeight;
+        const ctx = canvas.getContext("2d");
+        ctx?.drawImage(bgImage, 0, 0);
+        ctx?.drawImage(fgImage, 32, canvas.height / 2 + 55);
+
+        ctx.fillRect(0, 0, canvas.width, 18);
+        ctx.font = "14px sans-serif";
+        ctx.fillStyle = "white";
+        ctx.fillText("Played at @Tapsmart in Telegram", canvas.width / 2 - 105, 14);
+
+        const dataURL = canvas.toDataURL();
+        screenshotArray.value?.push(dataURL);
+        res(true);
+      };
+    };
+  });
+
 onMounted(() => {
+  console.log(`mounted`);
+
   if (route.query.tg_story) {
-    generatingStory.value = true;
+    console.log(`generatingStory.value = true`);
 
     takeScreenshot(leaderboardRef.value)
-      .then((image) => {
-        screenshotArray.value?.push(image);
+      .then(async (image) => {
+        // screenshotArray.value?.push(image);
+        // console.log(image);
+        console.log(`creating final image`);
 
-        if (screenshotArray.value?.length) {
-          useFetch({ key: "tg_story", data: { images: screenshotArray.value } })
-            ?.then((res) => {
-              tg.shareToStory(res.data.url, { text: data.value?.["story_text"], widget_link: { url: data.value?.["story_link"], name: "Подключайся к баттлам" } });
-              generatingStory.value = false;
-            })
-            .catch((error) => {
-              console.error(error);
-              generatingStory.value = false;
-            });
+        await createFinalImage(image);
+        console.log(`final image created`);
 
-          screenshotArray.value = [];
+        console.log(`starting usefetch`);
+        try {
+          const res = await useFetch({ key: "tg_story", data: { images: screenshotArray.value } })!;
+          console.log(`got usefetch response. sharing to story`);
+          tg.shareToStory(res.data.url, { text: data.value?.["story_text"], widget_link: { url: data.value?.["story_link"], name: "Подключайся к баттлам" } });
+        } catch (error) {
+          console.error(error);
+          console.log(`generatingStory.value = false`);
+          generatingStory.value = false;
         }
       })
       .catch((error) => {
         console.error(error);
+        console.log(`generatingStory.value = false`);
         generatingStory.value = false;
+      })
+      .finally(() => {
+        console.log(`finally`);
+        generatingStory.value = false;
+        screenshotArray.value = [];
       });
+  } else {
+    generatingStory.value = false;
   }
 });
 </script>

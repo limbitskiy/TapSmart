@@ -61,8 +61,9 @@
 
             <!-- other info -->
             <div class="other-info flex gap-4 items-center">
-              <div class="league">
-                <span class="league exo-bold">L: {{ player?.league || 0 }}</span>
+              <div class="league flex gap-1">
+                <span class="league exo-bold">L:</span>
+                <span class="league exo-bold">{{ player?.league || 0 }}</span>
               </div>
               <div class="battles flex items-center gap-1">
                 <img class="h-4" :src="getAsset('swords')" />
@@ -153,9 +154,10 @@ const onReadyBtn = () => {
 onMounted(() => {
   startBreakpoint("waiting");
 
+  screenshotArray.value = [];
+
   interval = setInterval(async () => {
-    if (data.value?.waiting_timer === 1000) {
-      screenshotArray.value = [];
+    if (data.value?.waiting_timer === 1000 || data.value?.waiting_timer === 0) {
       const image = await takeScreenshot(waitingRef.value);
       screenshotArray.value?.push(image);
     }
