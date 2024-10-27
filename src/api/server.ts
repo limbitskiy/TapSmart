@@ -33,7 +33,7 @@ export const makeRequest = async ({ apiUrl, endPoint, payload, debugMessages }: 
       sizes += getImageSize(img);
     });
 
-    console.log(sizes);
+    console.log("Total image size:", sizes);
   }
 
   //   debugMessages.value.push(`image sizes: `)

@@ -103,13 +103,10 @@ import { useMainStore } from "@/store/main";
 
 const route = useRoute();
 
-// const challengeProps = ref({});
-// challengeProps.value = route.query;
-
 const store = useMainStore();
 
-const { fetchWaitingData, useFetch, redirectTo, sendInviteAnalitycsData, hideNotification } = store;
-const { data, screenshotArray } = storeToRefs(store.battleStore);
+const { fetchWaitingData, useFetch, redirectTo, sendInviteAnalitycsData, hideNotification, takeHTMLSnapshot } = store;
+const { data } = storeToRefs(store.battleStore);
 const { startBreakpoint, stopBreakpoint, decreaseWaitingTimer } = store.battleStore;
 const { battles: locale } = storeToRefs(store.localeStore);
 
@@ -145,21 +142,12 @@ const onReadyBtn = () => {
   isReady.value = true;
 };
 
-// watch(data.value, (val) => {
-//   if (val["final_countdown"]) {
-//     console.log(`start battle!!`);
-//   }
-// });
-
 onMounted(() => {
   startBreakpoint("waiting");
 
-  screenshotArray.value = [];
-
   interval = setInterval(async () => {
-    if (data.value?.waiting_timer === 1000 || data.value?.waiting_timer === 0) {
-      const image = await takeScreenshot(waitingRef.value);
-      screenshotArray.value?.push(image);
+    if (data.value?.waiting_timer === 2000 || data.value?.waiting_timer === 1000) {
+      takeHTMLSnapshot(waitingRef.value);
     }
 
     if (data.value.waiting_timer < 1000 && interval) {

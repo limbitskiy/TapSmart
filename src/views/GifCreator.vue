@@ -257,7 +257,7 @@ const generateGIF = async () => {
       canvas.height = innerHeight;
       const ctx = canvas.getContext("2d");
       ctx?.drawImage(bgImage, 0, 0);
-      ctx?.drawImage(fgImage, 32, canvas.height / 2 + 55);
+      ctx?.drawImage(fgImage, 32, canvas.height / 2 - 110);
 
       ctx.fillRect(0, 0, canvas.width, 18);
       ctx.font = "14px sans-serif";

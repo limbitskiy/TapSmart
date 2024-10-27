@@ -3,6 +3,7 @@ import { useRouter, useRoute } from "vue-router";
 import { defineStore } from "pinia";
 import { useVibrate } from "@vueuse/core";
 import { tg } from "@/api/telegram";
+import { getAsset } from "@/utils";
 
 // stores
 import { useDataStore } from "@/store/data";
@@ -15,6 +16,7 @@ import { NotificationProps, ResponseObject, ResponseData, MainState, TooltipProp
 
 // api
 import { makeRequest, makeUploadRequest } from "@/api/server";
+import * as htmlToImage from "html-to-image";
 
 export const useMainStore = defineStore("main", () => {
   const notification = ref<NotificationProps>({
@@ -61,6 +63,8 @@ export const useMainStore = defineStore("main", () => {
 
   const requestPending = ref(false);
   const requestQueue = ref([]);
+
+  const HTMLSnapshots = ref<string[]>([]);
 
   // process request queue
   watch(
@@ -327,6 +331,73 @@ export const useMainStore = defineStore("main", () => {
     router.push(location);
   };
 
+  const takeHTMLSnapshot = async (el: HTMLElement, push = true) => {
+    console.log(`taking snapshot`);
+
+    const res = await htmlToImage.toJpeg(el, { quality: 0.85 });
+    if (push) {
+      HTMLSnapshots.value.push(res);
+    }
+    return res;
+  };
+
+  const createFinalImage = (image) =>
+    new Promise((res, rej) => {
+      const bgSrc = getAsset("battle_results_final");
+
+      const fgImage = new Image();
+      fgImage.src = image;
+      const bgImage = new Image();
+      bgImage.src = bgSrc;
+
+      fgImage.onload = () => {
+        bgImage.onload = () => {
+          const canvas = document.createElement("canvas");
+          canvas.width = innerWidth;
+          canvas.height = innerHeight;
+          const ctx = canvas.getContext("2d");
+          ctx?.drawImage(bgImage, 0, 0);
+          ctx?.drawImage(fgImage, 32, canvas.height / 2 - 110);
+
+          ctx.fillRect(0, 0, canvas.width, 18);
+          ctx.font = "14px sans-serif";
+          ctx.fillStyle = "white";
+          const textWidth = ctx?.measureText(battleStore.data?.["story_call_to_action"] ?? "Played at @Tapsmart in Telegram").width;
+          ctx.fillText(battleStore.data?.["story_call_to_action"] ?? "Played at @Tapsmart in Telegram", canvas.width / 2 - textWidth / 2, 14);
+
+          const dataURL = canvas.toDataURL();
+          HTMLSnapshots.value?.push(dataURL);
+          console.log(`resolving promise`);
+
+          res(true);
+        };
+      };
+    });
+
+  const handleEndBattleScreeshots = async (leaderboardRef) => {
+    console.log(`starting to generate story`);
+
+    try {
+      const image = await takeHTMLSnapshot(leaderboardRef.value, false);
+      console.log(`creating final image`);
+
+      await createFinalImage(image);
+    } catch (error) {
+      console.error(error);
+    }
+    console.log(`final image created`);
+
+    console.log(`starting usefetch`);
+    try {
+      const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } })!;
+      console.log(`got usefetch response. sharing to story`);
+      tg.shareToStory(res.data.url, { widget_link: { url: battleStore.data?.["story_link"], name: battleStore.data?.["story_text"] } });
+    } catch (error) {
+      console.error(error);
+    }
+    HTMLSnapshots.value = [];
+  };
+
   // watch(
   //   debugMessages,
   //   (val) => {
@@ -375,5 +446,7 @@ export const useMainStore = defineStore("main", () => {
     redirectTo,
     onVibrate,
     showModal,
+    takeHTMLSnapshot,
+    handleEndBattleScreeshots,
   };
 });
