@@ -135,13 +135,13 @@
   }
 
   &.correct {
-    // transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease;
     // animation: greenFade 1s ease !important;
     background-color: var(--green-color);
   }
 
   &.wrong {
-    // transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease;
     // animation: redFade 1s ease !important;
     background-color: var(--red-color);
   }

@@ -1,12 +1,16 @@
 <template>
   <div class="results-cnt relative">
     <Transition name="fade">
-      <div v-if="generatingStory" class="story-generator-loader absolute inset-0 flex-1 grid h-dvh z-50 bg-[#222] place-items-center">
+      <div v-if="generatingStory" class="story-generator-loader absolute inset-0 flex-1 grid h-dvh z-[9999] bg-[#222] place-items-center">
         <div class="spinner">
           <span class="z-50">{{ locale?.["tg_story_loader"] ?? "Loading..." }}</span>
         </div>
       </div>
     </Transition>
+
+    <!-- <div v-for="item in HTMLSnapshots" ref="htmlEl" class="screenshot-stage flex-1 flex flex-col h-dvh bg-transparent" v-html="item"></div> -->
+    <div v-if="generatingStory" ref="htmlEl" class="screenshot-stage flex-1 flex flex-col h-dvh bg-transparent" v-html="html"></div>
+
     <div id="battle-results" class="flex-1 flex flex-col p-4 h-dvh">
       <BackgroundImage type="purple" />
       <Profile />
@@ -65,11 +69,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref, nextTick } from "vue";
 import { tg } from "@/api/telegram";
 import { getAsset } from "@/utils";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
+import * as htmlToImage from "html-to-image";
 
 // stores
 import { useMainStore } from "@/store/main";
@@ -78,12 +83,16 @@ const route = useRoute();
 
 const store = useMainStore();
 
-const { fetchBattleResultsData, handleEndBattleScreeshots } = store;
+const { fetchBattleResultsData, createScreeshots, takeHTMLSnapshot } = store;
+const { HTMLSnapshots } = storeToRefs(store);
 const { data } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
 
 const generatingStory = ref(true);
 const leaderboardRef = ref();
+
+const html = ref();
+const htmlEl = ref();
 
 if (!route.query.nofetch) {
   console.log(`fetching results data`);
@@ -119,12 +128,44 @@ const getPlayerColor = (player: {}) => {
   }
 };
 
+const createImagesFromSnapshots = async () => {
+  const screenshots = [];
+
+  for (const snapshot of HTMLSnapshots.value) {
+    html.value = snapshot;
+    await nextTick();
+    const url = await htmlToImage.toJpeg(htmlEl.value, { quality: 0.85 });
+    screenshots.push(url);
+  }
+
+  // HTMLSnapshots.value.forEach(async (snapshot) => {
+  //   html.value = snapshot;
+  //   await nextTick();
+  //   const url = await htmlToImage.toJpeg(htmlEl.value, { quality: 0.85 });
+  //   screenshots.push(url);
+  // });
+
+  HTMLSnapshots.value = screenshots;
+  return true;
+};
+
 onMounted(async () => {
   console.log(`mounted`);
 
   if (route.query.tg_story) {
     generatingStory.value = true;
-    await handleEndBattleScreeshots(leaderboardRef);
+
+    console.log(`creating final image`);
+    const url = await htmlToImage.toJpeg(leaderboardRef.value, { quality: 0.85 });
+
+    console.log(`final image created`);
+
+    console.log(`creating snapshots`);
+    await createImagesFromSnapshots();
+
+    HTMLSnapshots.value.push(url);
+
+    await createScreeshots();
   }
 
   generatingStory.value = false;

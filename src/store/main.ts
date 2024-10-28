@@ -1,4 +1,4 @@
-import { computed, ref, watch } from "vue";
+import { computed, nextTick, ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { defineStore } from "pinia";
 import { useVibrate } from "@vueuse/core";
@@ -331,12 +331,9 @@ export const useMainStore = defineStore("main", () => {
     router.push(location);
   };
 
-  const takeHTMLSnapshot = async (el: HTMLElement) => {
+  const takeHTMLSnapshot = (el: HTMLElement) => {
     console.log(`taking snapshot`);
-
-    const res = await htmlToImage.toJpeg(el, { quality: 0.85 });
-    HTMLSnapshots.value.push(res);
-    return res;
+    HTMLSnapshots.value.push(el.outerHTML);
   };
 
   const createFinalImage = () =>
@@ -361,13 +358,13 @@ export const useMainStore = defineStore("main", () => {
           ctx?.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
           ctx?.drawImage(leaderBoardImage, 32 * scale, canvas.height / 2 - 110 * scale);
 
-          ctx.fillRect(0, 0, canvas.width, 18 * scale);
-          ctx.font = `${14 * scale}px sans-serif`;
+          ctx.fillRect(0, 0, canvas.width, 22 * scale);
+          ctx.font = `${18 * scale}px sans-serif`;
           ctx.fillStyle = "white";
           const textWidth = ctx?.measureText(battleStore.data?.["story_call_to_action"] ?? "Played at @Tapsmart in Telegram").width;
-          ctx.fillText(battleStore.data?.["story_call_to_action"] ?? "Played at @Tapsmart in Telegram", canvas.width / 2 - textWidth / 2, 14 * scale);
+          ctx.fillText(battleStore.data?.["story_call_to_action"] ?? "Played at @Tapsmart in Telegram", canvas.width / 2 - textWidth / 2, 18 * scale);
 
-          const dataURL = canvas.toDataURL();
+          const dataURL = canvas.toDataURL("image/jpeg");
           HTMLSnapshots.value?.push(dataURL);
           console.log(`resolving promise`);
 
@@ -376,24 +373,25 @@ export const useMainStore = defineStore("main", () => {
       };
     });
 
-  const handleEndBattleScreeshots = async (leaderboardRef) => {
+  const createScreeshots = async () => {
     console.log(`starting to generate story`);
 
     try {
-      await takeHTMLSnapshot(leaderboardRef.value);
-      console.log(`creating final image`);
+      console.log(HTMLSnapshots.value);
 
       await createFinalImage();
     } catch (error) {
       console.error(error);
     }
-    console.log(`final image created`);
 
     console.log(`starting usefetch`);
     try {
       const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } })!;
       console.log(`got usefetch response. sharing to story`);
-      tg.shareToStory(res.data.url, { widget_link: { url: battleStore.data?.["story_link"], name: battleStore.data?.["story_text"] } });
+      tg.shareToStory(res.data.url, {
+        text: battleStore.data?.["story_text"] ?? "TapSmart text",
+        widget_link: { url: battleStore.data?.["story_link"], name: battleStore.data?.["story_link_text"] },
+      });
     } catch (error) {
       console.error(error);
     }
@@ -425,6 +423,7 @@ export const useMainStore = defineStore("main", () => {
     tooltip,
     modal,
     debugMessages,
+    HTMLSnapshots,
     startApp,
     fetchFriendsList,
     getOnlineFriends,
@@ -449,6 +448,6 @@ export const useMainStore = defineStore("main", () => {
     onVibrate,
     showModal,
     takeHTMLSnapshot,
-    handleEndBattleScreeshots,
+    createScreeshots,
   };
 });

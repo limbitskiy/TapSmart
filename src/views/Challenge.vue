@@ -95,7 +95,7 @@ const onAnswer = async () => {
   if (needToMakeScreenshot) {
     setTimeout(() => {
       takeHTMLSnapshot(screenshotEl.value);
-    }, 500);
+    }, 10);
   }
   needToMakeScreenshot = false;
 };
