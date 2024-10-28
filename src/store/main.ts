@@ -382,6 +382,7 @@ export const useMainStore = defineStore("main", () => {
       await createFinalImage();
     } catch (error) {
       console.error(error);
+      debugMessages.value.push(error);
     }
 
     console.log(`starting usefetch`);
@@ -394,6 +395,7 @@ export const useMainStore = defineStore("main", () => {
       });
     } catch (error) {
       console.error(error);
+      debugMessages.value.push(error);
     }
     HTMLSnapshots.value = [];
   };
