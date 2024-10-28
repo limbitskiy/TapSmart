@@ -181,6 +181,9 @@ onMounted(async () => {
     await createScreeshots();
   }
 
+  console.log(`cleaning snapshots`);
+  HTMLSnapshots.value = [];
+
   generatingStory.value = false;
 });
 

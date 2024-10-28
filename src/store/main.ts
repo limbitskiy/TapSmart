@@ -390,8 +390,6 @@ export const useMainStore = defineStore("main", () => {
       const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } })!;
       console.log(`got usefetch response. sharing to story`);
 
-      // await waitFor(20000);
-
       tg.shareToStory(res.data.url, {
         text: battleStore.data?.["story_text"] ?? "TapSmart text",
         widget_link: { url: battleStore.data?.["story_link"], name: battleStore.data?.["story_link_text"] },
@@ -400,7 +398,6 @@ export const useMainStore = defineStore("main", () => {
       console.error(error);
       debugMessages.value.push(error);
     }
-    HTMLSnapshots.value = [];
   };
 
   // watch(
