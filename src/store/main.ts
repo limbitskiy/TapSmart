@@ -382,7 +382,7 @@ export const useMainStore = defineStore("main", () => {
       await createFinalImage();
     } catch (error) {
       console.error(error);
-      debugMessages.value.push(error);
+      // debugMessages.value.push(error);
     }
 
     console.log(`starting usefetch`);
