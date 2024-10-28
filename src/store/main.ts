@@ -355,18 +355,9 @@ export const useMainStore = defineStore("main", () => {
 
           canvas.width = innerWidth * scale;
           canvas.height = innerHeight * scale;
-          //   console.log(canvas);
-          // console.log(fgImage.width);
-          // console.log(fgImage.height);
-          debugMessages.value.push("scale:", scale);
-          // debugMessages.value.push("canvas width:", canvas.width);
-          // debugMessages.value.push("canvas height:", canvas.height);
-          // debugMessages.value.push("bgimage width:", bgImage.width);
-          // debugMessages.value.push("bgImage height:", bgImage.height);
-          // debugMessages.value.push("leaderBoardImage width:", leaderBoardImage.width);
-          // debugMessages.value.push("leaderBoardImage height:", leaderBoardImage.height);
+
           const ctx = canvas.getContext("2d");
-          // ctx.scale(scale, scale);
+
           ctx?.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
           ctx?.drawImage(leaderBoardImage, 32 * scale, canvas.height / 2 - 110 * scale);
 

@@ -91,22 +91,17 @@ const onMechUnmounted = () => {
   stopChallenge();
 };
 
-const clickHandler = async () => {
-  // const imgData = await takeScreenshot(screenshotEl.value);
-  // screenshotSrc.value = imgData;
-};
-
 const onAnswer = async () => {
-  // if (needToMakeScreenshot) {
-  //   takeHTMLSnapshot(screenshotEl.value);
-  // }
-  // needToMakeScreenshot = false;
+  if (needToMakeScreenshot) {
+    setTimeout(() => {
+      takeHTMLSnapshot(screenshotEl.value);
+    }, 500);
+  }
+  needToMakeScreenshot = false;
 };
 
 onMounted(() => {
   console.log(`challenge mounted`);
-
-  document.addEventListener("click", clickHandler);
 
   // reset previous battle players progress
   data.value["player_progress"] = null;
@@ -127,7 +122,7 @@ onMounted(() => {
       }
 
       if (challengeTimer.value === 0) {
-        // takeHTMLSnapshot(screenshotEl.value);
+        takeHTMLSnapshot(screenshotEl.value);
 
         clearInterval(challengeTimerInterval);
         challengeTimerInterval = null;
@@ -149,7 +144,5 @@ onMounted(() => {
   }, 4000);
 });
 
-onUnmounted(() => {
-  document.removeEventListener("click", clickHandler);
-});
+onUnmounted(() => {});
 </script>
