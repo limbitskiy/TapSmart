@@ -355,8 +355,10 @@ export const useMainStore = defineStore("main", () => {
           const canvas = document.createElement("canvas");
           canvas.width = innerWidth;
           canvas.height = innerHeight;
+          debugMessages.value.push("canvas width:", canvas.width);
+          debugMessages.value.push("canvas height:", canvas.height);
           const ctx = canvas.getContext("2d");
-          ctx?.drawImage(bgImage, 0, 0);
+          ctx?.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
           ctx?.drawImage(fgImage, 32, canvas.height / 2 - 110);
 
           ctx.fillRect(0, 0, canvas.width, 18);
