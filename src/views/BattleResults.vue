@@ -3,7 +3,7 @@
     <Transition name="fade">
       <div v-if="generatingStory" class="story-generator-loader absolute inset-0 flex-1 grid h-dvh z-50 bg-[#222] place-items-center">
         <div class="spinner">
-          <span class="z-50">Your story is being generated..</span>
+          <span class="z-50">{{ locale?.["tg_story_loader"] ?? "Loading..." }}</span>
         </div>
       </div>
     </Transition>
@@ -12,7 +12,7 @@
       <Profile />
 
       <BackgroundPill class="py-8 mt-4 overflow-y-hidden flex-1 z-10">
-        <div ref="leaderboardRef" class="final-screenshot bg-[var(--grey-dark)]">
+        <div ref="leaderboardRef" class="final-screenshot bg-[var(--grey-dark)] w-full">
           <div class="pill-header flex items-center justify-between">
             <span class="bg-pill-title">{{ locale?.["battle_results_title"] || "Battle results:" }}</span>
           </div>
