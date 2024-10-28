@@ -1,7 +1,7 @@
 <template>
   <div class="results-cnt relative">
     <Transition name="fade">
-      <div v-if="true" class="story-generator-loader absolute inset-0 flex-1 grid h-dvh z-[9999] bg-[#222] place-items-center">
+      <div v-if="generatingStory" class="story-generator-loader absolute inset-0 flex-1 grid h-dvh z-[9999] bg-[#222] place-items-center">
         <div class="spinner max-w-[50vw] text-center flex flex-col gap-4">
           <div class="progressbar-wrap flex flex-col">
             <div class="percent-text text-[12px] text-gray-300">
