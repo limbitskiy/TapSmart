@@ -3,7 +3,7 @@ import { useRouter, useRoute } from "vue-router";
 import { defineStore } from "pinia";
 import { useVibrate } from "@vueuse/core";
 import { tg } from "@/api/telegram";
-import { getAsset } from "@/utils";
+import { getAsset, waitFor } from "@/utils";
 
 // stores
 import { useDataStore } from "@/store/data";
@@ -390,6 +390,9 @@ export const useMainStore = defineStore("main", () => {
       const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } })!;
       console.log(`got usefetch response. sharing to story`);
       debugMessages.value.push(`video url: `, res.data.url);
+
+      await waitFor(1000);
+
       tg.shareToStory(res.data.url, {
         text: battleStore.data?.["story_text"] ?? "TapSmart text",
         widget_link: { url: battleStore.data?.["story_link"], name: battleStore.data?.["story_link_text"] },
