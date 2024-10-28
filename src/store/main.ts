@@ -331,40 +331,41 @@ export const useMainStore = defineStore("main", () => {
     router.push(location);
   };
 
-  const takeHTMLSnapshot = async (el: HTMLElement, push = true) => {
+  const takeHTMLSnapshot = async (el: HTMLElement) => {
     console.log(`taking snapshot`);
 
     const res = await htmlToImage.toJpeg(el, { quality: 0.85 });
-    if (push) {
-      HTMLSnapshots.value.push(res);
-    }
+    HTMLSnapshots.value.push(res);
     return res;
   };
 
-  const createFinalImage = (image) =>
+  const createFinalImage = () =>
     new Promise((res, rej) => {
       const bgSrc = getAsset("battle_results_final");
 
       const bgImage = new Image();
       bgImage.src = bgSrc;
       const leaderBoardImage = new Image();
-      leaderBoardImage.src = image;
+      leaderBoardImage.src = HTMLSnapshots.value.pop();
 
       leaderBoardImage.onload = () => {
         bgImage.onload = () => {
           const canvas = document.createElement("canvas");
-          canvas.width = innerWidth;
-          canvas.height = innerHeight;
+          const scale = window.devicePixelRatio || 1;
+
+          canvas.width = innerWidth * scale;
+          canvas.height = innerHeight * scale;
           //   console.log(canvas);
           // console.log(fgImage.width);
           // console.log(fgImage.height);
-          debugMessages.value.push("canvas width:", canvas.width);
-          debugMessages.value.push("canvas height:", canvas.height);
-          debugMessages.value.push("bgimage width:", bgImage.width);
-          debugMessages.value.push("bgImage height:", bgImage.height);
-          debugMessages.value.push("leaderBoardImage width:", leaderBoardImage.width);
-          debugMessages.value.push("leaderBoardImage height:", leaderBoardImage.height);
+          // debugMessages.value.push("canvas width:", canvas.width);
+          // debugMessages.value.push("canvas height:", canvas.height);
+          // debugMessages.value.push("bgimage width:", bgImage.width);
+          // debugMessages.value.push("bgImage height:", bgImage.height);
+          // debugMessages.value.push("leaderBoardImage width:", leaderBoardImage.width);
+          // debugMessages.value.push("leaderBoardImage height:", leaderBoardImage.height);
           const ctx = canvas.getContext("2d");
+          ctx.scale(scale, scale);
           ctx?.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
           ctx?.drawImage(leaderBoardImage, 32, canvas.height / 2 - 110);
 
@@ -387,10 +388,10 @@ export const useMainStore = defineStore("main", () => {
     console.log(`starting to generate story`);
 
     try {
-      const image = await takeHTMLSnapshot(leaderboardRef.value, false);
+      await takeHTMLSnapshot(leaderboardRef.value);
       console.log(`creating final image`);
 
-      await createFinalImage(image);
+      await createFinalImage();
     } catch (error) {
       console.error(error);
     }
