@@ -138,13 +138,6 @@ const createImagesFromSnapshots = async () => {
     screenshots.push(url);
   }
 
-  // HTMLSnapshots.value.forEach(async (snapshot) => {
-  //   html.value = snapshot;
-  //   await nextTick();
-  //   const url = await htmlToImage.toJpeg(htmlEl.value, { quality: 0.85 });
-  //   screenshots.push(url);
-  // });
-
   HTMLSnapshots.value = screenshots;
   return true;
 };
