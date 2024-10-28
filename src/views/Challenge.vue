@@ -113,7 +113,7 @@ onMounted(() => {
     startChallenge();
 
     challengeTimer.value = data.value?.battle_duration;
-    const screenshotInterval = data.value?.battle_duration / 8;
+    const screenshotInterval = data.value?.battle_duration / 6;
 
     challengeTimerInterval = setInterval(async () => {
       // make screenshot every (duration/screenshotInterval)
