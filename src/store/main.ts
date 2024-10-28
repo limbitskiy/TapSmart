@@ -345,21 +345,28 @@ export const useMainStore = defineStore("main", () => {
     new Promise((res, rej) => {
       const bgSrc = getAsset("battle_results_final");
 
-      const fgImage = new Image();
-      fgImage.src = image;
       const bgImage = new Image();
       bgImage.src = bgSrc;
+      const leaderBoardImage = new Image();
+      leaderBoardImage.src = image;
 
-      fgImage.onload = () => {
+      leaderBoardImage.onload = () => {
         bgImage.onload = () => {
           const canvas = document.createElement("canvas");
           canvas.width = innerWidth;
           canvas.height = innerHeight;
+          //   console.log(canvas);
+          // console.log(fgImage.width);
+          // console.log(fgImage.height);
           debugMessages.value.push("canvas width:", canvas.width);
           debugMessages.value.push("canvas height:", canvas.height);
+          debugMessages.value.push("bgimage width:", bgImage.width);
+          debugMessages.value.push("bgImage height:", bgImage.height);
+          debugMessages.value.push("leaderBoardImage width:", leaderBoardImage.width);
+          debugMessages.value.push("leaderBoardImage height:", leaderBoardImage.height);
           const ctx = canvas.getContext("2d");
           ctx?.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
-          ctx?.drawImage(fgImage, 32, canvas.height / 2 - 110);
+          ctx?.drawImage(leaderBoardImage, 32, canvas.height / 2 - 110);
 
           ctx.fillRect(0, 0, canvas.width, 18);
           ctx.font = "14px sans-serif";
