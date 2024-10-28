@@ -368,13 +368,13 @@ export const useMainStore = defineStore("main", () => {
           const ctx = canvas.getContext("2d");
           // ctx.scale(scale, scale);
           ctx?.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
-          ctx?.drawImage(leaderBoardImage, 32, canvas.height / 2 - 110);
+          ctx?.drawImage(leaderBoardImage, 32 * scale, canvas.height / 2 - 110 * scale);
 
           ctx.fillRect(0, 0, canvas.width, 18);
-          ctx.font = "14px sans-serif";
+          ctx.font = `${14 * scale}px sans-serif`;
           ctx.fillStyle = "white";
           const textWidth = ctx?.measureText(battleStore.data?.["story_call_to_action"] ?? "Played at @Tapsmart in Telegram").width;
-          ctx.fillText(battleStore.data?.["story_call_to_action"] ?? "Played at @Tapsmart in Telegram", canvas.width / 2 - textWidth / 2, 14);
+          ctx.fillText(battleStore.data?.["story_call_to_action"] ?? "Played at @Tapsmart in Telegram", canvas.width / 2 - textWidth / 2, 14 * scale);
 
           const dataURL = canvas.toDataURL();
           HTMLSnapshots.value?.push(dataURL);
