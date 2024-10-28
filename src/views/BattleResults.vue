@@ -1,9 +1,17 @@
 <template>
   <div class="results-cnt relative">
     <Transition name="fade">
-      <div v-if="generatingStory" class="story-generator-loader absolute inset-0 flex-1 grid h-dvh z-[9999] bg-[#222] place-items-center">
-        <div class="spinner">
-          <span class="z-50">{{ locale?.["tg_story_loader"] ?? "Loading..." }}</span>
+      <div v-if="true" class="story-generator-loader absolute inset-0 flex-1 grid h-dvh z-[9999] bg-[#222] place-items-center">
+        <div class="spinner max-w-[50vw] text-center flex flex-col gap-4">
+          <div class="progressbar-wrap flex flex-col">
+            <div class="percent-text text-[12px] text-gray-300">
+              <span>{{ percent }}%</span>
+            </div>
+            <div class="progressbar h-[3px] w-full bg-gray-400 rounded-full">
+              <div class="value h-[3px] rounded-full bg-[var(--accent-color)]" :style="{ width: percent + '%' }"></div>
+            </div>
+          </div>
+          <span class="text-lg z-50">{{ locale?.["tg_story_loader"] ?? "Создаем историю вашего успеха..." }}</span>
         </div>
       </div>
     </Transition>
@@ -94,6 +102,9 @@ const leaderboardRef = ref();
 const html = ref();
 const htmlEl = ref();
 
+const percent = ref(0);
+let interval;
+
 if (!route.query.nofetch) {
   console.log(`fetching results data`);
 
@@ -148,6 +159,15 @@ onMounted(async () => {
   if (route.query.tg_story) {
     generatingStory.value = true;
 
+    interval = setInterval(() => {
+      if (percent.value >= 100) {
+        percent.value = 100;
+        clearInterval(interval);
+        return;
+      }
+      percent.value += 1;
+    }, 100);
+
     console.log(`creating final image`);
     const url = await htmlToImage.toJpeg(leaderboardRef.value, { quality: 0.85 });
 
@@ -162,5 +182,9 @@ onMounted(async () => {
   }
 
   generatingStory.value = false;
+});
+
+onUnmounted(() => {
+  clearInterval(interval);
 });
 </script>
