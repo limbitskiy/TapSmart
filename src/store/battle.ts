@@ -261,6 +261,10 @@ export const useBattleStore = defineStore("battle", () => {
       mainStore.useFetch({ key: currentTask.value.api });
     }
 
+    if (true) {
+      await waitFor(100);
+    }
+
     pauseCurrentTask.value = true;
 
     // in a relax battle
