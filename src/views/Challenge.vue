@@ -4,20 +4,13 @@
       <img :src="screenshotSrc" />
     </div>
 
-    <div class="challenge-main flex-1 overflow-y-auto overflow-x-hidden flex flex-col gap-2 relative p-4 pt-6">
-      <!-- screenshot title -->
-      <!-- <div class="title text-center z-10 bg-[#222] absolute top-0 left-0 right-0">
-        <span class="text-sm exo-bold" style="background: linear-gradient(to right, #418afc, #864a9c); -webkit-background-clip: text; -webkit-text-fill-color: transparent"
-          >Played at @Tapsmart in Telegram</span
-        >
-      </div> -->
-
+    <div class="challenge-main flex-1 overflow-y-auto overflow-x-hidden flex flex-col gap-2 relative">
       <!-- bg pattern & color -->
       <BackgroundImage type="red" />
 
       <BattleStartAnimation v-if="showStartChallengeAnimation" />
 
-      <div ref="screenshotEl" class="screenshot-content z-10 flex flex-col gap-2 flex-1">
+      <div ref="screenshotEl" class="screenshot-content z-10 flex flex-col gap-2 flex-1 p-4">
         <!-- battle stats -->
         <div class="challenge-stats flex flex-col gap-2 min-h-[136px]">
           <Transition name="fade">
@@ -104,10 +97,10 @@ const clickHandler = async () => {
 };
 
 const onAnswer = async () => {
-  if (needToMakeScreenshot) {
-    takeHTMLSnapshot(screenshotEl.value);
-  }
-  needToMakeScreenshot = false;
+  // if (needToMakeScreenshot) {
+  //   takeHTMLSnapshot(screenshotEl.value);
+  // }
+  // needToMakeScreenshot = false;
 };
 
 onMounted(() => {
@@ -134,7 +127,7 @@ onMounted(() => {
       }
 
       if (challengeTimer.value === 0) {
-        takeHTMLSnapshot(screenshotEl.value);
+        // takeHTMLSnapshot(screenshotEl.value);
 
         clearInterval(challengeTimerInterval);
         challengeTimerInterval = null;

@@ -370,7 +370,7 @@ export const useMainStore = defineStore("main", () => {
           ctx?.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
           ctx?.drawImage(leaderBoardImage, 32 * scale, canvas.height / 2 - 110 * scale);
 
-          ctx.fillRect(0, 0, canvas.width, 18);
+          ctx.fillRect(0, 0, canvas.width, 18 * scale);
           ctx.font = `${14 * scale}px sans-serif`;
           ctx.fillStyle = "white";
           const textWidth = ctx?.measureText(battleStore.data?.["story_call_to_action"] ?? "Played at @Tapsmart in Telegram").width;
