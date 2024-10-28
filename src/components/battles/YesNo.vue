@@ -12,10 +12,10 @@
         </div>
       </div>
 
-      <div class="flex-1 flex flex-col">
+      <div class="flex-1 grid grid-flow-row grid-rows-[2fr_1fr]">
         <!-- task -->
         <div class="task-cnt flex-1 flex flex-col">
-          <div class="task-content grid grid-rows-[40px_auto_56px] flex-1 justify-items-center px-2">
+          <div class="task-content grid grid-rows-[40px_auto] flex-1 justify-items-center px-2">
             <div class="task-title-cnt flex flex-col justify-center">
               <Pill class="!py-2 rounded-xl bg-[#222]">
                 <span class="question-title text-center">{{ locales?.["mechanics_1_task"] || "Is this translation correct??" }}</span>
@@ -62,26 +62,24 @@
         <div class="answer-buttons flex gap-4 justify-evenly mt-4 z-10">
           <Button
             :disabled="type === 'relax' && energy <= 0"
-            class="yesno-btn flex-1 flex !py-4 justify-center bg-[var(--grey-light)] text-white uppercase"
+            class="yesno-btn flex !p-0 !w-[90px] !h-[90px] justify-center bg-[var(--grey-light)] items-center text-white uppercase"
             :class="{ correct: noBtnAnimation === 'correct', wrong: noBtnAnimation === 'wrong' }"
             @click="(event) => handleAnswer(task?.task?.variants[1], event, 'no')"
           >
-            <!-- <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3 3L21 21" stroke="white" stroke-width="5" stroke-linecap="round" />
-              <path d="M21 3L3 21" stroke="white" stroke-width="5" stroke-linecap="round" />
-            </svg> -->
-            Нет
+            <svg width="37" height="37" viewBox="0 0 37 37" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 3L34 34" stroke="white" stroke-width="5" stroke-linecap="round" />
+              <path d="M34 3L3 34" stroke="white" stroke-width="5" stroke-linecap="round" />
+            </svg>
           </Button>
           <Button
             :disabled="type === 'relax' && energy <= 0"
-            class="yesno-btn flex-1 flex !py-4 justify-center bg-[var(--grey-light)] text-white uppercase"
+            class="yesno-btn flex !p-0 !w-[90px] !h-[90px] justify-center bg-[var(--grey-light)] items-center text-white uppercase"
             :class="{ correct: yesBtnAnimation === 'correct', wrong: yesBtnAnimation === 'wrong' }"
             @click="(event) => handleAnswer(task?.task?.variants[0], event, 'yes')"
           >
-            <!-- <svg width="29" height="23" viewBox="0 0 29 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3 11L10.5922 19L26.4667 3" stroke="white" stroke-width="5" stroke-linecap="round" />
-            </svg> -->
-            Да
+            <svg width="41" height="31" viewBox="0 0 41 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 15L14.3235 27L38 3" stroke="white" stroke-width="5" stroke-linecap="round" />
+            </svg>
           </Button>
         </div>
 
