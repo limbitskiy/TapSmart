@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useAnimate } from "@vueuse/core";
 
@@ -66,5 +66,9 @@ onMounted(() => {
   interval = setInterval(() => {
     animateBtn();
   }, 15000);
+});
+
+onUnmounted(() => {
+  clearInterval(interval);
 });
 </script>

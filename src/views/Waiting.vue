@@ -146,7 +146,7 @@ onMounted(() => {
   startBreakpoint("waiting");
 
   interval = setInterval(async () => {
-    if ((data.value?.waiting_timer < 2000 && data.value?.waiting_timer > 1000) || (data.value?.waiting_timer < 1000 && data.value?.waiting_timer > 0)) {
+    if (Math.round(data.value?.waiting_timer / 1000) === 1 || Math.round(data.value?.waiting_timer / 1000) === 0) {
       takeHTMLSnapshot(waitingRef.value);
     }
 
