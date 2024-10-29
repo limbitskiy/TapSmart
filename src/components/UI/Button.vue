@@ -62,8 +62,6 @@ const emit = defineEmits<{
   close: [];
 }>();
 
-console.log(props.activeColor);
-
 const onClick = () => {
   if (props.data?.action === "invite") {
     sendInviteAnalitycsData(route.path);

@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="battle-header-cnt flex gap-2 items-center border px-4 py-1 border-gray-500 rounded-xl"
-  >
+  <div class="battle-header-cnt flex gap-2 items-center px-4 py-2 rounded-xl">
     <!-- <img class="w-[60px] -ml-2" :src="getAsset(icon)" /> -->
     <span class="fira-regular text-lg text-white">{{ gameLocale }}</span>
     <span class="fira-regular text-lg text-[#B7B7B7]">{{ title }}</span>
@@ -17,13 +15,7 @@
           fill="white"
         />
       </svg> -->
-    <svg
-      width="17"
-      height="17"
-      viewBox="0 0 17 17"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle cx="8.5" cy="8.5" r="8.5" fill="white" />
       <path d="M7 6L10 9L7 12" stroke="#222222" stroke-linecap="round" />
     </svg>

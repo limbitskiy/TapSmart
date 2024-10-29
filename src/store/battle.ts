@@ -256,11 +256,6 @@ export const useBattleStore = defineStore("battle", () => {
     // set lastTaskId
     lastTaskId.value = currentTask.value!.id;
 
-    // call api if needed
-    if (currentTask.value.api) {
-      mainStore.useFetch({ key: currentTask.value.api });
-    }
-
     if (true) {
       await waitFor(100);
     }
@@ -310,6 +305,11 @@ export const useBattleStore = defineStore("battle", () => {
         }
         mainStore.onVibrate("wrong");
       }
+    }
+
+    // call api if needed
+    if (currentTask.value.api) {
+      mainStore.useFetch({ key: currentTask.value.api });
     }
 
     if (nextTaskDelay) {
