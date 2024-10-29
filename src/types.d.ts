@@ -67,12 +67,14 @@ export interface BattleState {
     [key: string]: Booster;
   };
   battle_button_challenge?: {};
+  battle_extra_mistake?: 1 | 0;
   energy?: number;
   multiplicator?: number;
   calc_points?: number[];
   questions_left?: number;
   friends_only_badge?: number;
-  battle_type?: number;
+  battle_type: number;
+  battle_mode?: "relax" | "challenge";
   breakpoint?: number;
   players_waiting?: [];
   waiting_timer?: number;
@@ -81,12 +83,13 @@ export interface BattleState {
 }
 
 export interface NotificationProps {
-  title: string | null;
-  subtitle: string | null;
+  title: string;
+  subtitle: string;
   buttons: {
-    [key in "left" | "right"]: { hidden?: boolean; route?: string; api?: string; data?: {}; label?: string };
+    left?: BackendButton;
+    right?: BackendButton;
   };
-  timeout?: number | null;
+  timeout?: number;
   isShown: boolean;
   fn: ReturnType<typeof setTimeout> | null;
 }
@@ -99,11 +102,27 @@ export interface TooltipProps {
 }
 
 export interface ModalProps {
-  title: string | null;
-  subtitle: string | null;
-  image?: string | null;
-  buttons?: {};
   isShown: boolean;
+  title: string;
+  subtitle: string;
+  isClosable: boolean;
+  image?: string;
+  buttons: {
+    left?: BackendButton;
+    right?: BackendButton;
+  };
+}
+
+export interface BackendButton {
+  label: string;
+  isClose: boolean;
+  api?: string;
+  data?: {}; // any object
+  route?: string;
+  hidden?: boolean;
+  disabled?: boolean;
+  accent?: "orange" | "purple";
+  action?: "invite";
 }
 
 export interface Settings {

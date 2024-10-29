@@ -1,26 +1,18 @@
 <template>
-  <div class="battle-body flex-1 flex">
-    <BackgroundPill ref="pillRef" class="flex-1 !p-4 z-10 rounded-[15px] relative overflow-hidden" style="background: linear-gradient(180deg, #363636 0%, #272727 100%)" dark>
-      <div class="header flex items-center justify-between mb-4">
-        <!-- <div class="mech-title flex gap-1 items-center w-[80%]">
-          <img class="h-8" :src="getAsset(`mech_2`)" />
-          <span class="fira-regular text-lg text-[#B7B7B7]">{{ locales?.[`4answers_title`] || "Four answers" }}</span>
-        </div> -->
-        <div class="mech-title flex gap-1 items-center" @click="() => emit('changeMech')">
-          <img class="h-8" :src="getAsset(`mech_2`)" />
-          <div class="text-chevron flex gap-4 items-center">
-            <span class="fira-regular text-lg text-[#B7B7B7]">{{ locales?.[`4answers_title`] || "Four answers" }}</span>
-            <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M7 8L0 0.982456L0.98 0L7 6.03509L13.02 0L14 0.982456L7 8Z" fill="white" />
-            </svg>
-          </div>
-        </div>
-        <div class="right flex items-center gap-3">
-          <CircleCountdown v-if="type === 'relax'" :strokeWidth="2" color="grey" :size="20" />
-          <VolumeControl />
-        </div>
+  <div class="battle-body flex-1 flex flex-col">
+    <!-- task header -->
+    <div class="header flex items-center justify-between py-3 px-4 rounded-t-[15px] bg-[#363636] z-10">
+      <Button class="!p-0 bg-[var(--grey-light)]" activeColor="#858585" @click="() => emit('changeMech')">
+        <BattleHeader icon="mech_2" :title="locales?.[`4answers_title`] || 'Four answers'" />
+      </Button>
+      <div class="right flex items-center gap-3">
+        <CircleCountdown v-if="type === 'relax'" :strokeWidth="2" color="grey" :size="20" />
+        <VolumeControl />
       </div>
+    </div>
 
+    <!-- task body -->
+    <BackgroundPill class="flex-1 !p-4 z-10 rounded-[15px] rounded-t-none relative overflow-hidden" style="background: linear-gradient(180deg, #363636 0%, #272727 100%)" dark>
       <div class="yes-no-battle flex-1 flex flex-col">
         <!-- question -->
         <div class="question-cnt flex-1 flex flex-col">

@@ -57,7 +57,7 @@ export const useBattleStore = defineStore("battle", () => {
   const pauseCurrentTask = ref(false);
 
   // challenge vars
-  let battleStartTime = null;
+  let battleStartTime: number | null = null;
 
   let currentBreakpointInterval = {
     fn: <BreakpointInterval | null>null,
@@ -303,7 +303,7 @@ export const useBattleStore = defineStore("battle", () => {
         correctStreak.value += 1;
         mainStore.onVibrate("correct");
       } else {
-        if (data.value.battle_extra_mistake && !boostersUsed.value["extra_mistake"]) {
+        if (data.value?.battle_extra_mistake && !boostersUsed.value["extra_mistake"]) {
           boostersUsed.value["extra_mistake"] = true;
         } else {
           correctStreak.value = 0;
@@ -320,7 +320,7 @@ export const useBattleStore = defineStore("battle", () => {
 
     pauseCurrentTask.value = false;
 
-    if (state.value.battleData.questions_left > 0) {
+    if (state.value.battleData.questions_left && state.value.battleData.questions_left > 0) {
       state.value.battleData.questions_left -= 1;
     }
 

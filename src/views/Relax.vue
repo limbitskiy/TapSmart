@@ -9,30 +9,8 @@
     <!-- profile widget -->
     <ProfileWidget />
 
-    <!-- battle controls -->
-    <!-- <div class="top-btns grid grid-cols-2 gap-4 px-1 relative bg-[var(--grey-dark)] rounded-[15px] py-1 z-10">
-      <Button class="bg-[var(--grey-dark)] text-white leading-4 !px-4" activeColor="#444" @click="onChangeMech">
-        <div class="flex gap-4 items-center justify-end">
-          <div v-if="width > 410" class="icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="10.8387" height="10.8387" rx="2" fill="white" />
-              <rect y="13.1613" width="10.8387" height="10.8387" rx="2" fill="white" />
-              <rect x="13.1611" width="10.8387" height="10.8387" rx="2" fill="white" />
-              <rect x="13.1611" y="13.1613" width="10.8387" height="10.8387" rx="2" fill="white" />
-            </svg>
-          </div>
-          <span class="text-base leading-4">{{ locale?.["button_change_mech"] }}</span> -->
-    <!-- chevron down -->
-    <!-- <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M7 8L0 0.982456L0.98 0L7 6.03509L13.02 0L14 0.982456L7 8Z" fill="white" />
-          </svg>
-        </div>
-      </Button>
-      <ChallengeButton class="text-base" @challenge="openBoosterModal" />
-      <div class="relax-topbar flex flex-col items-end justify-between w-full absolute -bottom-[35px] px-4"></div>
-    </div> -->
-
     <ChallengeButton @challenge="openBoosterModal" />
+
     <!-- battle mechanic -->
     <BattleMechanic @changeMech="onChangeMech" />
 

@@ -39,7 +39,7 @@
 
     <!-- backend-controlled modal -->
     <Teleport to="#backend-modal">
-      <Modal id="backend-modal" v-model:visible="modal.isShown" sticky>
+      <Modal id="backend-modal" v-model:visible="modal.isShown" :sticky="!modal.isClosable">
         <BackendModal
           @close="
             () => {

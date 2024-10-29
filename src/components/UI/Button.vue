@@ -31,17 +31,8 @@ import { replaceWithSpecialSymbols } from "@/utils";
 // stores
 import { useMainStore } from "@/store/main";
 
-interface ButtonProps {
-  hidden: boolean;
-  disabled: boolean;
-  route?: string;
-  api?: string;
-  data?: {};
-  label: string;
-  isClose: boolean;
-  accent: "orange" | "purple";
-  action?: "invite";
-}
+// types
+import { BackendButton } from "@/types";
 
 const route = useRoute();
 
@@ -61,7 +52,7 @@ const props = defineProps<{
   dark?: boolean;
   grey?: boolean;
   font?: string;
-  data?: ButtonProps;
+  data?: BackendButton;
   activeColor?: string;
   unstyled?: boolean;
   disabled?: boolean;
@@ -70,6 +61,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   close: [];
 }>();
+
+console.log(props.activeColor);
 
 const onClick = () => {
   if (props.data?.action === "invite") {
