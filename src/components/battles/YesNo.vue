@@ -1,45 +1,88 @@
 <template>
   <div class="battle-body flex-1 flex flex-col">
     <!-- task -->
-    <BackgroundPill class="flex-1 !p-4 z-10 rounded-[15px] relative overflow-hidden" style="background: linear-gradient(180deg, #363636 0%, #272727 100%)" dark>
+    <BackgroundPill
+      class="flex-1 !p-4 z-10 rounded-[15px] relative overflow-hidden"
+      style="background: linear-gradient(180deg, #363636 0%, #272727 100%)"
+      dark
+    >
       <div class="flex-1 grid grid-flow-row grid-rows-[auto_2fr_1fr]">
         <!-- task header -->
         <div class="header flex items-center justify-between mb-4">
-          <Button class="!p-0 bg-[var(--grey-dark)]" activeColor="#858585" @click="() => emit('changeMech')">
-            <BattleHeader icon="mech_1" :gameLocale="locales?.['mechanics_category']" :title="locales?.[`yesno_title`] || 'Yes-no'" />
+          <Button
+            class="!p-0 bg-[var(--grey-dark)]"
+            activeColor="#858585"
+            @click="() => emit('changeMech')"
+          >
+            <BattleHeader
+              icon="mech_1"
+              :gameLocale="locales?.['mechanics_category']"
+              :title="locales?.[`yesno_title`] || 'Yes-no'"
+            />
           </Button>
           <div class="right flex items-center gap-3">
-            <CircleCountdown v-if="type === 'relax'" :strokeWidth="2" color="grey" :size="20" />
+            <CircleCountdown
+              v-if="type === 'relax'"
+              :strokeWidth="2"
+              color="grey"
+              :size="20"
+            />
             <VolumeControl />
           </div>
         </div>
 
         <!-- task body -->
         <div class="task-cnt flex-1 flex flex-col">
-          <div class="task-content grid grid-rows-[60px_auto] flex-1 justify-items-center px-2">
+          <div
+            class="task-content grid grid-rows-[60px_auto] flex-1 justify-items-center px-2"
+          >
             <div class="task-title-cnt flex flex-col justify-center">
               <Pill class="rounded-xl bg-transparent">
-                <span class="question-title text-center text-[var(--accent-color)]">{{ locales?.["mechanics_1_task"] || "Is this translation correct??" }}</span>
+                <span
+                  class="question-title text-center text-[var(--accent-color)]"
+                  >{{
+                    locales?.["mechanics_1_task"] ||
+                    "Is this translation correct??"
+                  }}</span
+                >
               </Pill>
             </div>
 
             <div class="slide-cnt flex flex-col justify-center">
               <!-- question card -->
               <Transition name="fade" mode="out-in">
-                <div v-if="task" :key="task?.task?.question" class="flex flex-col gap-2 items-center text-center break-words">
+                <div
+                  v-if="task"
+                  :key="task?.task?.question"
+                  class="flex flex-col gap-2 items-center text-center break-words"
+                >
                   <div class="question-cnt max-w-[calc(100dvw-5rem)]">
-                    <span class="fira-condensed-black line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)">{{ task?.task?.question }} </span>
+                    <span
+                      class="fira-condensed-black line-clamp-2"
+                      style="font-size: clamp(28px, 10vw, 42px)"
+                      >{{ task?.task?.question }}
+                    </span>
                   </div>
                   <div class="arrow">
-                    <svg width="16" height="26" viewBox="0 0 16 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg
+                      width="16"
+                      height="26"
+                      viewBox="0 0 16 26"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
                       <path
                         d="M7.29289 25.7071C7.68342 26.0976 8.31658 26.0976 8.70711 25.7071L15.0711 19.3431C15.4616 18.9526 15.4616 18.3195 15.0711 17.9289C14.6805 17.5384 14.0474 17.5384 13.6569 17.9289L8 23.5858L2.34315 17.9289C1.95262 17.5384 1.31946 17.5384 0.928932 17.9289C0.538408 18.3195 0.538408 18.9526 0.928932 19.3431L7.29289 25.7071ZM7 0V25H9V0H7Z"
                         fill="#BCBCBC"
                       />
                     </svg>
                   </div>
-                  <div class="question-cnt max-w-[calc(100dvw-5rem)]">
-                    <span class="fira-condensed-black text-gray-400 line-clamp-2" style="font-size: clamp(26px, 8vw, 42px)">{{ task?.task?.answer }}</span>
+                  <div class="question-cnt max-w-[calc(100dvw-5rem)] mb-8">
+                    <span
+                      class="fira-condensed-black text-gray-400 line-clamp-2"
+                      style="font-size: clamp(26px, 8vw, 42px)"
+                      >{{ task?.task?.answer }}</span
+                    >
                   </div>
                 </div>
               </Transition>
@@ -68,11 +111,29 @@
               correct: noBtnAnimation === 'correct',
               wrong: noBtnAnimation === 'wrong',
             }"
-            @click="(event) => handleAnswer(task?.task?.variants[1], event, 'no')"
+            @click="
+              (event) => handleAnswer(task?.task?.variants[1], event, 'no')
+            "
           >
-            <svg width="37" height="37" viewBox="0 0 37 37" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3 3L34 34" stroke="white" stroke-width="5" stroke-linecap="round" />
-              <path d="M34 3L3 34" stroke="white" stroke-width="5" stroke-linecap="round" />
+            <svg
+              width="37"
+              height="37"
+              viewBox="0 0 37 37"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M3 3L34 34"
+                stroke="white"
+                stroke-width="5"
+                stroke-linecap="round"
+              />
+              <path
+                d="M34 3L3 34"
+                stroke="white"
+                stroke-width="5"
+                stroke-linecap="round"
+              />
             </svg>
           </Button>
           <Button
@@ -82,23 +143,49 @@
               correct: yesBtnAnimation === 'correct',
               wrong: yesBtnAnimation === 'wrong',
             }"
-            @click="(event) => handleAnswer(task?.task?.variants[0], event, 'yes')"
+            @click="
+              (event) => handleAnswer(task?.task?.variants[0], event, 'yes')
+            "
           >
-            <svg width="41" height="31" viewBox="0 0 41 31" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3 15L14.3235 27L38 3" stroke="white" stroke-width="5" stroke-linecap="round" />
+            <svg
+              width="41"
+              height="31"
+              viewBox="0 0 41 31"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M3 15L14.3235 27L38 3"
+                stroke="white"
+                stroke-width="5"
+                stroke-linecap="round"
+              />
             </svg>
           </Button>
         </div>
 
         <!-- correct answer -->
         <Transition name="correct-text" mode="out-in">
-          <div v-if="correctAnswer.shown" class="correct-answer absolute z-20 inset-0 grid place-items-center pointer-events-none mb-16">
-            <div class="flex flex-col items-center justify-center text-center overflow-x-hidden break-words">
+          <div
+            v-if="correctAnswer.shown"
+            class="correct-answer absolute z-20 inset-0 grid place-items-center pointer-events-none mb-16"
+          >
+            <div
+              class="flex flex-col items-center justify-center text-center overflow-x-hidden break-words"
+            >
               <div class="max-w-[calc(100dvw-5rem)]">
-                <span class="fira-condensed-black text-red-500 line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)">{{ correctAnswer.question }} </span>
+                <span
+                  class="fira-condensed-black text-red-500 line-clamp-2"
+                  style="font-size: clamp(28px, 10vw, 42px)"
+                  >{{ correctAnswer.question }}
+                </span>
               </div>
               <div class="max-w-[calc(100dvw-5rem)]">
-                <span class="fira-condensed-black text-red-400 line-clamp-2" style="font-size: clamp(26px, 8vw, 42px)">{{ correctAnswer.answer }}</span>
+                <span
+                  class="fira-condensed-black text-red-400 line-clamp-2"
+                  style="font-size: clamp(26px, 8vw, 42px)"
+                  >{{ correctAnswer.answer }}</span
+                >
               </div>
             </div>
           </div>

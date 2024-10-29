@@ -1,34 +1,67 @@
 <template>
   <div class="battle-body flex-1 flex flex-col">
     <!-- task body -->
-    <BackgroundPill class="flex-1 !p-4 z-10 rounded-[15px] relative overflow-hidden" style="background: linear-gradient(180deg, #363636 0%, #272727 100%)" dark>
-      <div class="flex-1 grid grid-flow-row grid-rows-[auto_auto_1fr]">
+    <BackgroundPill
+      class="flex-1 !p-4 z-10 rounded-[15px] relative overflow-hidden"
+      style="background: linear-gradient(180deg, #363636 0%, #272727 100%)"
+      dark
+    >
+      <div class="flex-1 grid grid-rows-[60px_auto_150px]">
         <!-- task header -->
         <div class="header flex items-center justify-between mb-4">
-          <Button class="!p-0 bg-[var(--grey-dark)]" activeColor="#858585" @click="() => emit('changeMech')">
-            <BattleHeader icon="mech_2" :gameLocale="locales?.['mechanics_category']" :title="locales?.[`4answers_title`] || 'Four answers'" />
+          <Button
+            class="!p-0 bg-[var(--grey-dark)]"
+            activeColor="#858585"
+            @click="() => emit('changeMech')"
+          >
+            <BattleHeader
+              icon="mech_2"
+              :gameLocale="locales?.['mechanics_category']"
+              :title="locales?.[`4answers_title`] || 'Four answers'"
+            />
           </Button>
           <div class="right flex items-center gap-3">
-            <CircleCountdown v-if="type === 'relax'" :strokeWidth="2" color="grey" :size="20" />
+            <CircleCountdown
+              v-if="type === 'relax'"
+              :strokeWidth="2"
+              color="grey"
+              :size="20"
+            />
             <VolumeControl />
           </div>
         </div>
 
         <!-- question -->
         <div class="task-cnt flex-1 flex flex-col">
-          <div class="task-content grid grid-rows-[60px_auto] flex-1 justify-items-center px-2">
+          <div
+            class="task-content grid grid-rows-[80px_auto] flex-1 justify-items-center px-2"
+          >
             <div class="task-title-cnt flex flex-col justify-center">
               <Pill class="rounded-xl bg-transparent">
-                <span class="question-title text-center text-[var(--accent-color)]">{{ locales?.["mechanics_2_task"] || "Is this translation correct??" }}</span>
+                <span
+                  class="question-title text-center text-[var(--accent-color)]"
+                  >{{
+                    locales?.["mechanics_2_task"] ||
+                    "Is this translation correct??"
+                  }}</span
+                >
               </Pill>
             </div>
 
             <div class="slide-cnt flex flex-col justify-center">
               <!-- question card -->
               <Transition name="fade" mode="out-in">
-                <div v-if="task" :key="task?.task?.question" class="flex flex-col gap-2 items-center text-center break-words">
-                  <div class="question-cnt max-w-[calc(100dvw-5rem)]">
-                    <span class="fira-condensed-black line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)">{{ task?.task?.question }} </span>
+                <div
+                  v-if="task"
+                  :key="task?.task?.question"
+                  class="flex flex-col gap-2 items-center text-center break-words"
+                >
+                  <div class="question-cnt max-w-[calc(100dvw-5rem)] mb-10">
+                    <span
+                      class="fira-condensed-black line-clamp-2"
+                      style="font-size: clamp(28px, 10vw, 42px)"
+                      >{{ task?.task?.question }}
+                    </span>
                   </div>
                 </div>
               </Transition>
@@ -64,7 +97,10 @@
         ></div> -->
 
         <!-- buttons -->
-        <div v-if="buttonValues[0]" class="answer-buttons grid w-full grid-cols-2 grid-rows-2 gap-4 leading-5">
+        <div
+          v-if="buttonValues[0]"
+          class="answer-buttons grid w-full grid-cols-2 grid-rows-2 gap-4 leading-5"
+        >
           <Button
             :disabled="type === 'relax' && energy <= 0"
             class="four-answer-btn"
@@ -116,12 +152,22 @@
             v-if="correctAnswer.shown"
             class="wrong-text absolute z-20 left-0 right-0 top-0 bottom-0 grid place-items-center pointer-events-none mb-14 px-4 overflow-x-hidden break-words"
           >
-            <div class="flex flex-col gap-2 items-center justify-center text-center mb-5">
+            <div
+              class="flex flex-col gap-2 items-center justify-center text-center mb-5"
+            >
               <div class="max-w-[calc(100dvw-5rem)]">
-                <span class="fira-condensed-black text-red-500 line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)">{{ correctAnswer.question }}</span>
+                <span
+                  class="fira-condensed-black text-red-500 line-clamp-2"
+                  style="font-size: clamp(28px, 10vw, 42px)"
+                  >{{ correctAnswer.question }}</span
+                >
               </div>
               <div class="max-w-[calc(100dvw-5rem)]">
-                <span class="fira-condensed-black text-red-400 line-clamp-2" style="font-size: clamp(26px, 8vw, 42px)">{{ correctAnswer.answer }}</span>
+                <span
+                  class="fira-condensed-black text-red-400 line-clamp-2"
+                  style="font-size: clamp(26px, 8vw, 42px)"
+                  >{{ correctAnswer.answer }}</span
+                >
               </div>
             </div>
           </div>
