@@ -4,15 +4,19 @@ const { botName, appName } = constants;
 
 export const tg = window.Telegram?.WebApp;
 
-// export const showMainButton = () => {
-//   tg?.MainButton.setParams({
-//     text: "Invite friends",
-//     color: "#FD911E",
-//     text_color: "#222",
-//   });
+export const showMainButton = ({ text, color, text_color }) => {
+  tg?.MainButton.setParams({
+    text,
+    color,
+    text_color,
+  });
 
-//   tg?.MainButton.show();
-// };
+  tg?.MainButton.show();
+};
+
+export const hideMainButton = () => {
+  tg?.MainButton.hide();
+};
 
 export const getUserId = () => {
   return tg?.initDataUnsafe?.user?.id;

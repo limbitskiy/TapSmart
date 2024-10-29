@@ -1,7 +1,7 @@
 import { ref, computed } from "vue";
 
 // types
-import { BattleTypes, BattleState, AnswerProps, Answer } from "@/types";
+import { Answer } from "@/types";
 
 export const useBattleProcessor = (battleData) => {
   // console.log(data?.data);
@@ -35,9 +35,7 @@ export const useBattleProcessor = (battleData) => {
   const storeAnswer = (answerString: string, msec?: number) => {
     const task = battleData.data.find((task) => task.id === taskIndex.value);
 
-    const foundIdx = answers.value.findIndex(
-      (answer) => answer.id === task!.id
-    );
+    const foundIdx = answers.value.findIndex((answer) => answer.id === task!.id);
 
     if (foundIdx !== -1) {
       answers.value[foundIdx] = {
@@ -56,9 +54,7 @@ export const useBattleProcessor = (battleData) => {
     }
   };
 
-  const _currentTask = computed(() =>
-    battleData.data?.find((task) => task.id === taskIndex.value)
-  );
+  const _currentTask = computed(() => battleData.data?.find((task) => task.id === taskIndex.value));
 
   return {
     resetTaskIndex,

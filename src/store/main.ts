@@ -15,8 +15,7 @@ import { useSoundStore } from "@/store/sound";
 import { NotificationProps, ResponseObject, ResponseData, MainState, TooltipProps, ModalProps } from "@/types";
 
 // api
-import { makeRequest, makeUploadRequest } from "@/api/server";
-import * as htmlToImage from "html-to-image";
+import { makeRequest } from "@/api/server";
 
 export const useMainStore = defineStore("main", () => {
   const notification = ref<NotificationProps>({
@@ -390,9 +389,15 @@ export const useMainStore = defineStore("main", () => {
       const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } })!;
       console.log(`got usefetch response. sharing to story`);
 
+      let widgetLink;
+
+      if (battleStore.data?.["story_link"]) {
+        widgetLink = { url: battleStore.data?.["story_link"], name: battleStore.data?.["story_link_text"] };
+      }
+
       tg.shareToStory(res.data.url, {
         text: battleStore.data?.["story_text"] ?? "TapSmart text",
-        widget_link: { url: battleStore.data?.["story_link"], name: battleStore.data?.["story_link_text"] },
+        widget_link: widgetLink,
       });
     } catch (error) {
       console.error(error);
@@ -411,10 +416,6 @@ export const useMainStore = defineStore("main", () => {
   //     deep: true,
   //   }
   // );
-
-  // const setRouteData = (value: any) => {
-  //   state.value.routeData = value;
-  // };
 
   return {
     localeStore,
