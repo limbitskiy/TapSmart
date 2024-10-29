@@ -4,11 +4,11 @@
     <Button
       ref="challengeBtnRef"
       activeColor="#fcdcb0"
-      class="flex-1 py-4 !px-2 relative !rounded-lg"
+      class="flex-1 py-4 !px-2 relative bg-gradient-to-b from-[#FEAC3E] to-[#da8f26]"
       :class="{ 'bg-gray-300 text-gray-400': data.button_challenge?.disabled }"
       @click="onClick"
       ><div class="flex justify-center gap-2">
-        <span v-bind="$attrs" class="text-lg leading-4">{{ locale?.["button_challenge"] }}</span>
+        <span v-bind="$attrs" class="text-xl leading-4">{{ locale?.["button_challenge"] }}</span>
         <Badge v-if="data?.questions_left > 0" class="relative bottom-1" :data="data?.questions_left" grey />
       </div>
     </Button>
