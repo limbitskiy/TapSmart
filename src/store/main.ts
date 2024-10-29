@@ -372,7 +372,7 @@ export const useMainStore = defineStore("main", () => {
       };
     });
 
-  const createScreeshots = async () => {
+  const sendScreeshots = async () => {
     console.log(`starting to generate story`);
 
     try {
@@ -451,6 +451,6 @@ export const useMainStore = defineStore("main", () => {
     onVibrate,
     showModal,
     takeHTMLSnapshot,
-    createScreeshots,
+    sendScreeshots,
   };
 });

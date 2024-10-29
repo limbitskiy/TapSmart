@@ -1,5 +1,5 @@
 <template>
-  <div v-if="debugMessages.length" class="debug-message text-sm absolute top-0 left-0 right-0 z-50 bg-black p-2 flex flex-col">
+  <div v-if="debugMessages.length" class="debug-message text-sm absolute top-0 left-0 right-0 z-[10000] bg-black p-2 flex flex-col">
     <span v-for="(msg, index) in debugMessages" :key="index">{{ msg }}</span>
   </div>
   <div
