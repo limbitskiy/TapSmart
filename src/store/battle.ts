@@ -251,14 +251,17 @@ export const useBattleStore = defineStore("battle", () => {
       return;
     }
 
+    // make a task copy because computed will show false when pauseCurrentTask is true
+    // maybe needs refactoring
+    const thisTask = currentTask.value;
+
     stopTaskTimeout();
 
     // set lastTaskId
     lastTaskId.value = currentTask.value!.id;
 
-    if (true) {
-      await waitFor(100);
-    }
+    // for screenshot (otherwize we don't see the question)
+    await waitFor(100);
 
     pauseCurrentTask.value = true;
 
@@ -266,6 +269,10 @@ export const useBattleStore = defineStore("battle", () => {
     if (currentBattleMode.value === "relax") {
       // store answer
       storeAnswer(answerString);
+
+      if (thisTask.api) {
+        mainStore.useFetch({ key: thisTask.api });
+      }
 
       // process correct/wrong anwser
       if (isCorrect) {
@@ -305,11 +312,6 @@ export const useBattleStore = defineStore("battle", () => {
         }
         mainStore.onVibrate("wrong");
       }
-    }
-
-    // call api if needed
-    if (currentTask.value.api) {
-      mainStore.useFetch({ key: currentTask.value.api });
     }
 
     if (nextTaskDelay) {

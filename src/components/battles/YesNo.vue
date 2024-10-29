@@ -1,24 +1,24 @@
 <template>
   <div class="battle-body flex-1 flex flex-col">
-    <!-- task header -->
-    <div class="header flex items-center justify-between py-3 px-4 rounded-t-[15px] bg-[#363636] z-10">
-      <Button class="!p-0 bg-[var(--grey-dark)]" activeColor="#858585" @click="() => emit('changeMech')">
-        <BattleHeader icon="mech_1" :gameLocale="locales?.['mechanics_category']" :title="locales?.[`yesno_title`] || 'Yes-no'" />
-      </Button>
-      <div class="right flex items-center gap-3">
-        <CircleCountdown v-if="type === 'relax'" :strokeWidth="2" color="grey" :size="20" />
-        <VolumeControl />
-      </div>
-    </div>
+    <!-- task -->
+    <BackgroundPill class="flex-1 !p-4 z-10 rounded-[15px] relative overflow-hidden" style="background: linear-gradient(180deg, #363636 0%, #272727 100%)" dark>
+      <div class="flex-1 grid grid-flow-row grid-rows-[auto_2fr_1fr]">
+        <!-- task header -->
+        <div class="header flex items-center justify-between mb-4">
+          <Button class="!p-0 bg-[var(--grey-dark)]" activeColor="#858585" @click="() => emit('changeMech')">
+            <BattleHeader icon="mech_1" :gameLocale="locales?.['mechanics_category']" :title="locales?.[`yesno_title`] || 'Yes-no'" />
+          </Button>
+          <div class="right flex items-center gap-3">
+            <CircleCountdown v-if="type === 'relax'" :strokeWidth="2" color="grey" :size="20" />
+            <VolumeControl />
+          </div>
+        </div>
 
-    <!-- task body -->
-    <BackgroundPill class="flex-1 !p-4 z-10 rounded-[15px] rounded-t-none relative overflow-hidden" style="background: linear-gradient(180deg, #363636 0%, #272727 100%)" dark>
-      <div class="flex-1 grid grid-flow-row grid-rows-[2fr_1fr]">
-        <!-- task -->
+        <!-- task body -->
         <div class="task-cnt flex-1 flex flex-col">
-          <div class="task-content grid grid-rows-[40px_auto] flex-1 justify-items-center px-2">
+          <div class="task-content grid grid-rows-[60px_auto] flex-1 justify-items-center px-2">
             <div class="task-title-cnt flex flex-col justify-center">
-              <Pill class="!py-0 rounded-xl bg-transparent">
+              <Pill class="rounded-xl bg-transparent">
                 <span class="question-title text-center text-[var(--accent-color)]">{{ locales?.["mechanics_1_task"] || "Is this translation correct??" }}</span>
               </Pill>
             </div>
@@ -92,7 +92,7 @@
 
         <!-- correct answer -->
         <Transition name="correct-text" mode="out-in">
-          <div v-if="correctAnswer.shown" class="correct-answer absolute z-20 inset-0 grid place-items-center pointer-events-none mb-8">
+          <div v-if="correctAnswer.shown" class="correct-answer absolute z-20 inset-0 grid place-items-center pointer-events-none mb-16">
             <div class="flex flex-col items-center justify-center text-center overflow-x-hidden break-words">
               <div class="max-w-[calc(100dvw-5rem)]">
                 <span class="fira-condensed-black text-red-500 line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)">{{ correctAnswer.question }} </span>
