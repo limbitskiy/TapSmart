@@ -42,7 +42,7 @@
         <!-- energy -->
         <div class="energy flex items-center gap-1 justify-center">
           <img class="h-4" :src="getAsset('energy')" />
-          <span data-locale="battle.tooltip_energy" class="exo-bold" @click="onTooltip">{{ battleData?.["energy"] ?? 0 }}</span>
+          <span data-locale="battle.tooltip_energy" class="exo-bold" @click="onTooltip">{{ battleData?.data?.["energy"] ?? 0 }}</span>
         </div>
       </div>
     </div>

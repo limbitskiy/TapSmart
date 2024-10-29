@@ -2,9 +2,14 @@
   <div class="battle-body flex-1 flex">
     <BackgroundPill class="flex-1 !p-4 z-10 rounded-[15px] relative overflow-hidden" style="background: linear-gradient(180deg, #363636 0%, #272727 100%)" dark>
       <div class="header flex items-center justify-between mb-4">
-        <div class="mech-title flex gap-1 items-center">
+        <div class="mech-title flex gap-1 items-center" @click="() => emit('changeMech')">
           <img class="h-8" :src="getAsset(`mech_1`)" />
-          <span class="fira-regular text-lg text-[#B7B7B7]">{{ locale?.[`yesno_title`] || "Yes-no" }}</span>
+          <div class="text-chevron flex gap-4 items-center">
+            <span class="fira-regular text-lg text-[#B7B7B7]">{{ locale?.[`yesno_title`] || "Yes-no" }}</span>
+            <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 8L0 0.982456L0.98 0L7 6.03509L13.02 0L14 0.982456L7 8Z" fill="white" />
+            </svg>
+          </div>
         </div>
         <div class="right flex items-center gap-3">
           <CircleCountdown v-if="type === 'relax'" :strokeWidth="2" color="grey" :size="20" />
@@ -114,6 +119,7 @@ const emit = defineEmits<{
       drawBonus: boolean;
     }
   ];
+  changeMech: [];
 }>();
 
 const props = defineProps<{

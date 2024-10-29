@@ -1,14 +1,14 @@
 <template>
-  <div class="challenge-btn-wrap relative flex-1 flex overflow-hidden rounded-xl" :class="{ heartbeat }">
+  <div class="challenge-btn-wrap relative flex overflow-hidden rounded-lg" :class="{ heartbeat }">
     <div ref="animationRef" class="lightray absolute -top-5 -left-[100%] w-[15px] h-[80px] bg-white z-10 rotate-45 opacity-80"></div>
     <Button
       ref="challengeBtnRef"
       activeColor="#fcdcb0"
-      class="flex-1 py-3 !px-2 relative"
+      class="flex-1 py-4 !px-2 relative !rounded-lg"
       :class="{ 'bg-gray-300 text-gray-400': data.button_challenge?.disabled }"
       @click="onClick"
       ><div class="flex justify-center gap-2">
-        <span v-bind="$attrs" class="text-base leading-4">{{ locale?.["button_challenge"] }}</span>
+        <span v-bind="$attrs" class="text-lg leading-4">{{ locale?.["button_challenge"] }}</span>
         <Badge v-if="data?.questions_left > 0" class="relative bottom-1" :data="data?.questions_left" grey />
       </div>
     </Button>

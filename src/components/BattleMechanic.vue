@@ -9,6 +9,7 @@
       :energy="data?.energy"
       :buttonsBlocked="buttonsBlocked"
       @answer="onAnswer"
+      @changeMech="() => emit('changeMech')"
     />
     <Loader v-else />
   </Transition>
@@ -65,6 +66,7 @@ interface AnswerProps {
 
 const emit = defineEmits<{
   answer: [];
+  changeMech: [];
 }>();
 
 const store = useMainStore();
