@@ -2,7 +2,7 @@
   <div class="battle-body flex-1 flex">
     <BackgroundPill ref="pillRef" class="flex-1 !p-4 z-10 rounded-[15px] relative overflow-hidden" style="background: linear-gradient(180deg, #363636 0%, #272727 100%)" dark>
       <div class="header flex items-center justify-between mb-4">
-        <div class="mech-title flex gap-1 items-center">
+        <div class="mech-title flex gap-1 items-center w-[80%]">
           <img class="h-8" :src="getAsset(`mech_2`)" />
           <span class="fira-regular text-lg text-[#B7B7B7]">{{ locales?.[`4answers_title`] || "Four answers" }}</span>
         </div>
@@ -226,8 +226,8 @@ onMounted(() => {
     settings.yesBtnDelay = 300;
     settings.noBtnDelay = 2000;
   } else if (props.type === "challenge") {
-    settings.correctTaskDelay = 0;
-    settings.wrongTaskDelay = 0;
+    settings.correctTaskDelay = 350;
+    settings.wrongTaskDelay = 350;
     settings.yesBtnDelay = 300;
     settings.noBtnDelay = 300;
   }

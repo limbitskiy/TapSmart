@@ -108,13 +108,13 @@
     </BackgroundPill>
 
     <!-- invite buttons -->
-    <!-- <div class="invite-btn-cnt fixed bottom-20 left-4 right-4 flex justify-between gap-3 z-10">
+    <div class="invite-btn-cnt fixed bottom-20 left-4 right-4 flex justify-between gap-3 z-10">
       <Button class="flex-1" @click="onInviteFriend">
-        <span class="text-xl">{{ locale?.["invite_a_friend"] }}</span> -->
-    <!-- <img :src="getAsset('paw')" /> -->
-    <!-- </Button>
+        <span class="text-xl">{{ locale?.["invite_a_friend"] }}</span>
+        <!-- <img :src="getAsset('paw')" /> -->
+      </Button>
       <Button class="!px-4 border border-gray-800" dark @click="onCopyToClipboard"><img :src="getAsset('copy')" /></Button>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -136,16 +136,6 @@ const { friends: data } = storeToRefs(store.dataStore);
 const { friends: locale } = storeToRefs(store.localeStore);
 
 const el = ref();
-
-showMainButton({
-  text: locale.value?.["invite_a_friend"],
-  color: "#FEAC3E",
-  text_color: "#222",
-});
-
-tg.onEvent("mainButtonClicked", () => {
-  onInviteFriend();
-});
 
 fetchFriendsList();
 

@@ -91,7 +91,7 @@ const route = useRoute();
 
 const store = useMainStore();
 
-const { fetchBattleResultsData, createScreeshots, takeHTMLSnapshot } = store;
+const { fetchBattleResultsData, sendScreeshots, takeHTMLSnapshot } = store;
 const { HTMLSnapshots } = storeToRefs(store);
 const { data } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
@@ -178,7 +178,7 @@ onMounted(async () => {
 
     HTMLSnapshots.value.push(url);
 
-    await createScreeshots();
+    await sendScreeshots();
   }
 
   console.log(`cleaning snapshots`);
