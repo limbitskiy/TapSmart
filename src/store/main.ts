@@ -394,9 +394,10 @@ export const useMainStore = defineStore("main", () => {
       storyParams.url = res.data.url;
 
       // let widgetLink;
-      storyParams.widgetParams = {};
+      storyParams.widgetParams = null;
 
       if (battleStore.data?.["story_link"]) {
+        storyParams.widgetParams = {};
         storyParams.widgetParams = { url: battleStore.data?.["story_link"], name: battleStore.data?.["story_link_text"] };
       }
     } catch (error) {
@@ -421,7 +422,7 @@ export const useMainStore = defineStore("main", () => {
 
       tg.shareToStory(storyParams.url, {
         text: battleStore.data?.["story_text"] ?? "TapSmart text",
-        widget_link: { url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1", name: "Widget link text" },
+        widget_link: storyParams.widgetParams,
       });
     } catch (error) {
       console.error(error);
