@@ -395,10 +395,12 @@ export const useMainStore = defineStore("main", () => {
         widgetLink = { url: battleStore.data?.["story_link"], name: battleStore.data?.["story_link_text"] };
       }
 
-      tg.shareToStory(res.data.url, {
-        text: battleStore.data?.["story_text"] ?? "TapSmart text",
-        widget_link: widgetLink,
-      });
+      setTimeout(() => {
+        tg.shareToStory(res.data.url, {
+          text: battleStore.data?.["story_text"] ?? "TapSmart text",
+          widget_link: widgetLink,
+        });
+      }, 3000);
     } catch (error) {
       console.error(error);
       debugMessages.value.push(error);

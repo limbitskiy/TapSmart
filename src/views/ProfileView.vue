@@ -224,6 +224,8 @@
 
     <LanguageSettings @change="onSettingsChange" />
 
+    <!-- <Button @click="postTestStory">Post a test story</Button> -->
+
     <Button @click="onFeedback">{{ locale?.["feedback"] }}</Button>
 
     <div class="build-no absolute bottom-0 right-4 text-[12px] text-gray-300 leading-4">build: {{ version }}</div>
@@ -278,4 +280,6 @@ const onSettingsChange = ({ setting, value }) => {
 const onFeedback = () => {
   tg.openLink(data.value?.["feedback_url"]);
 };
+
+const postTestStory = () => {};
 </script>
