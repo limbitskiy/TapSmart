@@ -405,6 +405,18 @@ export const useMainStore = defineStore("main", () => {
     }
   };
 
+  // debug
+  const showTestNotification = () => {
+    showNotification({
+      title: "Test notification",
+      subtitle: "User Michael_Jackson_89700 challenged you to a 4 answer battle. Do you accept?",
+      timeout: 50000,
+      buttons: { left: { label: "Reject", isClose: true }, right: { label: "Accept", isClose: true } },
+    });
+  };
+
+  window.showNotification = showTestNotification;
+
   // watch(
   //   debugMessages,
   //   (val) => {

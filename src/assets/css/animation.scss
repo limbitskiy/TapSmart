@@ -199,15 +199,17 @@
 }
 
 // notification
-.toast-slide-enter-active,
+.toast-slide-enter-active {
+  animation: 1s ease-in bounceInDown;
+}
 .toast-slide-leave-active {
-  transition: 0.2s ease;
+  animation: 1s ease-out bounceOutUpShort;
 }
 
-.toast-slide-enter-from,
-.toast-slide-leave-to {
-  transform: translateY(-100%);
-}
+// .toast-slide-enter-from,
+// .toast-slide-leave-to {
+//   transform: translateY(-100%);
+// }
 
 .timeout-progress.started {
   transform: scaleX(0);
@@ -398,7 +400,7 @@
 
   0% {
     opacity: 0;
-    transform: translate3d(0, -3000px, 0) scaleY(3);
+    transform: translate3d(0, -1000px, 0) scaleY(3);
   }
 
   60% {
@@ -433,6 +435,23 @@
   to {
     opacity: 0;
     transform: translate3d(0, -2000px, 0) scaleY(3);
+  }
+}
+
+@keyframes bounceOutUpShort {
+  // 20% {
+  //   transform: translate3d(0, -10px, 0) scaleY(0.985);
+  // }
+
+  20%,
+  25% {
+    opacity: 1;
+    transform: translate3d(0, 20px, 0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(0, -1000px, 0);
   }
 }
 
