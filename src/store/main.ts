@@ -396,13 +396,15 @@ export const useMainStore = defineStore("main", () => {
       }
 
       console.log(`waiting for 3s`);
-      await waitFor(3000);
+      await waitFor(10000);
 
       console.log(`sharing to story`);
       // tg.shareToStory(res.data.url, {
       //   text: battleStore.data?.["story_text"] ?? "TapSmart text",
       //   widget_link: widgetLink,
       // });
+      console.log(res.data.url);
+
       tg.shareToStory(res.data.url, {
         text: "TapSmart text",
         widget_link: { url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1", name: "Widget link text" },

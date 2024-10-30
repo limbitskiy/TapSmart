@@ -52,7 +52,7 @@ const onClick = () => {
 };
 
 const animateBtn = () => {
-  animationRef.value.animate({ left: "calc(150%)" }, 800);
+  animationRef.value?.animate({ left: "calc(150%)" }, 800);
   setTimeout(() => {
     heartbeat.value = true;
   }, 1000);
