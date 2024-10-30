@@ -420,7 +420,7 @@ export const useMainStore = defineStore("main", () => {
       // });
 
       tg.shareToStory(storyParams.url, {
-        text: "TapSmart text",
+        text: battleStore.data?.["story_text"] ?? "TapSmart text",
         widget_link: { url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1", name: "Widget link text" },
       });
     } catch (error) {
