@@ -1,36 +1,23 @@
 <template>
   <div class="results-cnt relative">
     <Transition name="fade">
-      <div
-        v-if="generatingStory"
-        class="story-generator-loader absolute inset-0 flex-1 grid h-dvh z-[9999] bg-[#222] place-items-center"
-      >
+      <div v-if="generatingStory" class="story-generator-loader absolute inset-0 flex-1 grid h-dvh z-[9999] bg-[#222] place-items-center">
         <div class="spinner max-w-[50vw] text-center flex flex-col gap-4">
           <div class="progressbar-wrap flex flex-col">
             <div class="percent-text text-[12px] text-gray-300">
               <span>{{ percent }}%</span>
             </div>
             <div class="progressbar h-[3px] w-full bg-gray-400 rounded-full">
-              <div
-                class="value h-[3px] rounded-full bg-[var(--accent-color)]"
-                :style="{ width: percent + '%' }"
-              ></div>
+              <div class="value h-[3px] rounded-full bg-[var(--accent-color)]" :style="{ width: percent + '%' }"></div>
             </div>
           </div>
-          <span class="text-lg z-50">{{
-            locale?.["tg_story_loader"] ?? "Создаем историю вашего успеха..."
-          }}</span>
+          <span class="text-lg z-50">{{ locale?.["tg_story_loader"] ?? "Создаем историю вашего успеха..." }}</span>
         </div>
       </div>
     </Transition>
 
     <!-- <div v-for="item in HTMLSnapshots" ref="htmlEl" class="screenshot-stage flex-1 flex flex-col h-dvh bg-transparent" v-html="item"></div> -->
-    <div
-      v-if="generatingStory"
-      ref="htmlEl"
-      class="screenshot-stage flex-1 flex flex-col h-dvh bg-transparent"
-      v-html="html"
-    ></div>
+    <div v-if="generatingStory" ref="htmlEl" class="screenshot-stage flex-1 flex flex-col h-dvh bg-transparent" v-html="html"></div>
 
     <div id="battle-results" class="flex-1 flex flex-col p-4 h-dvh">
       <BackgroundImage type="purple" />
@@ -39,71 +26,33 @@
       <BackgroundPill class="py-8 mt-4 flex-1 z-10 overflow-hidden">
         <div class="scrollable-cnt flex-1 flex flex-col gap-8 overflow-y-auto">
           <!-- leaderboard -->
-          <div
-            ref="leaderboardRef"
-            class="final-screenshot bg-[var(--grey-dark)] w-full"
-          >
+          <div ref="leaderboardRef" class="final-screenshot bg-[var(--grey-dark)] w-full">
             <div class="pill-header flex items-center justify-between">
-              <span class="bg-pill-title">{{
-                locale?.["battle_results_title"] || "Battle results:"
-              }}</span>
+              <span class="bg-pill-title">{{ locale?.["battle_results_title"] || "Battle results:" }}</span>
             </div>
 
             <div class="flex-1 mt-2">
-              <div
-                v-if="generatingStory"
-                class="leaderboard-capped flex flex-col gap-1 pt-4"
-              >
-                <Pill
-                  v-for="player in leaderboardSortedCapped"
-                  :key="player.id"
-                  class="py-2 flex items-center justify-between gap-4"
-                  color="light"
-                >
+              <div v-if="generatingStory" class="leaderboard-capped flex flex-col gap-1 pt-4">
+                <Pill v-for="player in leaderboardSortedCapped" :key="player.id" class="py-2 flex items-center justify-between gap-4" color="light">
                   <div class="player-meta leading-3 flex gap-4 items-center">
-                    <div
-                      class="rounded-full bg-[var(--grey-dark)] w-[30px] h-[30px] grid place-items-center"
-                    >
-                      <span
-                        class="league exo-black text-lg mb-[1px]"
-                        :style="`color: ${getPlayerColor(player)}`"
-                        >{{ player.position }}</span
-                      >
+                    <div class="rounded-full bg-[var(--grey-dark)] w-[30px] h-[30px] grid place-items-center">
+                      <span class="league exo-black text-lg mb-[1px]" :style="`color: ${getPlayerColor(player)}`">{{ player.position }}</span>
                     </div>
-                    <span class="fira-bold text-lg max-w-1/2 text-ellipsis">{{
-                      player.name
-                    }}</span>
+                    <span class="fira-bold text-lg max-w-1/2 text-ellipsis">{{ player.name }}</span>
                   </div>
-                  <span class="bolts exo-black text-[var(--accent-color)]">{{
-                    player?.score || 0
-                  }}</span>
+                  <span class="bolts exo-black text-[var(--accent-color)]">{{ player?.score || 0 }}</span>
                 </Pill>
               </div>
 
               <div v-else class="leaderboard flex flex-col gap-1 pt-4">
-                <Pill
-                  v-for="player in leaderboardSorted"
-                  :key="player.id"
-                  class="py-2 flex items-center justify-between gap-4"
-                  color="light"
-                >
+                <Pill v-for="player in leaderboardSorted" :key="player.id" class="py-2 flex items-center justify-between gap-4" color="light">
                   <div class="player-meta leading-3 flex gap-4 items-center">
-                    <div
-                      class="rounded-full bg-[var(--grey-dark)] w-[30px] h-[30px] grid place-items-center"
-                    >
-                      <span
-                        class="league exo-black text-lg mb-[1px]"
-                        :style="`color: ${getPlayerColor(player)}`"
-                        >{{ player.position }}</span
-                      >
+                    <div class="rounded-full bg-[var(--grey-dark)] w-[30px] h-[30px] grid place-items-center">
+                      <span class="league exo-black text-lg mb-[1px]" :style="`color: ${getPlayerColor(player)}`">{{ player.position }}</span>
                     </div>
-                    <span class="fira-bold text-lg max-w-1/2 text-ellipsis">{{
-                      player.name
-                    }}</span>
+                    <span class="fira-bold text-lg max-w-1/2 text-ellipsis">{{ player.name }}</span>
                   </div>
-                  <span class="bolts exo-black text-[var(--accent-color)]">{{
-                    player?.score || 0
-                  }}</span>
+                  <span class="bolts exo-black text-[var(--accent-color)]">{{ player?.score || 0 }}</span>
                 </Pill>
               </div>
             </div>
@@ -216,7 +165,12 @@ const getPlayerColor = (player: {}) => {
 const createImagesFromSnapshots = async () => {
   const screenshots = [];
 
+  // console.log(`snapshots:`, HTMLSnapshots.value?.length);
+
   for (const snapshot of HTMLSnapshots.value) {
+    // console.log(`qurrent snapshot:`);
+    // console.log(snapshot);
+
     html.value = snapshot;
     await nextTick();
     const url = await htmlToImage.toJpeg(htmlEl.value, { quality: 0.85 });
@@ -224,6 +178,8 @@ const createImagesFromSnapshots = async () => {
   }
 
   HTMLSnapshots.value = screenshots;
+
+  // console.log(`converted snapshots:`, JSON.stringify(HTMLSnapshots.value, null, 2));
   return true;
 };
 
@@ -254,6 +210,7 @@ onMounted(async () => {
 
     HTMLSnapshots.value.push(url);
 
+    console.log(`sending screenshot data`);
     await sendScreeshots();
   }
 
