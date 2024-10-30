@@ -395,7 +395,9 @@ export const useMainStore = defineStore("main", () => {
         widgetLink = { url: battleStore.data?.["story_link"], name: battleStore.data?.["story_link_text"] };
       }
 
-      console.log(`waiting for 3s`);
+      // debugMessages.value.push(`link recieved: ${res.data.url}`);
+
+      console.log(`waiting for 10s`);
       await waitFor(10000);
 
       console.log(`sharing to story`);
@@ -403,9 +405,8 @@ export const useMainStore = defineStore("main", () => {
       //   text: battleStore.data?.["story_text"] ?? "TapSmart text",
       //   widget_link: widgetLink,
       // });
-      console.log(res.data.url);
 
-      tg.shareToStory(res.data.url, {
+      tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4", {
         text: "TapSmart text",
         widget_link: { url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1", name: "Widget link text" },
       });
