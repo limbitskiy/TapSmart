@@ -5,7 +5,7 @@
       <div class="flex-1 grid grid-rows-[60px_auto_150px]">
         <!-- task header -->
         <div class="header flex items-center justify-between mb-4">
-          <Button v-if="type !== challenge" class="!p-0 bg-[var(--grey-dark)]" activeColor="#858585" @click="() => emit('changeMech')">
+          <Button v-if="type !== 'challenge'" class="!p-0 bg-[var(--grey-dark)]" activeColor="#858585" @click="() => emit('changeMech')">
             <BattleHeader icon="mech_2" :gameLocale="locales?.['mechanics_category']" :title="locales?.[`4answers_title`] || 'Four answers'" />
           </Button>
 
