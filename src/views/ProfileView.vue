@@ -247,6 +247,7 @@ import { useMainStore } from "@/store/main";
 const store = useMainStore();
 
 const { fetchProfilePageData, setLanguages, redirectTo } = store;
+const { debugMessages } = storeToRefs(store);
 const { profile: data } = storeToRefs(store.dataStore);
 const { profile: locale } = storeToRefs(store.localeStore);
 
