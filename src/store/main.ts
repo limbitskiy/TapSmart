@@ -386,19 +386,19 @@ export const useMainStore = defineStore("main", () => {
 
     console.log(`starting usefetch`);
     try {
-      const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } })!;
+      // const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } })!;
       console.log(`got usefetch response. sharing to story`);
 
-      let widgetLink;
+      // let widgetLink;
 
-      if (battleStore.data?.["story_link"]) {
-        widgetLink = { url: battleStore.data?.["story_link"], name: battleStore.data?.["story_link_text"] };
-      }
+      // if (battleStore.data?.["story_link"]) {
+      //   widgetLink = { url: battleStore.data?.["story_link"], name: battleStore.data?.["story_link_text"] };
+      // }
 
       // debugMessages.value.push(`link recieved: ${res.data.url}`);
 
       console.log(`waiting for 10s`);
-      await waitFor(10000);
+      // await waitFor(10000);
 
       console.log(`sharing to story`);
       // tg.shareToStory(res.data.url, {
