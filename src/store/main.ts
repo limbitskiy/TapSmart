@@ -409,7 +409,17 @@ export const useMainStore = defineStore("main", () => {
     console.log(storyParams.widgetParams);
 
     try {
-      tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4", {
+      // tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4", {
+      //   text: "TapSmart text",
+      //   widget_link: { url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1", name: "Widget link text" },
+      // });
+
+      // tg.shareToStory(storyParams.url, {
+      //   text: battleStore.data?.["story_text"] ?? "TapSmart text",
+      //   widget_link: storyParams.widgetParams,
+      // });
+
+      tg.shareToStory(storyParams.url, {
         text: "TapSmart text",
         widget_link: { url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1", name: "Widget link text" },
       });
@@ -417,11 +427,6 @@ export const useMainStore = defineStore("main", () => {
       console.error(error);
       debugMessages.value.push(error);
     }
-
-    // tg.shareToStory(storyParams.url, {
-    //   text: battleStore.data?.["story_text"] ?? "TapSmart text",
-    //   widget_link: storyParams.widgetParams,
-    // });
   };
 
   // debug
