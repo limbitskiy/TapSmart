@@ -395,12 +395,14 @@ export const useMainStore = defineStore("main", () => {
         widgetLink = { url: battleStore.data?.["story_link"], name: battleStore.data?.["story_link_text"] };
       }
 
-      setTimeout(() => {
-        tg.shareToStory(res.data.url, {
-          text: battleStore.data?.["story_text"] ?? "TapSmart text",
-          widget_link: widgetLink,
-        });
-      }, 3000);
+      console.log(`waiting for 3s`);
+      await waitFor(3000);
+
+      console.log(`sharing to story`);
+      tg.shareToStory(res.data.url, {
+        text: battleStore.data?.["story_text"] ?? "TapSmart text",
+        widget_link: widgetLink,
+      });
     } catch (error) {
       console.error(error);
       debugMessages.value.push(error);
