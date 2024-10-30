@@ -224,7 +224,7 @@
 
     <LanguageSettings @change="onSettingsChange" />
 
-    <!-- <Button @click="postTestStory">Post a test story</Button> -->
+    <Button @click="postTestStory" dark>Post a test story</Button>
 
     <Button @click="onFeedback">{{ locale?.["feedback"] }}</Button>
 
@@ -281,5 +281,10 @@ const onFeedback = () => {
   tg.openLink(data.value?.["feedback_url"]);
 };
 
-const postTestStory = () => {};
+const postTestStory = () => {
+  tg.shareToStory("https://stories.tapsmart.io/193438653_26244560.mp4", {
+    text: "TapSmart text",
+    widget_link: { url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1", name: "Widget link text" },
+  });
+};
 </script>
