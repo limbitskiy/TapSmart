@@ -386,7 +386,7 @@ export const useMainStore = defineStore("main", () => {
 
     console.log(`starting usefetch`);
     try {
-      // const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } })!;
+      const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } })!;
       console.log(`got usefetch response. sharing to story`);
 
       // let widgetLink;
@@ -397,23 +397,23 @@ export const useMainStore = defineStore("main", () => {
 
       // debugMessages.value.push(`link recieved: ${res.data.url}`);
 
-      console.log(`waiting for 10s`);
+      // console.log(`waiting for 10s`);
       // await waitFor(10000);
 
-      console.log(`sharing to story`);
       // tg.shareToStory(res.data.url, {
       //   text: battleStore.data?.["story_text"] ?? "TapSmart text",
       //   widget_link: widgetLink,
       // });
-
-      tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4", {
-        text: "TapSmart text",
-        widget_link: { url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1", name: "Widget link text" },
-      });
     } catch (error) {
       console.error(error);
       debugMessages.value.push(error);
     }
+
+    console.log(`sharing to story`);
+    tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4", {
+      text: "TapSmart text",
+      widget_link: { url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1", name: "Widget link text" },
+    });
   };
 
   // debug
