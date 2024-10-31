@@ -243,9 +243,9 @@ onMounted(async () => {
 
       storyParams.widgetParams = null;
 
-      if (battleStore.data?.["story_link"]) {
+      if (data.value?.["story_link"]) {
         storyParams.widgetParams = {};
-        storyParams.widgetParams = { url: battleStore.data?.["story_link"], name: battleStore.data?.["story_link_text"] };
+        storyParams.widgetParams = { url: data.value?.["story_link"], name: data.value?.["story_link_text"] };
       }
 
       // sharing story
