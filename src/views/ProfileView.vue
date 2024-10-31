@@ -398,10 +398,18 @@ const onFeedback = () => {
 const onPostTestStory = async () => {
   debugMessages.value.push(`ping...`);
   // makeSingleRequest({ key: "ping", data: {} });
-  const res = await customFetch();
-  // await waitFor(10000);
+  // const res = await customFetch();
+  debugMessages.value.push(`waiting 10s...`);
+  await waitFor(10000);
   debugMessages.value.push(`opening story editor...`);
-  postTestStory();
+  // postTestStory();
+  tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4", {
+    text: "TapSmart text",
+    widget_link: {
+      url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1",
+      name: "Widget link text",
+    },
+  });
   debugMessages.value.push(`after opening story editor...`);
 };
 
