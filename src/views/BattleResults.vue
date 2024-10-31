@@ -118,7 +118,7 @@ const { HTMLSnapshots } = storeToRefs(store);
 const { data } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
 
-const generatingStory = ref(false);
+const generatingStory = ref(true);
 const leaderboardRef = ref();
 
 const html = ref();
@@ -195,7 +195,84 @@ const dMessages = ref<{}[]>([]);
 onMounted(async () => {
   console.log(`mounted`);
 
-  await postTestStory();
+  if (route.query.tg_story) {
+    generatingStory.value = true;
+
+    // interval = setInterval(() => {
+    //   if (percent.value >= 100) {
+    //     percent.value = 100;
+    //     clearInterval(interval);
+    //     return;
+    //   }
+    //   percent.value += 1;
+    // }, 100);
+
+    console.log(`creating final image`);
+    dMessages.value.push({ msg: `creating final image...` });
+
+    const url = await htmlToImage.toJpeg(leaderboardRef.value, {
+      quality: 0.85,
+    });
+
+    console.log(`converting HTML to screenshots`);
+    dMessages.value.push({ msg: `converting HTML to screenshots...` });
+    await createImagesFromSnapshots();
+
+    HTMLSnapshots.value.push(url);
+
+    // console.log(`sending screenshot data`);
+    // await sendScreeshots();
+
+    // -------
+
+    console.log(`starting to generate story`);
+    dMessages.value.push({ msg: `starting to generate story...` });
+
+    try {
+      console.log(HTMLSnapshots.value);
+
+      await createFinalImage();
+    } catch (error) {
+      console.error(error);
+      // debugMessages.value.push(error);
+    }
+
+    let storyParams = {};
+
+    console.log(`starting usefetch`);
+    dMessages.value.push({ msg: `starting usefetch...` });
+
+    // try {
+    //   const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } })!;
+    //   console.log(`got usefetch response. sharing to story`);
+
+    //   storyParams.url = res.data.url;
+
+    //   // let widgetLink;
+    //   storyParams.widgetParams = null;
+
+    //   // if (battleStore.data?.["story_link"]) {
+    //   //   storyParams.widgetParams = {};
+    //   //   storyParams.widgetParams = { url: battleStore.data?.["story_link"], name: battleStore.data?.["story_link_text"] };
+    //   // }
+    // } catch (error) {
+    //   console.error(error);
+    //   dMessages.value.push({ msg: error, type: "error" });
+    // }
+
+    dMessages.value.push({ msg: `tg version: ${tg.version}`, type: "success" });
+    dMessages.value.push({ msg: `sharing to story...` });
+
+    await postTestStory();
+  }
+
+  console.log(`cleaning snapshots`);
+  dMessages.value.push({ msg: `cleaning snapshots...` });
+  HTMLSnapshots.value = [];
+
+  await waitFor(3000);
+
+  generatingStory.value = false;
 });
 
 onUnmounted(() => {
