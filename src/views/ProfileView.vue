@@ -241,6 +241,7 @@ import { getAsset, showFormattedNumber, waitFor } from "@/utils";
 import { useBackButton } from "@/composables/useBackButton";
 import { version } from "../../package.json";
 import axios from "axios";
+import { shareStory } from "@telegram-apps/sdk";
 
 // store
 import { useMainStore } from "@/store/main";
@@ -334,15 +335,19 @@ const onPostTestStory = async () => {
   //   );
   //   console.log(linkExists);
 
+  //   await waitFor(3000);
   // }
-  await waitFor(1000);
+
+  if (shareStory.isSupported()) {
+    shareStory("https://stories-dev.tapsmart.io/123_456.mp4");
+  } else {
+    console.log(`oops not supported`);
+  }
 
   debugMessages.value.push(`opening story editor...`);
   // postTestStory();
   debugMessages.value.push(Object.keys(Telegram.WebApp));
-  const res = await window.Telegram?.WebApp?.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4");
-  console.log(res);
-
+  window.Telegram?.WebApp?.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4");
   debugMessages.value.push(`after opening story editor...`);
 };
 
