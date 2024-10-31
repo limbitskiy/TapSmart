@@ -237,8 +237,8 @@ onMounted(async () => {
 
       // sending screenshot data
       // const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } });
-      const res = await makeSingleRequest({ key: "tg_story", data: { images: HTMLSnapshots.value } });
-      console.log(res);
+      // const res = await makeSingleRequest({ key: "tg_story", data: { images: HTMLSnapshots.value } });
+      // console.log(res);
 
       console.log(`got usefetch response. sharing to story`);
       dMessages.value.push({ msg: `recieved url: ${res.data.url}` });
