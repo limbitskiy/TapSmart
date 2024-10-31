@@ -211,6 +211,7 @@ onMounted(async () => {
     console.error("Error in story generation sequence:", error);
     dMessages.value.push({ msg: error, type: "error" });
   } finally {
+    await waitFor(5000);
     generatingStory.value = false;
     HTMLSnapshots.value = [];
     dMessages.value.push({ msg: "finished" });

@@ -291,7 +291,7 @@ export const useMainStore = defineStore("main", () => {
         },
       });
 
-      parseResponse(result.data);
+      // parseResponse(result.data);
 
       return result.data;
     } catch (error) {
