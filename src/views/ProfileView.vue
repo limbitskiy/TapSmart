@@ -237,7 +237,7 @@ import { computed, ref, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { tg } from "@/api/telegram";
 import { storeToRefs } from "pinia";
-import { getAsset, showFormattedNumber } from "@/utils";
+import { getAsset, showFormattedNumber, waitFor } from "@/utils";
 import { useBackButton } from "@/composables/useBackButton";
 import { version } from "../../package.json";
 
@@ -282,10 +282,11 @@ const onFeedback = () => {
   tg.openLink(data.value?.["feedback_url"]);
 };
 
-const onPostTestStory = () => {
+const onPostTestStory = async () => {
   debugMessages.value.push(`ping...`);
   makeSingleRequest({ key: "ping", data: {} });
-  debugMessages.value.push(`opening story editor...`);
+  debugMessages.value.push(`waiting 5s...`);
+  await waitFor(10000);
   postTestStory();
   debugMessages.value.push(`after opening story editor...`);
 };
