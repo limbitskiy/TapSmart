@@ -236,7 +236,7 @@ onMounted(async () => {
       dMessages.value.push({ msg: `starting usefetch...` });
 
       // sending screenshot data
-      // const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } })!;
+      const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } })!;
       // console.log(`got usefetch response. sharing to story`);
 
       // storyParams.url = res.data.url;
