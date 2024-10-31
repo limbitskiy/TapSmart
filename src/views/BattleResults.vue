@@ -113,7 +113,7 @@ const route = useRoute();
 
 const store = useMainStore();
 
-const { fetchBattleResultsData, sendScreeshots, takeHTMLSnapshot, useFetch, createFinalImage } = store;
+const { fetchBattleResultsData, sendScreeshots, takeHTMLSnapshot, useFetch, createFinalImage, postTestStory } = store;
 const { HTMLSnapshots } = storeToRefs(store);
 const { data } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
@@ -280,16 +280,18 @@ onMounted(async () => {
 
       console.log(tg);
 
-      const storyRes = await tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4", {
-        text: "TapSmart text",
-        widget_link: { url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1", name: "Widget link text" },
-      });
+      await postTestStory();
 
-      if (storyRes) {
-        dMessages.value.push({ msg: storyRes, type: "error" });
-      }
+      // const storyRes = await tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4", {
+      //   text: "TapSmart text",
+      //   widget_link: { url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1", name: "Widget link text" },
+      // });
 
-      console.log(storyRes);
+      // if (storyRes) {
+      //   dMessages.value.push({ msg: storyRes, type: "error" });
+      // }
+
+      // console.log(storyRes);
     } catch (error) {
       console.error(error);
       dMessages.value.push({ msg: error, type: "error" });
