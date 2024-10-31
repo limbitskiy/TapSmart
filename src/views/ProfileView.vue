@@ -399,7 +399,7 @@ const onPostTestStory = async () => {
   // makeSingleRequest({ key: "ping", data: {} });
   const res = await axios.post(
     "https://api-dev.tapsmart.io/main",
-    {},
+    { key: "ping" },
     {
       timeout: 30000,
     }
