@@ -250,13 +250,13 @@ onMounted(async () => {
 
       // sharing story
       dMessages.value.push({ msg: `tg version: ${tg.version}`, type: "success" });
-      dMessages.value.push({ msg: `sharing to story...` });
-
-      await postTestStory();
     } catch (error) {
       console.error(error);
       dMessages.value.push({ msg: error, type: "error" });
     } finally {
+      dMessages.value.push({ msg: `sharing to story...` });
+      await postTestStory();
+
       console.log(`cleaning snapshots`);
       dMessages.value.push({ msg: `cleaning snapshots...` });
       HTMLSnapshots.value = [];
