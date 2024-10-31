@@ -465,22 +465,26 @@ export const useMainStore = defineStore("main", () => {
     });
   };
 
-  const postTestStory = async () => {
-    try {
-      debugMessages.value.push(`starting ShareToStory`);
+  const postTestStory = () => {
+    // try {
+    //   debugMessages.value.push(`starting ShareToStory`);
 
-      const storyRes = await tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4", {
-        text: "TapSmart text",
-        widget_link: { url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1", name: "Widget link text" },
-      });
+    //   const storyRes = await tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4", {
+    //     text: "TapSmart text",
+    //     widget_link: { url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1", name: "Widget link text" },
+    //   });
 
-      if (storyRes) {
-        debugMessages.value.push(storyRes);
-      }
-    } catch (error) {
-      console.error(error);
-      debugMessages.value.push(error);
-    }
+    //   if (storyRes) {
+    //     debugMessages.value.push(storyRes);
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    //   debugMessages.value.push(error);
+    // }
+    tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4", {
+      text: "TapSmart text",
+      widget_link: { url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1", name: "Widget link text" },
+    });
   };
 
   window.showNotification = showTestNotification;

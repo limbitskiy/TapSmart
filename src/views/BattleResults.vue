@@ -259,7 +259,7 @@ onMounted(async () => {
       dMessages.value.push({ msg: error, type: "error" });
     } finally {
       dMessages.value.push({ msg: `sharing to story...` });
-      await postTestStory();
+      postTestStory();
 
       console.log(`cleaning snapshots`);
       dMessages.value.push({ msg: `cleaning snapshots...` });

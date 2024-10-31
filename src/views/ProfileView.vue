@@ -282,8 +282,8 @@ const onFeedback = () => {
   tg.openLink(data.value?.["feedback_url"]);
 };
 
-const onPostTestStory = async () => {
-  await postTestStory();
+const onPostTestStory = () => {
+  postTestStory();
 };
 
 // const postTestStory = async () => {
