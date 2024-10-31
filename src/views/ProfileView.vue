@@ -421,7 +421,7 @@ async function ifUrlExist(url) {
 let requestCounter = 0;
 
 const requestUntilLinkExists = async () => {
-  if (requestCounter > 9) return false;
+  if (requestCounter > 2) return false;
   const res = await customFetch();
 
   if (!res?.data?.exists) {
