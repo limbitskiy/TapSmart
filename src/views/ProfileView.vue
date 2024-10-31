@@ -287,8 +287,8 @@ const onPostTestStory = async () => {
   debugMessages.value.push(`ping...`);
   // makeSingleRequest({ key: "ping", data: {} });
   axios.post("https://api-dev.tapsmart.io/main", { timeout: 30000 });
-  debugMessages.value.push(`waiting 8s...`);
-  await waitFor(8000);
+  debugMessages.value.push(`waiting 10s...`);
+  await waitFor(10000);
   postTestStory();
   debugMessages.value.push(`after opening story editor...`);
 };
