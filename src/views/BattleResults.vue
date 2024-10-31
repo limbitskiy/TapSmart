@@ -227,6 +227,7 @@ onMounted(async () => {
 
       // console.log(HTMLSnapshots.value);
 
+      // creating final image
       await createFinalImage();
 
       let storyParams = {};
@@ -234,8 +235,20 @@ onMounted(async () => {
       console.log(`starting usefetch`);
       dMessages.value.push({ msg: `starting usefetch...` });
 
-      // useFetch here
+      // sending screenshot data
+      const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } })!;
+      console.log(`got usefetch response. sharing to story`);
 
+      storyParams.url = res.data.url;
+
+      storyParams.widgetParams = null;
+
+      if (battleStore.data?.["story_link"]) {
+        storyParams.widgetParams = {};
+        storyParams.widgetParams = { url: battleStore.data?.["story_link"], name: battleStore.data?.["story_link_text"] };
+      }
+
+      // sharing story
       dMessages.value.push({ msg: `tg version: ${tg.version}`, type: "success" });
       dMessages.value.push({ msg: `sharing to story...` });
 
@@ -255,26 +268,6 @@ onMounted(async () => {
 
     // console.log(`sending screenshot data`);
     // await sendScreeshots();
-
-    // -------
-
-    // try {
-    //   const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } })!;
-    //   console.log(`got usefetch response. sharing to story`);
-
-    //   storyParams.url = res.data.url;
-
-    //   // let widgetLink;
-    //   storyParams.widgetParams = null;
-
-    //   // if (battleStore.data?.["story_link"]) {
-    //   //   storyParams.widgetParams = {};
-    //   //   storyParams.widgetParams = { url: battleStore.data?.["story_link"], name: battleStore.data?.["story_link_text"] };
-    //   // }
-    // } catch (error) {
-    //   console.error(error);
-    //   dMessages.value.push({ msg: error, type: "error" });
-    // }
   }
 });
 
