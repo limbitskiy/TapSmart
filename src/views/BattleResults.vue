@@ -1,17 +1,22 @@
 <template>
   <div class="results-cnt relative">
     <Transition name="fade">
-      <div v-if="generatingStory" class="story-generator-loader absolute inset-0 flex-1 grid h-dvh z-[99] bg-[#222] place-items-center">
+      <div v-if="true" class="story-generator-loader absolute inset-0 flex-1 grid h-dvh z-[99] bg-[#222] place-items-center">
         <div class="spinner max-w-[50vw] text-center flex flex-col gap-4">
-          <div class="progressbar-wrap flex flex-col">
+          <!-- <div class="progressbar-wrap flex flex-col">
             <div class="percent-text text-[12px] text-gray-300">
               <span>{{ percent }}%</span>
             </div>
             <div class="progressbar h-[3px] w-full bg-gray-400 rounded-full">
               <div class="value h-[3px] rounded-full bg-[var(--accent-color)]" :style="{ width: percent + '%' }"></div>
             </div>
+          </div> -->
+          <div class="debug-messages flex flex-col gap-1">
+            <span class="text-lg z-50">{{ locale?.["tg_story_loader"] ?? "Создаем историю вашего успеха..." }}</span>
+            <div class="debug-messages bg-gray-600 flex flex-col gap-1 border border-gray-400 rounded-xl">
+              <span v-for="msg in dMessages" :key="msg" class="z-50">{{ msg }}</span>
+            </div>
           </div>
-          <span class="text-lg z-50">{{ locale?.["tg_story_loader"] ?? "Создаем историю вашего успеха..." }}</span>
         </div>
       </div>
     </Transition>
@@ -183,36 +188,43 @@ const createImagesFromSnapshots = async () => {
   return true;
 };
 
+const dMessages = ref([]);
+
 onMounted(async () => {
   console.log(`mounted`);
 
   if (route.query.tg_story) {
     generatingStory.value = true;
 
-    interval = setInterval(() => {
-      if (percent.value >= 100) {
-        percent.value = 100;
-        clearInterval(interval);
-        return;
-      }
-      percent.value += 1;
-    }, 100);
+    // interval = setInterval(() => {
+    //   if (percent.value >= 100) {
+    //     percent.value = 100;
+    //     clearInterval(interval);
+    //     return;
+    //   }
+    //   percent.value += 1;
+    // }, 100);
 
     console.log(`creating final image`);
+    dMessages.value.push(`creating final image...`);
+
     const url = await htmlToImage.toJpeg(leaderboardRef.value, {
       quality: 0.85,
     });
 
-    console.log(`creating snapshots`);
+    console.log(`converting HTML to screenshots`);
+    dMessages.value.push(`converting HTML to screenshots...`);
     await createImagesFromSnapshots();
 
     HTMLSnapshots.value.push(url);
 
     console.log(`sending screenshot data`);
+    dMessages.value.push(`sending screenshot data to server...`);
     await sendScreeshots();
   }
 
   console.log(`cleaning snapshots`);
+  dMessages.value.push(`cleaning snapshots...`);
   HTMLSnapshots.value = [];
 
   generatingStory.value = false;

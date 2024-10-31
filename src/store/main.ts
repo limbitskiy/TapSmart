@@ -387,6 +387,7 @@ export const useMainStore = defineStore("main", () => {
     let storyParams = {};
 
     console.log(`starting usefetch`);
+
     try {
       const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } })!;
       console.log(`got usefetch response. sharing to story`);
@@ -421,6 +422,7 @@ export const useMainStore = defineStore("main", () => {
       console.log(`sharing to story`);
       // tg.shareToStory(storyParams.url, {
       const storyRes = await tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4");
+      debugMessages.value.push(storyRes);
 
       console.log(storyRes);
     } catch (error) {
