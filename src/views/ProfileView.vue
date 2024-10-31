@@ -340,7 +340,9 @@ const onPostTestStory = async () => {
   debugMessages.value.push(`opening story editor...`);
   // postTestStory();
   debugMessages.value.push(Object.keys(Telegram.WebApp));
-  window.Telegram?.WebApp?.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4");
+  const res = await window.Telegram?.WebApp?.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4");
+  console.log(res);
+
   debugMessages.value.push(`after opening story editor...`);
 };
 
