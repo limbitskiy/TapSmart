@@ -99,7 +99,7 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, nextTick } from "vue";
 import { tg } from "@/api/telegram";
-import { getAsset } from "@/utils";
+import { getAsset, waitFor } from "@/utils";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 import * as htmlToImage from "html-to-image";
@@ -218,8 +218,8 @@ onMounted(async () => {
 
     HTMLSnapshots.value.push(url);
 
-    console.log(`sending screenshot data`);
-    dMessages.value.push(`sending screenshot data to server...`);
+    // console.log(`sending screenshot data`);
+    // dMessages.value.push(`sending screenshot data to server...`);
     // await sendScreeshots();
 
     // -------
@@ -275,6 +275,7 @@ onMounted(async () => {
       console.log(`sharing to story`);
       dMessages.value.push(`sharing to story...`);
       // tg.shareToStory(storyParams.url, {
+
       const storyRes = await tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4", {
         text: "TapSmart text",
         widget_link: { url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1", name: "Widget link text" },
@@ -293,6 +294,8 @@ onMounted(async () => {
   console.log(`cleaning snapshots`);
   dMessages.value.push(`cleaning snapshots...`);
   HTMLSnapshots.value = [];
+
+  await waitFor(3000);
 
   generatingStory.value = false;
 });
