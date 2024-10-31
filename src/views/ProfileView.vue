@@ -335,7 +335,7 @@ const onPostTestStory = async () => {
   //   console.log(linkExists);
 
   // }
-  await waitFor(10000);
+  await waitFor(1000);
 
   debugMessages.value.push(`opening story editor...`);
   // postTestStory();
