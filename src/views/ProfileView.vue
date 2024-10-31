@@ -399,8 +399,8 @@ const onPostTestStory = async () => {
   debugMessages.value.push(`ping...`);
   // makeSingleRequest({ key: "ping", data: {} });
   const res = await customFetch();
-  debugMessages.value.push(`waiting 10s...`);
   // await waitFor(10000);
+  debugMessages.value.push(`opening story editor...`);
   postTestStory();
   debugMessages.value.push(`after opening story editor...`);
 };
