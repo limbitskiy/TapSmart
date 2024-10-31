@@ -223,12 +223,12 @@ onMounted(async () => {
     makeSingleRequest({ key: "tg_story", data: { images: HTMLSnapshots.value } });
     await waitFor(3000);
     await waitFor(3000);
-    await waitFor(3000);
     dMessages.value.push({ msg: `opening story editor...` });
     if (shareStory.isSupported()) {
       shareStory("https://stories-dev.tapsmart.io/123_456.mp4");
     } else {
       console.log(`oops not supported`);
+      dMessages.value.push({ msg: `oops not supported`, type: "error" });
     }
     // postTestStory();
     dMessages.value.push({ msg: `after opening story editor...` });
