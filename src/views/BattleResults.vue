@@ -113,7 +113,7 @@ const route = useRoute();
 
 const store = useMainStore();
 
-const { fetchBattleResultsData, sendScreeshots, takeHTMLSnapshot, useFetch, createFinalImage, postTestStory, makeSingleRequest } = store;
+const { fetchBattleResultsData, sendScreeshots, takeHTMLSnapshot, useFetch, createFinalImage, postTestStory, makeSingleRequest, customFetch } = store;
 const { HTMLSnapshots } = storeToRefs(store);
 const { data } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
@@ -192,6 +192,21 @@ const createImagesFromSnapshots = async () => {
 
 const dMessages = ref<{}[]>([]);
 
+let requestCounter = 0;
+
+const requestUntilLinkExists = async () => {
+  if (requestCounter > 2) return false;
+  const res = await customFetch();
+
+  if (!res?.data?.exists) {
+    requestCounter += 1;
+    await waitFor(3000);
+    await requestUntilLinkExists();
+  } else {
+    return;
+  }
+};
+
 onMounted(async () => {
   generatingStory.value = true;
 
@@ -204,7 +219,8 @@ onMounted(async () => {
     // await fetch("https://jsonplaceholder.typicode.com/todos/1");
 
     dMessages.value.push({ msg: `ping...` });
-    await makeSingleRequest({ key: "ping", data: { images: HTMLSnapshots.value } });
+    // await makeSingleRequest({ key: "ping", data: { images: HTMLSnapshots.value } });
+    await requestUntilLinkExists();
     dMessages.value.push({ msg: `opening story editor...` });
     postTestStory();
     dMessages.value.push({ msg: `after opening story editor...` });
