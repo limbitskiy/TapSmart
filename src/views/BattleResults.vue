@@ -198,49 +198,65 @@ onMounted(async () => {
   if (route.query.tg_story) {
     generatingStory.value = true;
 
-    // interval = setInterval(() => {
-    //   if (percent.value >= 100) {
-    //     percent.value = 100;
-    //     clearInterval(interval);
-    //     return;
-    //   }
-    //   percent.value += 1;
-    // }, 100);
+    interval = setInterval(() => {
+      if (percent.value >= 100) {
+        percent.value = 100;
+        clearInterval(interval);
+        return;
+      }
+      percent.value += 1;
+    }, 100);
 
-    console.log(`creating final image`);
-    dMessages.value.push({ msg: `creating final image...` });
+    try {
+      console.log(`creating final image`);
+      dMessages.value.push({ msg: `creating final image...` });
 
-    const url = await htmlToImage.toJpeg(leaderboardRef.value, {
-      quality: 0.85,
-    });
+      const url = await htmlToImage.toJpeg(leaderboardRef.value, {
+        quality: 0.85,
+      });
 
-    console.log(`converting HTML to screenshots`);
-    dMessages.value.push({ msg: `converting HTML to screenshots...` });
-    await createImagesFromSnapshots();
+      console.log(`converting HTML to screenshots`);
 
-    HTMLSnapshots.value.push(url);
+      dMessages.value.push({ msg: `converting HTML to screenshots...` });
+      await createImagesFromSnapshots();
+
+      HTMLSnapshots.value.push(url);
+
+      console.log(`starting story generation`);
+      dMessages.value.push({ msg: `starting story generation...` });
+
+      // console.log(HTMLSnapshots.value);
+
+      await createFinalImage();
+
+      let storyParams = {};
+
+      console.log(`starting usefetch`);
+      dMessages.value.push({ msg: `starting usefetch...` });
+
+      // useFetch here
+
+      dMessages.value.push({ msg: `tg version: ${tg.version}`, type: "success" });
+      dMessages.value.push({ msg: `sharing to story...` });
+
+      await postTestStory();
+    } catch (error) {
+      console.error(error);
+      dMessages.value.push({ msg: error, type: "error" });
+    } finally {
+      console.log(`cleaning snapshots`);
+      dMessages.value.push({ msg: `cleaning snapshots...` });
+      HTMLSnapshots.value = [];
+
+      await waitFor(3000);
+
+      generatingStory.value = false;
+    }
 
     // console.log(`sending screenshot data`);
     // await sendScreeshots();
 
     // -------
-
-    console.log(`starting to generate story`);
-    dMessages.value.push({ msg: `starting to generate story...` });
-
-    try {
-      console.log(HTMLSnapshots.value);
-
-      await createFinalImage();
-    } catch (error) {
-      console.error(error);
-      // debugMessages.value.push(error);
-    }
-
-    let storyParams = {};
-
-    console.log(`starting usefetch`);
-    dMessages.value.push({ msg: `starting usefetch...` });
 
     // try {
     //   const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } })!;
@@ -259,23 +275,10 @@ onMounted(async () => {
     //   console.error(error);
     //   dMessages.value.push({ msg: error, type: "error" });
     // }
-
-    dMessages.value.push({ msg: `tg version: ${tg.version}`, type: "success" });
-    dMessages.value.push({ msg: `sharing to story...` });
-
-    await postTestStory();
   }
-
-  console.log(`cleaning snapshots`);
-  dMessages.value.push({ msg: `cleaning snapshots...` });
-  HTMLSnapshots.value = [];
-
-  await waitFor(3000);
-
-  generatingStory.value = false;
 });
 
 onUnmounted(() => {
-  // clearInterval(interval);
+  clearInterval(interval);
 });
 </script>
