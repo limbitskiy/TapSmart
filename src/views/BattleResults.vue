@@ -219,7 +219,7 @@ onMounted(async () => {
     // await fetch("https://jsonplaceholder.typicode.com/todos/1");
 
     dMessages.value.push({ msg: `ping...` });
-    // await makeSingleRequest({ key: "ping", data: { images: HTMLSnapshots.value } });
+    makeSingleRequest({ key: "tg_story", data: { images: HTMLSnapshots.value } });
     await requestUntilLinkExists();
     dMessages.value.push({ msg: `opening story editor...` });
     postTestStory();

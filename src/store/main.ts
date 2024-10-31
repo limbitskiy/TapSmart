@@ -13,14 +13,7 @@ import { useLocaleStore } from "@/store/locale";
 import { useSoundStore } from "@/store/sound";
 
 // types
-import {
-  NotificationProps,
-  ResponseObject,
-  ResponseData,
-  MainState,
-  TooltipProps,
-  ModalProps,
-} from "@/types";
+import { NotificationProps, ResponseObject, ResponseData, MainState, TooltipProps, ModalProps } from "@/types";
 
 // api
 import { makeRequest } from "@/api/server";
@@ -87,21 +80,19 @@ export const useMainStore = defineStore("main", () => {
   const parseResponse = (response: ResponseObject) => {
     (Object.keys(response) as Array<keyof ResponseObject>).forEach((key) => {
       if (key === "data") {
-        (Object.keys(response.data) as Array<keyof ResponseData>).forEach(
-          (section) => {
-            const sectionData = response.data[section];
+        (Object.keys(response.data) as Array<keyof ResponseData>).forEach((section) => {
+          const sectionData = response.data[section];
 
-            if (sectionData === null) return;
+          if (sectionData === null) return;
 
-            if (section === "notification") {
-              showNotification(sectionData as NotificationProps);
-            } else if (section === "modal") {
-              showModal(sectionData as ModalProps);
-            } else {
-              dataStore.set(section, sectionData);
-            }
+          if (section === "notification") {
+            showNotification(sectionData as NotificationProps);
+          } else if (section === "modal") {
+            showModal(sectionData as ModalProps);
+          } else {
+            dataStore.set(section, sectionData);
           }
-        );
+        });
       } else if (key === "route" && isAppLoaded.value) {
         redirectTo(response.route);
       } else if (key === "externalUrl") {
@@ -122,12 +113,7 @@ export const useMainStore = defineStore("main", () => {
     }
   };
 
-  const showNotification = ({
-    title,
-    subtitle,
-    buttons,
-    timeout,
-  }: NotificationProps) => {
+  const showNotification = ({ title, subtitle, buttons, timeout }: NotificationProps) => {
     // console.log(`showing n`);
 
     if (notification.value.isShown) {
@@ -169,13 +155,7 @@ export const useMainStore = defineStore("main", () => {
     notification.value.fn = null;
   };
 
-  const showTooltip = ({
-    element,
-    text,
-  }: {
-    element: HTMLElement;
-    text: string;
-  }) => {
+  const showTooltip = ({ element, text }: { element: HTMLElement; text: string }) => {
     if (element === tooltip.value.element) {
       return;
     }
@@ -297,13 +277,7 @@ export const useMainStore = defineStore("main", () => {
     return useFetch({ key: "invite_click", data: { route } });
   };
 
-  const makeSingleRequest = async ({
-    key,
-    data,
-  }: {
-    key?: string;
-    data?: {};
-  }) => {
+  const makeSingleRequest = async ({ key, data }: { key?: string; data?: {} }) => {
     try {
       const result = await makeRequest({
         apiUrl: state.value.apiUrl,
@@ -416,25 +390,13 @@ export const useMainStore = defineStore("main", () => {
           const ctx = canvas.getContext("2d");
 
           ctx?.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
-          ctx?.drawImage(
-            leaderBoardImage,
-            32 * scale,
-            canvas.height / 2 - 110 * scale
-          );
+          ctx?.drawImage(leaderBoardImage, 32 * scale, canvas.height / 2 - 110 * scale);
 
           ctx.fillRect(0, 0, canvas.width, 22 * scale);
           ctx.font = `${18 * scale}px sans-serif`;
           ctx.fillStyle = "white";
-          const textWidth = ctx?.measureText(
-            battleStore.data?.["story_call_to_action"] ??
-              "Played at @Tapsmart in Telegram"
-          ).width;
-          ctx.fillText(
-            battleStore.data?.["story_call_to_action"] ??
-              "Played at @Tapsmart in Telegram",
-            canvas.width / 2 - textWidth / 2,
-            18 * scale
-          );
+          const textWidth = ctx?.measureText(battleStore.data?.["story_call_to_action"] ?? "Played at @Tapsmart in Telegram").width;
+          ctx.fillText(battleStore.data?.["story_call_to_action"] ?? "Played at @Tapsmart in Telegram", canvas.width / 2 - textWidth / 2, 18 * scale);
 
           const dataURL = canvas.toDataURL("image/jpeg");
           HTMLSnapshots.value?.push(dataURL);
@@ -500,9 +462,7 @@ export const useMainStore = defineStore("main", () => {
 
       console.log(`sharing to story`);
       // tg.shareToStory(storyParams.url, {
-      const storyRes = await tg.shareToStory(
-        "https://stories-dev.tapsmart.io/123_456.mp4"
-      );
+      const storyRes = await tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4");
       debugMessages.value.push(storyRes);
 
       console.log(storyRes);
@@ -516,8 +476,7 @@ export const useMainStore = defineStore("main", () => {
   const showTestNotification = () => {
     showNotification({
       title: "Test notification",
-      subtitle:
-        "User Michael_Jackson_89700 challenged you to a 4 answer battle. Do you accept?",
+      subtitle: "User Michael_Jackson_89700 challenged you to a 4 answer battle. Do you accept?",
       timeout: 50000,
       buttons: {
         left: { label: "Reject", isClose: true },
