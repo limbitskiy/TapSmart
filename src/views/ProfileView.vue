@@ -395,14 +395,60 @@ const onFeedback = () => {
   tg.openLink(data.value?.["feedback_url"]);
 };
 
+async function ifUrlExist(url) {
+  return new Promise((resolve, reject) => {
+    fetch(url, {
+      method: "HEAD",
+    })
+      .then((response) => {
+        console.log(response);
+
+        resolve(response.status.toString()[0] === "2");
+      })
+      .catch((error) => {
+        reject(false);
+      });
+  });
+}
+
+// function existsFile(url) {
+//   var http = new XMLHttpRequest();
+//   http.open("HEAD", url, false);
+//   http.send();
+//   return http.status != 404;
+// }
+
+let requestCounter = 0;
+
+const requestUntilLinkExists = async () => {
+  if (requestCounter > 9) return false;
+  const res = await customFetch();
+
+  if (!res?.data?.exists) {
+    requestCounter += 1;
+    await waitFor(3000);
+    await requestUntilLinkExists();
+  } else {
+    return;
+  }
+};
+
 const onPostTestStory = async () => {
   debugMessages.value.push(`ping...`);
   // makeSingleRequest({ key: "ping", data: {} });
-  // const res = await customFetch();
-  debugMessages.value.push(`waiting 10s...`);
-  await waitFor(3000);
-  await waitFor(3000);
-  await waitFor(3000);
+
+  await requestUntilLinkExists();
+  // let linkExists = false;
+  // while (!linkExists) {
+  //   debugMessages.value.push(`checking if link exists...`);
+  //   linkExists = await ifUrlExist(
+  //     "https://stories-dev.tapsmart.io/12e5579457934853_457.mp4"
+  //   );
+  //   console.log(linkExists);
+
+  //   await waitFor(3000);
+  // }
+
   debugMessages.value.push(`opening story editor...`);
   // postTestStory();
   debugMessages.value.push(Object.keys(Telegram.WebApp));

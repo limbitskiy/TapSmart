@@ -362,7 +362,7 @@ export const useMainStore = defineStore("main", () => {
   const customFetch = async () => {
     return await axios.post(
       "https://api-dev.tapsmart.io/main",
-      { key: "ping", service: state.value.service },
+      { key: "file_check", service: state.value.service },
       {
         timeout: 30000,
       }
