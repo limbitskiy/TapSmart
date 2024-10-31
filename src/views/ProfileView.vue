@@ -358,6 +358,7 @@ const {
   redirectTo,
   postTestStory,
   makeSingleRequest,
+  customFetch,
 } = store;
 const { debugMessages } = storeToRefs(store);
 const { profile: data } = storeToRefs(store.dataStore);
@@ -397,13 +398,7 @@ const onFeedback = () => {
 const onPostTestStory = async () => {
   debugMessages.value.push(`ping...`);
   // makeSingleRequest({ key: "ping", data: {} });
-  const res = await axios.post(
-    "https://api-dev.tapsmart.io/main",
-    { key: "ping" },
-    {
-      timeout: 30000,
-    }
-  );
+  const res = await customFetch();
   debugMessages.value.push(`waiting 10s...`);
   // await waitFor(10000);
   postTestStory();
