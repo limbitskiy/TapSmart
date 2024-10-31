@@ -282,9 +282,9 @@ const onFeedback = () => {
   tg.openLink(data.value?.["feedback_url"]);
 };
 
-const onPostTestStory = async () => {
+const onPostTestStory = () => {
   debugMessages.value.push(`ping...`);
-  await makeSingleRequest({ key: "ping", data: {} });
+  makeSingleRequest({ key: "ping", data: {} });
   debugMessages.value.push(`opening story editor...`);
   postTestStory();
   debugMessages.value.push(`after opening story editor...`);
