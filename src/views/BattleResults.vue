@@ -201,9 +201,9 @@ onMounted(async () => {
     await createImagesFromSnapshots();
     HTMLSnapshots.value.push(url);
     await createFinalImage();
-    await fetch("https://jsonplaceholder.typicode.com/todos/1");
+    // await fetch("https://jsonplaceholder.typicode.com/todos/1");
 
-    // await makeSingleRequest({ key: "tg_story", data: { images: HTMLSnapshots.value } });
+    await makeSingleRequest({ key: "ping" });
     postTestStory();
   } catch (error) {
     console.error("Error in story generation sequence:", error);
