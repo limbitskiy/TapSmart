@@ -113,7 +113,7 @@ const route = useRoute();
 
 const store = useMainStore();
 
-const { fetchBattleResultsData, sendScreeshots, takeHTMLSnapshot, useFetch, createFinalImage, postTestStory } = store;
+const { fetchBattleResultsData, sendScreeshots, takeHTMLSnapshot, useFetch, createFinalImage, postTestStory, makeSingleRequest } = store;
 const { HTMLSnapshots } = storeToRefs(store);
 const { data } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
@@ -236,8 +236,12 @@ onMounted(async () => {
       dMessages.value.push({ msg: `starting usefetch...` });
 
       // sending screenshot data
-      const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } })!;
-      // console.log(`got usefetch response. sharing to story`);
+      // const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } });
+      const res = await makeSingleRequest({ key: "tg_story", data: { images: HTMLSnapshots.value } });
+      console.log(res);
+
+      console.log(`got usefetch response. sharing to story`);
+      dMessages.value.push({ msg: `recieved url: ${res.data.url}` });
 
       // storyParams.url = res.data.url;
 
@@ -261,7 +265,7 @@ onMounted(async () => {
       dMessages.value.push({ msg: `cleaning snapshots...` });
       HTMLSnapshots.value = [];
 
-      await waitFor(3000);
+      await waitFor(10000);
 
       generatingStory.value = false;
     }

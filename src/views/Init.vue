@@ -215,6 +215,7 @@
       <!-- <span v-else-if="loading" class="text-xl font-bold text-[var(--accent-color)]">Loading...</span> -->
       <!-- <span v-else class="text-xl font-bold animate-pulse">Please tap screen</span> -->
     </div>
+    <div class="build-no absolute bottom-0 right-4 text-[12px] text-gray-300 leading-4">build: {{ version }}</div>
   </div>
 </template>
 
@@ -223,6 +224,7 @@ import { ref } from "vue";
 import { waitFor } from "@/utils";
 import { tg, setThemeColor } from "@/api/telegram";
 import constants from "@/constants";
+import { version } from "@/../package.json";
 
 // composables
 import preloadAssets from "@/utils/preloadAssets";

@@ -276,6 +276,30 @@ export const useMainStore = defineStore("main", () => {
     return useFetch({ key: "invite_click", data: { route } });
   };
 
+  const makeSingleRequest = async ({ key, data }: { key?: string; data?: {} }) => {
+    try {
+      const result = await makeRequest({
+        apiUrl: state.value.apiUrl,
+        payload: {
+          key,
+          data: {
+            ...data,
+            answers: battleStore.answers,
+            lastTaskId: battleStore.lastTaskId,
+          },
+          service: state.value.service,
+        },
+      });
+
+      parseResponse(result.data);
+
+      return result.data;
+    } catch (error) {
+      debugMessages.value.push("fetch error:", error);
+      return error?.response?.data?.error?.message || error?.message || error;
+    }
+  };
+
   const useFetch = ({ key, data }: { key?: string; data?: {} }) => {
     if (requestQueue.value.length > 3) return;
 
@@ -510,5 +534,6 @@ export const useMainStore = defineStore("main", () => {
     sendScreeshots,
     createFinalImage,
     postTestStory,
+    makeSingleRequest,
   };
 });
