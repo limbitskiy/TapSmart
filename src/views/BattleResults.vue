@@ -280,7 +280,7 @@ onMounted(async () => {
 
       console.log(tg);
 
-      postTestStory();
+      await postTestStory();
 
       // const storyRes = await tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4", {
       //   text: "TapSmart text",
