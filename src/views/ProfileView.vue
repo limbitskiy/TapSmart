@@ -400,9 +400,12 @@ const onPostTestStory = async () => {
   // makeSingleRequest({ key: "ping", data: {} });
   // const res = await customFetch();
   debugMessages.value.push(`waiting 10s...`);
-  await waitFor(10000);
+  await waitFor(3000);
+  await waitFor(3000);
+  await waitFor(3000);
   debugMessages.value.push(`opening story editor...`);
   // postTestStory();
+  debugMessages.value.push(Object.keys(Telegram.WebApp));
   window.Telegram?.WebApp?.shareToStory(
     "https://stories-dev.tapsmart.io/123_456.mp4"
   );
