@@ -240,6 +240,7 @@ import { storeToRefs } from "pinia";
 import { getAsset, showFormattedNumber, waitFor } from "@/utils";
 import { useBackButton } from "@/composables/useBackButton";
 import { version } from "../../package.json";
+import axios from "axios";
 
 // store
 import { useMainStore } from "@/store/main";
@@ -282,14 +283,14 @@ const onFeedback = () => {
   tg.openLink(data.value?.["feedback_url"]);
 };
 
-const onPostTestStory = () => {
+const onPostTestStory = async () => {
   debugMessages.value.push(`ping...`);
-  makeSingleRequest({ key: "ping", data: {} });
-  debugMessages.value.push(`waiting 5s...`);
-  waitFor(10000).then(() => {
-    postTestStory();
-    debugMessages.value.push(`after opening story editor...`);
-  });
+  // makeSingleRequest({ key: "ping", data: {} });
+  axios.post("https://api-dev.tapsmart.io/main", { timeout: 30000 });
+  debugMessages.value.push(`waiting 8s...`);
+  await waitFor(8000);
+  postTestStory();
+  debugMessages.value.push(`after opening story editor...`);
 };
 
 // const postTestStory = async () => {
