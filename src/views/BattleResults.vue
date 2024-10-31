@@ -203,10 +203,8 @@ onMounted(async () => {
     await createFinalImage();
     // await fetch("https://jsonplaceholder.typicode.com/todos/1");
 
-    dMessages.value.push({ msg: `request to tg_story...` });
-    await makeSingleRequest({ key: "tg_story", data: { images: HTMLSnapshots.value } });
     dMessages.value.push({ msg: `ping...` });
-    await makeSingleRequest({ key: "ping" });
+    await makeSingleRequest({ key: "ping", data: { images: HTMLSnapshots.value } });
     dMessages.value.push({ msg: `opening story editor...` });
     postTestStory();
   } catch (error) {
