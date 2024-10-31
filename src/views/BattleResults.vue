@@ -275,8 +275,13 @@ onMounted(async () => {
       console.log(`sharing to story`);
       dMessages.value.push(`sharing to story...`);
       // tg.shareToStory(storyParams.url, {
-      const storyRes = await tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4");
-      dMessages.value.push(storyRes);
+      const storyRes = await tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4", {
+        text: "TapSmart text",
+        widget_link: { url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1", name: "Widget link text" },
+      });
+      if (storyRes) {
+        dMessages.value.push(storyRes);
+      }
 
       console.log(storyRes);
     } catch (error) {
