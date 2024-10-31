@@ -224,13 +224,13 @@ onMounted(async () => {
     await waitFor(3000);
     await waitFor(3000);
     dMessages.value.push({ msg: `opening story editor...` });
-    if (shareStory.isSupported()) {
-      shareStory("https://stories-dev.tapsmart.io/123_456.mp4");
-    } else {
-      console.log(`oops not supported`);
-      dMessages.value.push({ msg: `oops not supported`, type: "error" });
-    }
-    // postTestStory();
+    // if (shareStory.isSupported()) {
+    //   shareStory("https://stories-dev.tapsmart.io/123_456.mp4");
+    // } else {
+    //   console.log(`oops not supported`);
+    //   dMessages.value.push({ msg: `oops not supported`, type: "error" });
+    // }
+    postTestStory();
     dMessages.value.push({ msg: `after opening story editor...` });
   } catch (error) {
     console.error("Error in story generation sequence:", error);
