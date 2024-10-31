@@ -111,7 +111,7 @@ const route = useRoute();
 
 const store = useMainStore();
 
-const { fetchBattleResultsData, sendScreeshots, takeHTMLSnapshot } = store;
+const { fetchBattleResultsData, sendScreeshots, takeHTMLSnapshot, useFetch, createFinalImage } = store;
 const { HTMLSnapshots } = storeToRefs(store);
 const { data } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
@@ -188,7 +188,7 @@ const createImagesFromSnapshots = async () => {
   return true;
 };
 
-const dMessages = ref([]);
+const dMessages = ref<string[]>([]);
 
 onMounted(async () => {
   console.log(`mounted`);
@@ -220,7 +220,69 @@ onMounted(async () => {
 
     console.log(`sending screenshot data`);
     dMessages.value.push(`sending screenshot data to server...`);
-    await sendScreeshots();
+    // await sendScreeshots();
+
+    // -------
+
+    console.log(`starting to generate story`);
+    dMessages.value.push(`starting to generate story...`);
+
+    try {
+      console.log(HTMLSnapshots.value);
+
+      await createFinalImage();
+    } catch (error) {
+      console.error(error);
+      // debugMessages.value.push(error);
+    }
+
+    let storyParams = {};
+
+    console.log(`starting usefetch`);
+    dMessages.value.push(`starting usefetch...`);
+
+    try {
+      const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } })!;
+      console.log(`got usefetch response. sharing to story`);
+
+      storyParams.url = res.data.url;
+
+      // let widgetLink;
+      storyParams.widgetParams = null;
+
+      // if (battleStore.data?.["story_link"]) {
+      //   storyParams.widgetParams = {};
+      //   storyParams.widgetParams = { url: battleStore.data?.["story_link"], name: battleStore.data?.["story_link_text"] };
+      // }
+    } catch (error) {
+      console.error(error);
+      dMessages.value.push(error);
+    }
+
+    // console.log(storyParams.url);
+    // console.log(storyParams.widgetParams);
+    // console.log(`waiting 30s`);
+
+    // await waitFor(3000);
+
+    try {
+      // hardcode for debug
+      // tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4", {
+      //   text: "TapSmart text",
+      //   widget_link: { url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1", name: "Widget link text" },
+      // });
+
+      console.log(`sharing to story`);
+      dMessages.value.push(`sharing to story...`);
+      // tg.shareToStory(storyParams.url, {
+      const storyRes = await tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4");
+      dMessages.value.push(storyRes);
+
+      console.log(storyRes);
+    } catch (error) {
+      console.error(error);
+      dMessages.value.push(error);
+    }
   }
 
   console.log(`cleaning snapshots`);

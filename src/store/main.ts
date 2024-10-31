@@ -490,5 +490,6 @@ export const useMainStore = defineStore("main", () => {
     showModal,
     takeHTMLSnapshot,
     sendScreeshots,
+    createFinalImage,
   };
 });
