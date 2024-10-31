@@ -239,14 +239,14 @@ onMounted(async () => {
       const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } })!;
       console.log(`got usefetch response. sharing to story`);
 
-      storyParams.url = res.data.url;
+      // storyParams.url = res.data.url;
 
-      storyParams.widgetParams = null;
+      // storyParams.widgetParams = null;
 
-      if (data.value?.["story_link"]) {
-        storyParams.widgetParams = {};
-        storyParams.widgetParams = { url: data.value?.["story_link"], name: data.value?.["story_link_text"] };
-      }
+      // if (data.value?.["story_link"]) {
+      //   storyParams.widgetParams = {};
+      //   storyParams.widgetParams = { url: data.value?.["story_link"], name: data.value?.["story_link_text"] };
+      // }
 
       // sharing story
       dMessages.value.push({ msg: `tg version: ${tg.version}`, type: "success" });
