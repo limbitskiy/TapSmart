@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@telegram-apps/sdk": "^2.5.2",
     "@vueuse/components": "^11.1.0",
     "@vueuse/core": "^10.11.0",
     "axios": "^1.7.3",

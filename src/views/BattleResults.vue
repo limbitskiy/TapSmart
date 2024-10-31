@@ -105,6 +105,7 @@ import { getAsset, waitFor } from "@/utils";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 import * as htmlToImage from "html-to-image";
+import { shareStory } from "@telegram-apps/sdk";
 
 // stores
 import { useMainStore } from "@/store/main";
@@ -224,7 +225,12 @@ onMounted(async () => {
     await waitFor(3000);
     await waitFor(3000);
     dMessages.value.push({ msg: `opening story editor...` });
-    postTestStory();
+    if (shareStory.isSupported()) {
+      shareStory("https://stories-dev.tapsmart.io/123_456.mp4");
+    } else {
+      console.log(`oops not supported`);
+    }
+    // postTestStory();
     dMessages.value.push({ msg: `after opening story editor...` });
   } catch (error) {
     console.error("Error in story generation sequence:", error);
