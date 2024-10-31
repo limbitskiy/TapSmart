@@ -195,87 +195,91 @@ const dMessages = ref<{}[]>([]);
 onMounted(async () => {
   console.log(`mounted`);
 
-  if (route.query.tg_story) {
-    generatingStory.value = true;
+  const res = await makeSingleRequest({ key: "tg_story", data: { images: HTMLSnapshots.value } });
+  console.log(res);
+  postTestStory();
 
-    interval = setInterval(() => {
-      if (percent.value >= 100) {
-        percent.value = 100;
-        clearInterval(interval);
-        return;
-      }
-      percent.value += 1;
-    }, 100);
+  // if (route.query.tg_story) {
+  //   generatingStory.value = true;
 
-    try {
-      console.log(`creating final image`);
-      dMessages.value.push({ msg: `creating final image...` });
+  //   interval = setInterval(() => {
+  //     if (percent.value >= 100) {
+  //       percent.value = 100;
+  //       clearInterval(interval);
+  //       return;
+  //     }
+  //     percent.value += 1;
+  //   }, 100);
 
-      const url = await htmlToImage.toJpeg(leaderboardRef.value, {
-        quality: 0.85,
-      });
+  //   try {
+  //     console.log(`creating final image`);
+  //     dMessages.value.push({ msg: `creating final image...` });
 
-      console.log(`converting HTML to screenshots`);
+  //     const url = await htmlToImage.toJpeg(leaderboardRef.value, {
+  //       quality: 0.85,
+  //     });
 
-      dMessages.value.push({ msg: `converting HTML to screenshots...` });
-      await createImagesFromSnapshots();
+  //     console.log(`converting HTML to screenshots`);
 
-      HTMLSnapshots.value.push(url);
+  //     dMessages.value.push({ msg: `converting HTML to screenshots...` });
+  //     await createImagesFromSnapshots();
 
-      console.log(`starting story generation`);
-      dMessages.value.push({ msg: `starting story generation...` });
+  //     HTMLSnapshots.value.push(url);
 
-      // console.log(HTMLSnapshots.value);
+  //     console.log(`starting story generation`);
+  //     dMessages.value.push({ msg: `starting story generation...` });
 
-      // creating final image
-      await createFinalImage();
+  //     // console.log(HTMLSnapshots.value);
 
-      let storyParams = {};
+  //     // creating final image
+  //     await createFinalImage();
 
-      console.log(`starting usefetch`);
-      dMessages.value.push({ msg: `starting usefetch...` });
+  //     let storyParams = {};
 
-      // sending screenshot data
-      // const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } });
-      // const res = await makeSingleRequest({ key: "tg_story", data: { images: HTMLSnapshots.value } });
-      // console.log(res);
+  //     console.log(`starting usefetch`);
+  //     dMessages.value.push({ msg: `starting usefetch...` });
 
-      console.log(`got usefetch response. sharing to story`);
-      dMessages.value.push({ msg: `recieved url: ${res.data.url}` });
+  //     // sending screenshot data
+  //     // const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } });
+  //     const res = await makeSingleRequest({ key: "tg_story", data: { images: HTMLSnapshots.value } });
+  //     console.log(res);
 
-      // storyParams.url = res.data.url;
+  //     console.log(`got usefetch response. sharing to story`);
+  //     dMessages.value.push({ msg: `recieved url: ${res.data.url}` });
 
-      // storyParams.widgetParams = null;
+  //     // storyParams.url = res.data.url;
 
-      // if (data.value?.["story_link"]) {
-      //   storyParams.widgetParams = {};
-      //   storyParams.widgetParams = { url: data.value?.["story_link"], name: data.value?.["story_link_text"] };
-      // }
+  //     // storyParams.widgetParams = null;
 
-      // sharing story
-      dMessages.value.push({ msg: `tg version: ${tg.version}`, type: "success" });
-    } catch (error) {
-      console.error(error);
-      dMessages.value.push({ msg: error, type: "error" });
-    } finally {
-      dMessages.value.push({ msg: `sharing to story...` });
-      postTestStory();
+  //     // if (data.value?.["story_link"]) {
+  //     //   storyParams.widgetParams = {};
+  //     //   storyParams.widgetParams = { url: data.value?.["story_link"], name: data.value?.["story_link_text"] };
+  //     // }
 
-      console.log(`cleaning snapshots`);
-      dMessages.value.push({ msg: `cleaning snapshots...` });
-      HTMLSnapshots.value = [];
+  //     // sharing story
+  //     dMessages.value.push({ msg: `tg version: ${tg.version}`, type: "success" });
+  //   } catch (error) {
+  //     console.error(error);
+  //     dMessages.value.push({ msg: error, type: "error" });
+  //   } finally {
+  //     dMessages.value.push({ msg: `sharing to story...` });
+  //     postTestStory();
 
-      await waitFor(10000);
+  //     console.log(`cleaning snapshots`);
+  //     dMessages.value.push({ msg: `cleaning snapshots...` });
+  //     HTMLSnapshots.value = [];
 
-      generatingStory.value = false;
-    }
+  //     await waitFor(10000);
 
-    // console.log(`sending screenshot data`);
-    // await sendScreeshots();
-  }
+  //     generatingStory.value = false;
+  //   }
+
+  //   // console.log(`sending screenshot data`);
+  //   // await sendScreeshots();
+  // }
 });
 
 onUnmounted(() => {
-  clearInterval(interval);
+  // clearInterval(interval);
 });
 </script>
