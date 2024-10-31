@@ -195,7 +195,7 @@ const dMessages = ref<{}[]>([]);
 let requestCounter = 0;
 
 const requestUntilLinkExists = async () => {
-  if (requestCounter > 2) return false;
+  if (requestCounter > 1) return false;
   const res = await customFetch();
 
   if (!res?.data?.exists) {
@@ -219,8 +219,8 @@ onMounted(async () => {
     // await fetch("https://jsonplaceholder.typicode.com/todos/1");
 
     dMessages.value.push({ msg: `ping...` });
-    // makeSingleRequest({ key: "tg_story", data: { images: HTMLSnapshots.value } });
-    // await requestUntilLinkExists();
+    makeSingleRequest({ key: "tg_story", data: { images: HTMLSnapshots.value } });
+    await requestUntilLinkExists();
     dMessages.value.push({ msg: `opening story editor...` });
     postTestStory();
     dMessages.value.push({ msg: `after opening story editor...` });
