@@ -246,7 +246,7 @@ import { useMainStore } from "@/store/main";
 
 const store = useMainStore();
 
-const { fetchProfilePageData, setLanguages, redirectTo, postTestStory } = store;
+const { fetchProfilePageData, setLanguages, redirectTo, postTestStory, makeSingleRequest } = store;
 const { debugMessages } = storeToRefs(store);
 const { profile: data } = storeToRefs(store.dataStore);
 const { profile: locale } = storeToRefs(store.localeStore);
@@ -282,8 +282,12 @@ const onFeedback = () => {
   tg.openLink(data.value?.["feedback_url"]);
 };
 
-const onPostTestStory = () => {
+const onPostTestStory = async () => {
+  debugMessages.value.push(`ping...`);
+  await makeSingleRequest({ key: "ping", data: {} });
+  debugMessages.value.push(`opening story editor...`);
   postTestStory();
+  debugMessages.value.push(`after opening story editor...`);
 };
 
 // const postTestStory = async () => {

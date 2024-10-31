@@ -203,11 +203,11 @@ onMounted(async () => {
     await createFinalImage();
     // await fetch("https://jsonplaceholder.typicode.com/todos/1");
 
-    dMessages.value.push({ msg: `mocking 5s request ...` });
-    // await makeSingleRequest({ key: "ping", data: { images: HTMLSnapshots.value } });
-    await waitFor(5000);
+    dMessages.value.push({ msg: `ping...` });
+    await makeSingleRequest({ key: "ping", data: { images: HTMLSnapshots.value } });
     dMessages.value.push({ msg: `opening story editor...` });
     postTestStory();
+    dMessages.value.push({ msg: `after opening story editor...` });
   } catch (error) {
     console.error("Error in story generation sequence:", error);
     dMessages.value.push({ msg: error, type: "error" });
