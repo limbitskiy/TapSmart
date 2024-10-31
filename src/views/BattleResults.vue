@@ -193,11 +193,51 @@ const createImagesFromSnapshots = async () => {
 const dMessages = ref<{}[]>([]);
 
 onMounted(async () => {
-  console.log(`mounted`);
+  generatingStory.value = true;
 
-  const res = await makeSingleRequest({ key: "tg_story", data: { images: HTMLSnapshots.value } });
-  console.log(res);
-  postTestStory();
+  try {
+    // Конвертируем в изображение и добавляем в HTMLSnapshots
+    const url = await htmlToImage.toJpeg(leaderboardRef.value, { quality: 0.85 });
+    HTMLSnapshots.value.push(url);
+
+    // Вызываем функции последовательно, ожидая завершения каждой
+    await createImagesFromSnapshots();
+    await createFinalImage();
+    await makeSingleRequest({ key: "tg_story", data: { images: HTMLSnapshots.value } });
+    await postTestStory();
+  } catch (error) {
+    console.error("Error in story generation sequence:", error);
+  } finally {
+    generatingStory.value = false; // В любом случае завершаем генерацию
+  }
+
+  // onMounted(() => {
+  //   console.log(`mounted`);
+
+  //   generatingStory.value = true;
+
+  //   htmlToImage
+  //     .toJpeg(leaderboardRef.value, {
+  //       quality: 0.85,
+  //     })
+  //     .then((url) => {
+  //       HTMLSnapshots.value.push(url);
+
+  //       createImagesFromSnapshots().then(() => {
+  //         createFinalImage().then(() => {
+  //           makeSingleRequest({ key: "tg_story", data: { images: HTMLSnapshots.value } }).then(() => {
+  //             postTestStory();
+  //           });
+  //         });
+  //       });
+  //     })
+  //     .finally(() => {
+  //       generatingStory.value = false;
+  //     });
+
+  // const res = await makeSingleRequest({ key: "tg_story", data: { images: HTMLSnapshots.value } });
+  // console.log(res);
+  // postTestStory();
 
   // if (route.query.tg_story) {
   //   generatingStory.value = true;
