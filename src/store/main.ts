@@ -407,7 +407,7 @@ export const useMainStore = defineStore("main", () => {
 
     // console.log(storyParams.url);
     // console.log(storyParams.widgetParams);
-    console.log(`waiting 30s`);
+    // console.log(`waiting 30s`);
 
     // await waitFor(3000);
 
@@ -420,10 +420,9 @@ export const useMainStore = defineStore("main", () => {
 
       console.log(`sharing to story`);
       // tg.shareToStory(storyParams.url, {
-      tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4", {
-        text: "TapSmart text",
-        widget_link: { url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1", name: "Widget link text" },
-      });
+      const storyRes = await tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4");
+
+      console.log(storyRes);
     } catch (error) {
       console.error(error);
       debugMessages.value.push(error);

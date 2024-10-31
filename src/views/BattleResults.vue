@@ -203,8 +203,6 @@ onMounted(async () => {
       quality: 0.85,
     });
 
-    console.log(`final image created`);
-
     console.log(`creating snapshots`);
     await createImagesFromSnapshots();
 
