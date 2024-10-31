@@ -285,6 +285,7 @@ const onFeedback = () => {
 const postTestStory = async () => {
   // tg.shareToStory("https://stories.tapsmart.io/193438653_26244560.mp4", {
   try {
+    console.log(tg);
     const storyRes = await tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4", {
       text: "TapSmart text",
       widget_link: { url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1", name: "Widget link text" },

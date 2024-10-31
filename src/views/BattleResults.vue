@@ -11,10 +11,12 @@
               <div class="value h-[3px] rounded-full bg-[var(--accent-color)]" :style="{ width: percent + '%' }"></div>
             </div>
           </div> -->
-          <div class="debug-messages flex flex-col gap-1">
-            <span class="text-lg z-50">{{ locale?.["tg_story_loader"] ?? "Создаем историю вашего успеха..." }}</span>
-            <div class="debug-messages bg-gray-600 flex flex-col gap-1 border border-gray-400 rounded-xl">
-              <span v-for="msg in dMessages" :key="msg" class="z-50">{{ msg }}</span>
+          <div class="debug-messages flex flex-col items-center gap-1">
+            <!-- <span class="text-lg z-50">{{ locale?.["tg_story_loader"] ?? "Создаем историю вашего успеха..." }}</span> -->
+            <div class="debug-message bg-gray-600 flex flex-col gap-1 border border-gray-400 rounded-xl min-w-[70vw]">
+              <span v-for="msg in dMessages" :key="msg" class="z-50" :class="{ 'text-red-600': msg.type === 'error', 'text-green-600': msg.type === 'success' }">{{
+                msg.msg
+              }}</span>
             </div>
           </div>
         </div>
@@ -188,7 +190,7 @@ const createImagesFromSnapshots = async () => {
   return true;
 };
 
-const dMessages = ref<string[]>([]);
+const dMessages = ref<{}[]>([]);
 
 onMounted(async () => {
   console.log(`mounted`);
@@ -206,26 +208,25 @@ onMounted(async () => {
     // }, 100);
 
     console.log(`creating final image`);
-    dMessages.value.push(`creating final image...`);
+    dMessages.value.push({ msg: `creating final image...` });
 
     const url = await htmlToImage.toJpeg(leaderboardRef.value, {
       quality: 0.85,
     });
 
     console.log(`converting HTML to screenshots`);
-    dMessages.value.push(`converting HTML to screenshots...`);
+    dMessages.value.push({ msg: `converting HTML to screenshots...` });
     await createImagesFromSnapshots();
 
     HTMLSnapshots.value.push(url);
 
     // console.log(`sending screenshot data`);
-    // dMessages.value.push(`sending screenshot data to server...`);
     // await sendScreeshots();
 
     // -------
 
     console.log(`starting to generate story`);
-    dMessages.value.push(`starting to generate story...`);
+    dMessages.value.push({ msg: `starting to generate story...` });
 
     try {
       console.log(HTMLSnapshots.value);
@@ -239,7 +240,7 @@ onMounted(async () => {
     let storyParams = {};
 
     console.log(`starting usefetch`);
-    dMessages.value.push(`starting usefetch...`);
+    dMessages.value.push({ msg: `starting usefetch...` });
 
     try {
       const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } })!;
@@ -256,7 +257,7 @@ onMounted(async () => {
       // }
     } catch (error) {
       console.error(error);
-      dMessages.value.push(error);
+      dMessages.value.push({ msg: error, type: "error" });
     }
 
     // console.log(storyParams.url);
@@ -273,26 +274,30 @@ onMounted(async () => {
       // });
 
       console.log(`sharing to story`);
-      dMessages.value.push(`sharing to story...`);
+      dMessages.value.push({ msg: `tg version: ${tg.version}`, type: "success" });
+      dMessages.value.push({ msg: `sharing to story...` });
       // tg.shareToStory(storyParams.url, {
+
+      console.log(tg);
 
       const storyRes = await tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4", {
         text: "TapSmart text",
         widget_link: { url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1", name: "Widget link text" },
       });
+
       if (storyRes) {
-        dMessages.value.push(storyRes);
+        dMessages.value.push({ msg: storyRes, type: "error" });
       }
 
       console.log(storyRes);
     } catch (error) {
       console.error(error);
-      dMessages.value.push(error);
+      dMessages.value.push({ msg: error, type: "error" });
     }
   }
 
   console.log(`cleaning snapshots`);
-  dMessages.value.push(`cleaning snapshots...`);
+  dMessages.value.push({ msg: `cleaning snapshots...` });
   HTMLSnapshots.value = [];
 
   await waitFor(3000);
