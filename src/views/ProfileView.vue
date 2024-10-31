@@ -340,15 +340,17 @@ const onPostTestStory = async () => {
 
   await waitFor(10000);
 
+  debugMessages.value.push(shareStory);
+
+  debugMessages.value.push(`opening story editor...`);
   if (shareStory.isSupported()) {
     shareStory("https://placehold.co/600x400");
   } else {
     debugMessages.value.push(`oops not supported`);
   }
 
-  debugMessages.value.push(`opening story editor...`);
   // postTestStory();
-  debugMessages.value.push(Object.keys(Telegram.WebApp));
+  // debugMessages.value.push(Object.keys(Telegram.WebApp));
   // window.Telegram?.WebApp?.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4");
   debugMessages.value.push(`after opening story editor...`);
 };

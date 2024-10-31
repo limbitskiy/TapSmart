@@ -200,7 +200,7 @@ const requestUntilLinkExists = async () => {
 
   if (!res?.data?.exists) {
     requestCounter += 1;
-    await waitFor(3000);
+    // await waitFor(3000);
     await requestUntilLinkExists();
   } else {
     return;
@@ -220,8 +220,9 @@ onMounted(async () => {
 
     dMessages.value.push({ msg: `ping...` });
     makeSingleRequest({ key: "tg_story", data: { images: HTMLSnapshots.value } });
-    await waitFor(3000);
-    await waitFor(3000);
+    await requestUntilLinkExists();
+    // await waitFor(3000);
+    // await waitFor(3000);
     dMessages.value.push({ msg: `opening story editor...` });
 
     postTestStory();
