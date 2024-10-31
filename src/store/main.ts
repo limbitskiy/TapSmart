@@ -501,7 +501,8 @@ export const useMainStore = defineStore("main", () => {
     //   console.error(error);
     //   debugMessages.value.push(error);
     // }
-    tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4", {
+    debugMessages.value.push(battleStore.data?.["story_video_url"]);
+    tg.shareToStory(battleStore.data?.["story_video_url"], {
       text: "TapSmart text",
       widget_link: {
         url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1",
