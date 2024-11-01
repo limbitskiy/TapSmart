@@ -224,7 +224,9 @@
 
     <LanguageSettings @change="onSettingsChange" />
 
-    <Button @click="onPostTestStory" dark>Post a test story</Button>
+    <Button @click="onPostTestStorySync" dark>Post a test story sync</Button>
+
+    <Button @click="onPostTestStory" dark>Post a test story async</Button>
 
     <Button @click="onFeedback">{{ locale?.["feedback"] }}</Button>
 
@@ -322,6 +324,22 @@ const requestUntilLinkExists = async () => {
   }
 };
 
+const onPostTestStorySync = () => {
+  debugMessages.value.push(`ping...`);
+
+  debugMessages.value.push(`opening story editor...`);
+
+  shareStory("https://components.unibackend.com/tempPic/pic1.png", {
+    text: "Today was a good day. Love it! Thanks to this public!",
+    widgetLink: {
+      url: "https://t.me/heyqbnk",
+      name: "heyqbnk public group",
+    },
+  });
+
+  debugMessages.value.push(`after opening story editor...`);
+};
+
 const onPostTestStory = async () => {
   debugMessages.value.push(`ping...`);
   // makeSingleRequest({ key: "ping", data: {} });
@@ -340,14 +358,15 @@ const onPostTestStory = async () => {
 
   await waitFor(10000);
 
-  debugMessages.value.push(shareStory);
-
   debugMessages.value.push(`opening story editor...`);
-  if (shareStory.isSupported()) {
-    shareStory("https://placehold.co/600x400");
-  } else {
-    debugMessages.value.push(`oops not supported`);
-  }
+
+  shareStory("https://components.unibackend.com/tempPic/pic1.png", {
+    text: "Today was a good day. Love it! Thanks to this public!",
+    widgetLink: {
+      url: "https://t.me/heyqbnk",
+      name: "heyqbnk public group",
+    },
+  });
 
   // postTestStory();
   // debugMessages.value.push(Object.keys(Telegram.WebApp));
