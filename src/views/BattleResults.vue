@@ -226,7 +226,7 @@ onMounted(async () => {
       HTMLSnapshots.value.push(url);
       await createFinalImage();
 
-      makeSingleRequest({ key: "tg_story", data: { images: HTMLSnapshots.value } });
+      await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } });
     } catch (error) {
       console.error("Error in story generation sequence:", error);
       dMessages.value.push({ msg: error, type: "error" });
