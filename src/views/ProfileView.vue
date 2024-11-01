@@ -324,9 +324,7 @@ const requestUntilLinkExists = async () => {
   }
 };
 
-const onPostTestStorySync = () => {
-  debugMessages.value.push(`ping...`);
-
+const trySharingcStory = () => {
   debugMessages.value.push(`opening story editor...`);
 
   shareStory("https://components.unibackend.com/tempPic/pic1.png", {
@@ -338,6 +336,12 @@ const onPostTestStorySync = () => {
   });
 
   debugMessages.value.push(`after opening story editor...`);
+};
+
+const onPostTestStorySync = () => {
+  waitFor(10000).then(() => {
+    trySharingcStory();
+  });
 };
 
 const onPostTestStory = async () => {
