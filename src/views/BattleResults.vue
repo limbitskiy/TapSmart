@@ -24,7 +24,7 @@
     </Transition>
 
     <!-- <div v-for="item in HTMLSnapshots" ref="htmlEl" class="screenshot-stage flex-1 flex flex-col h-dvh bg-transparent" v-html="item"></div> -->
-    <div v-if="generatingStory" ref="htmlEl" class="screenshot-stage flex-1 flex flex-col h-dvh bg-transparent" v-html="html"></div>
+    <div v-if="generatingStory" ref="htmlEl" class="screenshot-stage absolute inset-0 z-[98] flex-1 flex flex-col h-dvh bg-transparent" v-html="html"></div>
 
     <div id="battle-results" class="flex-1 flex flex-col p-4 h-dvh">
       <BackgroundImage type="purple" />

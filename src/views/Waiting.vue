@@ -39,8 +39,9 @@
             <!-- player data -->
             <div class="player-data flex gap-2 items-center justify-between">
               <div class="player-name flex">
-                <div class="fixed-length-name whitespace-nowrap overflow-x-hidden text-ellipsis">
-                  <span class="fira-bold text-lg max-w-1/2 text-ellipsis">{{ player.name }}</span>
+                <!-- <div class="fixed-length-name whitespace-nowrap overflow-x-hidden text-ellipsis"> -->
+                <div class="fixed-length-name">
+                  <span class="fira-bold text-lg">{{ player.name }}</span>
                 </div>
                 <div v-if="player?.isFriend" class="friend-badge ml-2">
                   <!-- friend icon -->
