@@ -277,30 +277,6 @@ export const useMainStore = defineStore("main", () => {
     return useFetch({ key: "invite_click", data: { route } });
   };
 
-  const makeSingleRequest = async ({ key, data }: { key?: string; data?: {} }) => {
-    try {
-      const result = await makeRequest({
-        apiUrl: state.value.apiUrl,
-        payload: {
-          key,
-          data: {
-            ...data,
-            answers: battleStore.answers,
-            lastTaskId: battleStore.lastTaskId,
-          },
-          service: state.value.service,
-        },
-      });
-
-      // parseResponse(result.data);
-
-      return result.data;
-    } catch (error) {
-      debugMessages.value.push("fetch error:", error);
-      return error?.response?.data?.error?.message || error?.message || error;
-    }
-  };
-
   const useFetch = ({ key, data }: { key?: string; data?: {} }) => {
     if (requestQueue.value.length > 3) return;
 
@@ -333,16 +309,6 @@ export const useMainStore = defineStore("main", () => {
     });
   };
 
-  const customFetch = async () => {
-    return await axios.post(
-      "https://api-dev.tapsmart.io/main",
-      { key: "file_check", service: state.value.service },
-      {
-        timeout: 30000,
-      }
-    );
-  };
-
   const processRequestQueue = async () => {
     if (requestPending.value) return;
 
@@ -365,22 +331,20 @@ export const useMainStore = defineStore("main", () => {
     router.push(location);
   };
 
+  // snapshots
   const takeHTMLSnapshot = (el: HTMLElement) => {
     console.log(`taking snapshot`);
     HTMLSnapshots.value.push(el.outerHTML);
   };
 
   const createFinalImage = () =>
-    new Promise((res, rej) => {
-      const bgSrc = getAsset("battle_results_final");
+    new Promise((res) => {
+      let imagesLoaded = 0;
 
-      const bgImage = new Image();
-      bgImage.src = bgSrc;
-      const leaderBoardImage = new Image();
-      leaderBoardImage.src = HTMLSnapshots.value.pop();
+      const checkAllImagesLoaded = () => {
+        imagesLoaded += 1;
 
-      leaderBoardImage.onload = () => {
-        bgImage.onload = () => {
+        if (imagesLoaded === 2) {
           const canvas = document.createElement("canvas");
           const scale = devicePixelRatio || 1;
 
@@ -403,74 +367,19 @@ export const useMainStore = defineStore("main", () => {
           console.log(`resolving promise`);
 
           res(true);
-        };
+        }
       };
+
+      const bgSrc = getAsset("battle_results_final");
+
+      const bgImage = new Image();
+      bgImage.src = bgSrc;
+      const leaderBoardImage = new Image();
+      leaderBoardImage.src = HTMLSnapshots.value.pop();
+
+      leaderBoardImage.onload = checkAllImagesLoaded;
+      bgImage.onload = checkAllImagesLoaded;
     });
-
-  const sendScreeshots = async () => {
-    console.log(`starting to generate story`);
-
-    try {
-      console.log(HTMLSnapshots.value);
-
-      await createFinalImage();
-    } catch (error) {
-      console.error(error);
-      // debugMessages.value.push(error);
-    }
-
-    let storyParams = {};
-
-    console.log(`starting usefetch`);
-
-    try {
-      const res = await useFetch({
-        key: "tg_story",
-        data: { images: HTMLSnapshots.value },
-      })!;
-      console.log(`got usefetch response. sharing to story`);
-
-      storyParams.url = res.data.url;
-
-      // let widgetLink;
-      storyParams.widgetParams = null;
-
-      if (battleStore.data?.["story_link"]) {
-        storyParams.widgetParams = {};
-        storyParams.widgetParams = {
-          url: battleStore.data?.["story_link"],
-          name: battleStore.data?.["story_link_text"],
-        };
-      }
-    } catch (error) {
-      console.error(error);
-      debugMessages.value.push(error);
-    }
-
-    // console.log(storyParams.url);
-    // console.log(storyParams.widgetParams);
-    // console.log(`waiting 30s`);
-
-    // await waitFor(3000);
-
-    try {
-      // hardcode for debug
-      // tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4", {
-      //   text: "TapSmart text",
-      //   widget_link: { url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1", name: "Widget link text" },
-      // });
-
-      console.log(`sharing to story`);
-      // tg.shareToStory(storyParams.url, {
-      const storyRes = await tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4");
-      debugMessages.value.push(storyRes);
-
-      console.log(storyRes);
-    } catch (error) {
-      console.error(error);
-      debugMessages.value.push(error);
-    }
-  };
 
   // debug
   const showTestNotification = () => {
@@ -481,32 +390,6 @@ export const useMainStore = defineStore("main", () => {
       buttons: {
         left: { label: "Reject", isClose: true },
         right: { label: "Accept", isClose: true },
-      },
-    });
-  };
-
-  const postTestStory = () => {
-    // try {
-    //   debugMessages.value.push(`starting ShareToStory`);
-
-    //   const storyRes = await tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4", {
-    //     text: "TapSmart text",
-    //     widget_link: { url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1", name: "Widget link text" },
-    //   });
-
-    //   if (storyRes) {
-    //     debugMessages.value.push(storyRes);
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    //   debugMessages.value.push(error);
-    // }
-    debugMessages.value.push(battleStore.data?.["story_video_url"]);
-    tg.shareToStory(battleStore.data?.["story_video_url"], {
-      text: "TapSmart text",
-      widget_link: {
-        url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1",
-        name: "Widget link text",
       },
     });
   };
@@ -563,9 +446,7 @@ export const useMainStore = defineStore("main", () => {
     onVibrate,
     showModal,
     takeHTMLSnapshot,
-    sendScreeshots,
     createFinalImage,
-    postTestStory,
     makeSingleRequest,
     customFetch,
     shareToStory,

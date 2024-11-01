@@ -113,7 +113,7 @@ const route = useRoute();
 
 const store = useMainStore();
 
-const { fetchBattleResultsData, sendScreeshots, takeHTMLSnapshot, useFetch, createFinalImage, postTestStory, makeSingleRequest, customFetch } = store;
+const { fetchBattleResultsData, useFetch, createFinalImage } = store;
 const { HTMLSnapshots } = storeToRefs(store);
 const { data } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
@@ -172,12 +172,7 @@ const getPlayerColor = (player: {}) => {
 const createImagesFromSnapshots = async () => {
   const screenshots = [];
 
-  // console.log(`snapshots:`, HTMLSnapshots.value?.length);
-
   for (const snapshot of HTMLSnapshots.value) {
-    // console.log(`qurrent snapshot:`);
-    // console.log(snapshot);
-
     html.value = snapshot;
     await nextTick();
     const url = await htmlToImage.toJpeg(htmlEl.value, { quality: 0.85 });
@@ -186,26 +181,10 @@ const createImagesFromSnapshots = async () => {
 
   HTMLSnapshots.value = screenshots;
 
-  // console.log(`converted snapshots:`, JSON.stringify(HTMLSnapshots.value, null, 2));
   return true;
 };
 
 const dMessages = ref<{}[]>([]);
-
-let requestCounter = 0;
-
-const requestUntilLinkExists = async () => {
-  if (requestCounter > 2) return false;
-  const res = await customFetch();
-
-  if (!res?.data?.exists) {
-    requestCounter += 1;
-    // await waitFor(3000);
-    await requestUntilLinkExists();
-  } else {
-    return;
-  }
-};
 
 onMounted(async () => {
   if (route.query.tg_story) {
@@ -219,11 +198,17 @@ onMounted(async () => {
     }, 100);
 
     try {
+      // create last screenshot
       const url = await htmlToImage.toJpeg(leaderboardRef.value, { quality: 0.85 });
+
+      // convert html to screenshots
       await createImagesFromSnapshots();
       HTMLSnapshots.value.push(url);
+
+      // add text to final image
       await createFinalImage();
 
+      // send screenshots to server
       await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } });
     } catch (error) {
       console.error("Error in story generation sequence:", error);
@@ -235,76 +220,6 @@ onMounted(async () => {
   }
 
   generatingStory.value = false;
-
-  //   generatingStory.value = true;
-
-  //
-
-  //   try {
-  //     console.log(`creating final image`);
-  //     dMessages.value.push({ msg: `creating final image...` });
-
-  //     const url = await htmlToImage.toJpeg(leaderboardRef.value, {
-  //       quality: 0.85,
-  //     });
-
-  //     console.log(`converting HTML to screenshots`);
-
-  //     dMessages.value.push({ msg: `converting HTML to screenshots...` });
-  //     await createImagesFromSnapshots();
-
-  //     HTMLSnapshots.value.push(url);
-
-  //     console.log(`starting story generation`);
-  //     dMessages.value.push({ msg: `starting story generation...` });
-
-  //     // console.log(HTMLSnapshots.value);
-
-  //     // creating final image
-  //     await createFinalImage();
-
-  //     let storyParams = {};
-
-  //     console.log(`starting usefetch`);
-  //     dMessages.value.push({ msg: `starting usefetch...` });
-
-  //     // sending screenshot data
-  //     // const res = await useFetch({ key: "tg_story", data: { images: HTMLSnapshots.value } });
-  //     const res = await makeSingleRequest({ key: "tg_story", data: { images: HTMLSnapshots.value } });
-  //     console.log(res);
-
-  //     console.log(`got usefetch response. sharing to story`);
-  //     dMessages.value.push({ msg: `recieved url: ${res.data.url}` });
-
-  //     // storyParams.url = res.data.url;
-
-  //     // storyParams.widgetParams = null;
-
-  //     // if (data.value?.["story_link"]) {
-  //     //   storyParams.widgetParams = {};
-  //     //   storyParams.widgetParams = { url: data.value?.["story_link"], name: data.value?.["story_link_text"] };
-  //     // }
-
-  //     // sharing story
-  //     dMessages.value.push({ msg: `tg version: ${tg.version}`, type: "success" });
-  //   } catch (error) {
-  //     console.error(error);
-  //     dMessages.value.push({ msg: error, type: "error" });
-  //   } finally {
-  //     dMessages.value.push({ msg: `sharing to story...` });
-  //     postTestStory();
-
-  //     console.log(`cleaning snapshots`);
-  //     dMessages.value.push({ msg: `cleaning snapshots...` });
-  //     HTMLSnapshots.value = [];
-
-  //     await waitFor(10000);
-
-  //     generatingStory.value = false;
-  //   }
-
-  //   // console.log(`sending screenshot data`);
-  //   // await sendScreeshots();
 });
 
 onUnmounted(() => {

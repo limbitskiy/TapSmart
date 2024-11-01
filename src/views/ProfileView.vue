@@ -235,19 +235,15 @@ import { computed, ref, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { tg } from "@/api/telegram";
 import { storeToRefs } from "pinia";
-import { getAsset, showFormattedNumber, waitFor } from "@/utils";
-import { useBackButton } from "@/composables/useBackButton";
+import { getAsset, showFormattedNumber } from "@/utils";
 import { version } from "../../package.json";
-import axios from "axios";
-import { shareStory } from "@telegram-apps/sdk";
 
 // store
 import { useMainStore } from "@/store/main";
 
 const store = useMainStore();
 
-const { fetchProfilePageData, setLanguages, redirectTo, postTestStory, makeSingleRequest, customFetch } = store;
-const { debugMessages } = storeToRefs(store);
+const { fetchProfilePageData, setLanguages } = store;
 const { profile: data } = storeToRefs(store.dataStore);
 const { profile: locale } = storeToRefs(store.localeStore);
 
@@ -281,107 +277,4 @@ const onSettingsChange = ({ setting, value }) => {
 const onFeedback = () => {
   tg.openLink(data.value?.["feedback_url"]);
 };
-
-async function ifUrlExist(url) {
-  return new Promise((resolve, reject) => {
-    fetch(url, {
-      method: "HEAD",
-    })
-      .then((response) => {
-        console.log(response);
-
-        resolve(response.status.toString()[0] === "2");
-      })
-      .catch((error) => {
-        reject(false);
-      });
-  });
-}
-
-// function existsFile(url) {
-//   var http = new XMLHttpRequest();
-//   http.open("HEAD", url, false);
-//   http.send();
-//   return http.status != 404;
-// }
-
-let requestCounter = 0;
-
-const requestUntilLinkExists = async () => {
-  if (requestCounter > 2) return false;
-  const res = await customFetch();
-
-  if (!res?.data?.exists) {
-    requestCounter += 1;
-    await waitFor(3000);
-    await requestUntilLinkExists();
-  } else {
-    return;
-  }
-};
-
-const trySharingcStory = () => {
-  debugMessages.value.push(`opening story editor...`);
-
-  window.Telegram?.WebApp?.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4");
-
-  debugMessages.value.push(`after opening story editor...`);
-};
-
-const onPostTestStorySync = () => {
-  waitFor(10000).then(() => {
-    trySharingcStory();
-  });
-};
-
-const onPostTestStory = async () => {
-  debugMessages.value.push(`ping...`);
-  // makeSingleRequest({ key: "ping", data: {} });
-
-  // await requestUntilLinkExists();
-  // let linkExists = false;
-  // while (!linkExists) {
-  //   debugMessages.value.push(`checking if link exists...`);
-  //   linkExists = await ifUrlExist(
-  //     "https://stories-dev.tapsmart.io/12e5579457934853_457.mp4"
-  //   );
-  //   console.log(linkExists);
-
-  //   await waitFor(3000);
-  // }
-
-  await waitFor(10000);
-
-  debugMessages.value.push(`opening story editor...`);
-
-  shareStory("https://components.unibackend.com/tempPic/pic1.png", {
-    text: "Today was a good day. Love it! Thanks to this public!",
-    widgetLink: {
-      url: "https://t.me/heyqbnk",
-      name: "heyqbnk public group",
-    },
-  });
-
-  // postTestStory();
-  // debugMessages.value.push(Object.keys(Telegram.WebApp));
-  // window.Telegram?.WebApp?.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4");
-  debugMessages.value.push(`after opening story editor...`);
-};
-
-// const postTestStory = async () => {
-//   // tg.shareToStory("https://stories.tapsmart.io/193438653_26244560.mp4", {
-//   try {
-//     console.log(tg);
-//     const storyRes = await tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4", {
-//       text: "TapSmart text",
-//       widget_link: { url: "https://t.me/TapSmartBot/TapSmartGame?startapp=fr193438653_sr1", name: "Widget link text" },
-//     });
-//     if (storyRes) {
-//       debugMessages.value.push(storyRes);
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     debugMessages.value.push(error);
-//   }
-// };
 </script>
