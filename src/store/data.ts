@@ -18,7 +18,7 @@ export const useDataStore = defineStore("data", () => {
     settings: {
       sound: false,
       music: false,
-      vibro: true,
+      vibro: false,
     },
   });
 
