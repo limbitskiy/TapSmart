@@ -5,7 +5,6 @@ import { useVibrate } from "@vueuse/core";
 import { tg } from "@/api/telegram";
 import { getAsset, waitFor } from "@/utils";
 import axios from "axios";
-import { postEvent } from "@telegram-apps/sdk";
 
 // stores
 import { useDataStore } from "@/store/data";
@@ -135,17 +134,6 @@ export const useMainStore = defineStore("main", () => {
     notification.value.isShown = true;
     notification.value.timeout = timeout;
     notification.value.action = action;
-
-    if (notification.value.action === "tg_story_editor") {
-      debugMessages.value.push(`going to story editor`);
-      postEvent("web_app_share_to_story", { media_url: "https://stories-dev.tapsmart.io/123_456.mp4" });
-      debugMessages.value.push(`after story editor`);
-    }
-    // try {
-    //   // tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4");
-    // } catch (error) {
-
-    // }
 
     hideTooltip();
 
