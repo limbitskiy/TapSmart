@@ -43,7 +43,7 @@ import { ref } from "vue";
 import { storeToRefs } from "pinia";
 
 // stores
-import { useDataStore } from "@/store/data.ts";
+import { useDataStore } from "@/store/data";
 
 const dataStore = useDataStore();
 
@@ -57,6 +57,14 @@ const validSettings = {
 };
 
 const currentSetting = ref(1);
+
+if (!settings.value.sound && !settings.value.vibro) {
+  currentSetting.value = 3;
+} else if (settings.value.sound && settings.value.vibro) {
+  currentSetting.value = 1;
+} else if (settings.value.vibro && !settings.value.sound) {
+  currentSetting.value = 2;
+}
 
 const onChange = () => {
   currentSetting.value = validSettings[currentSetting.value + 1] ? currentSetting.value + 1 : 1;
