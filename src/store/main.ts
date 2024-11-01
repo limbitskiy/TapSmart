@@ -5,6 +5,7 @@ import { useVibrate } from "@vueuse/core";
 import { tg } from "@/api/telegram";
 import { getAsset, waitFor } from "@/utils";
 import axios from "axios";
+import { postEvent } from "@telegram-apps/sdk";
 
 // stores
 import { useDataStore } from "@/store/data";
@@ -29,7 +30,6 @@ export const useMainStore = defineStore("main", () => {
     isShown: false,
     fn: null,
     timeout: null,
-    action: null,
   });
 
   const tooltip = ref<TooltipProps>({
@@ -133,7 +133,6 @@ export const useMainStore = defineStore("main", () => {
     notification.value.buttons = buttons;
     notification.value.isShown = true;
     notification.value.timeout = timeout;
-    notification.value.action = action;
 
     hideTooltip();
 
@@ -155,7 +154,6 @@ export const useMainStore = defineStore("main", () => {
     notification.value.buttons = {};
     notification.value.isShown = false;
     notification.value.fn = null;
-    notification.value.action = null;
   };
 
   const showTooltip = ({ element, text }: { element: HTMLElement; text: string }) => {
@@ -268,8 +266,7 @@ export const useMainStore = defineStore("main", () => {
   };
 
   const getOnlineFriends = async () => {
-    await useFetch({ key: "get_online_friends" });
-    return;
+    return await useFetch({ key: "get_online_friends" });
   };
 
   const setLanguages = async (data: {}) => {
@@ -514,6 +511,10 @@ export const useMainStore = defineStore("main", () => {
     });
   };
 
+  const shareToStory = (text?: string, widgetProps?: { url: string; name: string }) => {
+    postEvent("web_app_share_to_story", { media_url: battleStore.data?.["story_video_url"], text, widgetProps });
+  };
+
   window.showNotification = showTestNotification;
 
   // watch(
@@ -567,5 +568,6 @@ export const useMainStore = defineStore("main", () => {
     postTestStory,
     makeSingleRequest,
     customFetch,
+    shareToStory,
   };
 });

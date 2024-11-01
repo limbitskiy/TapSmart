@@ -27,7 +27,6 @@ import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 import { inviteFriend } from "@/api/telegram";
 import { replaceWithSpecialSymbols } from "@/utils";
-import { postEvent } from "@telegram-apps/sdk";
 
 // stores
 import { useMainStore } from "@/store/main";
@@ -40,7 +39,7 @@ const route = useRoute();
 const { active: activeClass } = useCssModule();
 
 const store = useMainStore();
-const { redirectTo, useFetch, sendInviteAnalitycsData } = store;
+const { redirectTo, useFetch, sendInviteAnalitycsData, shareToStory } = store;
 const { friends: friendsLocale } = storeToRefs(store.localeStore);
 
 const btnRef = ref();
@@ -68,15 +67,8 @@ const onClick = () => {
     sendInviteAnalitycsData(route.path);
     inviteFriend(friendsLocale.value?.["invite_message"] || "Invite message");
   } else if (props.data?.action === "tg_story_editor") {
-    // debugMessages.value.push(`going to story editor`);
-    postEvent("web_app_share_to_story", { media_url: "https://stories-dev.tapsmart.io/123_456.mp4" });
-    // debugMessages.value.push(`after story editor`);
+    shareToStory();
   }
-  // try {
-  //   // tg.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4");
-  // } catch (error) {
-
-  // }
 
   if (props.data?.api) {
     useFetch({ key: props.data.api, data: props.data.data });

@@ -224,10 +224,6 @@
 
     <LanguageSettings @change="onSettingsChange" />
 
-    <Button @click="onPostTestStorySync" dark>Post a test story sync</Button>
-
-    <Button @click="onPostTestStory" dark>Post a test story async</Button>
-
     <Button @click="onFeedback">{{ locale?.["feedback"] }}</Button>
 
     <div class="build-no absolute bottom-0 right-4 text-[12px] text-gray-300 leading-4">build: {{ version }}</div>

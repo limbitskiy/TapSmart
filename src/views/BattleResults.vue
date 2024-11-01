@@ -217,7 +217,7 @@ onMounted(async () => {
         clearInterval(interval);
         return;
       }
-      percent.value += 20;
+      percent.value += 1;
     }, 100);
 
     try {
