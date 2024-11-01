@@ -327,13 +327,7 @@ const requestUntilLinkExists = async () => {
 const trySharingcStory = () => {
   debugMessages.value.push(`opening story editor...`);
 
-  shareStory("https://components.unibackend.com/tempPic/pic1.png", {
-    text: "Today was a good day. Love it! Thanks to this public!",
-    widgetLink: {
-      url: "https://t.me/heyqbnk",
-      name: "heyqbnk public group",
-    },
-  });
+  window.Telegram?.WebApp?.shareToStory("https://stories-dev.tapsmart.io/123_456.mp4");
 
   debugMessages.value.push(`after opening story editor...`);
 };

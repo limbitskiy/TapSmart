@@ -216,11 +216,12 @@ onMounted(async () => {
     await createImagesFromSnapshots();
     HTMLSnapshots.value.push(url);
     await createFinalImage();
+
     // await fetch("https://jsonplaceholder.typicode.com/todos/1");
 
     dMessages.value.push({ msg: `ping...` });
     makeSingleRequest({ key: "tg_story", data: { images: HTMLSnapshots.value } });
-    await requestUntilLinkExists();
+    // await requestUntilLinkExists();
     // await waitFor(3000);
     // await waitFor(3000);
     dMessages.value.push({ msg: `opening story editor...` });
