@@ -3,22 +3,22 @@
     <Transition name="fade">
       <div v-if="generatingStory" class="story-generator-loader absolute inset-0 flex-1 grid h-dvh z-[99] bg-[#222] place-items-center">
         <div class="spinner max-w-[50vw] text-center flex flex-col gap-4">
-          <!-- <div class="progressbar-wrap flex flex-col">
+          <div class="progressbar-wrap flex flex-col">
             <div class="percent-text text-[12px] text-gray-300">
               <span>{{ percent }}%</span>
             </div>
             <div class="progressbar h-[3px] w-full bg-gray-400 rounded-full">
               <div class="value h-[3px] rounded-full bg-[var(--accent-color)]" :style="{ width: percent + '%' }"></div>
             </div>
-          </div> -->
-          <div class="debug-messages flex flex-col items-center gap-1">
-            <!-- <span class="text-lg z-50">{{ locale?.["tg_story_loader"] ?? "Создаем историю вашего успеха..." }}</span> -->
+          </div>
+          <span class="text-lg z-50">{{ locale?.["tg_story_loader"] ?? "Создаем историю вашего успеха..." }}</span>
+          <!-- <div class="debug-messages flex flex-col items-center gap-1">
             <div class="debug-message bg-gray-600 flex flex-col gap-1 border border-gray-400 rounded-xl min-w-[70vw]">
               <span v-for="msg in dMessages" :key="msg" class="z-50" :class="{ 'text-red-600': msg.type === 'error', 'text-green-600': msg.type === 'success' }">{{
                 msg.msg
               }}</span>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </Transition>
@@ -210,46 +210,35 @@ const requestUntilLinkExists = async () => {
 onMounted(async () => {
   generatingStory.value = true;
 
-  try {
-    const url = await htmlToImage.toJpeg(leaderboardRef.value, { quality: 0.85 });
+  if (route.query.tg_story) {
+    interval = setInterval(() => {
+      if (percent.value >= 100) {
+        percent.value = 100;
+        clearInterval(interval);
+        return;
+      }
+      percent.value += 20;
+    }, 100);
 
-    await createImagesFromSnapshots();
-    HTMLSnapshots.value.push(url);
-    await createFinalImage();
+    try {
+      const url = await htmlToImage.toJpeg(leaderboardRef.value, { quality: 0.85 });
+      await createImagesFromSnapshots();
+      HTMLSnapshots.value.push(url);
+      await createFinalImage();
 
-    // await fetch("https://jsonplaceholder.typicode.com/todos/1");
-
-    dMessages.value.push({ msg: `ping...` });
-    makeSingleRequest({ key: "tg_story", data: { images: HTMLSnapshots.value } });
-    // await requestUntilLinkExists();
-    // await waitFor(3000);
-    // await waitFor(3000);
-    dMessages.value.push({ msg: `opening story editor...` });
-
-    postTestStory();
-    dMessages.value.push({ msg: `after opening story editor...` });
-  } catch (error) {
-    console.error("Error in story generation sequence:", error);
-    dMessages.value.push({ msg: error, type: "error" });
-  } finally {
-    dMessages.value.push({ msg: `final 5s timer` });
-    await waitFor(5000);
-    generatingStory.value = false;
-    HTMLSnapshots.value = [];
-    dMessages.value.push({ msg: "finished" });
+      makeSingleRequest({ key: "tg_story", data: { images: HTMLSnapshots.value } });
+    } catch (error) {
+      console.error("Error in story generation sequence:", error);
+      dMessages.value.push({ msg: error, type: "error" });
+    } finally {
+      generatingStory.value = false;
+      HTMLSnapshots.value = [];
+    }
   }
 
-  // if (route.query.tg_story) {
   //   generatingStory.value = true;
 
-  //   interval = setInterval(() => {
-  //     if (percent.value >= 100) {
-  //       percent.value = 100;
-  //       clearInterval(interval);
-  //       return;
-  //     }
-  //     percent.value += 1;
-  //   }, 100);
+  //
 
   //   try {
   //     console.log(`creating final image`);
@@ -316,10 +305,9 @@ onMounted(async () => {
 
   //   // console.log(`sending screenshot data`);
   //   // await sendScreeshots();
-  // }
 });
 
 onUnmounted(() => {
-  // clearInterval(interval);
+  clearInterval(interval);
 });
 </script>
