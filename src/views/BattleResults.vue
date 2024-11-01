@@ -208,8 +208,6 @@ const requestUntilLinkExists = async () => {
 };
 
 onMounted(async () => {
-  generatingStory.value = true;
-
   if (route.query.tg_story) {
     interval = setInterval(() => {
       if (percent.value >= 100) {
@@ -235,6 +233,8 @@ onMounted(async () => {
       HTMLSnapshots.value = [];
     }
   }
+
+  generatingStory.value = false;
 
   //   generatingStory.value = true;
 
