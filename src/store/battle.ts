@@ -84,7 +84,7 @@ export const useBattleStore = defineStore("battle", () => {
   // returns "yesno" || "4answers" etc.
   const сurrentMechanicName = computed(() => battleTypes[currentBattleType.value]);
 
-  // --- battle processor
+  // battle processor
   const { resetTaskIndex, incrementTaskIndex, storeAnswer, answers, _currentTask } = useBattleProcessor(state.value.battleData);
 
   // returns { api, correct, id, key, task: {} }
@@ -94,11 +94,11 @@ export const useBattleStore = defineStore("battle", () => {
   const currentMechanic = computed(() => state.value.battleData.mechanics?.[getMechanicName(state.value.battleData.battle_type)]);
 
   // setter/getter
-  const set = (data) => {
+  const set = (data: BattleState) => {
     let onCompleteHook: () => void = () => {};
 
     Object.keys(data).forEach((key) => {
-      if (key === "cleanAnswers" && data["cleanAnswers"]) {
+      if (key === "cleanAnswers" && data.cleanAnswers) {
         lastTaskId.value = null;
         answers.value = [];
       }
@@ -128,7 +128,7 @@ export const useBattleStore = defineStore("battle", () => {
       }
 
       // copy data to the key
-      state.value.battleData[key] = data[key];
+      state.value.battleData[key] = JSON.parse(JSON.stringify(data[key]));
     });
 
     // reset task index
@@ -151,13 +151,14 @@ export const useBattleStore = defineStore("battle", () => {
           const foundIdx = state.value.battleData[key].findIndex((storeItem) => storeItem.id === item.id);
 
           if (foundIdx != -1) {
-            state.value.battleData[key].splice(foundIdx, 1);
+            state.value.battleData[key].splice(foundIdx, 1, item);
+          } else {
+            console.warn(`expand: Warning - property does not exist, creating a new one`);
+            state.value.battleData[key].push(item);
           }
-
-          state.value.battleData[key].push(item);
         });
       } else {
-        console.error(`Error trying to expand battle store`);
+        console.error(`expand: Error - property not of type: array`);
       }
     });
     // console.log("expanded battle store:", state.value.battleData);
@@ -170,7 +171,7 @@ export const useBattleStore = defineStore("battle", () => {
 
     const callback = () => {
       stopTaskTimeout();
-      handleBattleAnswer({
+      handleAnswer({
         isCorrect: false,
         answerString: "",
         subtractEnergyAmount: 0,
@@ -246,11 +247,11 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   // answer handlers
-  const handleBattleAnswer = async ({ isCorrect, answerString, subtractEnergyAmount = 3, nextTaskDelay = 0 }: AnswerProps) => {
+  const handleAnswer = async ({ isCorrect, answerString, subtractEnergyAmount = 3, nextTaskDelay = 0 }: AnswerProps) => {
     if (currentBattleMode.value === "relax" && data.value.energy === 0) return;
 
     if (!currentTask.value) {
-      console.error(`Could not find current item: HandleBattleAnswer`);
+      console.error(`Could not find current item: handleAnswer`);
       return;
     }
 
@@ -477,7 +478,7 @@ export const useBattleStore = defineStore("battle", () => {
     expand,
     pauseBattle,
     resumeBattle,
-    handleBattleAnswer,
+    handleAnswer,
     changeMechanic,
     getMechanicName,
     startTaskTimeout,

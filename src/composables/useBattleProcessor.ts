@@ -33,8 +33,6 @@ export const useBattleProcessor = (battleData: BattleState) => {
   const storeAnswer = (answerString: string, msec?: number) => {
     const task = battleData.data.find((task) => task.id === taskIndex.value);
 
-    console.log(task);
-
     const foundIdx = answers.value.findIndex((answer) => answer.id === task!.id);
 
     if (foundIdx !== -1) {

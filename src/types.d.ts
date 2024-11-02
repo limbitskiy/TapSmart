@@ -66,6 +66,7 @@ export interface BattleState {
   boosters?: {
     [key: string]: Booster;
   };
+  cleanAnswers: boolean;
   battle_button_challenge?: {};
   battle_extra_mistake?: 1 | 0;
   energy?: number;

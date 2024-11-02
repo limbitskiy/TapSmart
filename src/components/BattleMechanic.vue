@@ -74,7 +74,7 @@ const store = useMainStore();
 // const { useFetch, redirectTo } = store;
 const { battles: locale } = storeToRefs(store.localeStore);
 const { data, сurrentMechanicName, currentTask, currentBattleMode, boostersUsed } = storeToRefs(store.battleStore);
-const { handleBattleAnswer } = store.battleStore;
+const { handleAnswer } = store.battleStore;
 
 const bonuses = ref<Bonus[]>([]);
 
@@ -97,7 +97,7 @@ const onAnswer = async ({ isCorrect, answer, event, drawBonus = true, nextTaskDe
   if (isCorrect && drawBonus) {
     drawBonusAnimation(event);
   }
-  handleBattleAnswer({ isCorrect, answerString: answer, nextTaskDelay });
+  handleAnswer({ isCorrect, answerString: answer, nextTaskDelay });
 
   emit("answer");
 };
