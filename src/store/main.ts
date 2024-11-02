@@ -447,8 +447,6 @@ export const useMainStore = defineStore("main", () => {
     showModal,
     takeHTMLSnapshot,
     createFinalImage,
-    makeSingleRequest,
-    customFetch,
     shareToStory,
   };
 });

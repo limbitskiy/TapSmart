@@ -9,9 +9,11 @@ import { Interval as BreakpointInterval, Timer as TaskTimer } from "@/common/int
 import { useDataStore } from "@/store/data";
 import { useMainStore } from "@/store/main";
 
+// composables
+import { waitFor } from "@/utils";
+
 // types
 import { BattleTypes, BattleState, AnswerProps } from "@/types";
-import { waitFor } from "@/utils";
 
 export const useBattleStore = defineStore("battle", () => {
   const dataStore = useDataStore();
@@ -24,6 +26,7 @@ export const useBattleStore = defineStore("battle", () => {
     4: "audio_question",
     5: "match_pairs",
     6: "work_on_mistakes",
+    // level detection
   };
 
   // callbacks
