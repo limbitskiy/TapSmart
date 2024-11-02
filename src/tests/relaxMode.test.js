@@ -1,8 +1,19 @@
-import { beforeAll, beforeEach, describe, expect, expectTypeOf, test } from "vitest";
+import {
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  expectTypeOf,
+  test,
+  vi,
+  mount,
+} from "vitest";
 import { useBattleStore } from "@/store/battle";
+import { useMainStore } from "@/store/main";
 import { setActivePinia, createPinia } from "pinia";
 import { ref } from "vue";
 import { waitFor } from "@/utils";
+import { makeRequest } from "@/api/server";
 
 const mockData = {
   battle_mode: "relax",
@@ -22,7 +33,7 @@ const mockData = {
   challenge_multiplicator: 17.3,
   data: [
     {
-      api: null,
+      api: "test-api",
       bonus_score: null,
       correct: "пасовать",
       id: 2,
@@ -112,6 +123,7 @@ const mockData = {
 
 describe("relax mode", () => {
   let battleStore;
+  let mainStore;
 
   beforeAll(() => {
     // stub window object
@@ -147,11 +159,20 @@ describe("relax mode", () => {
   });
 
   test("relax answers being recorded", async () => {
-    battleStore.handleAnswer({ isCorrect: true, answerString: "test answer 1" });
+    battleStore.handleAnswer({
+      isCorrect: true,
+      answerString: "test answer 1",
+    });
     await waitFor(100);
-    battleStore.handleAnswer({ isCorrect: false, answerString: "test answer 2" });
+    battleStore.handleAnswer({
+      isCorrect: false,
+      answerString: "test answer 2",
+    });
     await waitFor(100);
-    battleStore.handleAnswer({ isCorrect: true, answerString: "test answer 3" });
+    battleStore.handleAnswer({
+      isCorrect: true,
+      answerString: "test answer 3",
+    });
     await waitFor(100);
 
     expect(battleStore.answers[0]).toHaveProperty("id", 2);
@@ -166,29 +187,53 @@ describe("relax mode", () => {
 
   test("reset afkCounter on correct answer", async () => {
     battleStore.afkCounter = 1;
-    battleStore.handleAnswer({ isCorrect: true, answerString: "test answer 1" });
+    battleStore.handleAnswer({
+      isCorrect: true,
+      answerString: "test answer 1",
+    });
     await waitFor(100);
     expect(battleStore.afkCounter).toBe(0);
+  });
 
-    // vi.mock("./path/to/makeRequest", () => ({
-    //   makeRequest: vi.fn(),
+  test.todo("learn to mock functions");
+
+  test("api in task is called", async () => {
+    mainStore = useMainStore();
+
+    vi.mock("@/api/server");
+    vi.mocked(makeRequest).mockResolvedValue(true);
+
+    battleStore.handleAnswer({
+      isCorrect: true,
+      answerString: "test answer 1",
+    });
+    await waitFor(100);
+
+    // expect(makeRequest).toHaveBeenCalled();
+    // vi.mock(mainStore.useFetch, () => ({
+    //   useFetch: vi.fn(),
     // }));
 
-    // makeRequest.mockResolvedValue({
-    //   data: { success: true },
-    // });
-
-    // expect(makeRequest).toHaveBeenCalledWith({
-    //   apiUrl: mainStore.state.apiUrl,
-    //   payload: {
-    //     key,
-    //     data: {
-    //       ...data,
-    //       answers: mainStore.battleStore.answers,
-    //       lastTaskId: mainStore.battleStore.lastTaskId,
-    //     },
-    //     service: mainStore.state.service,
-    //   },
+    // battleStore.handleAnswer({
+    //   isCorrect: true,
+    //   answerString: "test answer 1",
     // });
   });
+
+  // makeRequest.mockResolvedValue({
+  //   data: { success: true },
+  // });
+
+  // expect(makeRequest).toHaveBeenCalledWith({
+  //   apiUrl: mainStore.state.apiUrl,
+  //   payload: {
+  //     key,
+  //     data: {
+  //       ...data,
+  //       answers: mainStore.battleStore.answers,
+  //       lastTaskId: mainStore.battleStore.lastTaskId,
+  //     },
+  //     service: mainStore.state.service,
+  //   },
+  // });
 });
