@@ -49,6 +49,12 @@ export const useBattleStore = defineStore("battle", () => {
     return;
   };
 
+  // settings
+  const settings = {
+    energyOnCorrect: 1,
+    energyOnWrong: -3,
+  };
+
   const lastTaskId = ref<number | null>(null);
   const correctStreak = ref(0);
 
@@ -172,11 +178,8 @@ export const useBattleStore = defineStore("battle", () => {
     const callback = () => {
       stopTaskTimeout();
       handleAnswer({
-        isCorrect: false,
-        answerString: "",
-        subtractEnergyAmount: 0,
+        autoAnswer: true,
       });
-      afkCounter.value += 1;
     };
 
     const taskTimeout = new TaskTimer(currentMechanic.value?.timeout, callback);
@@ -247,12 +250,18 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   // answer handlers
-  const handleAnswer = async ({ isCorrect, answerString, subtractEnergyAmount = 3, nextTaskDelay = 0 }: AnswerProps) => {
+  const handleAnswer = async ({ isCorrect, answerString, autoAnswer = false, nextTaskDelay = 0 }: AnswerProps) => {
     if (currentBattleMode.value === "relax" && data.value.energy === 0) return;
 
     if (!currentTask.value) {
       console.error(`Could not find current item: handleAnswer`);
       return;
+    }
+
+    if (autoAnswer) {
+      isCorrect = false;
+      answerString = "";
+      afkCounter.value += 1;
     }
 
     // make a task copy because computed will show false when pauseCurrentTask is true
@@ -285,10 +294,10 @@ export const useBattleStore = defineStore("battle", () => {
         const multiplier = calculateRelaxMultiplierAmount();
         correctStreak.value += 1;
         dataStore.addBolts(multiplier);
-        addEnergy(1);
+        addEnergy(settings.energyOnCorrect);
       } else {
-        if (subtractEnergyAmount) {
-          addEnergy(-subtractEnergyAmount);
+        if (!autoAnswer) {
+          addEnergy(settings.energyOnWrong);
         }
         mainStore.onVibrate("wrong");
         correctStreak.value = 0;

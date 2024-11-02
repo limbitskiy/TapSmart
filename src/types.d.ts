@@ -162,9 +162,9 @@ export type LocaleEntry = {
   [key: string]: string;
 };
 export interface AnswerProps {
-  isCorrect: boolean;
-  answerString: string;
-  subtractEnergyAmount?: number;
+  isCorrect?: boolean;
+  answerString?: string;
+  autoAnswer?: boolean;
   nextTaskDelay?: number;
 }
 
