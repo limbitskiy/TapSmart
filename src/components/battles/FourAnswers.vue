@@ -26,7 +26,7 @@
           <div class="task-content grid grid-rows-[80px_auto] flex-1 justify-items-center px-2">
             <div class="task-title-cnt flex flex-col justify-center">
               <Pill class="rounded-xl bg-transparent">
-                <span v-if="!task.settings?.isAds" class="question-title text-center text-[var(--accent-color)]">{{
+                <span v-if="!task?.settings?.isAds" class="question-title text-center text-[var(--accent-color)]">{{
                   locales?.["mechanics_2_task"] || "Is this translation correct??"
                 }}</span>
               </Pill>
@@ -36,7 +36,7 @@
               <Transition name="fade" mode="out-in">
                 <div v-if="task" :key="task?.task?.question" class="flex flex-col gap-2 items-center text-center break-words">
                   <div class="question-cnt max-w-[calc(100dvw-5rem)] mb-10">
-                    <span class="fira-condensed-black line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)" :style="task.settings?.style?.question"
+                    <span class="fira-condensed-black line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)" :style="task?.settings?.style?.question"
                       >{{ task?.task?.question }}
                     </span>
                   </div>
@@ -131,6 +131,7 @@ const emit = defineEmits<{
       event: MouseEvent;
       task: Task;
       drawBonus: boolean;
+      nextTaskDelay: number;
     }
   ];
   changeMech: [];
