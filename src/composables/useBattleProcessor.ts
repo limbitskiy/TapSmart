@@ -37,6 +37,7 @@ export const useBattleProcessor = (battleData: BattleState) => {
 
     if (foundIdx !== -1) {
       answers.value[foundIdx] = {
+        id: task.id,
         key: task.key,
         answer: answerString,
         msec,

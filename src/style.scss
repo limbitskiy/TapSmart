@@ -152,17 +152,21 @@
 .yesno-btn.correct {
   // transition: background-color 0.2s ease;
   // animation: greenFade 0.3s ease !important;
-  background-color: var(--green-color);
+  // background-color: var(--green-color);
+  background: linear-gradient(180deg, #098af5 0%, #0d75d4 100%) !important;
+  box-shadow: 0px 0px 85px 5px rgba(0, 137, 249, 0.9);
 }
 
 .yesno-btn.wrong {
   // transition: background-color 0.2s ease;
   // animation: redFade 0.3s ease !important;
-  background-color: var(--red-color);
+  // background-color: var(--red-color);
+  background: linear-gradient(180deg, #ef0a07 0%, #a70401 100%) !important;
+  box-shadow: 0px 0px 85px 5px rgba(167, 4, 1, 0.9);
 }
 
 .four-answer-btn {
-  @apply w-full !text-base bg-[var(--grey-light)] text-white h-[68px] overflow-hidden text-ellipsis px-4 leading-5;
+  @apply w-full !text-base text-white h-[68px] overflow-hidden text-ellipsis px-4 leading-5;
 
   position: relative;
 
@@ -171,15 +175,19 @@
   }
 
   &.correct {
-    transition: background-color 0.3s ease;
+    // transition: background-color 0.3s ease;
     // animation: greenFade 1s ease !important;
-    background-color: var(--green-color);
+    // background-color: var(--green-color);
+    background: linear-gradient(180deg, #098af5 0%, #0d75d4 100%) !important;
+    box-shadow: 0px 0px 85px 5px rgba(0, 137, 249, 0.9);
   }
 
   &.wrong {
-    transition: background-color 0.3s ease;
+    // transition: background-color 0.3s ease;
     // animation: redFade 1s ease !important;
-    background-color: var(--red-color);
+    // background-color: var(--red-color);
+    background: linear-gradient(180deg, #ef0a07 0%, #a70401 100%) !important;
+    box-shadow: 0px 0px 85px 5px rgba(167, 4, 1, 0.9);
   }
 }
 

@@ -124,7 +124,7 @@ export const useMainStore = defineStore("main", () => {
       hideNotification();
 
       setTimeout(() => {
-        showNotification({ title, subtitle, buttons, timeout });
+        // showNotification({ title, subtitle, buttons, timeout });
       }, 500);
       return;
     }

@@ -4,7 +4,7 @@
     <Button
       ref="challengeBtnRef"
       activeColor="#fcdcb0"
-      class="flex-1 py-4 !px-2 relative bg-gradient-to-b from-[#FEAC3E] to-[#da8f26]"
+      class="flex-1 py-4 !px-2 relative bg-gradient-to-b from-[#DC9739] to-[#FFAE00]"
       :disabled="data.button_challenge?.disabled"
       @click="onClick"
       ><div class="flex justify-center gap-2">

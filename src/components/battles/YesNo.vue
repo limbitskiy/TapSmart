@@ -1,7 +1,12 @@
 <template>
   <div class="battle-body flex-1 flex flex-col">
     <!-- task -->
-    <BackgroundPill class="flex-1 !p-4 z-10 rounded-[15px] relative overflow-hidden" style="background: linear-gradient(180deg, #363636 0%, #272727 100%)" dark>
+
+    <BackgroundPill
+      class="flex-1 !p-4 z-10 rounded-[25px] relative overflow-hidden border border-[#185a8d]"
+      style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.4) 100%)"
+      dark
+    >
       <div class="flex-1 grid grid-flow-row grid-rows-[auto_2fr_1fr]">
         <!-- task header -->
         <div class="header flex items-center justify-between mb-4">
@@ -69,32 +74,36 @@
         ></div> -->
 
         <!-- buttons -->
+
         <div class="answer-buttons flex gap-4 justify-evenly mt-4 z-10">
           <Button
             :disabled="type === 'relax' && energy <= 0"
-            class="yesno-btn flex !p-0 !w-[90px] !h-[90px] justify-center bg-[var(--grey-light)] items-center text-white uppercase"
+            class="yesno-btn flex !p-0 !w-[90px] !h-[90px] !rounded-[25px] justify-center items-center text-white uppercase"
             :class="{
               correct: noBtnAnimation === 'correct',
               wrong: noBtnAnimation === 'wrong',
             }"
+            style="background: linear-gradient(180deg, rgba(4, 4, 4, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%); transition: 0.2s"
             @click="(event) => handleAnswer(task?.task?.variants[1], event, task, 'no')"
           >
-            <svg width="37" height="37" viewBox="0 0 37 37" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3 3L34 34" stroke="white" stroke-width="5" stroke-linecap="round" />
-              <path d="M34 3L3 34" stroke="white" stroke-width="5" stroke-linecap="round" />
+            <svg width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M28 3L3 28" stroke="white" stroke-width="5" stroke-linecap="round" />
+              <path d="M3 3L28 28" stroke="white" stroke-width="5" stroke-linecap="round" />
             </svg>
           </Button>
+
           <Button
             :disabled="type === 'relax' && energy <= 0"
-            class="yesno-btn flex !p-0 !w-[90px] !h-[90px] justify-center bg-[var(--grey-light)] items-center text-white uppercase"
+            class="yesno-btn flex !p-0 !w-[90px] !h-[90px] !rounded-[25px] justify-center items-center text-white uppercase"
             :class="{
               correct: yesBtnAnimation === 'correct',
               wrong: yesBtnAnimation === 'wrong',
             }"
+            style="background: linear-gradient(180deg, rgba(4, 4, 4, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%); transition: 0.2s"
             @click="(event) => handleAnswer(task?.task?.variants[0], event, task, 'yes')"
           >
-            <svg width="41" height="31" viewBox="0 0 41 31" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3 15L14.3235 27L38 3" stroke="white" stroke-width="5" stroke-linecap="round" />
+            <svg width="36" height="29" viewBox="0 0 36 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 13.6071L14.6883 25L33 3" stroke="white" stroke-width="5" stroke-linecap="round" />
             </svg>
           </Button>
         </div>

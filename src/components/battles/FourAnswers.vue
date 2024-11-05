@@ -1,7 +1,11 @@
 <template>
   <div class="battle-body flex-1 flex flex-col">
     <!-- task body -->
-    <BackgroundPill class="flex-1 !p-4 z-10 rounded-[15px] relative overflow-hidden" style="background: linear-gradient(180deg, #363636 0%, #272727 100%)" dark>
+    <BackgroundPill
+      class="flex-1 !p-4 z-10 rounded-[25px] relative overflow-hidden border border-[#185a8d]"
+      style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.4) 100%)"
+      dark
+    >
       <div class="flex-1 grid grid-rows-[60px_auto_150px]">
         <!-- task header -->
         <div class="header flex items-center justify-between mb-4">
@@ -51,6 +55,7 @@
               correct: btnAnimation[0] === 'correct',
               wrong: btnAnimation[0] === 'wrong',
             }"
+            style="background: linear-gradient(180deg, rgba(4, 4, 4, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%); transition: 0.2s"
             @click="(event) => handleAnswer(task?.task?.variants[0], event, task, 0)"
           >
             {{ buttonValues[0] }}
@@ -62,6 +67,7 @@
               correct: btnAnimation[1] === 'correct',
               wrong: btnAnimation[1] === 'wrong',
             }"
+            style="background: linear-gradient(180deg, rgba(4, 4, 4, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%); transition: 0.2s"
             @click="(event) => handleAnswer(task?.task?.variants[1], event, task, 1)"
           >
             {{ buttonValues[1] }}
@@ -73,6 +79,7 @@
               correct: btnAnimation[2] === 'correct',
               wrong: btnAnimation[2] === 'wrong',
             }"
+            style="background: linear-gradient(180deg, rgba(4, 4, 4, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%); transition: 0.2s"
             @click="(event) => handleAnswer(task?.task?.variants[2], event, task, 2)"
           >
             {{ buttonValues[2] }}
@@ -84,6 +91,7 @@
               correct: btnAnimation[3] === 'correct',
               wrong: btnAnimation[3] === 'wrong',
             }"
+            style="background: linear-gradient(180deg, rgba(4, 4, 4, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%); transition: 0.2s"
             @click="(event) => handleAnswer(task?.task?.variants[3], event, task, 3)"
           >
             {{ buttonValues[3] }}

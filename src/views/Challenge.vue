@@ -6,7 +6,7 @@
 
     <div class="challenge-main flex-1 overflow-y-auto overflow-x-hidden flex flex-col gap-2 relative">
       <!-- bg pattern & color -->
-      <BackgroundImage type="red" />
+      <BackgroundImage />
 
       <BattleStartAnimation v-if="showStartChallengeAnimation" />
 
@@ -53,6 +53,7 @@ console.log(`challenge created`);
 
 const store = useMainStore();
 
+const { bgColor } = storeToRefs(store);
 const { fetchChallengePageData, redirectTo, takeHTMLSnapshot } = store;
 const { startChallenge, stopChallenge } = store.battleStore;
 const { data, challengeScore } = storeToRefs(store.battleStore);
@@ -81,6 +82,8 @@ const playerPosition = computed(() => {
 let needToMakeScreenshot = false;
 
 const progressBarValue = computed(() => ((data.value?.["battle_duration"] - challengeTimer.value) * 100) / data.value?.["battle_duration"]);
+
+bgColor.value = "linear-gradient(180deg, #000B14 17.5%, #A90306 100%)";
 
 await fetchChallengePageData();
 

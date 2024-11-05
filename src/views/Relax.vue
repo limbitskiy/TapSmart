@@ -1,7 +1,7 @@
 <template>
   <div id="relax" class="p-4 flex-1 flex flex-col gap-2 overflow-hidden">
     <!-- bg image -->
-    <BackgroundImage type="blue" />
+    <BackgroundImage />
 
     <!-- create gif button -->
     <!-- <Button class="z-10" @click="() => $router.push('/gif-creator')">Create gif</Button> -->
@@ -36,11 +36,11 @@
     </Teleport>
 
     <!-- afk modal -->
-    <Teleport to="#modals">
+    <!-- <Teleport to="#modals">
       <Modal id="afk-modal" v-model:visible="isAFKModalVisible" sticky>
         <AFK @close="onAfkModalClose" />
       </Modal>
-    </Teleport>
+    </Teleport> -->
   </div>
 </template>
 
