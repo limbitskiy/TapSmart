@@ -61,20 +61,7 @@
           </div>
         </div>
 
-        <!-- button press animations -->
-        <!-- <div
-          class="no-btn-pulse absolute bottom-5 rounded-full left-[75px] h-10 w-10 z-[10]"
-          :class="{ pulse: noBtnAnimation.shown }"
-          :style="noBtnAnimation.color === 'red' ? 'background-color: rgb(239 68 68)' : noBtnAnimation.color === 'green' ? 'background-color: rgb(34 197 94)' : ''"
-        ></div>
-        <div
-          class="yes-btn-pulse absolute bottom-5 rounded-full right-10 h-10 w-10 z-[-1]"
-          :class="{ pulse: yesBtnAnimation.shown }"
-          :style="yesBtnAnimation.color === 'red' ? 'background-color: rgb(239 68 68)' : yesBtnAnimation.color === 'green' ? 'background-color: rgb(34 197 94)' : ''"
-        ></div> -->
-
         <!-- buttons -->
-
         <div class="answer-buttons flex gap-4 justify-evenly mt-4 z-10">
           <Button
             :disabled="type === 'relax' && energy <= 0"
@@ -111,7 +98,10 @@
         <!-- correct answer -->
         <Transition name="correct-text" mode="out-in">
           <div v-if="correctAnswer.shown" class="correct-answer absolute z-20 inset-0 grid place-items-center pointer-events-none mb-16">
-            <div class="flex flex-col items-center justify-center text-center overflow-x-hidden break-words">
+            <div
+              class="flex flex-col items-center justify-center text-center overflow-x-hidden break-words rounded-[15px] border border-[#B60502] p-4 min-w-[70vw]"
+              style="background: linear-gradient(180deg, #000000 0%, #b7150f 100%)"
+            >
               <div class="max-w-[calc(100dvw-5rem)]">
                 <span class="fira-condensed-black text-red-500 line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)">{{ correctAnswer.question }} </span>
               </div>
