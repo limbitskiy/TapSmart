@@ -46,7 +46,7 @@ import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 
 // types
-import { Bonus } from "@/types";
+import { Bonus, Task } from "@/types";
 
 // stores
 import { useMainStore } from "@/store/main";
@@ -65,7 +65,8 @@ interface AnswerProps {
 }
 
 const emit = defineEmits<{
-  answer: [];
+  answer: [payload: {}];
+  startChallenge: [];
   changeMech: [];
 }>();
 
@@ -97,9 +98,18 @@ const onAnswer = async ({ isCorrect, answer, event, drawBonus = true, task, next
   if (isCorrect && drawBonus) {
     drawBonusAnimation(event);
   }
-  handleAnswer({ isCorrect, answerString: answer, nextTaskDelay, task });
 
-  emit("answer");
+  if (task.settings?.isAds && task.api) {
+    const res = await handleAnswer({ isCorrect, answerString: answer, nextTaskDelay, task });
+
+    if (res.action === "start-challenge") {
+      emit("startChallenge");
+    }
+  } else {
+    handleAnswer({ isCorrect, answerString: answer, nextTaskDelay, task });
+  }
+
+  emit("answer", { isCorrect, answerString: answer, nextTaskDelay, task });
 };
 
 const drawBonusAnimation = ({ x, y }: { x: number; y: number }) => {

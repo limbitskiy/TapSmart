@@ -279,6 +279,8 @@ export const useBattleStore = defineStore("battle", () => {
 
     pauseCurrentTask.value = true;
 
+    let returnData;
+
     // in a relax battle
     if (currentBattleMode.value === "relax" && !thisTask.settings?.isAds) {
       // store answer
@@ -328,7 +330,7 @@ export const useBattleStore = defineStore("battle", () => {
       }
     } else if (thisTask.settings?.isAds) {
       mainStore.bgColor = "linear-gradient(180deg, #000B14 17.5%, #035DA9 100%)";
-      await mainStore.useFetch({ key: thisTask.api });
+      returnData = await mainStore.useFetch({ key: thisTask.api });
     }
 
     if (nextTaskDelay) {
@@ -354,6 +356,8 @@ export const useBattleStore = defineStore("battle", () => {
     }
 
     startTaskTimeout(externalTimeout);
+
+    return returnData;
   };
 
   // mechanic

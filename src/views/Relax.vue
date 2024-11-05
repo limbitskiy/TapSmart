@@ -12,7 +12,7 @@
     <ChallengeButton @challenge="openBoosterModal" />
 
     <!-- battle mechanic -->
-    <BattleMechanic @changeMech="onChangeMech" />
+    <BattleMechanic @changeMech="onChangeMech" @answer="onAnswer" @startChallenge="openBoosterModal" />
 
     <!-- mechanic change modal -->
     <Teleport to="#modals">
@@ -74,6 +74,11 @@ bgColor.value = "linear-gradient(180deg, #000B14 17.5%, #035DA9 100%)";
 await fetchRelaxPageData();
 
 const isAFKModalVisible = computed(() => afkCounter.value >= 3);
+
+const onAnswer = ({ isCorrect, answerString, nextTaskDelay, task }) => {
+  // console.log(task);
+  // console.log(answerString);
+};
 
 // watch opened modals
 watch([isChangeMechModalVisible, isNoEnergyVisible, isBoostersModalVisible, isAFKModalVisible], (val) => {

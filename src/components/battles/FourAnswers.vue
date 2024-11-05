@@ -173,8 +173,6 @@ const handleAnswer = (answer: string, event, task: Task, btnId: number) => {
 
   let taskDelay = settings.correctTaskDelay;
 
-  console.log(task);
-
   if (isCorrect && !task.settings?.isAds) {
     btnAnimation.value[btnId] = "correct";
     setTimeout(() => {
