@@ -46,6 +46,7 @@ export const images = {
   times: "/times.png",
   vs: "/vs.png",
   battle_bg: "/battle_bg.png",
+  tapsmart_title: "/tapsmart_title.png",
   battle_results_final: "/battle_results_final.png",
   status_completed: "/status_completed.png",
   subscribe_telegram: "/subscribe_telegram.png",

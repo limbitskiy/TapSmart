@@ -36,11 +36,11 @@
     </Teleport>
 
     <!-- afk modal -->
-    <!-- <Teleport to="#modals">
+    <Teleport to="#modals">
       <Modal id="afk-modal" v-model:visible="isAFKModalVisible" sticky>
         <AFK @close="onAfkModalClose" />
       </Modal>
-    </Teleport> -->
+    </Teleport>
   </div>
 </template>
 
