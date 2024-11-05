@@ -330,6 +330,8 @@ export const useBattleStore = defineStore("battle", () => {
       }
     } else if (thisTask.settings?.isAds) {
       mainStore.bgColor = "linear-gradient(180deg, #000B14 17.5%, #035DA9 100%)";
+      storeAnswer(answerString);
+      afkCounter.value = 0;
       returnData = await mainStore.useFetch({ key: thisTask.api });
     }
 
