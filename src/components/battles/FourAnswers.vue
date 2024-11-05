@@ -22,7 +22,9 @@
           <div class="task-content grid grid-rows-[80px_auto] flex-1 justify-items-center px-2">
             <div class="task-title-cnt flex flex-col justify-center">
               <Pill class="rounded-xl bg-transparent">
-                <span class="question-title text-center text-[var(--accent-color)]">{{ locales?.["mechanics_2_task"] || "Is this translation correct??" }}</span>
+                <span v-if="!task.settings?.isAds" class="question-title text-center text-[var(--accent-color)]">{{
+                  locales?.["mechanics_2_task"] || "Is this translation correct??"
+                }}</span>
               </Pill>
             </div>
 
@@ -30,7 +32,9 @@
               <Transition name="fade" mode="out-in">
                 <div v-if="task" :key="task?.task?.question" class="flex flex-col gap-2 items-center text-center break-words">
                   <div class="question-cnt max-w-[calc(100dvw-5rem)] mb-10">
-                    <span class="fira-condensed-black line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)">{{ task?.task?.question }} </span>
+                    <span class="fira-condensed-black line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)" :style="task.settings?.style?.question"
+                      >{{ task?.task?.question }}
+                    </span>
                   </div>
                 </div>
               </Transition>
@@ -47,7 +51,7 @@
               correct: btnAnimation[0] === 'correct',
               wrong: btnAnimation[0] === 'wrong',
             }"
-            @click="(event) => handleAnswer(task?.task?.variants[0], event, 0)"
+            @click="(event) => handleAnswer(task?.task?.variants[0], event, task, 0)"
           >
             {{ buttonValues[0] }}
           </Button>
@@ -58,7 +62,7 @@
               correct: btnAnimation[1] === 'correct',
               wrong: btnAnimation[1] === 'wrong',
             }"
-            @click="(event) => handleAnswer(task?.task?.variants[1], event, 1)"
+            @click="(event) => handleAnswer(task?.task?.variants[1], event, task, 1)"
           >
             {{ buttonValues[1] }}
           </Button>
@@ -69,7 +73,7 @@
               correct: btnAnimation[2] === 'correct',
               wrong: btnAnimation[2] === 'wrong',
             }"
-            @click="(event) => handleAnswer(task?.task?.variants[2], event, 2)"
+            @click="(event) => handleAnswer(task?.task?.variants[2], event, task, 2)"
           >
             {{ buttonValues[2] }}
           </Button>
@@ -80,7 +84,7 @@
               correct: btnAnimation[3] === 'correct',
               wrong: btnAnimation[3] === 'wrong',
             }"
-            @click="(event) => handleAnswer(task?.task?.variants[3], event, 3)"
+            @click="(event) => handleAnswer(task?.task?.variants[3], event, task, 3)"
           >
             {{ buttonValues[3] }}
           </Button>
@@ -109,6 +113,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from "vue";
 import { getAsset } from "@/utils";
+import { Task } from "@/types";
 
 const emit = defineEmits<{
   answer: [
@@ -116,6 +121,7 @@ const emit = defineEmits<{
       isCorrect: boolean;
       answer: string;
       event: MouseEvent;
+      task: Task;
       drawBonus: boolean;
     }
   ];
@@ -130,12 +136,6 @@ const props = defineProps<{
   buttonsBlocked: boolean;
 }>();
 
-const answerAnimation = ref({
-  shown: false,
-  color: null,
-  coords: { x: null, y: null },
-});
-
 const buttonValues = ref({
   0: props.task?.task?.variants[0],
   1: props.task?.task?.variants[1],
@@ -143,7 +143,6 @@ const buttonValues = ref({
   3: props.task?.task?.variants[3],
 });
 
-const pillRef = ref();
 const correctAnswer = ref({
   shown: false,
   question: "",
@@ -167,26 +166,28 @@ const settings = {
 
 console.log(`4answers created`);
 
-const handleAnswer = (answer: string, event, btnId: number) => {
+const handleAnswer = (answer: string, event, task: Task, btnId: number) => {
   if ((props.type === "relax" && props.energy <= 0) || !props.task) return;
 
   const isCorrect = answer === props.task.correct;
 
   let taskDelay = settings.correctTaskDelay;
 
-  if (isCorrect) {
+  console.log(task);
+
+  if (isCorrect && !task.settings?.isAds) {
     btnAnimation.value[btnId] = "correct";
     setTimeout(() => {
       btnAnimation.value[btnId] = null;
     }, settings.yesBtnDelay);
-  } else {
+  } else if (!isCorrect && !task.settings?.isAds) {
     btnAnimation.value[btnId] = "wrong";
     setTimeout(() => {
       btnAnimation.value[btnId] = null;
     }, settings.noBtnDelay);
   }
 
-  if (props.type === "relax" && !isCorrect) {
+  if (props.type === "relax" && !isCorrect && !task.settings?.isAds) {
     // wrong answer in relax mode creates a 2s delay
     taskDelay = settings.wrongTaskDelay;
 
@@ -209,6 +210,7 @@ const handleAnswer = (answer: string, event, btnId: number) => {
     answer,
     event,
     drawBonus: true,
+    task,
     nextTaskDelay: taskDelay,
   });
 };

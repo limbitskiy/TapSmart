@@ -64,6 +64,7 @@ export const useMainStore = defineStore("main", () => {
 
   const requestPending = ref(false);
   const requestQueue = ref([]);
+  const bgColor = ref(null);
 
   const HTMLSnapshots = ref<string[]>([]);
 
@@ -422,6 +423,7 @@ export const useMainStore = defineStore("main", () => {
     modal,
     debugMessages,
     HTMLSnapshots,
+    bgColor,
     startApp,
     fetchFriendsList,
     getOnlineFriends,

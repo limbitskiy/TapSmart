@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 import { useScreenSafeArea } from "@vueuse/core";
@@ -60,7 +60,17 @@ const getBadge = (menuItemId: number) => {
   return data.value?.badges?.find((badge) => badge.id == menuItemId);
 };
 
-onMounted(() => {
+const setActiveSelectorWidth = () => {
   elementWidth.value = stripeRef.value?.getBoundingClientRect()?.width;
+};
+
+onMounted(() => {
+  setActiveSelectorWidth();
+
+  addEventListener("resize", setActiveSelectorWidth);
+});
+
+onUnmounted(() => {
+  removeEventListener("resize", setActiveSelectorWidth);
 });
 </script>

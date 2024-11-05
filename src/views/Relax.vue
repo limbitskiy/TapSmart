@@ -1,5 +1,5 @@
 <template>
-  <div id="relax" class="p-4 flex-1 flex flex-col gap-2">
+  <div id="relax" class="p-4 flex-1 flex flex-col gap-2 overflow-hidden">
     <!-- bg image -->
     <BackgroundImage type="blue" />
 
@@ -59,7 +59,7 @@ console.log(`relax created`);
 const store = useMainStore();
 
 const { fetchRelaxPageData } = store;
-const { debugMessages } = storeToRefs(store);
+const { debugMessages, bgColor } = storeToRefs(store);
 const { battles: locale } = storeToRefs(store.localeStore);
 const { data, afkCounter } = storeToRefs(store.battleStore);
 const { startRelax, stopRelax, setRelaxModal } = store.battleStore;
@@ -69,6 +69,7 @@ const isNoEnergyVisible = ref(false);
 const isBoostersModalVisible = ref(false);
 
 setThemeColor("#222");
+bgColor.value = "linear-gradient(180deg, #000B14 17.5%, #035DA9 100%)";
 
 await fetchRelaxPageData();
 

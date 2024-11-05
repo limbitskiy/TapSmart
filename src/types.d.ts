@@ -142,6 +142,16 @@ export type Task = {
     variants: string[];
   };
   api?: string;
+  settings?: {
+    isAds: boolean;
+    wait: boolean;
+    timeout?: number;
+    style: {
+      question?: {};
+      answer?: {};
+      background?: string;
+    };
+  };
 };
 
 export type Mechanic = {

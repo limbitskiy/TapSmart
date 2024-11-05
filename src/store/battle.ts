@@ -14,6 +14,7 @@ import { waitFor } from "@/utils";
 
 // types
 import { BattleTypes, BattleState, AnswerProps } from "@/types";
+import { useFetch } from "@vueuse/core";
 
 export const useBattleStore = defineStore("battle", () => {
   const dataStore = useDataStore();
@@ -171,7 +172,7 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   // breakpoints/timers
-  const startTaskTimeout = () => {
+  const startTaskTimeout = (externalTimeout?: number) => {
     if (!currentMechanic.value?.timeout || currentTaskTimeout.value || !data?.value?.energy || afkCounter.value >= 3) return;
     // console.log(`starting task timeout`);
 
@@ -182,7 +183,7 @@ export const useBattleStore = defineStore("battle", () => {
       });
     };
 
-    const taskTimeout = new TaskTimer(currentMechanic.value?.timeout, callback);
+    const taskTimeout = new TaskTimer(externalTimeout ?? currentMechanic.value?.timeout, callback);
     currentTaskTimeout.value = taskTimeout;
     currentTaskTimeout.value.start();
   };
@@ -250,7 +251,7 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   // answer handlers
-  const handleAnswer = async ({ isCorrect, answerString, autoAnswer = false, nextTaskDelay = 0 }: AnswerProps) => {
+  const handleAnswer = async ({ isCorrect, answerString, autoAnswer = false, nextTaskDelay = 0, task }: AnswerProps) => {
     if (currentBattleMode.value === "relax" && data.value.energy === 0) return;
 
     if (!currentTask.value) {
@@ -279,7 +280,7 @@ export const useBattleStore = defineStore("battle", () => {
     pauseCurrentTask.value = true;
 
     // in a relax battle
-    if (currentBattleMode.value === "relax") {
+    if (currentBattleMode.value === "relax" && !thisTask.settings?.isAds) {
       // store answer
       storeAnswer(answerString);
 
@@ -304,7 +305,7 @@ export const useBattleStore = defineStore("battle", () => {
       }
 
       // in a challenge battle
-    } else if (currentBattleMode.value === "challenge") {
+    } else if (currentBattleMode.value === "challenge" && !thisTask.settings?.isAds) {
       let msec;
 
       if (battleStartTime) {
@@ -325,6 +326,9 @@ export const useBattleStore = defineStore("battle", () => {
         }
         mainStore.onVibrate("wrong");
       }
+    } else if (thisTask.settings?.isAds) {
+      mainStore.bgColor = "linear-gradient(180deg, #000B14 17.5%, #035DA9 100%)";
+      await mainStore.useFetch({ key: thisTask.api });
     }
 
     if (nextTaskDelay) {
@@ -339,7 +343,17 @@ export const useBattleStore = defineStore("battle", () => {
       state.value.battleData.questions_left -= 1;
     }
 
-    startTaskTimeout();
+    let externalTimeout;
+
+    if (currentTask.value?.settings?.wait) {
+      if (currentTask.value.settings.style?.background) {
+        mainStore.bgColor = currentTask.value.settings.style.background;
+      }
+      externalTimeout = currentTask.value?.settings?.timeout;
+      console.log(`starting external timeout: ${currentTask.value?.settings?.timeout}`);
+    }
+
+    startTaskTimeout(externalTimeout);
   };
 
   // mechanic

@@ -93,11 +93,11 @@ const buttonsBlocked = ref(false);
 
 const mountedMechanic = computed(() => mechMap[сurrentMechanicName.value]);
 
-const onAnswer = async ({ isCorrect, answer, event, drawBonus = true, nextTaskDelay }: AnswerProps) => {
+const onAnswer = async ({ isCorrect, answer, event, drawBonus = true, task, nextTaskDelay }: AnswerProps) => {
   if (isCorrect && drawBonus) {
     drawBonusAnimation(event);
   }
-  handleAnswer({ isCorrect, answerString: answer, nextTaskDelay });
+  handleAnswer({ isCorrect, answerString: answer, nextTaskDelay, task });
 
   emit("answer");
 };

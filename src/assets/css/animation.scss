@@ -203,7 +203,7 @@
   animation: 1s ease-in bounceInDown;
 }
 .toast-slide-leave-active {
-  animation: 1s ease-out bounceOutUpShort;
+  animation: 0.3s ease-out fadeOut;
 }
 
 // .toast-slide-enter-from,

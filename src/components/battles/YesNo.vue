@@ -22,16 +22,20 @@
           <div class="task-content grid grid-rows-[60px_auto] flex-1 justify-items-center px-2">
             <div class="task-title-cnt flex flex-col justify-center">
               <Pill class="rounded-xl bg-transparent">
-                <span class="question-title text-center text-[var(--accent-color)]">{{ locales?.["mechanics_1_task"] || "Is this translation correct??" }}</span>
+                <span v-if="!task.settings?.isAds" class="question-title text-center text-[var(--accent-color)]">{{
+                  locales?.["mechanics_1_task"] || "Is this translation correct??"
+                }}</span>
               </Pill>
             </div>
 
             <div class="slide-cnt flex flex-col justify-center">
               <!-- question card -->
               <Transition name="fade" mode="out-in">
-                <div v-if="task" :key="task?.task?.question" class="flex flex-col gap-2 items-center text-center break-words">
+                <div v-if="task" :key="task.task?.question" class="flex flex-col gap-2 items-center text-center break-words">
                   <div class="question-cnt max-w-[calc(100dvw-5rem)]">
-                    <span class="fira-condensed-black line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)">{{ task?.task?.question }} </span>
+                    <span class="fira-condensed-black line-clamp-2" style="font-size: clamp(28px, 10vw, 38px)" :style="task.settings?.style?.question"
+                      >{{ task?.task?.question }}
+                    </span>
                   </div>
                   <div class="arrow">
                     <svg width="16" height="26" viewBox="0 0 16 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -42,7 +46,9 @@
                     </svg>
                   </div>
                   <div class="question-cnt max-w-[calc(100dvw-5rem)] mb-8">
-                    <span class="fira-condensed-black text-gray-400 line-clamp-2" style="font-size: clamp(26px, 8vw, 42px)">{{ task?.task?.answer }}</span>
+                    <span class="fira-condensed-black text-gray-400 line-clamp-2" style="font-size: clamp(26px, 8vw, 42px)" :style="task.settings?.style?.answer">{{
+                      task?.task?.answer
+                    }}</span>
                   </div>
                 </div>
               </Transition>
@@ -71,7 +77,7 @@
               correct: noBtnAnimation === 'correct',
               wrong: noBtnAnimation === 'wrong',
             }"
-            @click="(event) => handleAnswer(task?.task?.variants[1], event, 'no')"
+            @click="(event) => handleAnswer(task?.task?.variants[1], event, task, 'no')"
           >
             <svg width="37" height="37" viewBox="0 0 37 37" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M3 3L34 34" stroke="white" stroke-width="5" stroke-linecap="round" />
@@ -85,7 +91,7 @@
               correct: yesBtnAnimation === 'correct',
               wrong: yesBtnAnimation === 'wrong',
             }"
-            @click="(event) => handleAnswer(task?.task?.variants[0], event, 'yes')"
+            @click="(event) => handleAnswer(task?.task?.variants[0], event, task, 'yes')"
           >
             <svg width="41" height="31" viewBox="0 0 41 31" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M3 15L14.3235 27L38 3" stroke="white" stroke-width="5" stroke-linecap="round" />
@@ -115,12 +121,16 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { getAsset } from "@/utils";
 
+// types
+import { Task } from "@/types";
+
 const emit = defineEmits<{
   answer: [
     data: {
       isCorrect: boolean;
       answer: string;
       event: MouseEvent;
+      task: Task;
       drawBonus: boolean;
     }
   ];
@@ -129,7 +139,7 @@ const emit = defineEmits<{
 
 const props = defineProps<{
   type: "relax" | "challenge";
-  task: {};
+  task: Task;
   locales: {};
   energy: number;
   buttonsBlocked: boolean;
@@ -154,14 +164,14 @@ const settings = {
 
 console.log(`yes-no created`);
 
-const handleAnswer = (answer: string, event, type) => {
+const handleAnswer = (answer: string, event: MouseEvent, task: Task, type: "yes" | "no") => {
   if ((props.type === "relax" && props.energy <= 0) || !props.task) return;
 
   const isCorrect = answer === props.task.correct;
 
   let taskDelay = settings.correctTaskDelay;
 
-  if (type === "yes") {
+  if (type === "yes" && !task.settings?.isAds) {
     yesBtnAnimation.value = isCorrect ? "correct" : "wrong";
     setTimeout(
       () => {
@@ -169,7 +179,7 @@ const handleAnswer = (answer: string, event, type) => {
       },
       isCorrect ? settings.yesBtnDelay : settings.noBtnDelay
     );
-  } else if (type === "no") {
+  } else if (type === "no" && !task.settings?.isAds) {
     noBtnAnimation.value = isCorrect ? "correct" : "wrong";
     setTimeout(
       () => {
@@ -179,7 +189,7 @@ const handleAnswer = (answer: string, event, type) => {
     );
   }
 
-  if (props.type === "relax" && !isCorrect) {
+  if (props.type === "relax" && !isCorrect && !task.settings?.isAds) {
     // wrong answer in relax mode creates a 2s delay
     taskDelay = settings.wrongTaskDelay;
 
@@ -201,7 +211,8 @@ const handleAnswer = (answer: string, event, type) => {
     isCorrect,
     answer,
     event,
-    drawBonus: true,
+    drawBonus: task.settings?.isAds ? false : true,
+    task,
     nextTaskDelay: taskDelay,
   });
 };
