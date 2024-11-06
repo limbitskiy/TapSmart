@@ -399,7 +399,7 @@ export const useMainStore = defineStore("main", () => {
     postEvent("web_app_share_to_story", {
       media_url: battleStore.data?.["story_video_url"],
       text: text ?? battleStore.data?.["story_text"],
-      widgetProps: widgetProps ? widgetProps : battleStore.data?.["story_link"] ? { url: battleStore.data?.["story_link"], name: battleStore.data?.["story_link_text"] } : null,
+      widgetLink: widgetProps ? widgetProps : battleStore.data?.["story_link"] ? { url: battleStore.data?.["story_link"], name: battleStore.data?.["story_link_text"] } : null,
     });
   };
 
