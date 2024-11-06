@@ -59,7 +59,7 @@ console.log(`relax created`);
 const store = useMainStore();
 
 const { fetchRelaxPageData } = store;
-const { debugMessages, bgColor } = storeToRefs(store);
+const { debugMessages, bgColor, HTMLSnapshots } = storeToRefs(store);
 const { battles: locale } = storeToRefs(store.localeStore);
 const { data, afkCounter } = storeToRefs(store.battleStore);
 const { startRelax, stopRelax, setRelaxModal } = store.battleStore;
@@ -70,6 +70,7 @@ const isBoostersModalVisible = ref(false);
 
 setThemeColor("#222");
 bgColor.value = "linear-gradient(180deg, #000B14 17.5%, #035DA9 100%)";
+HTMLSnapshots.value = [];
 
 await fetchRelaxPageData();
 

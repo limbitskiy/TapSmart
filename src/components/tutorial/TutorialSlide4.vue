@@ -8,7 +8,7 @@
     </div>
     <div ref="battleCntRef" class="flex-1 flex flex-col gap-2 p-4 mb-[150px] -mt-[20px] relative scale-90 pointer-events-none">
       <ChallengeButton />
-      <FourAnswers type="relax" :task="tasks[currentTaskIdx]" :locales="battleLocale" :energy="10" :buttonsBlocked="false" />
+      <FourAnswers type="relax" :task="tutorialLocale?.questions?.[currentTaskIdx]" :locales="battleLocale" :energy="10" :buttonsBlocked="false" />
       <div
         v-if="cursorPosition.top && cursorPosition.left"
         class="cursor absolute z-50"
@@ -71,7 +71,7 @@ const cursorClick = () => {
   }, 300);
 };
 
-onMounted(() => {
+const playAnimationCycle = () => {
   const scale = devicePixelRatio;
   const battleCntRect = battleCntRef.value.getBoundingClientRect();
   const btnWrap = document.querySelector(".challenge-btn-wrap");
@@ -99,5 +99,13 @@ onMounted(() => {
     cursorClick();
     challengeBtn.style.background = "orange";
   }, 3500);
+
+  setTimeout(() => {
+    playAnimationCycle();
+  }, 5000);
+};
+
+onMounted(() => {
+  playAnimationCycle();
 });
 </script>

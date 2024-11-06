@@ -7,7 +7,7 @@
       <span class="page-subtitle">{{ tutorialLocale?.slides[1]?.["subtitle"] ?? "Подзаголовок" }}</span>
     </div>
     <div ref="battleCntRef" class="flex-1 flex p-4 mb-[50px] pointer-events-none relative scale-90">
-      <FourAnswers type="relax" :task="tasks[currentTaskIdx]" :locales="battleLocale" :energy="10" :buttonsBlocked="false" @answer="onAnswer" />
+      <FourAnswers type="relax" :task="tutorialLocale?.questions?.[currentTaskIdx]" :locales="battleLocale" :energy="10" :buttonsBlocked="false" @answer="onAnswer" />
       <div
         v-if="cursorPosition.top && cursorPosition.left"
         class="cursor absolute z-50"
@@ -38,58 +38,8 @@ import { useMainStore } from "@/store/main";
 const store = useMainStore();
 
 const { tutorial: tutorialLocale, battles: battleLocale } = storeToRefs(store.localeStore);
-const { handleAnswer } = store.battleStore;
 
-const tasks = [
-  {
-    api: null,
-    bonus_score: null,
-    correct: "лёгкий",
-    id: 1,
-    key: "1454",
-    task: {
-      answer: "лёгкий",
-      question: "light",
-      variants: ["лёгкий", "слабый", "идеальный", "пластиковый"],
-    },
-  },
-  {
-    api: null,
-    bonus_score: null,
-    correct: "дополнительный",
-    id: 2,
-    key: "1514",
-    task: {
-      answer: "дополнительный",
-      question: "extra",
-      variants: ["дополнительный", "длинный", "удачный", "электрический"],
-    },
-  },
-  {
-    api: null,
-    bonus_score: null,
-    correct: "куртка",
-    id: 3,
-    key: "1448",
-    task: {
-      answer: "шляпа",
-      question: "jacket",
-      variants: ["шляпа", "часы", "джинсы", "куртка"],
-    },
-  },
-  {
-    api: null,
-    bonus_score: null,
-    correct: "никто",
-    id: 4,
-    key: "1462",
-    task: {
-      answer: "никто",
-      question: "nobody",
-      variants: ["никто", "Почему бы и нет?", "Давай!", "на продажу"],
-    },
-  },
-];
+// const tasks = ref(tutorialLocale.value?.questions);
 
 const battleCntRef = ref();
 const currentTaskIdx = ref(0);
@@ -116,10 +66,12 @@ const cursorClick = () => {
   }, 300);
 };
 
-onMounted(() => {
+const playAnimationCycle = () => {
   const scale = devicePixelRatio;
   const battleCntRect = battleCntRef.value.getBoundingClientRect();
   const btns = document.querySelectorAll(".four-answer-btn");
+
+  currentTaskIdx.value = 0;
 
   cursorPosition.value.left = battleCntRect.width / 2;
   cursorPosition.value.top = battleCntRect.height / 2;
@@ -133,7 +85,7 @@ onMounted(() => {
   // 1st correct answer
   setTimeout(() => {
     cursorClick();
-    btns[0].click();
+    btns[0]?.click();
   }, 3000);
 
   // second move
@@ -145,7 +97,7 @@ onMounted(() => {
   // 2nd answer - wrong
   setTimeout(() => {
     cursorClick();
-    btns[1].click();
+    btns[1]?.click();
   }, 6000);
 
   // third move
@@ -157,7 +109,15 @@ onMounted(() => {
   // 3d answer - correct
   setTimeout(() => {
     cursorClick();
-    btns[3].click();
+    btns[3]?.click();
   }, 10000);
+
+  setTimeout(() => {
+    playAnimationCycle();
+  }, 14000);
+};
+
+onMounted(() => {
+  playAnimationCycle();
 });
 </script>

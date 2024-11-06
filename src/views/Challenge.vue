@@ -4,13 +4,13 @@
       <img :src="screenshotSrc" />
     </div>
 
-    <div class="challenge-main flex-1 overflow-y-auto overflow-x-hidden flex flex-col gap-2 relative">
+    <div ref="screenshotEl" class="challenge-main flex-1 overflow-y-auto overflow-x-hidden flex flex-col gap-2 relative">
       <!-- bg pattern & color -->
       <BackgroundImage />
 
       <BattleStartAnimation v-if="showStartChallengeAnimation" />
 
-      <div ref="screenshotEl" class="screenshot-content z-10 flex flex-col gap-2 flex-1 p-4">
+      <div class="screenshot-content z-10 flex flex-col gap-2 flex-1 p-4">
         <!-- battle stats -->
         <div class="challenge-stats flex flex-col gap-2 min-h-[136px]">
           <Transition name="fade">

@@ -7,7 +7,7 @@
       <span class="page-subtitle">{{ tutorialLocale?.slides[2]?.["subtitle"] ?? "Подзаголовок" }}</span>
     </div>
     <div ref="battleCntRef" class="flex-1 flex p-4 mb-[50px] pointer-events-none relative scale-90">
-      <FourAnswers type="relax" :task="tasks[currentTaskIdx]" :locales="battleLocale" :energy="10" :buttonsBlocked="false" />
+      <FourAnswers type="relax" :task="tutorialLocale?.questions?.[currentTaskIdx]" :locales="battleLocale" :energy="10" :buttonsBlocked="false" />
       <div
         v-if="cursorPosition.top && cursorPosition.left"
         class="cursor absolute z-50"
@@ -39,21 +39,6 @@ const store = useMainStore();
 
 const { tutorial: tutorialLocale, battles: battleLocale } = storeToRefs(store.localeStore);
 
-const tasks = [
-  {
-    api: null,
-    bonus_score: null,
-    correct: "лёгкий",
-    id: 1,
-    key: "1454",
-    task: {
-      answer: "лёгкий",
-      question: "light",
-      variants: ["лёгкий", "слабый", "идеальный", "пластиковый"],
-    },
-  },
-];
-
 const battleCntRef = ref();
 const currentTaskIdx = ref(0);
 const cursorPosition = ref({
@@ -70,7 +55,7 @@ const cursorClick = () => {
   }, 300);
 };
 
-onMounted(() => {
+const playAnimationCycle = () => {
   const scale = devicePixelRatio;
   const battleCntRect = battleCntRef.value.getBoundingClientRect();
   const header = document.querySelector(".battle-header-cnt");
@@ -97,5 +82,13 @@ onMounted(() => {
   setTimeout(() => {
     mechBtn.style.backgroundColor = "#272727";
   }, 3500);
+
+  setTimeout(() => {
+    playAnimationCycle();
+  }, 5000);
+};
+
+onMounted(() => {
+  playAnimationCycle();
 });
 </script>

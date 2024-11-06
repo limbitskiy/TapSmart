@@ -42,7 +42,7 @@ const slidesMap = {
   5: TutorialSlide5,
 };
 
-const currentSlide = ref(1);
+const currentSlide = ref(2);
 
 const nextSlide = () => {
   if (currentSlide.value === 5) {
