@@ -13,7 +13,7 @@
         }}</span
       >
     </div>
-    <div class="flex-1 contain -ml-4">
+    <div class="flex-1 contain -ml-4 -mb-4">
       <img class="h-full object-cover" :src="getAsset('tutorial-0')" />
     </div>
   </div>
