@@ -50,6 +50,10 @@ export const images = {
   status_completed: "/status_completed.png",
   subscribe_telegram: "/subscribe_telegram.png",
   pattern_paws_blue: "/pattern-paws-blue.png",
+  score: "/score.png",
+  leaderboard_1st: "/leaderboard_1st.png",
+  leaderboard_2nd: "/leaderboard_2nd.png",
+  leaderboard_3rd: "/leaderboard_3rd.png",
 };
 
 // assets folder

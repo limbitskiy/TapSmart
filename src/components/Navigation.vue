@@ -1,5 +1,6 @@
 <template>
   <nav
+    id="navigation"
     class="fixed bottom-0 left-0 right-0 w-full z-10 flex flex-col"
     style="background: linear-gradient(92.34deg, #1d1d1d 3.3%, #0c0c0c 97.43%)"
     :style="`padding-bottom: ${bottom ?? 0}px`"

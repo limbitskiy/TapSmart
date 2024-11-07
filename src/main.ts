@@ -35,6 +35,7 @@ import MechanicCard from "@/components/MechanicCard.vue";
 import IconPill from "@/components/UI/IconPill.vue";
 import FriendPill from "@/components/UI/FriendPill.vue";
 import Badge from "@/components/UI/Badge.vue";
+import Toggle from "@/components/UI/Toggle.vue";
 import BattleHeader from "@/components/UI/BattleHeader.vue";
 import BattleCompleteAnimation from "@/components/animations/BattleCompleteAnimation.vue";
 import BattleStartAnimation from "@/components/animations/BattleStartAnimation.vue";
@@ -94,6 +95,7 @@ app
   .component("TutorialSlide", TutorialSlide)
   .component("BattleStartAnimation", BattleStartAnimation)
   .component("BattleHeader", BattleHeader)
-  .component("BackendModal", BackendModal);
+  .component("BackendModal", BackendModal)
+  .component("Toggle", Toggle);
 
 app.mount("#app");

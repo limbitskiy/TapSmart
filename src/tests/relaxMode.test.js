@@ -59,9 +59,13 @@ describe("relax mode", () => {
 
   beforeAll(() => {
     // stub window object
-    global.window = {
-      showNotification: null,
-    };
+    vi.stubGlobal("window", {});
+
+    vi.mock("@/api/server", () => ({
+      makeRequest: vi.fn(() => {
+        return { data: {} };
+      }),
+    }));
   });
 
   beforeEach(() => {
@@ -149,8 +153,6 @@ describe("relax mode", () => {
         },
       ],
     });
-
-    vi.mock("@/api/server", { spy: true });
 
     battleStore.handleAnswer({
       isCorrect: true,

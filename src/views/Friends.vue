@@ -108,7 +108,7 @@
     </BackgroundPill>
 
     <!-- invite buttons -->
-    <div class="invite-btn-cnt fixed bottom-20 left-4 right-4 flex justify-between gap-3 z-10">
+    <div class="invite-btn-cnt fixed bottom-20 left-2 right-2 flex justify-between gap-3 z-10">
       <Button class="flex-1" @click="onInviteFriend">
         <span class="text-xl">{{ locale?.["invite_a_friend"] }}</span>
         <!-- <img :src="getAsset('paw')" /> -->

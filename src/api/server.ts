@@ -530,10 +530,6 @@ function getImageSize(base64String: string) {
   return +sizeInKB.toFixed(2);
 }
 
-export const makeUploadRequest = async (formData: FormData) => {
-  return await axios.post(`${defaultApiUrl}/ub/upload/file`, formData);
-};
-
 // first res
 // {
 //   "data": {

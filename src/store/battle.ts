@@ -349,6 +349,7 @@ export const useBattleStore = defineStore("battle", () => {
 
     let externalTimeout;
 
+    // for ads in questions
     if (currentTask.value?.settings?.wait) {
       if (currentTask.value.settings.style?.background) {
         mainStore.bgColor = currentTask.value.settings.style.background;
