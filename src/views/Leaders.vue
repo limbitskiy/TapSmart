@@ -113,7 +113,7 @@
         <!-- leaderboard -->
         <!-- <TransitionGroup class="leaderboard flex flex-col gap-2 pt-4 flex-1" name="list" tag="ul"> -->
         <Transition name="fade">
-          <ul v-if="!leaderListLoading" ref="listRef" class="leaderboard flex flex-col gap-2 pt-4 flex-1 overflow-y-scroll">
+          <ul v-if="!leaderListLoading" ref="listRef" class="leaderboard flex flex-col gap-2 pt-4 flex-1 overflow-y-scroll" :class="{ '!mb-10': leaders?.['has_story'] }">
             <li :ref="player.isPlayer ? 'target' : null" v-for="player in leaders?.data" :key="player.id">
               <!-- divider -->
               <div v-if="player.isDivider" class="divider flex justify-center py-1">
@@ -204,6 +204,7 @@
       </div>
     </Transition>
 
+    <!-- story button -->
     <div v-if="leaders?.['has_story']" class="story-btn-cnt fixed bottom-20 left-2 right-2 flex justify-between gap-3 z-10">
       <Button class="flex-1">
         <span class="text-xl">{{ locale?.["post_story"] ?? "post tg story" }}</span>
@@ -211,20 +212,12 @@
       </Button>
     </div>
 
+    <!-- subtitle modal -->
     <Teleport to="#modals">
       <Modal id="leaders-subtitle" v-model:visible="isTooltipModal">
         <div class="flex-1 flex flex-col gap-4 items-center py-4">
-          <div class="content flex flex-col gap-2 py-4">
-            <span v-html="locale?.['subtitle'] ?? 'subtitle'"></span>
-
-            <!-- <span class="fira-bold text-lg">Значения фильтров:</span>
-            <span><span class="fira-bold text-[var(--accent-color)]">Bolts:</span>&nbsp;Отсортировать игроков по количеству болтов.</span>
-            <span><span class="fira-bold text-[var(--accent-color)]">Победы в баттлах:</span>&nbsp;Отсортировать игроков по количеству побед в баттлах.</span>
-            <span><span class="fira-bold text-[var(--accent-color)]">Выучено слов:</span>&nbsp;Отсортировать игроков по количеству выученных слов.</span>
-            <span
-              ><span class="fira-bold text-[var(--accent-color)]">Друзей в баттлах:</span>&nbsp;Отсортировать игроков по количеству друзей, с которыми игрок играл в баттлы.</span
-            > -->
-          </div>
+          <!-- modal html content -->
+          <div class="content flex flex-col gap-2 py-4" v-html="locale?.['subtitle'] ?? 'subtitle'"></div>
 
           <div class="tsk-btns flex flex-col gap-2 w-full">
             <Button activeColor="#525252" @click="onCloseSubtitleModal">
@@ -234,12 +227,6 @@
         </div>
       </Modal>
     </Teleport>
-
-    <!-- <Teleport to="#modals">
-      <Modal id="task-modal" v-model:visible="isTaskModal">
-        <TaskModal :data="selectedTask" @close="() => (isTaskModal = false)" />
-      </Modal>
-    </Teleport> -->
   </div>
 </template>
 
