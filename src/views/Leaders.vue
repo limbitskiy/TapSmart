@@ -113,7 +113,7 @@
         <!-- leaderboard -->
         <!-- <TransitionGroup class="leaderboard flex flex-col gap-2 pt-4 flex-1" name="list" tag="ul"> -->
         <Transition name="fade">
-          <ul v-if="!leaderListLoading" class="leaderboard flex flex-col gap-2 pt-4 flex-1">
+          <ul v-if="!leaderListLoading" ref="observerElement" class="leaderboard flex flex-col gap-2 pt-4 flex-1">
             <li :ref="player.isPlayer ? 'target' : null" v-for="player in leaders?.data" :key="player.id">
               <!-- divider -->
               <div v-if="player.isDivider" class="divider flex justify-center py-1">
@@ -138,7 +138,7 @@
                           <img v-else-if="filter.bigFilter === 'battle_win'" class="h-[18px]" :src="getAsset('cup')" />
                           <img v-else-if="filter.bigFilter === 'learned'" class="h-[18px]" :src="getAsset('book')" />
                           <img v-else-if="filter.bigFilter === 'friends_in_battles'" class="h-[18px]" :src="getAsset('friends')" />
-                          <span class="text-sm fira-condensed-bold" style="line-height: 13px">{{ shortenNumber(player.score) }}</span>
+                          <span class="text-sm fira-condensed-bold" style="line-height: 13px">{{ showFormattedNumber(player.score) }}</span>
                         </div>
                       </div>
                     </div>
@@ -178,8 +178,11 @@
                 <span class="text-lg fira-bold">{{ computedPlayer.name }}</span>
                 <div class="other-info flex items-center gap-4">
                   <div class="score px-2 py-1 bg-[var(--grey-dark)] rounded-lg flex gap-[6px] items-center">
-                    <img class="h-[18px]" :src="getAsset('score')" />
-                    <span class="text-sm" style="line-height: 13px">{{ shortenNumber(computedPlayer.score) }}</span>
+                    <img v-if="filter.bigFilter === 'bolt'" class="h-[18px]" :src="getAsset('bolt')" />
+                    <img v-else-if="filter.bigFilter === 'battle_win'" class="h-[18px]" :src="getAsset('cup')" />
+                    <img v-else-if="filter.bigFilter === 'learned'" class="h-[18px]" :src="getAsset('book')" />
+                    <img v-else-if="filter.bigFilter === 'friends_in_battles'" class="h-[18px]" :src="getAsset('friends')" />
+                    <span class="text-sm" style="line-height: 13px">{{ showFormattedNumber(computedPlayer.score) }}</span>
                   </div>
                 </div>
               </div>
@@ -211,8 +214,16 @@
     <Teleport to="#modals">
       <Modal id="leaders-subtitle" v-model:visible="isTooltipModal">
         <div class="flex-1 flex flex-col gap-4 items-center py-4">
-          <div class="content py-4">
+          <div class="content flex flex-col gap-2 py-4">
             <span>{{ locale?.["subtitle"] ?? "subtitle" }}</span>
+
+            <span class="fira-bold text-lg">Значения фильтров:</span>
+            <span><span class="fira-bold text-[var(--accent-color)]">Bolts:</span>&nbsp;Отсортировать игроков по количеству болтов.</span>
+            <span><span class="fira-bold text-[var(--accent-color)]">Победы в баттлах:</span>&nbsp;Отсортировать игроков по количеству побед в баттлах.</span>
+            <span><span class="fira-bold text-[var(--accent-color)]">Выучено слов:</span>&nbsp;Отсортировать игроков по количеству выученных слов.</span>
+            <span
+              ><span class="fira-bold text-[var(--accent-color)]">Друзей в баттлах:</span>&nbsp;Отсортировать игроков по количеству друзей, с которыми игрок играл в баттлы.</span
+            >
           </div>
 
           <div class="tsk-btns flex flex-col gap-2 w-full">
@@ -260,10 +271,11 @@ const filter = ref<Filter>({
   friends: false,
   bigFilter: "bolt",
 });
-const target = ref(null);
+const target = ref();
 const targetIsVisible = ref(true);
 const leaderListLoading = ref(false);
 const isTooltipModal = ref(false);
+const observerElement = ref();
 
 const { stop } = useIntersectionObserver(target, ([{ isIntersecting }], observerElement) => {
   targetIsVisible.value = isIntersecting;
