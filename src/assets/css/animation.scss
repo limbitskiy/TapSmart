@@ -28,10 +28,6 @@
   animation: spin 8s linear;
 }
 
-// .pulse {
-//   animation: pulse 0.3s ease;
-// }
-
 .front-center {
   transform: scale(3);
 }
@@ -42,15 +38,6 @@
 .challenge-bonus-1-leave-active {
   animation: scaleOut 0.3s ease-out;
 }
-// .challenge-bonus-1-enter-from {
-//   opacity: 1;
-//   transform: scale(0);
-// }
-
-// .challenge-bonus-1-leave-to {
-//   opacity: 0;
-//   transform: scale(4);
-// }
 
 .pulse {
   animation: pulse 0.5s ease-out forwards;
@@ -135,47 +122,6 @@
   opacity: 0;
 }
 
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes scaleOut {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(0);
-  }
-}
-
-@keyframes questionEnter {
-  0% {
-    transform: translateX(110%);
-  }
-  // 50% {
-  //   transform: translateX(150%);
-  // }
-  100% {
-    transform: translateX(0%);
-  }
-}
-@keyframes questionLeave {
-  0% {
-    transform: translateX(0%);
-  }
-  // 50% {
-  //   transform: translateX(-150%);
-  // }
-  100% {
-    transform: translateX(-110%);
-  }
-}
-
 // routes
 .fade-enter-active,
 .fade-leave-active {
@@ -218,11 +164,6 @@
   animation: 0.3s ease-out fadeOut;
 }
 
-// .toast-slide-enter-from,
-// .toast-slide-leave-to {
-//   transform: translateY(-100%);
-// }
-
 .timeout-progress.started {
   transform: scaleX(0);
 }
@@ -238,12 +179,6 @@
 .list-leave-to {
   opacity: 0;
   scale: 0;
-}
-
-.list-leave-active {
-  // position: absolute;
-  // transition: none !important;
-  // z-index: -1;
 }
 
 // modal
@@ -272,6 +207,47 @@
 .tooltip-leave-to {
   opacity: 0;
   // transform: translateY(20%);
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes scaleOut {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+
+@keyframes questionEnter {
+  0% {
+    transform: translateX(110%);
+  }
+  // 50% {
+  //   transform: translateX(150%);
+  // }
+  100% {
+    transform: translateX(0%);
+  }
+}
+@keyframes questionLeave {
+  0% {
+    transform: translateX(0%);
+  }
+  // 50% {
+  //   transform: translateX(-150%);
+  // }
+  100% {
+    transform: translateX(-110%);
+  }
 }
 
 @keyframes bonus-float-up {

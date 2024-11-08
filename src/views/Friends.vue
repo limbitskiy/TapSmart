@@ -98,7 +98,7 @@
           </Button>
         </div>
 
-        <TransitionGroup class="friend-list flex flex-col gap-2" name="list" tag="div">
+        <TransitionGroup class="friend-list flex flex-col gap-2" name="list" tag="ul">
           <FriendPill v-for="friend in filteredFriends" :key="friend.id" :data="friend" :battleFilter="filters.battles" />
         </TransitionGroup>
       </template>

@@ -258,8 +258,8 @@ export const useMainStore = defineStore("main", () => {
     return await useFetch({ key: "tasks_list" });
   };
 
-  const fetchLeadersList = async () => {
-    return await useFetch({ key: "leaders_list" });
+  const fetchLeadersList = async (data?: {}) => {
+    return await useFetch({ key: "leaders_list", data });
   };
 
   const fetchBattleCompleteData = async () => {
@@ -302,8 +302,6 @@ export const useMainStore = defineStore("main", () => {
               service: state.value.service,
             },
           });
-
-          console.log(result);
 
           parseResponse(result.data);
 
