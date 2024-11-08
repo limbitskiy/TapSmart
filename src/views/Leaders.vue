@@ -113,7 +113,7 @@
         <!-- leaderboard -->
         <!-- <TransitionGroup class="leaderboard flex flex-col gap-2 pt-4 flex-1" name="list" tag="ul"> -->
         <Transition name="fade">
-          <ul v-if="!leaderListLoading" ref="observerElement" class="leaderboard flex flex-col gap-2 pt-4 flex-1">
+          <ul v-if="!leaderListLoading" ref="listRef" class="leaderboard flex flex-col gap-2 pt-4 flex-1 overflow-y-scroll">
             <li :ref="player.isPlayer ? 'target' : null" v-for="player in leaders?.data" :key="player.id">
               <!-- divider -->
               <div v-if="player.isDivider" class="divider flex justify-center py-1">
@@ -166,7 +166,7 @@
     <div class="debug fixed top-0">visible: {{ targetIsVisible }}</div>
 
     <Transition name="slight-move-up">
-      <div v-if="!targetIsVisible" class="fixed-player fixed bottom-[135px] left-8 right-8">
+      <div v-if="!targetIsVisible" class="fixed-player fixed left-8 right-8" :class="[leaders?.['has_story'] ? 'bottom-[135px]' : 'bottom-[80px]']">
         <!-- normal player -->
         <Pill class="!py-2 !px-3 rounded-xl bg-black" light>
           <div class="content flex gap-2 items-center justify-between">
@@ -204,7 +204,7 @@
       </div>
     </Transition>
 
-    <div class="story-btn-cnt fixed bottom-20 left-2 right-2 flex justify-between gap-3 z-10">
+    <div v-if="leaders?.['has_story']" class="story-btn-cnt fixed bottom-20 left-2 right-2 flex justify-between gap-3 z-10">
       <Button class="flex-1">
         <span class="text-xl">{{ locale?.["post_story"] ?? "post tg story" }}</span>
         <!-- <img :src="getAsset('paw')" /> -->
@@ -275,11 +275,15 @@ const target = ref();
 const targetIsVisible = ref(true);
 const leaderListLoading = ref(false);
 const isTooltipModal = ref(false);
-const observerElement = ref();
+const listRef = ref();
 
-const { stop } = useIntersectionObserver(target, ([{ isIntersecting }], observerElement) => {
-  targetIsVisible.value = isIntersecting;
-});
+const { stop } = useIntersectionObserver(
+  target,
+  ([{ isIntersecting }], observerElement) => {
+    targetIsVisible.value = isIntersecting;
+  },
+  { root: listRef.value, threshold: 0.1, rootMargin: "0px" }
+);
 
 const computedPlayer = computed(() => leaders.value?.data?.find((player) => player.isPlayer));
 
