@@ -215,15 +215,15 @@
       <Modal id="leaders-subtitle" v-model:visible="isTooltipModal">
         <div class="flex-1 flex flex-col gap-4 items-center py-4">
           <div class="content flex flex-col gap-2 py-4">
-            <span>{{ locale?.["subtitle"] ?? "subtitle" }}</span>
+            <span v-html="locale?.['subtitle'] ?? 'subtitle'"></span>
 
-            <span class="fira-bold text-lg">Значения фильтров:</span>
+            <!-- <span class="fira-bold text-lg">Значения фильтров:</span>
             <span><span class="fira-bold text-[var(--accent-color)]">Bolts:</span>&nbsp;Отсортировать игроков по количеству болтов.</span>
             <span><span class="fira-bold text-[var(--accent-color)]">Победы в баттлах:</span>&nbsp;Отсортировать игроков по количеству побед в баттлах.</span>
             <span><span class="fira-bold text-[var(--accent-color)]">Выучено слов:</span>&nbsp;Отсортировать игроков по количеству выученных слов.</span>
             <span
               ><span class="fira-bold text-[var(--accent-color)]">Друзей в баттлах:</span>&nbsp;Отсортировать игроков по количеству друзей, с которыми игрок играл в баттлы.</span
-            >
+            > -->
           </div>
 
           <div class="tsk-btns flex flex-col gap-2 w-full">
