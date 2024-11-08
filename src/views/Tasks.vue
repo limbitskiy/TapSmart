@@ -3,7 +3,7 @@
     <div class="top-part">
       <div class="icon-and-title flex items-center gap-4">
         <img class="h-[60px]" :src="getAsset('tasks')" />
-        <div class="page-title mb-2">{{ locale?.["title"] || "Tasks" }}</div>
+        <div class="page-title">{{ locale?.["title"] || "Tasks" }}</div>
       </div>
       <div class="page-subtitle mt-2" v-html="locale?.['subtitle'] || 'Our new section! Complete tasks and get something! Maybe bolts, maybe nuts, maybe fame - who knows?'"></div>
     </div>

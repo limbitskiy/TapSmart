@@ -3,7 +3,7 @@
     <div class="top-part">
       <div class="icon-and-title flex items-center gap-2">
         <img class="h-[40px]" :src="getAsset('leaders')" />
-        <div class="page-title mb-2">{{ locale?.["title"] || "Leaders" }}</div>
+        <div class="page-title">{{ locale?.["title"] || "Leaders" }}</div>
         <div class="subtitle-icon p-1 relative bottom-2" @click="onShowSubtitleModal">
           <svg class="" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -20,7 +20,7 @@
     </div>
 
     <div class="flex-1 flex flex-col gap-4">
-      <BackgroundPill class="">
+      <BackgroundPill>
         <div class="pill-header flex items-center justify-between">
           <!-- league -->
           <div class="league flex gap-2">
@@ -66,7 +66,7 @@
           <!-- bottom-filter -->
           <div class="bottom-filter">
             <Pill class="rounded-lg py-[10px] px-1 pr-2">
-              <div class="filter-grid grid grid-cols-5 gap-2">
+              <div class="filter-grid grid grid-cols-5 gap-2 fira-condensed">
                 <div
                   class="bolts flex items-center justify-center"
                   :class="{ '!text-[var(--accent-color)] fira-bold': filter.bigFilter === 'bolt' }"
@@ -137,7 +137,7 @@
                           <img v-if="filter.bigFilter === 'bolt'" class="h-[18px]" :src="getAsset('bolt')" />
                           <img v-else-if="filter.bigFilter === 'battle_win'" class="h-[18px]" :src="getAsset('cup')" />
                           <img v-else-if="filter.bigFilter === 'learned'" class="h-[18px]" :src="getAsset('book')" />
-                          <img v-else-if="filter.bigFilter === 'friends_in_battles'" class="h-[18px]" :src="getAsset('swords')" />
+                          <img v-else-if="filter.bigFilter === 'friends_in_battles'" class="h-[18px]" :src="getAsset('friends')" />
                           <span class="text-sm fira-condensed-bold" style="line-height: 13px">{{ shortenNumber(player.score) }}</span>
                         </div>
                       </div>
@@ -163,9 +163,7 @@
       </BackgroundPill>
     </div>
 
-    <!-- <div class="debug fixed bottom-[80px]">
-      {{ targetIsVisible }}
-    </div> -->
+    <div class="debug fixed top-0">visible: {{ targetIsVisible }}</div>
 
     <Transition name="slight-move-up">
       <div v-if="!targetIsVisible" class="fixed-player fixed bottom-[135px] left-8 right-8">
