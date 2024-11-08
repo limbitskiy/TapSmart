@@ -29,7 +29,7 @@ export const makeRequest = async ({ apiUrl, endPoint, payload, debugMessages }: 
   if (payload?.key === "tg_story") {
     let sizes = 0;
 
-    payload?.data?.images.forEach((img) => {
+    payload?.data?.images?.forEach((img) => {
       sizes += getImageSize(img);
     });
 

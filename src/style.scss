@@ -11,6 +11,7 @@
   background-color: #000;
 
   font-synthesis: none;
+  font-smooth: auto;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -71,20 +72,6 @@
 .notification::after {
   filter: blur(25px);
   transform: translate3d(0, 0, 0);
-}
-
-@keyframes glow {
-  0% {
-    background-position: 0 0;
-  }
-
-  50% {
-    background-position: 100% 0;
-  }
-
-  100% {
-    background-position: 0 0;
-  }
 }
 
 .tutorial-bg {

@@ -1,11 +1,11 @@
 <template>
-  <div id="leaders" class="flex flex-col gap-4 flex-1 p-4 relative">
+  <div ref="screenshotEl" id="leaders" class="flex flex-col gap-4 flex-1 p-4 relative">
     <div class="top-part">
       <div class="icon-and-title flex items-center gap-2">
         <img class="h-[40px]" :src="getAsset('leaders')" />
-        <div class="page-title">{{ locale?.["title"] || "Leaders" }}</div>
+        <div class="page-title text-nowrap">{{ locale?.["title"] || "Leaders" }}</div>
         <div class="subtitle-icon p-1 relative bottom-2" @click="onShowSubtitleModal">
-          <svg class="" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M8.00226 14.8404C6.14522 14.8404 4.36424 14.1129 3.05112 12.818C1.73799 11.5231 1.00028 9.76674 1.00028 7.93541C1.00028 6.10408 1.73799 4.34776 3.05112 3.05281C4.36424 1.75787 6.14522 1.03038 8.00226 1.03038C9.8593 1.03038 11.6403 1.75787 12.9534 3.05281C14.2665 4.34776 15.0042 6.10408 15.0042 7.93541C15.0042 9.76674 14.2665 11.5231 12.9534 12.818C11.6403 14.1129 9.8593 14.8404 8.00226 14.8404ZM8.00226 15.8269C10.1246 15.8269 12.16 14.9955 13.6607 13.5155C15.1614 12.0356 16.0045 10.0284 16.0045 7.93541C16.0045 5.84246 15.1614 3.83524 13.6607 2.3553C12.16 0.875365 10.1246 0.0439453 8.00226 0.0439453C5.87993 0.0439453 3.84452 0.875365 2.34381 2.3553C0.843093 3.83524 0 5.84246 0 7.93541C0 10.0284 0.843093 12.0356 2.34381 13.5155C3.84452 14.9955 5.87993 15.8269 8.00226 15.8269Z"
               fill="#CFCFCF"
@@ -20,7 +20,7 @@
     </div>
 
     <div class="flex-1 flex flex-col gap-4">
-      <BackgroundPill>
+      <BackgroundPill :class="{ '!mb-10': leaders?.['has_story'] }">
         <div class="pill-header flex items-center justify-between">
           <!-- league -->
           <div class="league flex gap-2">
@@ -29,7 +29,7 @@
             </div>
             <div class="league-details flex flex-col">
               <span class="text-gray-300 text-sm">{{ locale?.["current_league"] ?? "current league" }}</span>
-              <span class="fira-condensed-bold text-[26px] leading-5">{{ profile?.["league_name"] }}</span>
+              <span class="fira-condensed-bold text-[26px] leading-5 text-nowrap">{{ profile?.["league_name"] }}</span>
             </div>
           </div>
         </div>
@@ -113,7 +113,7 @@
         <!-- leaderboard -->
         <!-- <TransitionGroup class="leaderboard flex flex-col gap-2 pt-4 flex-1" name="list" tag="ul"> -->
         <Transition name="fade">
-          <ul v-if="!leaderListLoading" ref="listRef" class="leaderboard flex flex-col gap-2 pt-4 flex-1 overflow-y-scroll" :class="{ '!mb-10': leaders?.['has_story'] }">
+          <ul v-if="!leaderListLoading" class="leaderboard flex flex-col gap-2 pt-4 flex-1 !h-[300px] overflow-y-hidden">
             <li :ref="player.isPlayer ? 'target' : null" v-for="player in leaders?.data" :key="player.id">
               <!-- divider -->
               <div v-if="player.isDivider" class="divider flex justify-center py-1">
@@ -131,9 +131,9 @@
                       <img v-else="player.isPlayer" class="h-[50px]" :src="getAsset('avatar-placeholder')" />
                     </div>
                     <div class="player-info">
-                      <span class="text-lg fira-bold">{{ player.name }}</span>
+                      <span class="text-lg fira-bold text-nowrap">{{ player.name }}</span>
                       <div class="other-info flex items-center gap-4">
-                        <div class="score p-1 pr-2 bg-[var(--grey-dark)] rounded-lg flex gap-[6px] items-center">
+                        <div class="score py-1 px-3 bg-[var(--grey-dark)] rounded-lg flex gap-[6px] items-center">
                           <img v-if="filter.bigFilter === 'bolt'" class="h-[18px]" :src="getAsset('bolt')" />
                           <img v-else-if="filter.bigFilter === 'battle_win'" class="h-[18px]" :src="getAsset('cup')" />
                           <img v-else-if="filter.bigFilter === 'learned'" class="h-[18px]" :src="getAsset('book')" />
@@ -163,8 +163,9 @@
       </BackgroundPill>
     </div>
 
-    <div class="debug fixed top-0">visible: {{ targetIsVisible }}</div>
+    <!-- <div class="debug fixed top-0">visible: {{ targetIsVisible }}</div> -->
 
+    <!-- bottom player pill -->
     <Transition name="slight-move-up">
       <div v-if="!targetIsVisible" class="fixed-player fixed left-8 right-8" :class="[leaders?.['has_story'] ? 'bottom-[135px]' : 'bottom-[80px]']">
         <!-- normal player -->
@@ -206,9 +207,8 @@
 
     <!-- story button -->
     <div v-if="leaders?.['has_story']" class="story-btn-cnt fixed bottom-20 left-2 right-2 flex justify-between gap-3 z-10">
-      <Button class="flex-1">
+      <Button class="flex-1" @click="onPostStory">
         <span class="text-xl">{{ locale?.["post_story"] ?? "post tg story" }}</span>
-        <!-- <img :src="getAsset('paw')" /> -->
       </Button>
     </div>
 
@@ -217,7 +217,7 @@
       <Modal id="leaders-subtitle" v-model:visible="isTooltipModal">
         <div class="flex-1 flex flex-col gap-4 items-center py-4">
           <!-- modal html content -->
-          <div class="content flex flex-col gap-2 py-4" v-html="locale?.['subtitle'] ?? 'subtitle'"></div>
+          <div class="content flex flex-col gap-1 py-4" v-html="locale?.['subtitle'] ?? 'subtitle'"></div>
 
           <div class="tsk-btns flex flex-col gap-2 w-full">
             <Button activeColor="#525252" @click="onCloseSubtitleModal">
@@ -231,17 +231,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from "vue";
-import { getAsset, showFormattedNumber, shortenNumber } from "@/utils";
+import { computed, ref, onMounted, onUnmounted, nextTick } from "vue";
+import { getAsset, showFormattedNumber } from "@/utils";
 import { storeToRefs } from "pinia";
-import { useIntersectionObserver } from "@vueuse/core";
+import * as htmlToImage from "html-to-image";
 
 // store
 import { useMainStore } from "@/store/main";
 
 const store = useMainStore();
 
-const { fetchLeadersList } = store;
+const { fetchLeadersList, useFetch } = store;
 const { profile, leaders } = storeToRefs(store.dataStore);
 const { leaders: locale } = storeToRefs(store.localeStore);
 
@@ -262,15 +262,7 @@ const target = ref();
 const targetIsVisible = ref(true);
 const leaderListLoading = ref(false);
 const isTooltipModal = ref(false);
-const listRef = ref();
-
-const { stop } = useIntersectionObserver(
-  target,
-  ([{ isIntersecting }], observerElement) => {
-    targetIsVisible.value = isIntersecting;
-  },
-  { root: listRef.value, threshold: 0.1, rootMargin: "0px" }
-);
+const screenshotEl = ref();
 
 const computedPlayer = computed(() => leaders.value?.data?.find((player) => player.isPlayer));
 
@@ -313,6 +305,9 @@ const refetchLeaderList = async () => {
   });
 
   leaderListLoading.value = false;
+
+  await nextTick();
+  checkPlayerVisibility();
 };
 
 const onShowSubtitleModal = () => {
@@ -323,8 +318,52 @@ const onCloseSubtitleModal = () => {
   isTooltipModal.value = false;
 };
 
+const checkPlayerVisibility = () => {
+  if (target.value[0]) {
+    const rect = target.value[0].getBoundingClientRect();
+
+    if (rect.top < innerHeight - 70 && rect.top > 0) {
+      targetIsVisible.value = true;
+    } else {
+      targetIsVisible.value = false;
+    }
+  }
+};
+
+const onPostStory = async () => {
+  screenshotEl.value.style.height = "100dvh";
+  screenshotEl.value.style.overflow = "hidden";
+
+  await nextTick();
+
+  const filter = (node: HTMLElement) => {
+    const exclusionClasses = ["story-btn-cnt", "fixed-player"];
+    return !exclusionClasses.some((classname) => node.classList?.contains(classname));
+  };
+
+  const url = await htmlToImage.toJpeg(screenshotEl.value, { quality: 0.85, filter });
+  await useFetch({ key: "tg_story", data: { images: [url] } });
+
+  // save the image right away
+  // const link = document.createElement("a");
+  // link.download = "my-image-name.jpeg";
+  // link.href = url;
+  // link.click();
+
+  screenshotEl.value.style.height = "initial";
+  screenshotEl.value.style.overflow = "auto";
+};
+
 onMounted(() => {
   // scroll to top on mounted
   window.scrollTo(0, 0);
+
+  checkPlayerVisibility();
+
+  addEventListener("scroll", checkPlayerVisibility);
+});
+
+onUnmounted(() => {
+  removeEventListener("scroll", checkPlayerVisibility);
 });
 </script>
