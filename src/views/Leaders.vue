@@ -219,7 +219,7 @@
 
           <div class="tsk-btns flex flex-col gap-2 w-full">
             <Button activeColor="#525252" @click="onCloseSubtitleModal">
-              <span>{{ locale?.["modal_button"] ?? "got it!" }}</span>
+              <span>{{ locale?.["modal_subtitle_button"] ?? "got it!" }}</span>
             </Button>
           </div>
         </div>
