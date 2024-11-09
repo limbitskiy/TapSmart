@@ -429,18 +429,18 @@ const onPostStory = async () => {
 
     const dataURL = canvas.toDataURL("image/jpeg");
 
-    // const res = await useFetch({ key: "tg_story", data: { images: [dataURL] } });
+    const res = await useFetch({ key: "tg_story", data: { images: [dataURL] } });
 
-    // shareToStory(res?.data?.url, leaders.value?.["story_text"], {
-    //   url: leaders.value?.["story_link"],
-    //   name: leaders.value?.["story_link_text"],
-    // });
+    shareToStory(res?.data?.url, leaders.value?.["story_text"], {
+      url: leaders.value?.["story_link"],
+      name: leaders.value?.["story_link_text"],
+    });
 
     // save the image right away
-    const link = document.createElement("a");
-    link.download = "my-image-name.jpeg";
-    link.href = dataURL;
-    link.click();
+    // const link = document.createElement("a");
+    // link.download = "my-image-name.jpeg";
+    // link.href = dataURL;
+    // link.click();
   };
 
   finishCapturingScreenshot();
