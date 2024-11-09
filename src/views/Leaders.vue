@@ -119,8 +119,8 @@
         <!-- leaderboard -->
         <!-- <TransitionGroup class="leaderboard flex flex-col gap-2 pt-4 flex-1" name="list" tag="ul"> -->
         <Transition name="fade">
-          <ul v-if="!leaderListLoading" class="leaderboard flex flex-col gap-2 pt-4 flex-1 !h-[300px] overflow-y-hidden">
-            <li :ref="player.isPlayer ? 'target' : null" v-for="player in leaders?.data" :key="player.id">
+          <ul ref="target" v-if="!leaderListLoading" class="leaderboard flex flex-col gap-2 pt-4 flex-1 !h-[300px] overflow-y-hidden">
+            <li v-for="player in leaders?.data" :key="player.id">
               <!-- divider -->
               <div v-if="player.isDivider" class="divider flex justify-center py-1">
                 <svg width="42" height="2" viewBox="0 0 42 2" fill="none" xmlns="http://www.w3.org/2000/svg">
