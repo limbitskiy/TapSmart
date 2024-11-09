@@ -330,8 +330,11 @@ const onCloseSubtitleModal = () => {
 };
 
 const checkPlayerVisibility = () => {
-  if (target.value[0]) {
+  console.log(target.value);
+
+  if (target.value?.[0]) {
     const rect = target.value[0].getBoundingClientRect();
+    console.log(rect);
 
     debugMsg.value.recttop = rect.top;
     debugMsg.value.innerheight = innerHeight;
