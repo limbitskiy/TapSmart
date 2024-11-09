@@ -399,10 +399,10 @@ export const useMainStore = defineStore("main", () => {
     });
   };
 
-  const shareToStory = (text?: string, widgetProps?: { url: string; name: string }) => {
+  const shareToStory = (media_url = battleStore.data?.["story_video_url"], text = battleStore.data?.["story_text"], widgetProps?: { url: string; name: string }) => {
     postEvent("web_app_share_to_story", {
-      media_url: battleStore.data?.["story_video_url"],
-      text: text ?? battleStore.data?.["story_text"],
+      media_url,
+      text,
       widget_link: widgetProps ? widgetProps : battleStore.data?.["story_link"] ? { url: battleStore.data?.["story_link"], name: battleStore.data?.["story_link_text"] } : null,
     });
   };

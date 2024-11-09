@@ -241,7 +241,7 @@ import { useMainStore } from "@/store/main";
 
 const store = useMainStore();
 
-const { fetchLeadersList, useFetch } = store;
+const { fetchLeadersList, useFetch, shareToStory } = store;
 const { profile, leaders } = storeToRefs(store.dataStore);
 const { leaders: locale } = storeToRefs(store.localeStore);
 
@@ -342,16 +342,46 @@ const onPostStory = async () => {
   };
 
   const url = await htmlToImage.toJpeg(screenshotEl.value, { quality: 0.85, filter });
-  await useFetch({ key: "tg_story", data: { images: [url] } });
 
-  // save the image right away
-  // const link = document.createElement("a");
-  // link.download = "my-image-name.jpeg";
-  // link.href = url;
-  // link.click();
+  const bgImage = new Image();
+  bgImage.src = url;
 
-  screenshotEl.value.style.height = "initial";
-  screenshotEl.value.style.overflow = "auto";
+  bgImage.onload = async () => {
+    const canvas = document.createElement("canvas");
+    const scale = devicePixelRatio || 1;
+
+    canvas.width = innerWidth * scale;
+    canvas.height = innerHeight * scale;
+
+    const ctx = canvas.getContext("2d");
+
+    ctx?.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "orange";
+    ctx.fillRect(0, 0, canvas.width, 22 * scale);
+    ctx.font = `${14 * scale}px sans-serif`;
+    ctx.fillStyle = "white";
+    const textWidth = ctx?.measureText(leaders.value?.["story_call_to_action"] ?? "Played at @Tapsmart in Telegram").width;
+    ctx.fillStyle = "black";
+    ctx.fillText(leaders.value?.["story_call_to_action"] ?? "Played at @Tapsmart in Telegram", canvas.width / 2 - textWidth / 2, 16 * scale);
+
+    const dataURL = canvas.toDataURL("image/jpeg");
+
+    const res = await useFetch({ key: "tg_story", data: { images: [dataURL] } });
+
+    shareToStory(res?.data?.url, leaders.value?.["story_text"], {
+      url: leaders.value?.["story_link"],
+      name: leaders.value?.["story_link_text"],
+    });
+    // save the image right away
+    // const link = document.createElement("a");
+    // link.download = "my-image-name.jpeg";
+    // link.href = dataURL;
+    // link.click();
+
+    screenshotEl.value.style.height = "initial";
+    screenshotEl.value.style.overflow = "auto";
+  };
 };
 
 onMounted(() => {
