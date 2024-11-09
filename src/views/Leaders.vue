@@ -1,5 +1,6 @@
 <template>
   <div ref="screenshotEl" id="leaders" class="flex flex-col gap-4 flex-1 p-4 relative">
+    <div v-if="capturingScreenshot" class="loader absolute inset-0 z-[999] bg-black h-dvh"></div>
     <!-- debug messages -->
     <!-- <div class="fixed top-0 left-0 right-0 bg-black text-white flex flex-col text-sm z-50">
       <span>rect top: {{ debugMsg.recttop }}</span>
@@ -9,7 +10,10 @@
     <div class="top-part">
       <div class="icon-and-title flex items-center gap-2">
         <img class="h-[40px]" :src="getAsset('leaders')" />
-        <div class="page-title text-nowrap">{{ locale?.["title"] || "Leaders" }}</div>
+        <div class="title-box flex flex-col">
+          <div class="page-title text-nowrap">{{ locale?.["title"] || "Leaders" }}</div>
+          <div v-if="capturingScreenshot" class="fira-condensed text-nowrap">{{ locale?.["story_subtitle"] || "story subtitle`" }}</div>
+        </div>
         <div class="subtitle-icon p-1 relative bottom-2" @click="onShowSubtitleModal">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -117,9 +121,8 @@
         </div> -->
 
         <!-- leaderboard -->
-        <!-- <TransitionGroup class="leaderboard flex flex-col gap-2 pt-4 flex-1" name="list" tag="ul"> -->
         <Transition name="fade">
-          <ul v-if="!leaderListLoading" class="leaderboard flex flex-col gap-2 pt-4 flex-1 !h-[300px] overflow-y-hidden">
+          <ul v-if="!leaderListLoading && !capturingScreenshot" class="leaderboard flex flex-col gap-2 pt-4 flex-1 !h-[300px] overflow-y-hidden">
             <li v-for="player in leaders?.data" :key="player.id" :id="player.isPlayer ? 'player-pill' : null">
               <!-- divider -->
               <div v-if="player.isDivider" class="divider flex justify-center py-1">
@@ -143,7 +146,57 @@
                           <img v-if="filter.bigFilter === 'bolt'" class="h-[18px]" :src="getAsset('bolt')" />
                           <img v-else-if="filter.bigFilter === 'battle_win'" class="h-[18px]" :src="getAsset('cup')" />
                           <img v-else-if="filter.bigFilter === 'learned'" class="h-[18px]" :src="getAsset('book')" />
-                          <img v-else-if="filter.bigFilter === 'friends_in_battles'" class="h-[18px]" :src="getAsset('friends')" />
+                          <img v-else-if="filter.bigFilter === 'friends_in_battles'" class="h-[18px]" :src="getAsset('swords')" />
+                          <span class="text-sm fira-condensed-bold" style="line-height: 13px">{{ showFormattedNumber(player.score) }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="end">
+                    <div v-if="player.pos === 1" class="text-lg text-gray-400 exo-bold">
+                      <img class="h-[36px]" :src="getAsset('leaderboard_1st')" />
+                    </div>
+                    <div v-else-if="player.pos === 2" class="text-lg text-gray-400 exo-bold">
+                      <img class="h-[36px]" :src="getAsset('leaderboard_2nd')" />
+                    </div>
+                    <div v-else-if="player.pos === 3" class="text-lg text-gray-400 exo-bold">
+                      <img class="h-[36px]" :src="getAsset('leaderboard_3rd')" />
+                    </div>
+                    <span v-else class="text-lg text-gray-400 exo-bold mr-2">#{{ player.pos }}</span>
+                  </div>
+                </div>
+              </Pill>
+            </li>
+          </ul>
+        </Transition>
+
+        <!-- short leaderboard for screenshots -->
+        <Transition name="fade">
+          <ul v-if="!leaderListLoading && capturingScreenshot" class="leaderboard flex flex-col gap-2 pt-4 flex-1 !h-[300px] overflow-y-hidden">
+            <li v-for="player in leaders?.story_data" :key="player.id" :id="player.isPlayer ? 'player-pill' : null">
+              <!-- divider -->
+              <div v-if="player.isDivider" class="divider flex justify-center py-1">
+                <svg width="42" height="2" viewBox="0 0 42 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1H41" stroke="#BFBFBF" stroke-width="2" stroke-linecap="round" />
+                </svg>
+              </div>
+
+              <!-- normal player -->
+              <Pill v-else class="!py-2 !px-3 rounded-xl" light>
+                <div class="content flex gap-2 items-center justify-between">
+                  <div class="start flex gap-3 items-center">
+                    <div>
+                      <img v-if="player.isPlayer" class="h-[50px] rounded-lg" :src="getAsset('avatar1')" />
+                      <img v-else="player.isPlayer" class="h-[50px]" :src="getAsset('avatar-placeholder')" />
+                    </div>
+                    <div class="player-info">
+                      <span class="text-lg fira-bold text-nowrap">{{ player.name }}</span>
+                      <div class="other-info flex items-center gap-4">
+                        <div class="score py-1 px-3 bg-[var(--grey-dark)] rounded-lg flex gap-[6px] items-center">
+                          <img v-if="filter.bigFilter === 'bolt'" class="h-[18px]" :src="getAsset('bolt')" />
+                          <img v-else-if="filter.bigFilter === 'battle_win'" class="h-[18px]" :src="getAsset('cup')" />
+                          <img v-else-if="filter.bigFilter === 'learned'" class="h-[18px]" :src="getAsset('book')" />
+                          <img v-else-if="filter.bigFilter === 'friends_in_battles'" class="h-[18px]" :src="getAsset('swords')" />
                           <span class="text-sm fira-condensed-bold" style="line-height: 13px">{{ showFormattedNumber(player.score) }}</span>
                         </div>
                       </div>
@@ -236,7 +289,7 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted, nextTick } from "vue";
-import { getAsset, showFormattedNumber } from "@/utils";
+import { getAsset, showFormattedNumber, waitFor } from "@/utils";
 import { storeToRefs } from "pinia";
 import * as htmlToImage from "html-to-image";
 
@@ -266,6 +319,8 @@ const targetIsVisible = ref(true);
 const leaderListLoading = ref(false);
 const isTooltipModal = ref(false);
 const screenshotEl = ref();
+
+const capturingScreenshot = ref(false);
 
 // const debugMsg = ref({
 //   recttop: 0,
@@ -341,13 +396,10 @@ const checkPlayerVisibility = () => {
 };
 
 const onPostStory = async () => {
-  screenshotEl.value.style.height = "100dvh";
-  screenshotEl.value.style.overflow = "hidden";
-
-  await nextTick();
+  await startCapturingScreenshot();
 
   const filter = (node: HTMLElement) => {
-    const exclusionClasses = ["story-btn-cnt", "fixed-player"];
+    const exclusionClasses = ["story-btn-cnt", "fixed-player", "loader"];
     return !exclusionClasses.some((classname) => node.classList?.contains(classname));
   };
 
@@ -389,10 +441,27 @@ const onPostStory = async () => {
     // link.download = "my-image-name.jpeg";
     // link.href = dataURL;
     // link.click();
-
-    screenshotEl.value.style.height = "initial";
-    screenshotEl.value.style.overflow = "auto";
   };
+
+  finishCapturingScreenshot();
+};
+
+const startCapturingScreenshot = async () => {
+  document.body.style.overflow = "hidden";
+  capturingScreenshot.value = true;
+  screenshotEl.value.style.height = "100dvh";
+  screenshotEl.value.style.overflow = "hidden";
+
+  await nextTick();
+
+  await waitFor(600);
+};
+
+const finishCapturingScreenshot = () => {
+  document.body.style.overflow = "initial";
+  capturingScreenshot.value = false;
+  screenshotEl.value.style.height = "initial";
+  screenshotEl.value.style.overflow = "auto";
 };
 
 onMounted(() => {
