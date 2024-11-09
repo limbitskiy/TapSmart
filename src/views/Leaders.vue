@@ -1,6 +1,6 @@
 <template>
   <div ref="screenshotEl" id="leaders" class="flex flex-col gap-4 flex-1 p-4 relative">
-    <div v-if="capturingScreenshot" class="loader absolute inset-0 z-[999] bg-black h-dvh"></div>
+    <div v-if="capturingScreenshot" class="leaderboard-screenshot-loader absolute inset-0 z-[999] bg-white h-dvh"></div>
     <!-- debug messages -->
     <!-- <div class="fixed top-0 left-0 right-0 bg-black text-white flex flex-col text-sm z-50">
       <span>rect top: {{ debugMsg.recttop }}</span>
@@ -47,7 +47,7 @@
         <!-- filters -->
         <div class="filters flex flex-col gap-2 mt-2">
           <!-- top filter -->
-          <div class="top-filters flex-1 flex gap-2 items-center justify-between">
+          <div class="top-filters flex-1 flex flex-wrap gap-2 items-center justify-between">
             <div class="total-week-toggle">
               <Toggle
                 :option1="{ label: locale?.['period_total'] ?? 'total', value: 'total' }"
@@ -399,7 +399,7 @@ const onPostStory = async () => {
   await startCapturingScreenshot();
 
   const filter = (node: HTMLElement) => {
-    const exclusionClasses = ["story-btn-cnt", "fixed-player", "loader"];
+    const exclusionClasses = ["story-btn-cnt", "fixed-player", "leaderboard-screenshot-loader"];
     return !exclusionClasses.some((classname) => node.classList?.contains(classname));
   };
 
@@ -429,18 +429,18 @@ const onPostStory = async () => {
 
     const dataURL = canvas.toDataURL("image/jpeg");
 
-    const res = await useFetch({ key: "tg_story", data: { images: [dataURL] } });
+    // const res = await useFetch({ key: "tg_story", data: { images: [dataURL] } });
 
-    shareToStory(res?.data?.url, leaders.value?.["story_text"], {
-      url: leaders.value?.["story_link"],
-      name: leaders.value?.["story_link_text"],
-    });
+    // shareToStory(res?.data?.url, leaders.value?.["story_text"], {
+    //   url: leaders.value?.["story_link"],
+    //   name: leaders.value?.["story_link_text"],
+    // });
 
     // save the image right away
-    // const link = document.createElement("a");
-    // link.download = "my-image-name.jpeg";
-    // link.href = dataURL;
-    // link.click();
+    const link = document.createElement("a");
+    link.download = "my-image-name.jpeg";
+    link.href = dataURL;
+    link.click();
   };
 
   finishCapturingScreenshot();

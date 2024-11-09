@@ -144,6 +144,11 @@
   opacity: 0;
 }
 
+// leaderboard loader animation
+.leaderboard-screenshot-loader {
+  animation: flash 1.5s ease-out forwards;
+}
+
 // leaderboard player pill
 .slight-move-up-enter-active,
 .slight-move-up-leave-active {
@@ -555,5 +560,15 @@
   }
   to {
     stroke-dashoffset: 1000;
+  }
+}
+
+@keyframes flash {
+  90% {
+    opacity: 1;
+    background-color: black;
+  }
+  100% {
+    opacity: 0;
   }
 }
