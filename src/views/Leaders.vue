@@ -1,5 +1,11 @@
 <template>
   <div ref="screenshotEl" id="leaders" class="flex flex-col gap-4 flex-1 p-4 relative">
+    <!-- debug messages -->
+    <div class="fixed top-0 left-0 right-0 bg-black text-white flex flex-col text-sm z-50">
+      <span>rect top: {{ debugMsg.recttop }}</span>
+      <span>inner height: {{ debugMsg.innerheight }}</span>
+    </div>
+
     <div class="top-part">
       <div class="icon-and-title flex items-center gap-2">
         <img class="h-[40px]" :src="getAsset('leaders')" />
@@ -264,6 +270,11 @@ const leaderListLoading = ref(false);
 const isTooltipModal = ref(false);
 const screenshotEl = ref();
 
+const debugMsg = ref({
+  recttop: 0,
+  innerheight: 0,
+});
+
 const computedPlayer = computed(() => leaders.value?.data?.find((player) => player.isPlayer));
 
 await fetchLeadersList();
@@ -322,6 +333,9 @@ const checkPlayerVisibility = () => {
   if (target.value[0]) {
     const rect = target.value[0].getBoundingClientRect();
 
+    debugMsg.value.recttop = rect.top;
+    debugMsg.value.innerheight = innerHeight;
+
     if (rect.top < innerHeight - 70 && rect.top > 0) {
       targetIsVisible.value = true;
     } else {
@@ -373,6 +387,7 @@ const onPostStory = async () => {
       url: leaders.value?.["story_link"],
       name: leaders.value?.["story_link_text"],
     });
+
     // save the image right away
     // const link = document.createElement("a");
     // link.download = "my-image-name.jpeg";
