@@ -140,7 +140,7 @@
                       <img v-else="player.isPlayer" class="h-[50px]" :src="getAsset('avatar-placeholder')" />
                     </div>
                     <div class="player-info">
-                      <span class="text-lg fira-bold text-nowrap">{{ player.name }}</span>
+                      <span class="text-lg fira-bold text-nowrap">{{ sliceTextAmount(player.name, 15) }}</span>
                       <div class="other-info flex items-center gap-4">
                         <div class="score py-1 px-3 bg-[var(--grey-dark)] rounded-lg flex gap-[6px] items-center">
                           <img v-if="filter.bigFilter === 'bolt'" class="h-[18px]" :src="getAsset('bolt')" />
@@ -233,7 +233,7 @@
                 <img class="h-[50px] rounded-lg" :src="getAsset('avatar1')" />
               </div>
               <div class="player-info">
-                <span class="text-lg fira-bold">{{ computedPlayer.name }}</span>
+                <span class="text-lg fira-bold">{{ sliceTextAmount(computedPlayer.name, 15) }}</span>
                 <div class="other-info flex items-center gap-4">
                   <div class="score px-2 py-1 bg-[var(--grey-dark)] rounded-lg flex gap-[6px] items-center">
                     <img v-if="filter.bigFilter === 'bolt'" class="h-[18px]" :src="getAsset('bolt')" />
@@ -289,7 +289,7 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted, nextTick } from "vue";
-import { getAsset, showFormattedNumber, waitFor } from "@/utils";
+import { getAsset, showFormattedNumber, waitFor, sliceTextAmount } from "@/utils";
 import { storeToRefs } from "pinia";
 import * as htmlToImage from "html-to-image";
 

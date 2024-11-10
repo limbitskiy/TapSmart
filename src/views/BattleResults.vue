@@ -57,7 +57,7 @@
                     <div class="rounded-full bg-[var(--grey-dark)] w-[30px] h-[30px] grid place-items-center">
                       <span class="league exo-black text-lg mb-[1px]" :style="`color: ${getPlayerColor(player)}`">{{ player.position }}</span>
                     </div>
-                    <span class="fira-bold text-lg max-w-1/2 text-ellipsis">{{ player.name }}</span>
+                    <span class="fira-bold text-lg max-w-1/2 text-ellipsis">{{ sliceTextAmount(player.name, 15) }}</span>
                   </div>
                   <span class="bolts exo-black text-[var(--accent-color)]">{{ player?.score || 0 }}</span>
                 </Pill>
@@ -101,7 +101,7 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, nextTick } from "vue";
 import { tg } from "@/api/telegram";
-import { getAsset, waitFor } from "@/utils";
+import { getAsset, waitFor, sliceTextAmount } from "@/utils";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 import * as htmlToImage from "html-to-image";

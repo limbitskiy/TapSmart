@@ -41,7 +41,7 @@
               <div class="player-name flex">
                 <!-- <div class="fixed-length-name whitespace-nowrap overflow-x-hidden text-ellipsis"> -->
                 <div class="fixed-length-name">
-                  <span class="fira-bold text-lg">{{ player.name }}</span>
+                  <span class="fira-bold text-lg">{{ sliceTextAmount(player.name, 15) }}</span>
                 </div>
                 <div v-if="player?.isFriend" class="friend-badge ml-2">
                   <!-- friend icon -->
@@ -94,7 +94,7 @@
 <script setup lang="ts">
 import { ref, watch, computed, onMounted, onBeforeUnmount } from "vue";
 import { storeToRefs } from "pinia";
-import { getAsset, shortenNumber, takeScreenshot } from "@/utils";
+import { getAsset, shortenNumber, sliceTextAmount } from "@/utils";
 import { tg, getUserName, inviteFriend } from "@/api/telegram";
 import { useRoute } from "vue-router";
 import { formattedTime } from "@/utils";
