@@ -54,6 +54,10 @@ export const images = {
   leaderboard_1st: "/leaderboard_1st.png",
   leaderboard_2nd: "/leaderboard_2nd.png",
   leaderboard_3rd: "/leaderboard_3rd.png",
+  rocket: "/rocket.png",
+  ton: "/ton.png",
+  cart: "/cart.png",
+  confirm: "/confirm.png",
 };
 
 // assets folder

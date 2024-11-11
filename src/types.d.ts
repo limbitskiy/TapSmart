@@ -103,6 +103,7 @@ export interface TooltipProps {
 }
 
 export interface ModalProps {
+  id: number;
   isShown: boolean;
   title: string;
   subtitle: string;
@@ -122,7 +123,7 @@ export interface BackendButton {
   route?: string;
   hidden?: boolean;
   disabled?: boolean;
-  accent?: "orange" | "purple";
+  accent?: "orange" | "purple" | "black" | "grey" | "green" | "red";
   action?: "invite";
 }
 

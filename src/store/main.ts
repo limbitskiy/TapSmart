@@ -40,6 +40,7 @@ export const useMainStore = defineStore("main", () => {
   });
 
   const modal = ref<ModalProps>({
+    id: null,
     title: null,
     subtitle: null,
     image: null,
@@ -180,8 +181,9 @@ export const useMainStore = defineStore("main", () => {
   };
 
   const showModal = ({ title, subtitle, image, buttons }: ModalProps) => {
-    if (modal.value.isShown) return;
+    // if (modal.value.isShown) return;
 
+    modal.value.id = Math.random() * 999999;
     modal.value.title = title;
     modal.value.subtitle = subtitle;
     modal.value.image = image;

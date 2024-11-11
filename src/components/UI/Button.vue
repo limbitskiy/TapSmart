@@ -7,8 +7,8 @@
       !unstyled && 'rounded-xl  py-3 px-8 text-xl leading-6',
       dark ? 'bg-black' : grey ? 'bg-[var(--grey-light)]' : !unstyled && 'bg-[var(--accent-color)] text-black',
       font ? font : 'fira-condensed-bold',
-      // data?.disabled ?? disabled ? '!bg-gray-500 bg-none' : '',
-      data?.accent === 'orange' ? 'bg-[var(--accent-color)] text-black' : data?.accent === 'purple' ? 'bg-gradient-to-r from-[#408CFF] to-[#894899] text-white' : '',
+      data?.disabled ?? disabled ? '!bg-gray-500 bg-none' : '',
+      backgroundMap[data?.accent],
     ]"
     :disabled="data?.disabled ?? disabled"
     @touchstart="btnTouchstart"
@@ -61,6 +61,15 @@ const props = defineProps<{
 const emit = defineEmits<{
   close: [];
 }>();
+
+const backgroundMap = {
+  orange: "bg-[var(--accent-color)] text-black",
+  purple: "bg-gradient-to-r from-[#408CFF] to-[#894899] text-white",
+  black: "bg-black text-white",
+  grey: "bg-[var(--grey-light)] text-white",
+  green: "bg-[var(--green-light)] text-white",
+  red: "bg-[var(--red-light)] text-white",
+};
 
 const onClick = () => {
   if (props.data?.action === "invite") {
