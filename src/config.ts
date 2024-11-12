@@ -58,6 +58,7 @@ export const images = {
   ton: "/ton.png",
   cart: "/cart.png",
   confirm: "/confirm.png",
+  prize_fund: "/prize_fund.png",
 };
 
 // assets folder

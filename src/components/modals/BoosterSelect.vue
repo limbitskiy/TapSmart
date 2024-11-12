@@ -50,6 +50,17 @@
             :buttonLabel="data.boosters?.extra_time?.button?.label"
             @select="() => onBonusSelect('extra_time')"
           />
+
+          <!-- prize fund -->
+          <BoosterPill
+            :selected="pickedBonuses.prize_fund"
+            :color="'var(--accent-color)'"
+            icon="prize_fund"
+            :title="locale?.['prize_fund_title'] || 'Prize fund'"
+            :subtitle="locale?.['prize_fund_text'] || 'Prize fund text'"
+            :buttonLabel="data.boosters?.prize_fund?.button?.label"
+            @select="() => onBonusSelect('prize_fund')"
+          />
         </div>
       </Pill>
     </div>
@@ -96,6 +107,7 @@ const { data } = storeToRefs(store.battleStore);
 const pickedBonuses = ref({
   extra_mistake: false,
   extra_time: false,
+  prize_fund: false,
 });
 
 getOnlineFriends();
@@ -125,18 +137,24 @@ watch(
   }
 );
 
+watch(
+  () => data.value.boosters.prize_fund,
+  (val) => {
+    if (val.active) {
+      pickedBonuses.value.prize_fund = true;
+    }
+  },
+  {
+    deep: true,
+  }
+);
+
 const onBonusSelect = async (selectedBonus) => {
   const bonus = data.value?.boosters?.[selectedBonus];
 
   if (pickedBonuses.value[selectedBonus] === false) {
     if (bonus?.price && !data.value.boosters?.[selectedBonus]?.active) {
       await useFetch({ key: bonus.button.api, data: bonus.button.data });
-
-      // console.log(data.value.boosters);
-
-      // if (data.value.boosters?.[selectedBonus]?.active) {
-      //   pickedBonuses.value[selectedBonus] = true;
-      // }
     } else {
       pickedBonuses.value[selectedBonus] = true;
     }
@@ -148,13 +166,19 @@ const onBonusSelect = async (selectedBonus) => {
 const onStartBattle = ({ friendsOnly }) => {
   const params = new URLSearchParams();
 
-  if (pickedBonuses.value.extra_time) {
-    params.append("extra_time", "1");
-  }
+  Object.keys(pickedBonuses.value).forEach((pickedBonus) => {
+    if (pickedBonuses.value[pickedBonus]) {
+      params.append(pickedBonus, "1");
+    }
+  });
 
-  if (pickedBonuses.value.extra_mistake) {
-    params.append("extra_mistake", "1");
-  }
+  // if (pickedBonuses.value.extra_time) {
+  //   params.append("extra_time", "1");
+  // }
+
+  // if (pickedBonuses.value.extra_mistake) {
+  //   params.append("extra_mistake", "1");
+  // }
 
   if (friendsOnly) {
     params.append("friends_only", "1");
