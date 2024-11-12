@@ -25,10 +25,22 @@
       </Pill>
     </div>
 
-    <div class="boosters flex flex-col gap-2 px-[2px] overflow-auto">
+    <div class="boosters flex flex-col gap-2 px-[2px] overflow-auto" @scroll="onScroll">
       <span class="fira-bold text-lg">{{ locale?.["available_boosters"] || "Available boosters" }}</span>
       <Pill>
         <div class="boosters-content flex flex-col gap-4">
+          <!-- prize fund -->
+          <BoosterPill
+            :selected="pickedBonuses.prize_fund"
+            :color="'var(--accent-color)'"
+            icon="prize_fund"
+            :title="locale?.['prize_fund_title'] || 'Prize fund'"
+            :subtitle="locale?.['prize_fund_text'] || 'Prize fund text'"
+            :buttonLabel="data.boosters?.prize_fund?.button?.label"
+            @select="() => onBonusSelect('prize_fund')"
+            @booster-tooltip="(event) => onBoosterTooltip('prize_fund', event)"
+          />
+
           <!-- extra mistake -->
           <BoosterPill
             :selected="pickedBonuses.extra_mistake"
@@ -38,6 +50,7 @@
             :subtitle="locale?.['extra_mistake_text'] || 'Extra mistake text'"
             :buttonLabel="data.boosters?.extra_mistake.button?.label"
             @select="() => onBonusSelect('extra_mistake')"
+            @booster-tooltip="(event) => onBoosterTooltip('extra_mistake', event)"
           />
 
           <!-- extra time -->
@@ -49,17 +62,7 @@
             :subtitle="locale?.['extra_battle_time_text'] || 'Extra time text'"
             :buttonLabel="data.boosters?.extra_time?.button?.label"
             @select="() => onBonusSelect('extra_time')"
-          />
-
-          <!-- prize fund -->
-          <BoosterPill
-            :selected="pickedBonuses.prize_fund"
-            :color="'var(--accent-color)'"
-            icon="prize_fund"
-            :title="locale?.['prize_fund_title'] || 'Prize fund'"
-            :subtitle="locale?.['prize_fund_text'] || 'Prize fund text'"
-            :buttonLabel="data.boosters?.prize_fund?.button?.label"
-            @select="() => onBonusSelect('prize_fund')"
+            @booster-tooltip="(event) => onBoosterTooltip('extra_time', event)"
           />
         </div>
       </Pill>
@@ -100,7 +103,7 @@ import { useMainStore } from "@/store/main";
 
 const store = useMainStore();
 
-const { getOnlineFriends, redirectTo, useFetch } = store;
+const { getOnlineFriends, redirectTo, useFetch, showTooltip, hideTooltip } = store;
 const { battles: locale } = storeToRefs(store.localeStore);
 const { data } = storeToRefs(store.battleStore);
 
@@ -187,5 +190,16 @@ const onStartBattle = ({ friendsOnly }) => {
   const queryString = params.toString();
 
   redirectTo(`/waiting${queryString ? "?" + queryString : ""}`);
+};
+
+const onBoosterTooltip = (booster, event) => {
+  showTooltip({
+    element: event.target,
+    text: locale.value?.[`tooltip_${booster}`],
+  });
+};
+
+const onScroll = () => {
+  hideTooltip();
 };
 </script>
