@@ -1,5 +1,5 @@
 <template>
-  <div class="notification glass flex flex-col rounded-xl fixed top-2 left-4 right-4 min-h-[20dvh] z-50 p-[1px]">
+  <div class="notification glass flex flex-col rounded-xl fixed top-2 left-4 right-4 min-h-[20dvh] z-[70] p-[1px]">
     <div class="inner flex-1 flex flex-col rounded-xl bg-[#222]">
       <!-- header -->
       <div class="header text-center">
