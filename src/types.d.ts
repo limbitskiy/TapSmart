@@ -167,6 +167,8 @@ export type Mechanic = {
 
 export type Booster = {
   price: number;
+  active?: boolean;
+  button: BackendButton;
 };
 
 export type LocaleEntry = {

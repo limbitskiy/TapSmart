@@ -4,7 +4,7 @@
     <!-- <img v-else class="h-[30dvh] my-4" :src="getAsset('confirm')" /> -->
     <div class="text flex flex-col gap-2">
       <span class="text-3xl fira-bold text-gray-100" v-html="data.title"></span>
-      <Pill class="border border-[var(--accent-color)]">
+      <Pill class="border border-[var(--accent-color)] mx-[10vw]">
         <span class="text-gray-300 inline-svg leading-4" v-html="replaceWithSpecialSymbols(data.subtitle)"></span>
       </Pill>
     </div>

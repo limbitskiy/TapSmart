@@ -8,7 +8,21 @@ const mockData = {
   battle_type: 1,
   boosters: {
     extra_mistake: {
-      price: 0,
+      active: 0,
+      button: {
+        api: "option_activate",
+        data: {
+          auxId: 1,
+          buttonAction: {
+            data: {},
+          },
+          showModal: 1,
+          type: "extra_mistake",
+        },
+        disabled: false,
+        label: "<nut>200 или реклама",
+      },
+      price: 200,
     },
     extra_time: {
       price: 0,
@@ -203,6 +217,21 @@ describe("battle store logic", () => {
     expect(foundItem.correct).toBe("тестовая задача");
     expect(foundItem.task.answer).toBe("тестовая звезда");
     expect(foundItem.task.question).toBe("test1");
+  });
+
+  test.todo("expand any data of type array");
+  test("expand any data of type object", () => {
+    battleStore.expand({
+      boosters: {
+        extra_mistake: {
+          active: 1,
+          price: 0,
+        },
+      },
+    });
+
+    expect(battleStore.data.boosters.extra_mistake.active).toEqual(1);
+    expect(battleStore.data.boosters.extra_mistake.price).toEqual(0);
   });
 });
 

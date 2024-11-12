@@ -1,9 +1,9 @@
 <template>
   <div class="flex-1 flex flex-col">
     <div class="bg flex-1 flex p-1 rounded-xl" :style="{ background: selected ? 'var(--green-gradient)' : color }">
-      <Pill class="flex-1 flex flex-col gap-2" style="box-shadow: 0px 0px 1.6px 1px rgba(0, 0, 0, 0.25)">
-        <div class="top flex gap-4">
-          <div class="icon min-w-[50px] pt-2 contain">
+      <Pill class="flex-1 flex flex-col gap-2 !p-2" style="box-shadow: 0px 0px 1.6px 1px rgba(0, 0, 0, 0.25)">
+        <div class="top flex gap-4 p-2">
+          <div class="icon min-w-[50px] contain flex items-center">
             <img class="w-[50px]" :src="getAsset(icon)" />
           </div>
           <div class="text flex flex-col gap-2">
@@ -21,12 +21,8 @@
             activeColor="#fcdcb0"
             @click="() => emit('select')"
           >
-            <div v-if="!selected && price" class="icon-text flex gap-2 items-center justify-center">
-              <img class="h-4 scale-125" :src="getAsset('nut')" />
-              <span>{{ price }}</span>
-            </div>
-            <span v-else-if="!selected && !price">{{ locale?.["enable_boost"] || "Enable" }}</span>
-            <span v-else>{{ locale?.["button_active"] || "active" }}</span>
+            <span v-if="selected">{{ locale?.["button_active"] || "active" }}</span>
+            <span v-else class="inline-svg leading-4" v-html="replaceWithSpecialSymbols(buttonLabel)"></span>
           </Button>
         </div>
       </Pill>
@@ -35,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { getAsset } from "@/utils";
+import { getAsset, replaceWithSpecialSymbols } from "@/utils";
 import { storeToRefs } from "pinia";
 
 // stores
@@ -51,7 +47,7 @@ defineProps<{
   title: string;
   subtitle: string;
   selected: boolean;
-  price?: number;
+  buttonLabel: string;
 }>();
 
 const emit = defineEmits<{

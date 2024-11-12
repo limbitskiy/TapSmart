@@ -25,70 +25,38 @@
       </Pill>
     </div>
 
-    <!-- <div class="filters flex items-center justify-between"> -->
-    <!-- friends only filter button -->
-    <!-- <button
-        class="border rounded-full text-sm py-1 px-3 border-[var(--accent-color)] fira-semibold"
-        :class="{ 'bg-[var(--accent-color)] text-[#333]': friendsOnly }"
-        @click="onFriendsOnly"
-      >
-        <div class="flex relative">
-          <span>{{ locale?.["friends_only"] || "Friends only" }}</span>
-          <div
-            class="badge text-sm text-black bg-[var(--accent-color)] rounded-md h-4 px-1 grid place-items-center leading-3 exo-bold absolute left-full -top-2"
-            :class="{
-              'bg-[#333] text-white border border-[#333]': friendsOnly,
-            }"
-          >
-            {{ data["friends_only_badge"] || 0 }}
-          </div>
-        </div>
-      </button> -->
-
-    <!-- invite friends button -->
-    <!-- <Button class="!text-base !py-1 !px-4" activeColor="#fcdcb0" @click="onInviteFriends">{{ locale?.["invite_friends"] || "Invite friends" }}</Button> -->
-    <!-- </div> -->
-
-    <div class="boosters flex flex-col gap-2 flex-1 px-[2px]">
+    <div class="boosters flex flex-col gap-2 px-[2px] overflow-auto">
       <span class="fira-bold text-lg">{{ locale?.["available_boosters"] || "Available boosters" }}</span>
       <Pill>
         <div class="boosters-content flex flex-col gap-4">
           <!-- extra mistake -->
           <BoosterPill
-            :selected="pickedBonuses.mistake"
+            :selected="pickedBonuses.extra_mistake"
             :color="'var(--red-color)'"
             icon="times"
             :title="locale?.['extra_mistake_title'] || 'Extra mistake'"
             :subtitle="locale?.['extra_mistake_text'] || 'Extra mistake text'"
-            :price="data.boosters?.extra_mistake.price"
-            @select="
-              () => {
-                pickedBonuses.mistake = !pickedBonuses.mistake;
-              }
-            "
+            :buttonLabel="data.boosters?.extra_mistake.button?.label"
+            @select="() => onBonusSelect('extra_mistake')"
           />
 
           <!-- extra time -->
           <BoosterPill
-            :selected="pickedBonuses.time"
+            :selected="pickedBonuses.extra_time"
             :color="'var(--blue-color)'"
             icon="clock"
             :title="locale?.['extra_battle_time_title'] || 'Extra time'"
             :subtitle="locale?.['extra_battle_time_text'] || 'Extra time text'"
-            :price="data.boosters?.extra_time?.price"
-            @select="
-              () => {
-                pickedBonuses.time = !pickedBonuses.time;
-              }
-            "
+            :buttonLabel="data.boosters?.extra_time?.button?.label"
+            @select="() => onBonusSelect('extra_time')"
           />
         </div>
       </Pill>
     </div>
 
-    <div class="bottom-btns flex flex-col gap-2">
+    <div class="bottom-btns flex-1 flex flex-col gap-2">
       <Button
-        class="flex-1 py-4 rounded-lg"
+        class="py-4 rounded-lg"
         :style="data?.['friends_online'] ? 'background-color: black; color: white' : 'background-color: var(--accent-color); color: black'"
         activeColor="#5a5a5a"
         @click="onStartBattle"
@@ -97,7 +65,7 @@
           <span class="text-xl leading-4">{{ locale?.["button_booster_select"] || "Challenge" }}</span>
         </div>
       </Button>
-      <Button class="" :class="data?.['friends_online'] ? '' : '!bg-black !text-white'" @click="() => onStartBattle({ friendsOnly: true })">
+      <Button :class="data?.['friends_online'] ? '' : '!bg-black !text-white'" @click="() => onStartBattle({ friendsOnly: true })">
         <div class="flex gap-1 justify-center">
           <span class="">{{ locale?.["button_booster_friends"] || "Challenge friends" }}</span>
           <Badge class="bg-green-500" :data="data?.['friends_online']" grey />
@@ -109,7 +77,7 @@
 
 <script setup lang="ts">
 // import { tg, inviteFriend } from "@/api/telegram";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 
@@ -119,27 +87,72 @@ import BoosterPill from "@/components/UI/BoosterPill.vue";
 // stores
 import { useMainStore } from "@/store/main";
 
-const pickedBonuses = ref({
-  mistake: false,
-  time: false,
-});
-
 const store = useMainStore();
 
-const { getOnlineFriends, redirectTo } = store;
+const { getOnlineFriends, redirectTo, useFetch } = store;
 const { battles: locale } = storeToRefs(store.localeStore);
 const { data } = storeToRefs(store.battleStore);
 
+const pickedBonuses = ref({
+  extra_mistake: false,
+  extra_time: false,
+});
+
 getOnlineFriends();
+
+// turn on bonus when active changes
+watch(
+  () => data.value.boosters.extra_mistake,
+  (val) => {
+    if (val.active) {
+      pickedBonuses.value.extra_mistake = true;
+    }
+  },
+  {
+    deep: true,
+  }
+);
+
+watch(
+  () => data.value.boosters.extra_time,
+  (val) => {
+    if (val.active) {
+      pickedBonuses.value.extra_time = true;
+    }
+  },
+  {
+    deep: true,
+  }
+);
+
+const onBonusSelect = async (selectedBonus) => {
+  const bonus = data.value?.boosters?.[selectedBonus];
+
+  if (pickedBonuses.value[selectedBonus] === false) {
+    if (bonus?.price && !data.value.boosters?.[selectedBonus]?.active) {
+      await useFetch({ key: bonus.button.api, data: bonus.button.data });
+
+      // console.log(data.value.boosters);
+
+      // if (data.value.boosters?.[selectedBonus]?.active) {
+      //   pickedBonuses.value[selectedBonus] = true;
+      // }
+    } else {
+      pickedBonuses.value[selectedBonus] = true;
+    }
+  } else {
+    pickedBonuses.value[selectedBonus] = false;
+  }
+};
 
 const onStartBattle = ({ friendsOnly }) => {
   const params = new URLSearchParams();
 
-  if (pickedBonuses.value.time) {
+  if (pickedBonuses.value.extra_time) {
     params.append("extra_time", "1");
   }
 
-  if (pickedBonuses.value.mistake) {
+  if (pickedBonuses.value.extra_mistake) {
     params.append("extra_mistake", "1");
   }
 

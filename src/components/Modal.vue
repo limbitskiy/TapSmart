@@ -1,13 +1,13 @@
 <template>
   <div class="modal relative">
-    <div v-if="visible" id="modal-backdrop" class="modal-backdrop fixed inset-0 bg-black bg-opacity-50 z-40" @click="onBackdropClick"></div>
+    <div v-if="visible" id="modal-backdrop" class="modal-backdrop fixed inset-0 bg-black bg-opacity-50" :style="{ zIndex: zIndex ?? 40 }" @click="onBackdropClick"></div>
 
     <Transition name="modal-slide-up">
       <BackgroundPill
         v-if="visible"
-        class="fixed bottom-0 w-full z-50 flex flex-col rounded-bl-none rounded-br-none py-4"
+        class="fixed bottom-0 w-full flex flex-col rounded-bl-none rounded-br-none py-4"
         color="dark"
-        :style="{ maxHeight: height ?? sticky ? '85dvh' : 'calc(100dvh - 67px)' }"
+        :style="{ maxHeight: height ?? sticky ? '85dvh' : 'calc(100dvh - 67px)', zIndex: zIndex ? zIndex + 10 : 50 }"
       >
         <div class="w-8 h-1 bg-gray-600 rounded-full m-auto relative -top-2"></div>
         <div class="modal-scroll flex overflow-y-scroll">
@@ -40,6 +40,7 @@ const props = defineProps<{
   visible: boolean;
   sticky?: boolean;
   height?: string;
+  zIndex?: number;
 }>();
 
 const emit = defineEmits<{

@@ -2,6 +2,9 @@ import { computed, ref, watch, Ref } from "vue";
 import { defineStore } from "pinia";
 import { useBattleProcessor } from "@/composables/useBattleProcessor";
 
+// lodash
+import { merge } from "lodash";
+
 // common
 import { Interval as BreakpointInterval, Timer as TaskTimer } from "@/common/interval";
 
@@ -65,6 +68,8 @@ export const useBattleStore = defineStore("battle", () => {
 
   const battleStarted = ref(false);
   const pauseCurrentTask = ref(false);
+
+  const relaxModalOpen = ref(false);
 
   // challenge vars
   let battleStartTime: number | null = null;
@@ -153,6 +158,7 @@ export const useBattleStore = defineStore("battle", () => {
   const expand = (data) => {
     // console.log(`expand`);
     Object.keys(data).forEach((key) => {
+      // check if array and merge
       if (state.value.battleData[key] && Array.isArray(state.value.battleData[key])) {
         data[key].forEach((item) => {
           const foundIdx = state.value.battleData[key].findIndex((storeItem) => storeItem.id === item.id);
@@ -164,8 +170,11 @@ export const useBattleStore = defineStore("battle", () => {
             state.value.battleData[key].push(item);
           }
         });
+        // check if object and merge
+      } else if (state.value.battleData[key] && Object.keys(state.value.battleData[key]).length) {
+        merge(state.value.battleData[key], data[key]);
       } else {
-        console.error(`expand: Error - property not of type: array`);
+        console.error(`expand: Error - property not of type: array or object`);
       }
     });
     // console.log("expanded battle store:", state.value.battleData);
@@ -384,11 +393,21 @@ export const useBattleStore = defineStore("battle", () => {
       stopTaskTimeout();
       stopBreakpoint();
       battleStarted.value = false;
+      relaxModalOpen.value = true;
     } else if (value === "closed") {
       afkCounter.value = 0;
       startTaskTimeout();
       startBreakpoint("battle");
       battleStarted.value = true;
+      relaxModalOpen.value = false;
+    }
+  };
+
+  const setBackendModal = (value: "open" | "closed") => {
+    if (value === "open" && !relaxModalOpen.value) {
+      setRelaxModal("open");
+    } else if (value === "closed" && !relaxModalOpen.value) {
+      setRelaxModal("closed");
     }
   };
 
@@ -491,6 +510,8 @@ export const useBattleStore = defineStore("battle", () => {
 
   const calculateCalcPoint = () => data.value.calc_points?.[correctStreak.value] ?? data.value.calc_points?.[data.value.calc_points.length - 1] ?? 1;
 
+  window.piniaStore = data;
+
   return {
     data,
     currentTask,
@@ -522,6 +543,7 @@ export const useBattleStore = defineStore("battle", () => {
     startRelax,
     stopRelax,
     setRelaxModal,
+    setBackendModal,
     calculateCalcPoint,
   };
 });

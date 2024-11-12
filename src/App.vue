@@ -39,14 +39,8 @@
 
     <!-- backend-controlled modal -->
     <Teleport to="#backend-modal">
-      <Modal id="backend-modal" v-model:visible="modal.isShown" :sticky="modal.isClosable">
-        <BackendModal
-          @close="
-            () => {
-              modal.isShown = false;
-            }
-          "
-        />
+      <Modal id="backend-modal" v-model:visible="modal.isShown" :sticky="modal.isClosable" :zIndex="60">
+        <BackendModal @close="onCloseBackendModal" />
       </Modal>
     </Teleport>
   </div>
@@ -74,6 +68,10 @@ const handleVisibilityChange = () => {
   } else {
     resumeBattle();
   }
+};
+
+const onCloseBackendModal = () => {
+  modal.value.isShown = false;
 };
 
 onMounted(() => {

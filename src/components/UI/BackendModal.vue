@@ -22,16 +22,16 @@ const emit = defineEmits<{
 const store = useMainStore();
 
 const { modal } = storeToRefs(store);
-const { setRelaxModal } = store.battleStore;
+const { setBackendModal } = store.battleStore;
 
 onMounted(() => {
   // console.log(`mounted`);
-  setRelaxModal("open");
+  setBackendModal("open");
 });
 
 onBeforeUnmount(() => {
   // console.log(`unmounted`);
 
-  setRelaxModal("closed");
+  setBackendModal("closed");
 });
 </script>
