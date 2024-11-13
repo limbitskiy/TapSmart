@@ -1,20 +1,20 @@
 <template>
   <div class="notification glass flex flex-col rounded-xl fixed top-2 left-4 right-4 min-h-[20dvh] z-[70] p-[1px]">
-    <div class="inner flex-1 flex flex-col rounded-xl bg-[#222]">
+    <div class="inner flex-1 flex flex-col gap-2 rounded-xl bg-[#222] p-4">
       <!-- header -->
       <div class="header text-center">
-        <div class="header-text px-2 pb-0 pt-4">
+        <div class="header-text">
           <span class="text-lg fira-condensed-bold text-white">{{ data.title }}</span>
         </div>
       </div>
 
       <!-- content -->
-      <div class="content flex-1 text-center px-2 pt-2 pb-0 leading-4">
+      <div class="content flex-1 text-center leading-4">
         <span class="fira-condensed text-sm text-gray-300 inline-svg svg-top-margin" v-html="replaceWithSpecialSymbols(data.subtitle)"></span>
       </div>
 
       <!-- buttons -->
-      <div class="btns flex justify-around p-2 pb-4">
+      <div class="btns flex justify-around">
         <Button v-if="!data.buttons?.left?.hidden" class="text-[var(--red-color)]" :data="data.buttons.left" unstyled @click="hideNotification"></Button>
         <Button v-if="!data.buttons?.right?.hidden" class="text-[var(--green-color)]" :data="data.buttons.right" unstyled @click="hideNotification"></Button>
       </div>
