@@ -394,12 +394,14 @@ export const useBattleStore = defineStore("battle", () => {
       stopBreakpoint();
       battleStarted.value = false;
       relaxModalOpen.value = true;
+      mainStore.hideTooltip();
     } else if (value === "closed") {
       afkCounter.value = 0;
       startTaskTimeout();
       startBreakpoint("battle");
       battleStarted.value = true;
       relaxModalOpen.value = false;
+      mainStore.hideTooltip();
     }
   };
 
