@@ -96,7 +96,7 @@ watch(
   (val) => {
     if (val === 0) {
       // isNoEnergyVisible.value = true;
-      useFetch({ key: "option_activate", data: { type: "energy_over", showModal: 1 } });
+      useFetch({ key: "option_activate", data: { type: "extra_energy", showModal: 1 } });
     }
   }
 );
