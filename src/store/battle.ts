@@ -272,6 +272,8 @@ export const useBattleStore = defineStore("battle", () => {
       isCorrect = false;
       answerString = "";
       afkCounter.value += 1;
+    } else {
+      afkCounter.value = 0;
     }
 
     // make a task copy because computed will show false when pauseCurrentTask is true
@@ -301,7 +303,6 @@ export const useBattleStore = defineStore("battle", () => {
 
       // process correct/wrong anwser
       if (isCorrect) {
-        afkCounter.value = 0;
         mainStore.onVibrate("correct");
         const multiplier = calculateRelaxMultiplierAmount();
         correctStreak.value += 1;
