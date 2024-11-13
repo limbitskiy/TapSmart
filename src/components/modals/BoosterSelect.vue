@@ -169,19 +169,12 @@ const onBonusSelect = async (selectedBonus) => {
 const onStartBattle = ({ friendsOnly }) => {
   const params = new URLSearchParams();
 
+  // append selected bonuses to quesry string
   Object.keys(pickedBonuses.value).forEach((pickedBonus) => {
     if (pickedBonuses.value[pickedBonus]) {
       params.append(pickedBonus, "1");
     }
   });
-
-  // if (pickedBonuses.value.extra_time) {
-  //   params.append("extra_time", "1");
-  // }
-
-  // if (pickedBonuses.value.extra_mistake) {
-  //   params.append("extra_mistake", "1");
-  // }
 
   if (friendsOnly) {
     params.append("friends_only", "1");
