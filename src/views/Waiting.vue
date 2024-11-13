@@ -1,5 +1,6 @@
 <template>
-  <div ref="waitingRef" id="waiting-cnt" class="flex flex-1 p-4">
+  <div ref="waitingRef" id="waiting-cnt" class="flex flex-1 p-4 relative">
+    <div v-if="adShown" class="ad absolute inset-0 flex items-center justify-center z-[100] bg-[#222]">Your ad here</div>
     <BackgroundPill class="gap-4 mt-[10dvh] relative">
       <div class="header flex flex-col gap-4">
         <div class="top-row flex-1 flex items-center justify-between">
@@ -113,12 +114,21 @@ const { battles: locale } = storeToRefs(store.localeStore);
 
 const startBtnBlocked = ref(false);
 const isReady = ref(false);
+const adShown = ref(false);
 
 const waitingRef = ref();
 
 hideNotification();
 
 await fetchWaitingData(route.query);
+
+if (data.value?.["display_ads"]) {
+  adShown.value = true;
+
+  setTimeout(() => {
+    adShown.value = false;
+  }, 3000);
+}
 
 let interval: ReturnType<typeof setInterval> | undefined;
 

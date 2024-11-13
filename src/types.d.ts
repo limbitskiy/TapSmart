@@ -81,6 +81,7 @@ export interface BattleState {
   waiting_timer?: number;
   player_progress?: [];
   battle_duration?: number;
+  display_ads?: boolean;
 }
 
 export interface NotificationProps {
