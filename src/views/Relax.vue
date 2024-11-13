@@ -22,11 +22,11 @@
     </Teleport>
 
     <!-- no energy modal -->
-    <Teleport to="#modals">
+    <!-- <Teleport to="#modals">
       <Modal id="no-energy-modal" v-model:visible="isNoEnergyVisible" sticky>
         <NoEnergy @challenge="openBoosterModal" @close="() => closeModal('noEnergy')" />
       </Modal>
-    </Teleport>
+    </Teleport> -->
 
     <!-- booster select modal -->
     <Teleport to="#modals">
@@ -58,7 +58,7 @@ console.log(`relax created`);
 
 const store = useMainStore();
 
-const { fetchRelaxPageData } = store;
+const { fetchRelaxPageData, useFetch } = store;
 const { debugMessages, bgColor, HTMLSnapshots } = storeToRefs(store);
 const { battles: locale } = storeToRefs(store.localeStore);
 const { data, afkCounter } = storeToRefs(store.battleStore);
@@ -95,7 +95,8 @@ watch(
   () => data.value.energy,
   (val) => {
     if (val === 0) {
-      isNoEnergyVisible.value = true;
+      // isNoEnergyVisible.value = true;
+      useFetch({ key: "option_activate", data: { type: "energy_over", showModal: 1 } });
     }
   }
 );
