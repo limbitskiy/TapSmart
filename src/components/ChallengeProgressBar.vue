@@ -34,10 +34,17 @@
         </svg>
       </div>
     </div>
-
     <!-- main progress -->
-    <div ref="gaugeRef" class="gauge h-2 bg-[var(--grey-light)] rounded-full w-full">
-      <div ref="progressRef" class="gauge-value h-2 bg-[var(--accent-color)] rounded-full" :style="{ width: progressBarValue + '%', transition: '1s linear' }"></div>
+    <div ref="gaugeRef" class="gauge h-[12px] p-[2px] bg-black rounded-[11px] w-full">
+      <div
+        ref="progressRef"
+        class="gauge-value h-full rounded-[11px]"
+        :style="{
+          width: progressBarValue + '%',
+          transition: '1s linear',
+          background: `linear-gradient(180deg, hsl(${hslDegree}deg 98.97% 61.96%) 0%, #ffffff 10%, hsl(${hslDegree}deg 98.97% 61.96%) 50%,hsl(${hslDegree}deg 98.97% 61.96%) 100%)`,
+        }"
+      ></div>
       <!-- <span>{{ progressPercent }}</span> -->
     </div>
 
@@ -121,6 +128,8 @@ const getMarkerColor = (id: string) => {
   return "#" + colors[+id];
 };
 
+const hslDegree = ref(35);
+
 const calculatePlayerPositions = () => {
   const players = props.playersProgress;
 
@@ -155,6 +164,10 @@ const calculatePlayerPositions = () => {
 onUpdated(() => {
   // console.log(`change`);
   calculatePlayerPositions();
+
+  if (props.timer < 15000 && hslDegree.value > 0) {
+    hslDegree.value -= 1;
+  }
 });
 
 // onMounted(() => {
