@@ -135,9 +135,9 @@
               <Pill v-else class="!py-2 !px-3 rounded-xl" light>
                 <div class="content flex gap-2 items-center justify-between">
                   <div class="start flex gap-3 items-center">
-                    <div>
-                      <img v-if="player.isPlayer" class="h-[50px] rounded-lg" :src="getAsset('avatar1')" />
-                      <img v-else="player.isPlayer" class="h-[50px]" :src="getAsset('avatar-placeholder')" />
+                    <div class="avatar flex w-[50px] h-[50px] rounded-xl overflow-hidden border-[1px] border-[var(--grey-dark)]">
+                      <img v-if="player.avatar" :src="player.avatar" />
+                      <img v-else :src="getAsset('avatar-placeholder')" />
                     </div>
                     <div class="player-info">
                       <span class="text-lg fira-bold text-nowrap">{{ sliceTextAmount(player.name, 15) }}</span>
@@ -229,8 +229,9 @@
         <Pill class="!py-2 !px-3 rounded-xl bg-black" light>
           <div class="content flex gap-2 items-center justify-between">
             <div class="start flex gap-3 items-center">
-              <div>
-                <img class="h-[50px] rounded-lg" :src="getAsset('avatar1')" />
+              <div class="avatar flex w-[50px] h-[50px] rounded-xl overflow-hidden border-[1px] border-[var(--grey-dark)]">
+                <img v-if="computedPlayer.avatar" :src="computedPlayer.avatar" />
+                <img v-else :src="getAsset('avatar-placeholder')" />
               </div>
               <div class="player-info">
                 <span class="text-lg fira-bold">{{ sliceTextAmount(computedPlayer.name, 15) }}</span>

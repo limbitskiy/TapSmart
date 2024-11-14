@@ -5,8 +5,9 @@
         <!-- <slot name="start"> -->
         <div class="start flex items-center gap-3 flex-1">
           <!-- avatar -->
-          <div class="avatar flex">
-            <img class="h-[55px]" :src="getAsset('avatar-placeholder')" />
+          <div class="avatar flex w-[50px] h-[50px] rounded-xl overflow-hidden border-[1px] border-[var(--grey-dark)]">
+            <img v-if="data.avatar" :src="data.avatar" />
+            <img v-else :src="getAsset('avatar-placeholder')" />
           </div>
 
           <!-- meta -->
@@ -80,6 +81,10 @@ defineProps<{
     money: string;
     moneyEarned: string;
     bolts: number;
+    avatar: string | null;
+    battle_quan: number;
+    bolts_earned: number;
+    points_earned: number;
   };
   battleFilter: boolean;
 }>();

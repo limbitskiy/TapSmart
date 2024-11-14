@@ -36,44 +36,50 @@
 
       <ul class="players flex-1 overflow-y-scroll flex flex-col gap-2">
         <li v-for="player in data?.['players_waiting'] || []" :key="player.id">
-          <Pill class="flex flex-col !py-2">
-            <!-- player data -->
-            <div class="player-data flex gap-2 items-center justify-between">
-              <div class="player-name flex">
-                <!-- <div class="fixed-length-name whitespace-nowrap overflow-x-hidden text-ellipsis"> -->
-                <div class="fixed-length-name">
-                  <span class="fira-bold text-lg">{{ sliceTextAmount(player.name, 15) }}</span>
-                </div>
-                <div v-if="player?.isFriend" class="friend-badge ml-2">
-                  <!-- friend icon -->
-                  <svg width="13" height="9" viewBox="0 0 13 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M3.9 4.5C5.15734 4.5 6.175 3.49353 6.175 2.25C6.175 1.00647 5.15734 0 3.9 0C2.64266 0 1.625 1.00647 1.625 2.25C1.625 3.49353 2.64266 4.5 3.9 4.5ZM5.46 5.14286H5.29141C4.86891 5.34375 4.39969 5.46429 3.9 5.46429C3.40031 5.46429 2.93312 5.34375 2.50859 5.14286H2.34C1.04812 5.14286 0 6.17946 0 7.45714V8.03571C0 8.56808 0.436719 9 0.975 9H6.825C7.36328 9 7.8 8.56808 7.8 8.03571V7.45714C7.8 6.17946 6.75187 5.14286 5.46 5.14286ZM9.75 4.5C10.8266 4.5 11.7 3.63616 11.7 2.57143C11.7 1.5067 10.8266 0.642857 9.75 0.642857C8.67344 0.642857 7.8 1.5067 7.8 2.57143C7.8 3.63616 8.67344 4.5 9.75 4.5ZM10.725 5.14286H10.6478C10.3655 5.23929 10.0669 5.30357 9.75 5.30357C9.43312 5.30357 9.13453 5.23929 8.85219 5.14286H8.775C8.36062 5.14286 7.97875 5.26138 7.64359 5.45223C8.13922 5.98058 8.45 6.6817 8.45 7.45714V8.22857C8.45 8.27277 8.43984 8.31496 8.43781 8.35714H12.025C12.5633 8.35714 13 7.92522 13 7.39286C13 6.14933 11.9823 5.14286 10.725 5.14286Z"
-                      fill="#35D945"
-                    />
-                  </svg>
-                </div>
-              </div>
-
-              <div class="player-ready">
-                <span v-if="!player.isReady" class="text-[var(--red-color)]">Not ready</span>
-                <span v-else-if="player.isReady" class="text-[var(--green-color)]">Ready</span>
-              </div>
+          <Pill class="flex gap-3 !px-3 !py-2">
+            <div v-if="player.isPlayer || data?.['is_friends_battle']" class="avatar flex w-[50px] h-[50px] rounded-xl overflow-hidden border-[1px] border-[var(--grey-dark)]">
+              <img v-if="player.avatar" :src="player.avatar" />
+              <img v-else :src="getAsset('avatar-placeholder')" />
             </div>
+            <div class="player-meta flex-1">
+              <!-- player data -->
+              <div class="player-data flex gap-2 items-center justify-between">
+                <div class="player-name flex">
+                  <!-- <div class="fixed-length-name whitespace-nowrap overflow-x-hidden text-ellipsis"> -->
+                  <div class="fixed-length-name">
+                    <span class="fira-bold text-lg">{{ sliceTextAmount(player.name, 15) }}</span>
+                  </div>
+                  <div v-if="player?.isFriend" class="friend-badge ml-2">
+                    <!-- friend icon -->
+                    <svg width="13" height="9" viewBox="0 0 13 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M3.9 4.5C5.15734 4.5 6.175 3.49353 6.175 2.25C6.175 1.00647 5.15734 0 3.9 0C2.64266 0 1.625 1.00647 1.625 2.25C1.625 3.49353 2.64266 4.5 3.9 4.5ZM5.46 5.14286H5.29141C4.86891 5.34375 4.39969 5.46429 3.9 5.46429C3.40031 5.46429 2.93312 5.34375 2.50859 5.14286H2.34C1.04812 5.14286 0 6.17946 0 7.45714V8.03571C0 8.56808 0.436719 9 0.975 9H6.825C7.36328 9 7.8 8.56808 7.8 8.03571V7.45714C7.8 6.17946 6.75187 5.14286 5.46 5.14286ZM9.75 4.5C10.8266 4.5 11.7 3.63616 11.7 2.57143C11.7 1.5067 10.8266 0.642857 9.75 0.642857C8.67344 0.642857 7.8 1.5067 7.8 2.57143C7.8 3.63616 8.67344 4.5 9.75 4.5ZM10.725 5.14286H10.6478C10.3655 5.23929 10.0669 5.30357 9.75 5.30357C9.43312 5.30357 9.13453 5.23929 8.85219 5.14286H8.775C8.36062 5.14286 7.97875 5.26138 7.64359 5.45223C8.13922 5.98058 8.45 6.6817 8.45 7.45714V8.22857C8.45 8.27277 8.43984 8.31496 8.43781 8.35714H12.025C12.5633 8.35714 13 7.92522 13 7.39286C13 6.14933 11.9823 5.14286 10.725 5.14286Z"
+                        fill="#35D945"
+                      />
+                    </svg>
+                  </div>
+                </div>
 
-            <!-- other info -->
-            <div class="other-info flex gap-4 items-center">
-              <div class="league flex gap-1">
-                <span class="league exo-bold">L:</span>
-                <span class="league exo-bold">{{ player?.league || 0 }}</span>
+                <div class="player-ready">
+                  <span v-if="!player.isReady" class="text-[var(--red-color)]">Not ready</span>
+                  <span v-else-if="player.isReady" class="text-[var(--green-color)]">Ready</span>
+                </div>
               </div>
-              <div class="battles flex items-center gap-1">
-                <img class="h-4" :src="getAsset('swords')" />
-                <span class="exo-bold">{{ player?.battles || 0 }}</span>
-              </div>
-              <div class="bolts flex items-center gap-1">
-                <img class="h-4" :src="getAsset('bolt')" />
-                <span class="exo-black text-[var(--accent-color)]">{{ shortenNumber(player?.bolts) || 0 }}</span>
+
+              <!-- other info -->
+              <div class="other-info flex gap-4 items-center">
+                <div class="league flex gap-1">
+                  <span class="league exo-bold">L:</span>
+                  <span class="league exo-bold">{{ player?.league || 0 }}</span>
+                </div>
+                <div class="battles flex items-center gap-1">
+                  <img class="h-4" :src="getAsset('swords')" />
+                  <span class="exo-bold">{{ player?.battles || 0 }}</span>
+                </div>
+                <div class="bolts flex items-center gap-1">
+                  <img class="h-4" :src="getAsset('bolt')" />
+                  <span class="exo-black text-[var(--accent-color)]">{{ shortenNumber(player?.bolts) || 0 }}</span>
+                </div>
               </div>
             </div>
           </Pill>

@@ -5,7 +5,8 @@
         class="avatar w-[90px] h-[90px] rounded-full overflow-hidden border-[var(--grey-light)] border-4 absolute bottom-0"
         @click="$router.push(`/profile?from=${$route.path}`)"
       >
-        <img class="w-[90px] h-[90px]" :src="getAsset('avatar1')" />
+        <img v-if="profileData.avatar" :src="profileData.avatar" />
+        <img v-else :src="getAsset('avatar1')" />
       </div>
     </div>
 
