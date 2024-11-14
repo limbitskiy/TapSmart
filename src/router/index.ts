@@ -17,7 +17,7 @@ import BattleResults from "@/views/BattleResults.vue";
 import BattleComplete from "@/views/BattleComplete.vue";
 import InviteFriend from "@/views/InviteFriend.vue";
 import Waiting from "@/views/Waiting.vue";
-import GifCreator from "@/views/GifCreator.vue";
+import IntroView from "@/views/IntroView.vue";
 
 // battles
 import YesNo from "@/components/battles/YesNo.vue";
@@ -121,8 +121,8 @@ const routes = [
     component: Waiting,
   },
   {
-    path: "/gif-creator",
-    component: GifCreator,
+    path: "/intro",
+    component: IntroView,
   },
   { path: "/:pathMatch(.*)*", component: NotFound },
 ];

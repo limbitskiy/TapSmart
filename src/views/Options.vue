@@ -1,8 +1,0 @@
-<template>
-  <div class="home-options grid place-items-center flex-1">
-    <div class="cnt flex flex-col items-center gap-4">
-      <img src="/cone.png" />
-      <span class="text-2xl font-bold text-center text-[var(--accent-color)]">Options screen is under construction also )</span>
-    </div>
-  </div>
-</template>
