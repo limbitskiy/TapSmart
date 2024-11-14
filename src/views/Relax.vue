@@ -79,6 +79,9 @@ const isAFKModalVisible = computed(() => afkCounter.value >= 3);
 const onAnswer = ({ isCorrect, answerString, nextTaskDelay, task }) => {
   // console.log(task);
   // console.log(answerString);
+  if (data.value.energy === 0) {
+    onNoEnergy();
+  }
 };
 
 // watch opened modals
@@ -96,12 +99,16 @@ watch(
   (val) => {
     if (val === 0) {
       // isNoEnergyVisible.value = true;
-      useFetch({ key: "option_activate", data: { type: "extra_energy", showModal: 1 } });
+      onNoEnergy();
     }
   }
 );
 
 const { width } = useWindowSize();
+
+const onNoEnergy = () => {
+  useFetch({ key: "option_activate", data: { type: "extra_energy", showModal: 1 } });
+};
 
 const onChangeMech = () => {
   isChangeMechModalVisible.value = true;

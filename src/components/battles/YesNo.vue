@@ -64,7 +64,6 @@
         <!-- buttons -->
         <div class="answer-buttons flex gap-4 justify-evenly mt-4 z-10">
           <Button
-            :disabled="type === 'relax' && energy <= 0"
             class="yesno-btn flex !p-0 !w-[90px] !h-[90px] !rounded-[25px] justify-center items-center text-white uppercase"
             :class="{
               correct: noBtnAnimation === 'correct',
@@ -80,7 +79,6 @@
           </Button>
 
           <Button
-            :disabled="type === 'relax' && energy <= 0"
             class="yesno-btn flex !p-0 !w-[90px] !h-[90px] !rounded-[25px] justify-center items-center text-white uppercase"
             :class="{
               correct: yesBtnAnimation === 'correct',
@@ -169,7 +167,7 @@ const settings = {
 console.log(`yes-no created`);
 
 const handleAnswer = (answer: string, event: MouseEvent, task: Task, type: "yes" | "no") => {
-  if ((props.type === "relax" && props.energy <= 0) || !props.task) return;
+  // if ((props.type === "relax" && props.energy <= 0) || !props.task) return;
 
   const isCorrect = answer === props.task.correct;
 

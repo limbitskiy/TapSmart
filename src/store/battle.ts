@@ -182,8 +182,7 @@ export const useBattleStore = defineStore("battle", () => {
 
   // breakpoints/timers
   const startTaskTimeout = (externalTimeout?: number) => {
-    if (!currentMechanic.value?.timeout || currentTaskTimeout.value || !data?.value?.energy || afkCounter.value >= 3) return;
-    // console.log(`starting task timeout`);
+    if (!currentMechanic.value?.timeout || currentTaskTimeout.value || afkCounter.value >= 3) return;
 
     const callback = () => {
       stopTaskTimeout();
@@ -353,9 +352,9 @@ export const useBattleStore = defineStore("battle", () => {
 
     pauseCurrentTask.value = false;
 
-    if (state.value.battleData.questions_left && state.value.battleData.questions_left > 0) {
-      state.value.battleData.questions_left -= 1;
-    }
+    // if (state.value.battleData.questions_left && state.value.battleData.questions_left > 0) {
+    //   state.value.battleData.questions_left -= 1;
+    // }
 
     let externalTimeout;
 
@@ -408,9 +407,13 @@ export const useBattleStore = defineStore("battle", () => {
 
   const setBackendModal = (value: "open" | "closed") => {
     if (value === "open" && !relaxModalOpen.value) {
-      setRelaxModal("open");
+      stopTaskTimeout();
+      stopBreakpoint();
+      battleStarted.value = false;
     } else if (value === "closed" && !relaxModalOpen.value) {
-      setRelaxModal("closed");
+      startTaskTimeout();
+      startBreakpoint("battle");
+      battleStarted.value = true;
     }
   };
 
