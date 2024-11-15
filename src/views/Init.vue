@@ -1,48 +1,91 @@
 <template>
-  <div id="init" class="h-dvh flex flex-col gap-4 justify-between bg-gradient-to-b from-[#FEAC3E] to-[#E46C02] overflow-hidden relative">
+  <div id="init" class="h-dvh flex flex-col gap-2 justify-between bg-gradient-to-b from-[#FEAC3E] to-[#E46C02] overflow-hidden relative">
+    <!-- loader -->
+    <div v-if="isLoaderShown" class="loader absolute inset-0 bg-black z-[99]"></div>
+
     <!-- bg pattern -->
-    <div class="bg-pattern absolute inset-0"></div>
+    <div class="bg-pattern absolute inset-0 z-1">
+      <img class="h-full w-full object-cover" src="/loader/gradient-bg.png" />
+    </div>
 
     <!-- main image -->
-    <div class="main-image flex-1 flex flex-col gap-4 justify-between p-4">
+    <div class="main-image h-dvh grid grid-flow-col grid-rows-[30%_auto_30%] items-center gap-2 p-4 z-[2] pb-8">
       <!-- tiger 1 cutout -->
-      <img class="w-[45vw]" src="/loader/tiger-cutout1.png" />
+      <div class="tiger1-circle h-full">
+        <div class="image-wrap relative h-full aspect-square">
+          <div class="wave-top bg-[#4AE823] inset-0 rounded-full absolute scale-75"></div>
+          <img class="object-contain absolute inset-0 h-full" src="/loader/white-circle1.png" />
+          <Transition name="fade">
+            <img v-if="tiger1Animations.success" class="object-contain absolute inset-0 h-full" src="/loader/green-circle1.png" />
+          </Transition>
+          <img ref="topImageRef" class="object-contain absolute inset-0 h-full" src="/loader/tiger-cutout1-norim.png" />
+        </div>
+      </div>
 
-      <div class="title-progress mx-auto w-[70vw] flex flex-col gap-4">
+      <!-- title & progress -->
+      <div class="title-progress mx-auto w-[70vw] flex flex-col gap-2">
         <!-- title -->
         <img src="/loader/title.png" />
 
         <!-- progress pill -->
-        <!-- <Pill class="rounded-lg">
-          <div class="progress-bar"></div>
+        <div class="flex items-center gap-4">
+          <div class="progress-bar flex-1 flex flex-col relative">
+            <!-- top row -->
+            <div class="top-row px-[25px] py-1">
+              <img class="top-marker w-[36px]" src="/loader/tiger-cutout1-small.png" />
+            </div>
 
-          <div class="present-image">
-            <img class="w-[10vw]" src="/loader/present.png" />
+            <!-- middle row -->
+            <div class="middle-row rounded-xl py-[6px] mx-8 px-2 bg-[var(--grey-dark)]">
+              <div ref="gaugeRef" class="gauge h-[8px] p-[1px] bg-[var(--grey-light)] rounded-[11px] w-full">
+                <div class="gauge-value h-full rounded-[11px] w-[1%]" style="background: linear-gradient(180deg, #519a58 -1.1%, #ffffff 14.3%, #519a58 30.4%, #275a2c 120%)"></div>
+              </div>
+            </div>
+
+            <!-- bottom row -->
+            <div class="bottom-row px-[27px] py-1">
+              <img class="bottom-marker w-[36px]" src="/loader/tiger-cutout2-small.png" />
+            </div>
+
+            <!-- present -->
+            <div class="present absolute -right-5 top-[27px]">
+              <img class="w-[50px]" src="/loader/present.png" />
+            </div>
           </div>
-        </Pill> -->
+        </div>
       </div>
 
       <!-- tiger 2 cutout -->
-      <img class="ml-auto w-[55vw]" src="/loader/tiger-cutout2.png" />
+      <div class="tiger2-circle h-full">
+        <div class="image-wrap relative h-full aspect-square ml-auto">
+          <div class="wave-bottom bg-[#4AE823] inset-0 rounded-full absolute scale-75"></div>
+          <img class="object-contain ml-auto absolute inset-0 h-full" src="/loader/white-circle1.png" />
+          <Transition name="fade">
+            <img v-if="tiger2Animations.success" class="object-contain ml-auto absolute inset-0 h-full" src="/loader/green-circle1.png" />
+          </Transition>
+          <img ref="bottomImageRef" class="h-full absolute inset-0 object-contain" src="/loader/tiger-cutout2-norim.png" />
+        </div>
+      </div>
     </div>
 
     <!-- service info -->
-    <div class="service-cnt flex items-center justify-between px-4 py-2">
+    <div class="service-cnt flex items-center justify-between px-4 py-0 bg-[var(--grey-dark)] absolute bottom-0 left-0 right-0 z-[2]">
       <!-- loading text -->
-      <div class="loading-text text-black exo-bold">Loading...</div>
+      <div class="loading-text text-[var(--accent-color)] exo-bold">Loading...</div>
 
       <!-- version number -->
-      <div class="build-no text-[12px] text-black fira-bold leading-4">build: {{ version }}</div>
+      <div class="build-no text-[12px] text-[var(--accent-color)] fira-bold leading-4">build: {{ version }}</div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import { waitFor } from "@/utils";
 import { tg, setThemeColor } from "@/api/telegram";
 import constants from "@/constants";
 import { version } from "@/../package.json";
+import gsap from "gsap";
 
 // composables
 import preloadAssets from "@/utils/preloadAssets";
@@ -57,14 +100,27 @@ const store = useMainStore();
 const { startApp, initialFetch } = store;
 const { addSound, playSound } = store.soundStore;
 
-const loading = ref(true);
 const errors = ref([]);
+const gaugeRef = ref();
+const animationDuration = ref(3);
+const markerPositions = {
+  top: 0,
+  bottom: 0,
+};
+const tiger1Animations = ref({
+  success: false,
+});
+const tiger2Animations = ref({
+  success: false,
+});
+const topImageRef = ref();
+const bottomImageRef = ref();
+const isLoaderShown = ref(true);
 
-// const onClick = () => {
-//   if (!loading.value && !errors.value.length) {
-//     startApp();
-//   }
-// };
+const assetsPreloaded = ref(false);
+const introProgressFinished = ref(false);
+
+let gsapCtx;
 
 tg?.ready();
 
@@ -75,8 +131,6 @@ tg?.expand();
 setThemeColor("#222");
 
 console.log("tg:", tg);
-
-// console.log(`location:`, location);
 
 Promise.allSettled([
   initialFetch({
@@ -100,9 +154,172 @@ Promise.allSettled([
     return;
   }
 
-  loading.value = false;
+  assetsPreloaded.value = true;
 
-  startApp();
+  if (introProgressFinished.value) {
+    startApp();
+  }
   // playSound("soundtrack");
+});
+
+const generateRandomMarkerSpeed = (type, rect) => {
+  const newValue = ((rect.width - 8) / 4) * gsap.utils.random(0.5, 1);
+  markerPositions[type] += newValue;
+  return `+=${newValue}`;
+};
+
+onMounted(() => {
+  gsapCtx = gsap.context(() => {
+    // preload big images
+    const cutouts = [topImageRef.value, bottomImageRef.value];
+    let loadedImages = 0;
+
+    cutouts.forEach((img) => {
+      img.addEventListener("load", () => {
+        loadedImages += 1;
+
+        if (loadedImages === 2) {
+          isLoaderShown.value = false;
+          progressTimeline.resume();
+          topMarkerTimeline.resume();
+          bottomMarkerTimeline.resume();
+          loadingTextTimeline.resume();
+        }
+      });
+    });
+
+    // present animation
+    gsap.set(".present", { opacity: 0, scale: 0.5 });
+
+    const presentMasterTimeline = gsap.timeline();
+    const presentAppearTimeline = gsap.timeline();
+    const presentShakeTimeline = gsap.timeline();
+
+    // shake
+    presentShakeTimeline.to(".present", {
+      rotate: 5,
+      duration: 0.1,
+    });
+    presentShakeTimeline.to(".present", {
+      rotate: -5,
+      duration: 0.1,
+    });
+    presentShakeTimeline.to(".present", {
+      rotate: 5,
+      duration: 0.1,
+    });
+    presentShakeTimeline.to(".present", {
+      rotate: -5,
+      duration: 0.1,
+    });
+    presentShakeTimeline.to(".present", {
+      rotate: 5,
+      duration: 0.1,
+    });
+    presentShakeTimeline.to(".present", {
+      rotate: 0,
+      duration: 0.1,
+    });
+
+    // appear
+    presentAppearTimeline.to(".present", {
+      opacity: 1,
+      duration: 0.2,
+    });
+    presentAppearTimeline.to(
+      ".present",
+      {
+        scale: 1.3,
+        duration: 0.2,
+      },
+      0
+    );
+    presentAppearTimeline.to(".present", {
+      scale: 1,
+      duration: 0.2,
+    });
+
+    presentMasterTimeline.add(presentAppearTimeline).add(presentShakeTimeline, "-=0.6");
+
+    presentMasterTimeline.pause();
+
+    // progress-bar animation
+    const progressTimeline = gsap.timeline();
+
+    progressTimeline.to(".gauge-value", {
+      width: "100%",
+      duration: 3,
+      ease: "none",
+      onComplete: () => {
+        presentMasterTimeline.resume();
+
+        if (markerPositions.top > markerPositions.bottom) {
+          tiger1Animations.value.success = true;
+
+          if (CSS.supports("aspect-ratio: 1/1")) {
+            gsap.to(".wave-top", {
+              opacity: 0,
+              scale: 1.5,
+              duration: 1,
+            });
+          }
+        } else {
+          tiger2Animations.value.success = true;
+
+          if (CSS.supports("aspect-ratio: 1/1")) {
+            gsap.to(".wave-bottom", {
+              opacity: 0,
+              scale: 1.5,
+              duration: 1,
+            });
+          }
+        }
+
+        setTimeout(() => {
+          introProgressFinished.value = true;
+
+          if (assetsPreloaded.value) {
+            startApp();
+          }
+        }, 1000);
+      },
+    });
+
+    progressTimeline.pause();
+
+    // "loading" text animation
+    const loadingTextTimeline = gsap.timeline({ repeat: -1, defaults: { duration: 0.5, ease: "none" } });
+    loadingTextTimeline.to(".loading-text", {
+      opacity: 0,
+    });
+    loadingTextTimeline.to(".loading-text", {
+      opacity: 1,
+    });
+
+    loadingTextTimeline.pause();
+
+    // top marker timeline
+    const rect = gaugeRef.value.getBoundingClientRect();
+
+    const topMarkerTimeline = gsap.timeline({ defaults: { translateX: () => generateRandomMarkerSpeed("top", rect), duration: animationDuration.value / 4, ease: "none" } });
+    topMarkerTimeline.to(".top-marker", {});
+    topMarkerTimeline.to(".top-marker", {});
+    topMarkerTimeline.to(".top-marker", {});
+    topMarkerTimeline.to(".top-marker", {});
+
+    topMarkerTimeline.pause();
+
+    // bottom marker timeline
+    const bottomMarkerTimeline = gsap.timeline({ defaults: { translateX: () => generateRandomMarkerSpeed("bottom", rect), duration: animationDuration.value / 4, ease: "none" } });
+    bottomMarkerTimeline.to(".bottom-marker", {});
+    bottomMarkerTimeline.to(".bottom-marker", {});
+    bottomMarkerTimeline.to(".bottom-marker", {});
+    bottomMarkerTimeline.to(".bottom-marker", {});
+    bottomMarkerTimeline.pause();
+  });
+});
+
+onUnmounted(() => {
+  gsapCtx.revert();
 });
 </script>
