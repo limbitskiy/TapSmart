@@ -172,10 +172,16 @@ const getPlayerColor = (player: {}) => {
 const createImagesFromSnapshots = async () => {
   const screenshots = [];
 
+  const filter = (node: HTMLElement) => {
+    const exclusionClasses = ["screenshot-exclude"];
+    return !exclusionClasses.some((classname) => node.classList?.contains(classname));
+  };
+
   for (const snapshot of HTMLSnapshots.value) {
     html.value = snapshot;
     await nextTick();
-    const url = await htmlToImage.toJpeg(htmlEl.value, { quality: 0.85 });
+    const url = await htmlToImage.toJpeg(htmlEl.value, { quality: 0.85, filter });
+
     screenshots.push(url);
   }
 

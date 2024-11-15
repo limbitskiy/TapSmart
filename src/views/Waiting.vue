@@ -37,9 +37,12 @@
       <ul class="players flex-1 overflow-y-scroll flex flex-col gap-2">
         <li v-for="player in data?.['players_waiting'] || []" :key="player.id">
           <Pill class="flex gap-3 !px-3 !py-2">
-            <div v-if="player.isPlayer || data?.['is_friends_battle']" class="avatar flex w-[50px] h-[50px] rounded-xl overflow-hidden border-[1px] border-[var(--grey-dark)]">
-              <img crossorigin="anonymous" v-if="player.avatar" :src="player.avatar" />
-              <img v-else :src="getAsset('avatar-placeholder')" />
+            <div
+              v-if="player.isPlayer || data?.['is_friends_battle']"
+              class="avatar flex w-[50px] h-[50px] rounded-xl overflow-hidden border-[1px] border-[var(--grey-dark)] relative"
+            >
+              <img class="absolute z-[1] w-[50px] h-[50px]" :src="getAsset('avatar-placeholder')" />
+              <img v-if="player.avatar" class="screenshot-exclude absolute inset-0 z-[2]" :src="player.avatar" />
             </div>
             <div class="player-meta flex-1">
               <!-- player data -->

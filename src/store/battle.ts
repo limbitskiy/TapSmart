@@ -367,7 +367,9 @@ export const useBattleStore = defineStore("battle", () => {
       console.log(`starting external timeout: ${currentTask.value?.settings?.timeout}`);
     }
 
-    startTaskTimeout(externalTimeout);
+    if (currentBattleMode.value === "relax") {
+      startTaskTimeout(externalTimeout);
+    }
 
     return returnData;
   };
