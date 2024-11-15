@@ -59,6 +59,7 @@ export const images = {
   cart: "/cart.png",
   confirm: "/confirm.png",
   prize_fund: "/prize_fund.png",
+  feedback: "/feedback.png",
 };
 
 // assets folder

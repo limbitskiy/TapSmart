@@ -84,6 +84,9 @@
                 >
                   <span class="text-[12px] inline-block text-center" style="line-height: 14px">{{ locale?.["value_bolts"] ?? "bolts" }}</span>
                 </div>
+                <div class="tokens flex items-center justify-center">
+                  <span class="text-[12px] inline-block text-center" style="line-height: 14px">{{ locale?.["value_winner_token"] ?? "winner tokens" }}</span>
+                </div>
                 <div
                   class="victories flex items-center justify-center"
                   :class="{ '!text-[var(--accent-color)] fira-bold': filter.bigFilter === 'battle_win' }"
@@ -104,9 +107,6 @@
                   @click="() => onBigFilter('friends_in_battles')"
                 >
                   <span class="text-[12px] inline-block text-center" style="line-height: 14px">{{ locale?.["value_friends_battles"] ?? "friends in battles" }}</span>
-                </div>
-                <div class="tokens flex items-center justify-center text-gray-500">
-                  <span class="text-[12px] inline-block text-center" style="line-height: 14px">{{ locale?.["value_winner_token"] ?? "winner tokens" }}</span>
                 </div>
               </div>
             </Pill>
