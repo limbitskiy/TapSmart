@@ -5,8 +5,11 @@
         class="avatar w-[90px] h-[90px] rounded-full overflow-hidden border-[var(--grey-light)] border-4 absolute bottom-0"
         @click="$router.push(`/profile?from=${$route.path}`)"
       >
-        <img v-if="profileData.avatar" :src="profileData.avatar" />
-        <img v-else :src="getAsset('avatar1')" />
+        <div class="gray-bg absolute inset-0 bg-[var(--grey-dark)] z-[1] grid place-items-center">
+          <img class="h-4 scale-[2]" :src="getAsset('loader')" />
+        </div>
+        <img v-if="profileData.avatar" class="relative z-[2]" :src="profileData.avatar" />
+        <img v-else class="z-[2]" :src="getAsset('avatar1')" />
       </div>
     </div>
 

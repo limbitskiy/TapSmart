@@ -38,7 +38,7 @@
         <li v-for="player in data?.['players_waiting'] || []" :key="player.id">
           <Pill class="flex gap-3 !px-3 !py-2">
             <div v-if="player.isPlayer || data?.['is_friends_battle']" class="avatar flex w-[50px] h-[50px] rounded-xl overflow-hidden border-[1px] border-[var(--grey-dark)]">
-              <img v-if="player.avatar" :src="player.avatar" />
+              <img crossorigin="anonymous" v-if="player.avatar" :src="player.avatar" />
               <img v-else :src="getAsset('avatar-placeholder')" />
             </div>
             <div class="player-meta flex-1">
