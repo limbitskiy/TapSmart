@@ -3,7 +3,7 @@
     <div ref="animationRef" class="lightray absolute -top-5 -bottom-5 -left-[100%] w-[15px] bg-white z-20 rotate-45 opacity-80"></div>
     <button
       class="w-full bg-[var(--accent-color)] rounded-[18px] text-[#222] z-[6]"
-      style="box-shadow: 0px 0px 8px 0px #feac3e"
+      style="background: radial-gradient(74.07% 78.4% at 50% 50%, #ffaf03 12.5%, #c08535 100%); box-shadow: 0px 0px 4px 0px #feac3e"
       :disabled="data.button_challenge?.disabled"
       @click="onClick"
       @touchstart="btnTouchstart"
