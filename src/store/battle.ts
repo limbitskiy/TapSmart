@@ -553,5 +553,6 @@ export const useBattleStore = defineStore("battle", () => {
     setRelaxModal,
     setBackendModal,
     calculateCalcPoint,
+    calculateRelaxMultiplierAmount,
   };
 });

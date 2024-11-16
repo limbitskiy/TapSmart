@@ -193,6 +193,7 @@ export interface Bonus {
   id: number;
   x: number;
   y: number;
+  amount: number;
 }
 
 export type LocaleSections = "tutorial" | "profile" | "battles" | "menu" | "friends" | "required-settings" | "leaders" | "market" | "tasks";

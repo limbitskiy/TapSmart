@@ -320,7 +320,7 @@ onMounted(() => {
         introProgressFinished.value = true;
 
         if (assetsPreloaded.value) {
-          // startApp();
+          startApp();
         }
       }, 1000);
     }

@@ -17,7 +17,7 @@
   <!-- bolt bonuses -->
   <div v-for="bonus in bonuses" :key="bonus.id" class="bonus bonus-animate z-20 flex gap-2 items-center absolute" :style="{ left: bonus.x + 'px', top: bonus.y + 'px' }">
     <img class="h-4 scale-150" :src="getAsset('bolt')" />
-    <span class="font-bold text-xl">+2</span>
+    <span class="font-bold text-xl">+{{ bonus.amount }}</span>
   </div>
 
   <!-- onscreen booster usage -->
@@ -75,7 +75,7 @@ const store = useMainStore();
 // const { useFetch, redirectTo } = store;
 const { battles: locale } = storeToRefs(store.localeStore);
 const { data, сurrentMechanicName, currentTask, currentBattleMode, boostersUsed } = storeToRefs(store.battleStore);
-const { handleAnswer } = store.battleStore;
+const { handleAnswer, calculateRelaxMultiplierAmount } = store.battleStore;
 
 const bonuses = ref<Bonus[]>([]);
 
@@ -113,12 +113,14 @@ const onAnswer = async ({ isCorrect, answer, event, drawBonus = true, task, next
 };
 
 const drawBonusAnimation = ({ x, y }: { x: number; y: number }) => {
+  const multiplier = calculateRelaxMultiplierAmount();
   const id = Date.now();
 
   bonuses.value.push({
     id,
     x: x - 20,
     y: y - 60,
+    amount: Math.round(multiplier),
   });
 
   setTimeout(() => {
