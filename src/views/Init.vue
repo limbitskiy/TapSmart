@@ -177,6 +177,13 @@ const generateRandomMarkerSpeed = (type, rect) => {
   return `+=${newValue}`;
 };
 
+const generateRandomMarkerDuration = () => {
+  const newValue = animationDuration.value / gsap.utils.random(2, 4);
+  // markerPositions[type] += newValue;
+
+  return newValue;
+};
+
 onMounted(() => {
   gsapCtx = gsap.context(() => {
     // preload big images
@@ -198,106 +205,56 @@ onMounted(() => {
     });
 
     // present animation
-    gsap.set(".present", { opacity: 0, scale: 0.5 });
+    // gsap.set(".present", { rotate: 0 });
 
-    const presentMasterTimeline = gsap.timeline();
-    const presentAppearTimeline = gsap.timeline();
-    const presentShakeTimeline = gsap.timeline();
+    const pMasterTl = gsap.timeline({ paused: true });
+    const pScaleTl = gsap.timeline();
+    const pShakeTl = gsap.timeline({ defaults: { duration: 0.1 } });
+
+    pMasterTl.add(pScaleTl).add(pShakeTl);
 
     // shake
-    presentShakeTimeline.to(".present", {
+    pShakeTl.to(".present", {
       rotate: 5,
-      duration: 0.1,
     });
-    presentShakeTimeline.to(".present", {
+    pShakeTl.to(".present", {
       rotate: -5,
-      duration: 0.1,
     });
-    presentShakeTimeline.to(".present", {
+    pShakeTl.to(".present", {
       rotate: 5,
-      duration: 0.1,
     });
-    presentShakeTimeline.to(".present", {
+    pShakeTl.to(".present", {
       rotate: -5,
-      duration: 0.1,
     });
-    presentShakeTimeline.to(".present", {
+    pShakeTl.to(".present", {
       rotate: 5,
-      duration: 0.1,
     });
-    presentShakeTimeline.to(".present", {
+    pShakeTl.to(".present", {
       rotate: 0,
-      duration: 0.1,
     });
 
-    // appear
-    presentAppearTimeline.to(".present", {
-      opacity: 1,
+    // scale
+    pScaleTl.to(".present", {
+      scale: 1.3,
       duration: 0.2,
     });
-    presentAppearTimeline.to(
-      ".present",
-      {
-        scale: 1.3,
-        duration: 0.2,
-      },
-      0
-    );
-    presentAppearTimeline.to(".present", {
+    pScaleTl.to(".present", {
       scale: 1,
       duration: 0.2,
     });
 
-    presentMasterTimeline.add(presentAppearTimeline).add(presentShakeTimeline, "-=0.6");
-
-    presentMasterTimeline.pause();
-
     // progress-bar animation
-    const progressTimeline = gsap.timeline();
+    const progressTimeline = gsap.timeline({ paused: true });
 
     progressTimeline.to(".gauge-value", {
       width: "100%",
       duration: 3,
       ease: "none",
-      onComplete: () => {
-        presentMasterTimeline.resume();
-
-        if (markerPositions.top > markerPositions.bottom) {
-          tiger1Animations.value.success = true;
-
-          if (CSS.supports("aspect-ratio: 1/1")) {
-            gsap.to(".wave-top", {
-              opacity: 0,
-              scale: 1.5,
-              duration: 1,
-            });
-          }
-        } else {
-          tiger2Animations.value.success = true;
-
-          if (CSS.supports("aspect-ratio: 1/1")) {
-            gsap.to(".wave-bottom", {
-              opacity: 0,
-              scale: 1.5,
-              duration: 1,
-            });
-          }
-        }
-
-        setTimeout(() => {
-          introProgressFinished.value = true;
-
-          if (assetsPreloaded.value) {
-            // startApp();
-          }
-        }, 1000);
-      },
+      // onComplete: onCompleteCb,
     });
 
-    progressTimeline.pause();
-
     // "loading" text animation
-    const loadingTextTimeline = gsap.timeline({ repeat: -1, defaults: { duration: 0.5, ease: "none" } });
+    const loadingTextTimeline = gsap.timeline({ paused: true, repeat: -1, defaults: { duration: 0.5, ease: "none" } });
     loadingTextTimeline.to(".loading-text", {
       opacity: 0,
     });
@@ -305,26 +262,68 @@ onMounted(() => {
       opacity: 1,
     });
 
-    loadingTextTimeline.pause();
-
     // top marker timeline
     const rect = gaugeRef.value.getBoundingClientRect();
 
-    const topMarkerTimeline = gsap.timeline({ defaults: { translateX: () => generateRandomMarkerSpeed("top", rect), duration: animationDuration.value / 4, ease: "none" } });
+    const topMarkerTimeline = gsap.timeline({
+      paused: true,
+      defaults: { translateX: `+=${(rect.width - 8) / 4}`, duration: () => generateRandomMarkerDuration(), ease: "none" },
+      onComplete: () => onCompleteCb({ winner: "top" }),
+    });
     topMarkerTimeline.to(".top-marker", {});
     topMarkerTimeline.to(".top-marker", {});
     topMarkerTimeline.to(".top-marker", {});
     topMarkerTimeline.to(".top-marker", {});
-
-    topMarkerTimeline.pause();
 
     // bottom marker timeline
-    const bottomMarkerTimeline = gsap.timeline({ defaults: { translateX: () => generateRandomMarkerSpeed("bottom", rect), duration: animationDuration.value / 4, ease: "none" } });
+    const bottomMarkerTimeline = gsap.timeline({
+      paused: true,
+      defaults: { translateX: `+=${(rect.width - 8) / 4}`, duration: () => generateRandomMarkerDuration(), ease: "none" },
+      onComplete: () => onCompleteCb({ winner: "bottom" }),
+    });
     bottomMarkerTimeline.to(".bottom-marker", {});
     bottomMarkerTimeline.to(".bottom-marker", {});
     bottomMarkerTimeline.to(".bottom-marker", {});
     bottomMarkerTimeline.to(".bottom-marker", {});
-    bottomMarkerTimeline.pause();
+
+    function onCompleteCb(params) {
+      pMasterTl.resume();
+      console.log(params);
+
+      if (params.winner === "top") {
+        tiger1Animations.value.success = true;
+
+        bottomMarkerTimeline.pause();
+
+        if (CSS.supports("aspect-ratio: 1/1")) {
+          gsap.to(".wave-top", {
+            opacity: 0,
+            scale: 1.5,
+            duration: 1,
+          });
+        }
+      } else {
+        tiger2Animations.value.success = true;
+        topMarkerTimeline.pause();
+        bottomMarkerTimeline.pause();
+
+        if (CSS.supports("aspect-ratio: 1/1")) {
+          gsap.to(".wave-bottom", {
+            opacity: 0,
+            scale: 1.5,
+            duration: 1,
+          });
+        }
+      }
+
+      setTimeout(() => {
+        introProgressFinished.value = true;
+
+        if (assetsPreloaded.value) {
+          // startApp();
+        }
+      }, 1000);
+    }
   });
 });
 
