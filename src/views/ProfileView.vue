@@ -275,6 +275,8 @@ const onSettingsChange = ({ setting, value }) => {
 };
 
 const onFeedback = () => {
-  tg.openLink(data.value?.["feedback_url"]);
+  tg.openLink(data.value?.["feedback_url"], { try_instant_view: false });
 };
 </script>
+
+<!-- "https://docs.google.com/forms/d/e/1FAIpQLScuwpfWlE1qi87ghGRNQvfl5pcViM2h-eRCs8PDJRnPqJO54w/viewform?usp=pp_url&entry.1591633300=Comments" -->

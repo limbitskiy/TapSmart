@@ -99,7 +99,9 @@ export const useMainStore = defineStore("main", () => {
       } else if (key === "route" && isAppLoaded.value) {
         redirectTo(response.route);
       } else if (key === "externalUrl") {
-        location.href = response.externalUrl;
+        // location.href = response.externalUrl;
+        // console.log(response);
+        tg.openLink(response.externalUrl, { try_instant_view: false });
       } else {
         state.value[key] = response[key];
       }
