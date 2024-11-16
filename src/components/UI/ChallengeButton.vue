@@ -1,21 +1,22 @@
 <template>
-  <div class="challenge-btn-wrap relative flex overflow-hidden rounded-xl" :class="{ heartbeat }">
+  <div class="challenge-btn-wrap relative flex overflow-hidden rounded-[22px] bg-[#222] p-[6px]" :class="{ heartbeat }">
     <div ref="animationRef" class="lightray absolute -top-5 -bottom-5 -left-[100%] w-[15px] bg-white z-20 rotate-45 opacity-80"></div>
     <button
-      class="w-full bg-gradient-to-b from-[#F0B563] to-[#FF9500] text-[#222]"
+      class="w-full bg-[var(--accent-color)] rounded-[18px] text-[#222] z-[6]"
+      style="box-shadow: 0px 0px 8px 0px #feac3e"
       :disabled="data.button_challenge?.disabled"
       @click="onClick"
       @touchstart="btnTouchstart"
       @touchend="btnTouchend"
     >
       <div class="flex justify-center gap-2 py-5 !px-2 relative">
-        <div
-          v-if="glossVisible"
-          class="gloss absolute top-0 left-0 right-0 rounded-[4px] h-4 mx-[2px] z-10"
-          style="background: linear-gradient(180deg, #ffffff 0%, #f6a739 60%)"
-        ></div>
+        <div v-if="glossVisible" class="gloss absolute top-0 left-0 right-0 bottom-[40%] z-10 rounded-t-[22px] overflow-hidden">
+          <svg class="h-full w-full" viewBox="0 0 345 33" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M345 22.1555C157.528 41.796 36.8868 30.339 0 22.1555V0H345V22.1555Z" fill="white" fill-opacity="0.23" />
+          </svg>
+        </div>
         <div class="btn-cnt flex justify-center gap-2 z-20">
-          <span v-bind="$attrs" class="text-[22px] fira-condensed-bold leading-4">{{ locale?.["button_challenge"] }}</span>
+          <span v-bind="$attrs" class="text-[20px] fira-condensed-bold leading-4">{{ locale?.["button_challenge"] }}</span>
           <Badge v-if="data?.questions_left > 0" class="relative bottom-1" :data="data?.questions_left" grey />
         </div>
       </div>

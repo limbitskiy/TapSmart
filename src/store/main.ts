@@ -2,7 +2,7 @@ import { computed, nextTick, ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { defineStore } from "pinia";
 import { useVibrate } from "@vueuse/core";
-import { tg } from "@/api/telegram";
+import { tg, followExternalLink } from "@/api/telegram";
 import { getAsset, waitFor } from "@/utils";
 import axios from "axios";
 import { postEvent } from "@telegram-apps/sdk";
@@ -101,7 +101,7 @@ export const useMainStore = defineStore("main", () => {
       } else if (key === "externalUrl") {
         // location.href = response.externalUrl;
         // console.log(response);
-        tg.openLink(response.externalUrl, { try_instant_view: false });
+        followExternalLink(response.externalUrl);
       } else {
         state.value[key] = response[key];
       }

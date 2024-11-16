@@ -40,6 +40,10 @@ export const inviteFriend = (inviteMessage?: string) => {
   tg.openTelegramLink(`https://t.me/share/url?url=${link}&text=${inviteMessage}`);
 };
 
+export const followExternalLink = (url: string) => {
+  tg.openLink(url, { try_instant_view: false });
+};
+
 export const setThemeColor = (color: string) => {
   tg?.setHeaderColor(color);
   tg?.setBackgroundColor(color);

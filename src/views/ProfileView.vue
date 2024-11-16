@@ -233,7 +233,7 @@
 <script setup lang="ts">
 import { computed, ref, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { tg } from "@/api/telegram";
+import { tg, followExternalLink } from "@/api/telegram";
 import { storeToRefs } from "pinia";
 import { getAsset, showFormattedNumber } from "@/utils";
 import { version } from "../../package.json";
@@ -275,8 +275,6 @@ const onSettingsChange = ({ setting, value }) => {
 };
 
 const onFeedback = () => {
-  tg.openLink(data.value?.["feedback_url"], { try_instant_view: false });
+  followExternalLink(data.value?.["feedback_url"]);
 };
 </script>
-
-<!-- "https://docs.google.com/forms/d/e/1FAIpQLScuwpfWlE1qi87ghGRNQvfl5pcViM2h-eRCs8PDJRnPqJO54w/viewform?usp=pp_url&entry.1591633300=Comments" -->
