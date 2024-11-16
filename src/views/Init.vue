@@ -69,12 +69,21 @@
     </div>
 
     <!-- service info -->
-    <div class="service-cnt flex items-center justify-between px-4 py-0 bg-[var(--grey-dark)] absolute bottom-0 left-0 right-0 z-[2]">
-      <!-- loading text -->
-      <div class="loading-text text-[var(--accent-color)] exo-bold">Loading...</div>
+    <div class="service-cnt flex flex-col items-center px-4 py-0 bg-[var(--grey-dark)] absolute bottom-0 left-0 right-0 z-[2]">
+      <div class="top flex items-center justify-between w-full">
+        <!-- loading text -->
+        <div class="loading-text text-[var(--accent-color)] exo-bold">Loading...</div>
 
-      <!-- version number -->
-      <div class="build-no text-[12px] text-[var(--accent-color)] fira-bold leading-4">build: {{ version }}</div>
+        <!-- version number -->
+        <div class="build-no text-[12px] text-[var(--accent-color)] fira-bold leading-4">build: {{ version }}</div>
+      </div>
+
+      <!-- errors -->
+      <div class="errors w-full">
+        <ul class="error-list w-full flex flex-col items-start">
+          <li v-for="error in errors" :key="error" class="text-red-500 text-sm leading-4">{{ error }}</li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -279,7 +288,7 @@ onMounted(() => {
           introProgressFinished.value = true;
 
           if (assetsPreloaded.value) {
-            startApp();
+            // startApp();
           }
         }, 1000);
       },
