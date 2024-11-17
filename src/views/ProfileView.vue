@@ -10,6 +10,24 @@
       <span class="bg-pill-title">{{ locale?.["stats_title"] || "Pill title" }}</span>
 
       <div class="flex flex-col gap-2 mt-4">
+        <!-- bolts restyle -->
+        <!-- <Pill class="flex flex-col gap-2" :tooltip="locale?.['tooltip_bolts']">
+          <div class="title flex items-center gap-3 pl-2">
+            <img class="h-4 scale-150" :src="getAsset('bolt')" />
+            <span class="text-lg text-gray-300">{{ locale?.["bolts"] || "Bolts" }}</span>
+          </div>
+
+          <Pill class="!py-2 rounded-lg flex items-center justify-between" light>
+            <span>Total:</span>
+            <span class="exo-bold">{{ showFormattedNumber(data?.["bolts"]) || 0 }}</span>
+          </Pill>
+
+          <Pill class="!py-2 rounded-lg flex items-center justify-between" light>
+            <span>{{ locale?.["bolts_today"] || "Today" }}</span>
+            <span class="exo-bold">{{ showFormattedNumber(data?.["bolts_today"]) || 0 }}</span>
+          </Pill>
+        </Pill> -->
+
         <!-- bolts -->
         <div class="with-substat flex flex-col">
           <Pill class="!py-2 rounded-xl" :tooltip="locale?.['tooltip_bolts']">
@@ -27,7 +45,7 @@
             <div class="content flex items-center justify-between">
               <span class="text-sm text-gray-300">{{ locale?.["bolts_today"] || "Today" }}</span>
               <div class="flex gap-2 items-center">
-                <!-- <img class="h-4 scale-100" :src="getAsset('bolt')" /> -->
+                <img class="h-4 scale-100" :src="getAsset('bolt')" />
                 <span class="exo-bold text-gray-300">{{ showFormattedNumber(data?.["bolts_today"]) || 0 }}</span>
               </div>
             </div>
@@ -103,6 +121,52 @@
             </div>
           </Pill>
         </div>
+
+        <!-- winner token played -->
+        <div class="with-substat flex flex-col">
+          <Pill class="!py-2 rounded-xl" :tooltip="locale?.['tooltip_winner_token']">
+            <div class="content flex gap-2 items-center justify-between">
+              <span class="text-lg text-gray-300">{{ locale?.["winner_token"] || "Winner token" }}</span>
+              <div class="flex gap-2 items-center">
+                <img class="h-6" :src="getAsset('winner_token')" />
+                <span class="text-xl exo-bold">{{ data?.["winner_token"] || 0 }}</span>
+              </div>
+            </div>
+          </Pill>
+
+          <!-- winner token today -->
+          <Pill class="!py-0 mx-2 !bg-[#202020] rounded-lg rounded-t-none">
+            <div class="content flex items-center justify-between">
+              <span class="text-sm text-gray-300">{{ locale?.["winner_token_today"] || "Winner token today" }}</span>
+              <div class="flex gap-2 items-center">
+                <span class="exo-bold text-gray-300">{{ showFormattedNumber(data?.["winner_token_today"]) || 0 }}</span>
+              </div>
+            </div>
+          </Pill>
+        </div>
+
+        <!-- winner token invested -->
+        <div class="with-substat flex flex-col">
+          <Pill class="!py-2 rounded-xl" :tooltip="locale?.['tooltip_winner_token_invest']">
+            <div class="content flex gap-2 items-center justify-between">
+              <span class="text-lg text-gray-300">{{ locale?.["winner_token_invest"] || "Winner token invest" }}</span>
+              <div class="flex gap-2 items-center">
+                <img class="h-6" :src="getAsset('winner_token')" />
+                <span class="text-xl exo-bold">{{ data?.["winner_token_invest"] || 0 }}</span>
+              </div>
+            </div>
+          </Pill>
+
+          <!-- winner token invested today -->
+          <Pill class="!py-0 mx-2 !bg-[#202020] rounded-lg rounded-t-none">
+            <div class="content flex items-center justify-between">
+              <span class="text-sm text-gray-300">{{ locale?.["winner_token_invest_today"] || "Winner token invest today" }}</span>
+              <div class="flex gap-2 items-center">
+                <span class="exo-bold text-gray-300">{{ showFormattedNumber(data?.["winner_token_invest_today"]) || 0 }}</span>
+              </div>
+            </div>
+          </Pill>
+        </div>
       </div>
     </BackgroundPill>
 
@@ -169,14 +233,14 @@
           </Pill>
 
           <!-- words learned today -->
-          <!-- <Pill class="!py-0 mx-2 !bg-[#202020] rounded-xl rounded-t-none">
-              <div class="content flex items-center justify-between">
-                <span class="text-sm text-gray-300">{{ locale?.["questions_repetition"] || "Words repeated today" }}</span>
-                <div class="flex gap-2 items-center">
-                  <span class="text-lg exo-bold">{{ showFormattedNumber(data?.["questions_repetition"]) || 0 }}</span>
-                </div>
+          <Pill class="!py-0 mx-2 !bg-[#202020] rounded-xl rounded-t-none">
+            <div class="content flex items-center justify-between">
+              <span class="text-sm text-gray-300">{{ locale?.["questions_repetition_today"] || "Words repeated today" }}</span>
+              <div class="flex gap-2 items-center">
+                <span class="text-lg exo-bold">{{ showFormattedNumber(data?.["questions_repetition_today"]) || 0 }}</span>
               </div>
-            </Pill> -->
+            </div>
+          </Pill>
         </div>
 
         <!-- learning level -->
