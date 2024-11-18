@@ -52,11 +52,11 @@
             <!-- money & score -->
             <div class="wrap flex items-center gap-4">
               <div class="money flex items-center gap-1">
-                <img class="scale-75" :src="getAsset('bolt')" />
+                <img class="h-4" :src="getAsset('bolt')" />
                 <span class="text-sm exo-bold">{{ shortenNumber(data.bolts) || 0 }}</span>
               </div>
-              <div class="battle quan flex items-center">
-                <img class="scale-75" :src="getAsset('swords')" />
+              <div class="battle quan flex items-center gap-1">
+                <img class="h-4" :src="getAsset('swords')" />
                 <span class="text-sm exo-bold">{{ data.battle_quan || 0 }}</span>
               </div>
             </div>
