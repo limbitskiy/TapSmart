@@ -288,7 +288,6 @@ onMounted(() => {
 
     function onCompleteCb(params) {
       pMasterTl.resume();
-      console.log(params);
 
       if (params.winner === "top") {
         tiger1Animations.value.success = true;

@@ -1,4 +1,5 @@
 import constants from "@/constants";
+import { shareURL } from "@telegram-apps/sdk";
 
 const { botName, appName } = constants;
 
@@ -35,9 +36,15 @@ export const generateShareLink = () => {
   return `https://t.me/${botName}/${appName}?startapp=fr${userId}`;
 };
 
+// deprecated - stopped working in new tg version
+// export const inviteFriend = (inviteMessage?: string) => {
+//   const link = generateShareLink();
+//   tg.openTelegramLink(`https://t.me/share/url?url=${link}&text=${inviteMessage}`);
+// };
+
 export const inviteFriend = (inviteMessage?: string) => {
   const link = generateShareLink();
-  tg.openTelegramLink(`https://t.me/share/url?url=${link}&text=${inviteMessage}`);
+  shareURL(`https://t.me/share/url?url=${link}`, inviteMessage);
 };
 
 export const followExternalLink = (url: string) => {
