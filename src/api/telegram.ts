@@ -26,10 +26,6 @@ export const getUserName = () => {
   return tg?.initDataUnsafe?.user?.username;
 };
 
-// export const userId = computed(() => tg?.initDataUnsafe?.user?.id);
-
-// export const userName = computed(() => tg?.initDataUnsafe?.user?.username);
-
 export const generateShareLink = () => {
   const userId = getUserId();
   return `https://t.me/${botName}/${appName}?startapp=fr${userId}`;

@@ -5,7 +5,7 @@
 
     <!-- bg pattern -->
     <div class="bg-pattern absolute inset-0 z-1">
-      <img class="h-full w-full object-cover" src="/loader/gradient-bg.png" />
+      <img class="h-full w-full object-cover" src="/loader/gradient-bg.webp" />
     </div>
 
     <!-- main image -->
@@ -14,25 +14,25 @@
       <div class="tiger1-circle h-full">
         <div class="image-wrap relative h-full aspect-square">
           <div class="wave-top bg-[#4AE823] inset-0 rounded-full absolute scale-75"></div>
-          <img class="object-contain absolute inset-0 h-full" src="/loader/white-circle1.png" />
+          <img class="object-contain absolute inset-0 h-full" src="/loader/white-circle1.webp" />
           <Transition name="fade">
-            <img v-if="tiger1Animations.success" class="object-contain absolute inset-0 h-full" src="/loader/green-circle1.png" />
+            <img v-if="tiger1Animations.success" class="object-contain absolute inset-0 h-full" src="/loader/green-circle1.webp" />
           </Transition>
-          <img ref="topImageRef" class="object-contain absolute inset-0 h-full" src="/loader/tiger-cutout1-norim.png" />
+          <img ref="topImageRef" class="object-contain absolute inset-0 h-full" src="/loader/tiger-cutout1-norim.webp" />
         </div>
       </div>
 
       <!-- title & progress -->
       <div class="title-progress mx-auto w-[70vw] flex flex-col gap-2">
         <!-- title -->
-        <img src="/loader/title.png" />
+        <img src="/loader/title.webp" />
 
         <!-- progress pill -->
         <div class="flex items-center gap-4">
           <div class="progress-bar flex-1 flex flex-col relative">
             <!-- top row -->
             <div class="top-row px-[25px] py-1">
-              <img class="top-marker w-[36px]" src="/loader/tiger-cutout1-small.png" />
+              <img class="top-marker w-[36px]" src="/loader/tiger-cutout1-small.webp" />
             </div>
 
             <!-- middle row -->
@@ -44,12 +44,12 @@
 
             <!-- bottom row -->
             <div class="bottom-row px-[27px] py-1">
-              <img class="bottom-marker w-[36px]" src="/loader/tiger-cutout2-small.png" />
+              <img class="bottom-marker w-[36px]" src="/loader/tiger-cutout2-small.webp" />
             </div>
 
             <!-- present -->
             <div class="present absolute -right-5 top-[27px]">
-              <img class="w-[50px]" src="/loader/present.png" />
+              <img class="w-[50px]" src="/loader/present.webp" />
             </div>
           </div>
         </div>
@@ -59,11 +59,11 @@
       <div class="tiger2-circle h-full">
         <div class="image-wrap relative h-full aspect-square ml-auto">
           <div class="wave-bottom bg-[#4AE823] inset-0 rounded-full absolute scale-75"></div>
-          <img class="object-contain ml-auto absolute inset-0 h-full" src="/loader/white-circle1.png" />
+          <img class="object-contain ml-auto absolute inset-0 h-full" src="/loader/white-circle1.webp" />
           <Transition name="fade">
-            <img v-if="tiger2Animations.success" class="object-contain ml-auto absolute inset-0 h-full" src="/loader/green-circle1.png" />
+            <img v-if="tiger2Animations.success" class="object-contain ml-auto absolute inset-0 h-full" src="/loader/green-circle1.webp" />
           </Transition>
-          <img ref="bottomImageRef" class="h-full absolute inset-0 object-contain" src="/loader/tiger-cutout2-norim.png" />
+          <img ref="bottomImageRef" class="h-full absolute inset-0 object-contain" src="/loader/tiger-cutout2-norim.webp" />
         </div>
       </div>
     </div>
