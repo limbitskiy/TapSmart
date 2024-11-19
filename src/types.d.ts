@@ -125,7 +125,7 @@ export interface BackendButton {
   hidden?: boolean;
   disabled?: boolean;
   accent?: "orange" | "purple" | "black" | "grey" | "green" | "red";
-  action?: "invite";
+  action?: "invite" | "tg_story_editor" | "add_to_home_screen";
 }
 
 export interface Settings {

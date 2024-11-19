@@ -25,7 +25,7 @@
 import { ref, useCssModule } from "vue";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
-import { inviteFriend } from "@/api/telegram";
+import { inviteFriend, addToHomescreen } from "@/api/telegram";
 import { replaceWithSpecialSymbols } from "@/utils";
 
 // stores
@@ -72,11 +72,8 @@ const backgroundMap = {
 };
 
 const onClick = () => {
-  if (props.data?.action === "invite") {
-    sendInviteAnalitycsData(route.path);
-    inviteFriend(friendsLocale.value?.["invite_message"] || "Invite message");
-  } else if (props.data?.action === "tg_story_editor") {
-    shareToStory();
+  if (props.data?.action) {
+    parseAction(props.data?.action);
   }
 
   if (props.data?.api) {
@@ -89,6 +86,24 @@ const onClick = () => {
 
   if (props.data?.isClose) {
     emit("close");
+  }
+};
+
+const parseAction = (action) => {
+  switch (action) {
+    case "invite": {
+      sendInviteAnalitycsData(route.path);
+      inviteFriend(friendsLocale.value?.["invite_message"] || "Invite message");
+      break;
+    }
+    case "tg_story_editor": {
+      shareToStory();
+      break;
+    }
+    case "add_to_home_screen": {
+      addToHomescreen();
+      break;
+    }
   }
 };
 

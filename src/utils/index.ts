@@ -1,5 +1,4 @@
 import { images, assets, sounds } from "@/config";
-import { tg } from "@/api/telegram";
 import * as htmlToImage from "html-to-image";
 
 const assetLibrary = { ...images, ...assets, ...sounds };

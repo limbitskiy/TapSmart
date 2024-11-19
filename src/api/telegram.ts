@@ -45,3 +45,10 @@ export const setThemeColor = (color: string) => {
   tg?.setBackgroundColor(color);
   tg?.setBottomBarColor(color);
 };
+
+export const addToHomescreen = () => {
+  tg.checkHomeScreenStatus((status) => {
+    console.log(status);
+  });
+  // tg.addToHomeScreen()
+};
