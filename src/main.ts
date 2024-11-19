@@ -38,7 +38,6 @@ import Toggle from "@/components/UI/Toggle.vue";
 import BattleHeader from "@/components/UI/BattleHeader.vue";
 import BattleCompleteAnimation from "@/components/animations/BattleCompleteAnimation.vue";
 import BattleStartAnimation from "@/components/animations/BattleStartAnimation.vue";
-import TutorialSlide from "@/components/TutorialSlide.vue";
 
 // modals
 import ChangeMechanic from "@/components/modals/ChangeMechanic.vue";
@@ -90,7 +89,6 @@ app
   .component("Badge", Badge)
   .component("FriendPill", FriendPill)
   .component("BattleCompleteAnimation", BattleCompleteAnimation)
-  .component("TutorialSlide", TutorialSlide)
   .component("BattleStartAnimation", BattleStartAnimation)
   .component("BattleHeader", BattleHeader)
   .component("BackendModal", BackendModal)

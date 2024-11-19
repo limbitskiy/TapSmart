@@ -48,17 +48,13 @@
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { onMounted, onUnmounted } from "vue";
-import { useScreenSafeArea, useWebWorker } from "@vueuse/core";
-
-// worker
-import Worker from "@/worker?worker";
+import { onMounted } from "vue";
+import { useScreenSafeArea } from "@vueuse/core";
 
 // store
 import { useMainStore } from "@/store/main";
 
 const { top, right, bottom, left } = useScreenSafeArea();
-const { data, post, terminate, worker } = useWebWorker(Worker);
 
 const store = useMainStore();
 
@@ -82,9 +78,5 @@ onMounted(() => {
   document.addEventListener("visibilitychange", handleVisibilityChange);
 
   // post({ message: "hello, worker" });
-});
-
-onUnmounted(() => {
-  terminate();
 });
 </script>

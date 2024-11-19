@@ -26,7 +26,7 @@
           </Button>
         </div>
 
-        <!-- tasks -->
+        <!-- task pills -->
         <div class="section-tasks flex flex-col gap-2 pt-4">
           <Pill
             v-for="task in section.tasks.filter((task) => {
@@ -44,7 +44,7 @@
             <div class="content flex gap-2 items-center justify-between">
               <div class="start flex gap-4 items-center">
                 <div class="flex gap-2 items-center p-2">
-                  <img class="h-4 scale-[2]" :src="getAsset(task.icon)" />
+                  <img class="h-4 w-4 object-contain scale-[2]" :src="getAsset(task.icon)" />
                 </div>
                 <div class="task-meta">
                   <span class="text-lg fira-regular text-gray-300">{{ task.title }}</span>

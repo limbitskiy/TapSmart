@@ -99,6 +99,7 @@ import gsap from "gsap";
 
 // composables
 import preloadAssets from "@/utils/preloadAssets";
+import loadNonEssentialAssets from "@/utils/loadNonEssentialAssets";
 
 // stores
 import { useMainStore } from "@/store/main";
@@ -166,6 +167,8 @@ Promise.allSettled([
     return;
   }
 
+  loadNonEssentialAssets();
+
   assetsPreloaded.value = true;
 
   if (introProgressFinished.value) {
@@ -173,12 +176,6 @@ Promise.allSettled([
   }
   // playSound("soundtrack");
 });
-
-const generateRandomMarkerSpeed = (type, rect) => {
-  const newValue = ((rect.width - 8) / 4) * gsap.utils.random(0.5, 1);
-  markerPositions[type] += newValue;
-  return `+=${newValue}`;
-};
 
 const generateRandomMarkerDuration = () => {
   const newValue = animationDuration.value / gsap.utils.random(2, 4);

@@ -1,4 +1,4 @@
-import { images, sounds, fonts, assets } from "@/config.ts";
+import { sounds, fonts, assets, essentialAssets } from "@/config.ts";
 import { Howl, Howler } from "howler";
 import { getAssetURL } from "@/utils";
 
@@ -35,16 +35,16 @@ async function preloadAssets({ addSound }) {
           };
         })
     ),
-    ...Object.keys(images).map(
+    ...Object.keys(essentialAssets).map(
       (key) =>
         new Promise((res, rej) => {
           const image = new Image();
-          image.src = images[key];
+          image.src = essentialAssets[key];
           image.onload = () => {
             res(image);
           };
           image.onerror = () => {
-            rej(new Error(`Couldn't load image: '${images[key]}'`));
+            rej(new Error(`Couldn't load image: '${essentialAssets[key]}'`));
           };
         })
     ),

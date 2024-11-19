@@ -159,6 +159,7 @@ import { getAsset, waitFor } from "@/utils";
 import { storeToRefs } from "pinia";
 import { setThemeColor } from "@/api/telegram";
 import { useRoute } from "vue-router";
+import confetti from "canvas-confetti";
 
 // stores
 import { useMainStore } from "@/store/main";
@@ -175,20 +176,17 @@ const isErrorModalOpen = ref(false);
 const isBackdrop = ref(true);
 const isCloseup = ref(false);
 
-let confetti;
-
 const animationProgression = async () => {
   await fetchBattleCompleteData();
   isCloseup.value = true;
 
   if (data?.value?.["battle_complete_place"] === 1) {
-    confetti = await import("canvas-confetti");
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+    });
   }
-  confetti?.default({
-    particleCount: 50,
-    spread: 70,
-    origin: { y: 0.6 },
-  });
 
   await waitFor(2000);
   isCloseup.value = false;

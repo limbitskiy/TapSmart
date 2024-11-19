@@ -1,7 +1,7 @@
-import { images, assets, sounds } from "@/config";
+import { assets, sounds, essentialAssets, nonEssentialAssets } from "@/config";
 import * as htmlToImage from "html-to-image";
 
-const assetLibrary = { ...images, ...assets, ...sounds };
+const assetLibrary = { ...essentialAssets, ...nonEssentialAssets, ...assets, ...sounds };
 
 const specialSymbols = {
   "<bolt>":
