@@ -145,7 +145,7 @@ console.log("tg:", tg);
 
 Promise.allSettled([
   initialFetch({
-    queryParams: route.query,
+    fullPath: route.fullPath,
     botName,
     host: location?.href?.slice(0, -5),
     tg: {
