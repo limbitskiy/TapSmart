@@ -56,6 +56,8 @@ export const images = {
   confirm: "/confirm.webp",
   prize_fund: "/prize_fund.webp",
   ask_feedback: "/ask_feedback.webp",
+  "player-marker": "/player-marker.webp",
+  check: "/check.webp",
 };
 
 // assets folder
@@ -69,7 +71,6 @@ export const assets = {
   refresh: "assets/icons/refresh.svg",
   "chevron-right": "assets/icons/chevron-right.svg",
   "enemy-marker": "assets/icons/enemy-marker.svg",
-  "player-marker": "assets/icons/player-marker.svg",
 };
 
 export const sounds = {

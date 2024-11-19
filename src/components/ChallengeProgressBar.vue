@@ -1,5 +1,5 @@
 <template>
-  <BackgroundPill class="progressbar flex flex-col rounded-xl gap-1 !py-4">
+  <BackgroundPill class="progressbar flex flex-col rounded-xl gap-1 !py-2">
     <!-- enemies -->
     <div class="enemy-markers relative h-4">
       <div

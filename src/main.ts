@@ -5,7 +5,6 @@ import "@/assets/css/fonts.scss";
 import { createPinia } from "pinia";
 import router from "./router";
 import App from "./App.vue";
-import Vue3Lottie from "vue3-lottie";
 
 // components
 import BackgroundImage from "@/components/UI/BackgroundImage.vue";
@@ -54,7 +53,6 @@ const app = createApp(App);
 
 app.use(pinia);
 app.use(router);
-app.use(Vue3Lottie);
 
 // global component registration
 app

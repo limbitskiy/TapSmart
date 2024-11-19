@@ -1,7 +1,17 @@
 <template>
-  <Vue3Lottie :animationData="Animation" :height="200" :width="200" :loop="false" />
+  <div class="battle-complete-animation-cnt flex-1 flex items-center justify-center" style="background: linear-gradient(174.16deg, #333333 3.4%, #222222 97.3%)">
+    <div class="center flex flex-col gap-4 items-center justify-center">
+      <div class="image">
+        <img class="h-[10dvh]" :src="getAsset('check')" />
+      </div>
+      <div class="text flex flex-col items-center">
+        <span class="fira-bold text-[10vw] text-white">Battle</span>
+        <span class="fira-bold text-[14vw] text-[var(--accent-color)] leading-10">complete</span>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import Animation from "@/assets/animations/battle_complete.json";
+import { getAsset } from "@/utils";
 </script>

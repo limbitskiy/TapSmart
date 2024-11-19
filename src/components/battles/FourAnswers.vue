@@ -216,7 +216,7 @@ const handleAnswer = (answer: string, event, task: Task, btnId: number) => {
     isCorrect,
     answer,
     event,
-    drawBonus: true,
+    drawBonus: task.settings?.isAds || props.type === "challenge" ? false : true,
     task,
     nextTaskDelay: taskDelay,
   });

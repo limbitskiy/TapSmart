@@ -213,7 +213,7 @@ const handleAnswer = (answer: string, event: MouseEvent, task: Task, type: "yes"
     isCorrect,
     answer,
     event,
-    drawBonus: task.settings?.isAds ? false : true,
+    drawBonus: task.settings?.isAds || props.type === "challenge" ? false : true,
     task,
     nextTaskDelay: taskDelay,
   });

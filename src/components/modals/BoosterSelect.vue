@@ -82,7 +82,7 @@
       <Button :class="data?.['friends_online'] ? '' : '!bg-black !text-white'" @click="() => onStartBattle({ friendsOnly: true })">
         <div class="flex gap-1 justify-center">
           <span class="">{{ locale?.["button_booster_friends"] || "Challenge friends" }}</span>
-          <Badge class="bg-green-500" :data="data?.['friends_online']" grey />
+          <Badge class="bg-green-500" :data="data?.['friends_online'] || 0" grey />
         </div>
       </Button>
     </div>

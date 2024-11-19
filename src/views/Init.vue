@@ -90,6 +90,7 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from "vue";
+import { useRoute } from "vue-router";
 import { waitFor } from "@/utils";
 import { tg, setThemeColor } from "@/api/telegram";
 import constants from "@/constants";
@@ -104,6 +105,7 @@ import { useMainStore } from "@/store/main";
 
 const { botName } = constants;
 
+const route = useRoute();
 const store = useMainStore();
 
 const { startApp, initialFetch } = store;
@@ -143,6 +145,7 @@ console.log("tg:", tg);
 
 Promise.allSettled([
   initialFetch({
+    queryParams: route.query,
     botName,
     host: location?.href?.slice(0, -5),
     tg: {
