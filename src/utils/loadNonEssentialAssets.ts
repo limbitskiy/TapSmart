@@ -1,3 +1,4 @@
+import { watch } from "vue";
 import { nonEssentialAssets } from "@/config.ts";
 import { getAssetURL } from "@/utils";
 import { useWebWorker } from "@vueuse/core";
@@ -10,6 +11,12 @@ const loadNonEssentialAssets = () => {
 
   Object.keys(nonEssentialAssets).forEach((key) => {
     post({ url: nonEssentialAssets[key] });
+  });
+
+  watch(data, (val) => {
+    console.log(val);
+    const image = new Image();
+    image.src = val;
   });
 };
 

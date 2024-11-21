@@ -176,10 +176,10 @@ export type LocaleEntry = {
   [key: string]: string;
 };
 export interface AnswerProps {
-  isCorrect?: boolean;
-  answerString?: string;
+  isCorrect: boolean;
+  answerString: string;
   autoAnswer?: boolean;
-  nextTaskDelay?: number;
+  task?: Task;
 }
 
 export interface Answer {

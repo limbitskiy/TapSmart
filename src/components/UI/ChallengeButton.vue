@@ -10,14 +10,15 @@
       @touchend="btnTouchend"
     >
       <div class="flex justify-center gap-2 py-5 !px-2 relative">
-        <div v-if="glossVisible" class="gloss absolute top-0 left-0 right-0 bottom-[40%] z-10 rounded-t-[22px] overflow-hidden">
+        <div class="btn-cnt flex justify-center gap-2 z-10">
+          <span v-bind="$attrs" class="text-[20px] fira-condensed-bold leading-4">{{ locale?.["button_challenge"] }}</span>
+          <Badge v-if="data?.questions_left > 0" class="relative bottom-1" :data="data?.questions_left" grey />
+        </div>
+
+        <div class="gloss absolute top-0 left-0 right-0 bottom-[40%] z-20 rounded-t-[22px] overflow-hidden">
           <svg class="h-full w-full" viewBox="0 0 345 33" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M345 22.1555C157.528 41.796 36.8868 30.339 0 22.1555V0H345V22.1555Z" fill="white" fill-opacity="0.23" />
           </svg>
-        </div>
-        <div class="btn-cnt flex justify-center gap-2 z-20">
-          <span v-bind="$attrs" class="text-[20px] fira-condensed-bold leading-4">{{ locale?.["button_challenge"] }}</span>
-          <Badge v-if="data?.questions_left > 0" class="relative bottom-1" :data="data?.questions_left" grey />
         </div>
       </div>
     </button>

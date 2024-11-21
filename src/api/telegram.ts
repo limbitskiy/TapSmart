@@ -48,7 +48,7 @@ export const setThemeColor = (color: string) => {
 
 export const addToHomescreen = () => {
   tg?.checkHomeScreenStatus((status) => {
-    if (status !== "unsupported" || status !== "added") {
+    if (status !== "unsupported" && status !== "added") {
       tg.addToHomeScreen();
     }
   });
