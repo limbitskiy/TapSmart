@@ -79,7 +79,7 @@ const emit = defineEmits<{
       event: MouseEvent;
       task: Task;
       drawBonus: boolean;
-      nextTaskDelay: number;
+      autoAnswer?: boolean;
     }
   ];
   changeMech: [];
@@ -90,8 +90,8 @@ const props = defineProps<{
   locales: {};
 }>();
 
-const { battleStarted } = storeToRefs(store.battleStore);
-const { startBreakpoint, startTaskTimeout, resetBattleStats, incrementTask, removeTaskFromBatch, giveNextTask } = store.battleStore;
+const { battleStarted, currentTaskTimeout } = storeToRefs(store.battleStore);
+const { startTaskTimeoutPrototype, startBreakpoint, startTaskTimeout, resetBattleStats, giveNextTask } = store.battleStore;
 
 const settings = {
   correctTaskDelay: 0,
@@ -135,14 +135,18 @@ const onButton = (task, btn, event) => {
   if (selected[btn.id]) {
     delete selected[btn.id];
   } else {
-    selected[btn.id] = { task, button: btn };
+    selected[btn.id] = { task: JSON.parse(JSON.stringify(task)), button: btn };
   }
 
   if (Object.keys(selected).length >= 2) {
     const selected1 = selected[Object.keys(selected)[0]];
     const selected2 = selected[Object.keys(selected)[1]];
 
+    // remove outline
+    removeHightLights();
+
     // remove selected shortcuts
+
     selected = {};
 
     const isCorrect = selected1.task.id === selected2.task.id;
@@ -151,8 +155,9 @@ const onButton = (task, btn, event) => {
       animateButtonsWrong(selected1, selected2);
       return;
     }
+    console.log(selected2);
 
-    handleAnswer(selected2, isCorrect, task.task, event);
+    handleAnswer({ answerString: selected2.task.task.task.answer, isCorrect, task: task.task, event });
 
     const btnId = selected1.button.id;
 
@@ -169,31 +174,27 @@ const onButton = (task, btn, event) => {
       // remove success
       removeSuccess();
 
-      // remove outline
-      removeHightLights();
-
       setTimeout(() => {
         if (buttonsMissing >= 2) {
           refillTasks();
           buttonsMissing = 0;
         }
       }, 300);
+
+      startTaskTimeoutPrototype(timeoutCallback);
     }, 300);
   }
 };
 
-const animateButtonsWrong = (selected1, selected2) => {
-  setTimeout(() => {
-    removeHightLights();
-  }, 200);
-
-  selected1.button.wrong = true;
-  selected2.button.wrong = true;
-
-  setTimeout(() => {
-    selected1.button.wrong = false;
-    selected2.button.wrong = false;
-  }, 300);
+const handleAnswer = ({ answerString, isCorrect, task, event, autoAnswer }: { answerString: string; isCorrect: boolean; task: Task; event: MouseEvent }) => {
+  emit("answer", {
+    isCorrect,
+    answer: answerString,
+    event,
+    drawBonus: false,
+    task,
+    autoAnswer,
+  });
 };
 
 const refillTasks = () => {
@@ -201,17 +202,6 @@ const refillTasks = () => {
     if (!taskArray.value[task].task) {
       taskArray.value[task].task = giveNextTask();
     }
-  });
-};
-
-const handleAnswer = (answerString: string, isCorrect: boolean, task: Task, event) => {
-  emit("answer", {
-    isCorrect,
-    answer: answerString,
-    event,
-    drawBonus: false,
-    task,
-    nextTaskDelay: 1000,
   });
 };
 
@@ -239,13 +229,31 @@ const removeSuccess = () => {
   });
 };
 
-// const shuffleButtons = () => {
-// buttonsLeft.value = shuffle(buttonsLeft.value);
-// buttonsRight.value = shuffle(buttonsRight.value);
-// };
+const animateButtonsWrong = (selected1, selected2) => {
+  setTimeout(() => {
+    removeHightLights();
+  }, 200);
 
-const isNumber = (variable: any) => {
-  return typeof variable === "number";
+  selected1.button.wrong = true;
+  selected2.button.wrong = true;
+
+  setTimeout(() => {
+    selected1.button.wrong = false;
+    selected2.button.wrong = false;
+  }, 300);
+};
+
+const timeoutCallback = () => {
+  const taskWithSmallestID = findTaskWithSmallestID();
+  console.log(taskWithSmallestID);
+
+  handleAnswer({
+    isCorrect: false,
+    answerString: "",
+    autoAnswer: true,
+    task: taskWithSmallestID,
+  });
+  startTaskTimeoutPrototype(timeoutCallback);
 };
 
 const startGame = () => {
@@ -254,7 +262,7 @@ const startGame = () => {
   battleStarted.value = true;
   resetBattleStats();
   startBreakpoint("battle");
-  startTaskTimeout();
+  startTaskTimeoutPrototype(timeoutCallback);
 
   // shuffleButtons();
   Object.keys(taskArray.value).forEach((key) => {
@@ -268,11 +276,26 @@ const startGame = () => {
     // add visible field
     taskArray.value[key].visible = true;
   });
+
+  console.log(taskArray.value);
 };
 
-const getTaskById = (id: number) => {
-  const key = Object.keys(taskArray.value).find((key) => taskArray.value[key].id === id);
-  return taskArray.value[key];
+const findTaskWithSmallestID = () => {
+  const idArr = [];
+  Object.keys(taskArray.value).forEach((key) => {
+    if (taskArray.value[key].task?.id) {
+      idArr.push(taskArray.value[key].task?.id);
+    }
+  });
+  idArr.sort((a, b) => a - b);
+
+  let found;
+  Object.keys(taskArray.value).forEach((key) => {
+    if (taskArray.value[key].task?.id === idArr[0]) {
+      found = taskArray.value[key].task;
+    }
+  });
+  return found;
 };
 
 onMounted(() => {

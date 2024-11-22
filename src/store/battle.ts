@@ -58,7 +58,6 @@ export const useBattleStore = defineStore("battle", () => {
     energyOnWrong: -3,
   });
 
-  const lastTaskId = ref<number | null>(null);
   const correctStreak = ref(0);
 
   const challengeScore = ref(0);
@@ -96,10 +95,7 @@ export const useBattleStore = defineStore("battle", () => {
   const сurrentMechanicName = computed(() => battleTypes[currentBattleType.value]);
 
   // battle processor
-  const { resetTask, incrementTask, storeAnswer, removeTaskFromBatch, giveNextTask, answers, currentTaskBatch: currentTask } = useBattleProcessor(state.value.battleData);
-
-  // returns { api, correct, id, key, task: {} }
-  // const currentTask = computed(() => battleStarted.value && !pauseCurrentTask.value && _currentTask.value);
+  const { resetTask, storeAnswer, giveNextTask, cleanAnswers, setTasks, answers, currentTaskBatch: currentTask, lastTask } = useBattleProcessor(state.value.battleData);
 
   // returns { bolts_bonus, disabled, id, order, timeout }
   const currentMechanic = computed(() => state.value.battleData.mechanics?.[getMechanicName(state.value.battleData.battle_type)]);
@@ -110,8 +106,8 @@ export const useBattleStore = defineStore("battle", () => {
 
     Object.keys(data).forEach((key) => {
       if (key === "cleanAnswers" && data.cleanAnswers) {
-        lastTaskId.value = null;
-        answers.value = [];
+        cleanAnswers();
+        return;
       }
 
       // restart working breakpoint if new breakpoint time recieved
@@ -133,7 +129,13 @@ export const useBattleStore = defineStore("battle", () => {
         }
       }
 
-      // if no such key - create an empty object
+      // set tasks
+      if (key === "data") {
+        setTasks(data[key]);
+        return;
+      }
+
+      // // if no such key - create an empty object
       if (!state.value.battleData[key]) {
         state.value.battleData[key] = null;
       }
@@ -141,12 +143,6 @@ export const useBattleStore = defineStore("battle", () => {
       // copy data to the key
       state.value.battleData[key] = JSON.parse(JSON.stringify(data[key]));
     });
-
-    // reset task index
-    if (data.data?.length) {
-      console.log(`new data: resetting task index`);
-      // resetTask();
-    }
 
     if (onCompleteHook) {
       onCompleteHook();
@@ -185,12 +181,18 @@ export const useBattleStore = defineStore("battle", () => {
 
     const callback = () => {
       stopTaskTimeout();
-      handleAnswer({
-        autoAnswer: true,
-      });
+      // handleAnswer({
+      //   autoAnswer: true,
+      // });
     };
 
     const taskTimeout = new TaskTimer(externalTimeout ?? currentMechanic.value?.timeout, callback);
+    currentTaskTimeout.value = taskTimeout;
+    currentTaskTimeout.value.start();
+  };
+
+  const startTaskTimeoutPrototype = (cb) => {
+    const taskTimeout = new TaskTimer(currentMechanic.value?.timeout, cb);
     currentTaskTimeout.value = taskTimeout;
     currentTaskTimeout.value.start();
   };
@@ -239,7 +241,7 @@ export const useBattleStore = defineStore("battle", () => {
       interval = 1000;
     }
 
-    // console.log(`Starting breakpoint: ${type}`);
+    console.log(`Starting breakpoint: ${type}`);
 
     const breakpointInterval = new BreakpointInterval(interval, callback);
 
@@ -258,37 +260,29 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   // answer handlers
-  const handleAnswer = async ({ isCorrect, answerString, autoAnswer = false, nextTaskDelay = 0, task }: AnswerProps) => {
+  const handleAnswer = async ({ isCorrect, answerString, autoAnswer = false, task }: AnswerProps) => {
     if (currentBattleMode.value === "relax" && data.value.energy === 0) return;
 
-    if (!currentTask.value) {
-      console.error(`Could not find current item: handleAnswer`);
+    if (autoAnswer) {
+      storeAnswer({ task, answerString });
+      afkCounter.value += 1;
       return;
     }
 
-    // make a task copy because computed will show false when pauseCurrentTask is true
-    // maybe needs refactoring
-    const thisTask = currentTask.value;
-
     stopTaskTimeout();
-
-    // set lastTaskId
-    lastTaskId.value = currentTask.value!.id;
 
     // for screenshot (otherwize we don't see the question)
     await waitFor(100);
 
-    pauseCurrentTask.value = true;
-
     let returnData;
 
     // in a relax battle
-    if (currentBattleMode.value === "relax" && !thisTask.settings?.isAds) {
+    if (currentBattleMode.value === "relax" && !task.settings?.isAds) {
       // store answer
       storeAnswer({ task, answerString });
 
-      if (thisTask.api) {
-        mainStore.useFetch({ key: thisTask.api });
+      if (task.api) {
+        mainStore.useFetch({ key: task.api });
       }
 
       // process correct/wrong anwser
@@ -307,7 +301,7 @@ export const useBattleStore = defineStore("battle", () => {
       }
 
       // in a challenge battle
-    } else if (currentBattleMode.value === "challenge" && !thisTask.settings?.isAds) {
+    } else if (currentBattleMode.value === "challenge" && !task.settings?.isAds) {
       let msec;
 
       if (battleStartTime) {
@@ -328,24 +322,13 @@ export const useBattleStore = defineStore("battle", () => {
         }
         mainStore.onVibrate("wrong");
       }
-    } else if (thisTask.settings?.isAds) {
+    } else if (task.settings?.isAds) {
       mainStore.bgColor = "linear-gradient(180deg, #000B14 17.5%, #035DA9 100%)";
       storeAnswer({ task, answerString });
-      afkCounter.value = 0;
-      returnData = await mainStore.useFetch({ key: thisTask.api });
+      returnData = await mainStore.useFetch({ key: task.api });
     }
 
-    if (nextTaskDelay) {
-      await waitFor(nextTaskDelay);
-    }
-
-    pauseCurrentTask.value = false;
-
-    // if (state.value.battleData.questions_left && state.value.battleData.questions_left > 0) {
-    //   state.value.battleData.questions_left -= 1;
-    // }
-
-    let externalTimeout;
+    // let externalTimeout;
 
     // for ads in questions
     // if (currentTask.value?.settings?.wait) {
@@ -359,13 +342,6 @@ export const useBattleStore = defineStore("battle", () => {
     // if (currentBattleMode.value === "relax") {
     //   startTaskTimeout(externalTimeout);
     // }
-
-    if (autoAnswer) {
-      storeAnswer({ task, auto: true });
-      incrementTask();
-      startTaskTimeout();
-      afkCounter.value += 1;
-    }
 
     afkCounter.value = 0;
 
@@ -448,7 +424,6 @@ export const useBattleStore = defineStore("battle", () => {
 
   const resetBattleStats = () => {
     // resetTask();
-    lastTaskId.value = null;
     correctStreak.value = 0;
     challengeScore.value = 0;
     boostersUsed.value = {};
@@ -521,7 +496,6 @@ export const useBattleStore = defineStore("battle", () => {
   return {
     data,
     currentTask,
-    lastTaskId,
     answers,
     challengeScore,
     boostersUsed,
@@ -552,8 +526,7 @@ export const useBattleStore = defineStore("battle", () => {
     setBackendModal,
     calculateCalcPoint,
     calculateRelaxMultiplierAmount,
-    incrementTask,
-    removeTaskFromBatch,
     giveNextTask,
+    startTaskTimeoutPrototype,
   };
 });

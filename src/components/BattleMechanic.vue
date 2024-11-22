@@ -61,6 +61,8 @@ interface AnswerProps {
   answer: string;
   event: MouseEvent;
   drawBonus?: boolean;
+  autoAnswer?: boolean;
+  task: Task;
 }
 
 const emit = defineEmits<{
@@ -103,22 +105,22 @@ watch(
   }
 );
 
-const onAnswer = async ({ isCorrect, answer, event, drawBonus = true, task, nextTaskDelay }: AnswerProps) => {
+const onAnswer = async ({ isCorrect, answer, event, drawBonus = true, task, autoAnswer }: AnswerProps) => {
   if (isCorrect && drawBonus) {
     drawBonusAnimation(event);
   }
 
   if (task.settings?.isAds && task.api) {
-    const res = await handleAnswer({ isCorrect, answerString: answer, nextTaskDelay, task });
+    const res = await handleAnswer({ isCorrect, answerString: answer, task });
 
     if (res.action === "start-challenge") {
       emit("startChallenge");
     }
   } else {
-    handleAnswer({ isCorrect, answerString: answer, nextTaskDelay, task });
+    handleAnswer({ isCorrect, answerString: answer, task, autoAnswer });
   }
 
-  emit("answer", { isCorrect, answerString: answer, nextTaskDelay, task });
+  emit("answer", { isCorrect, answerString: answer, task });
 };
 
 const drawBonusAnimation = ({ x, y }: { x: number; y: number }) => {
