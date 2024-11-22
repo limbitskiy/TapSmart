@@ -141,8 +141,6 @@ const props = defineProps<{
   type: "relax" | "challenge";
   task: {};
   locales: {};
-  energy: number;
-  buttonsBlocked: boolean;
 }>();
 
 const buttonValues = ref({

@@ -167,13 +167,13 @@ Promise.allSettled([
     return;
   }
 
-  loadNonEssentialAssets();
+  // loadNonEssentialAssets();
 
   assetsPreloaded.value = true;
 
-  if (introProgressFinished.value) {
-    startApp();
-  }
+  // if (introProgressFinished.value) {
+  startApp();
+  // }
   // playSound("soundtrack");
 });
 

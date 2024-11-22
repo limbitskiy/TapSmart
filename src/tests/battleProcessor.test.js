@@ -59,7 +59,7 @@ const mockData = {
 const taskIndexes = [2, 6, 31, 502];
 
 // exposed data:
-// resetTaskIndex, incrementTaskIndex, storeAnswer, answers, _currentTask
+// resetTaskID, incrementTaskID, storeAnswer, answers, _currentTask
 
 describe("battle processor", () => {
   let battleProcessor;
@@ -69,8 +69,8 @@ describe("battle processor", () => {
   });
 
   beforeEach(() => {
-    const { resetTaskIndex } = battleProcessor;
-    resetTaskIndex();
+    const { resetTaskID } = battleProcessor;
+    resetTaskID();
   });
 
   test("resets to lowest id", () => {
@@ -79,11 +79,11 @@ describe("battle processor", () => {
   });
 
   test("increments taskIndex several times", () => {
-    const { incrementTaskIndex, _currentTask } = battleProcessor;
-    incrementTaskIndex();
+    const { incrementTaskID, _currentTask } = battleProcessor;
+    incrementTaskID();
     expect(_currentTask.value.id).toBe(taskIndexes[1]);
 
-    incrementTaskIndex();
+    incrementTaskID();
     expect(_currentTask.value.id).toBe(taskIndexes[2]);
   });
 
@@ -107,12 +107,12 @@ describe("battle processor", () => {
   });
 
   test("loop back to smallest id", () => {
-    const { incrementTaskIndex, _currentTask } = battleProcessor;
+    const { incrementTaskID, _currentTask } = battleProcessor;
 
-    incrementTaskIndex();
-    incrementTaskIndex();
-    incrementTaskIndex();
-    incrementTaskIndex();
+    incrementTaskID();
+    incrementTaskID();
+    incrementTaskID();
+    incrementTaskID();
 
     expect(_currentTask.value.id).toBe(taskIndexes[0]);
   });

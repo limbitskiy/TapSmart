@@ -143,8 +143,6 @@ const props = defineProps<{
   type: "relax" | "challenge";
   task: Task;
   locales: {};
-  energy: number;
-  buttonsBlocked: boolean;
 }>();
 
 const correctAnswer = ref({
@@ -167,8 +165,6 @@ const settings = {
 console.log(`yes-no created`);
 
 const handleAnswer = (answer: string, event: MouseEvent, task: Task, type: "yes" | "no") => {
-  // if ((props.type === "relax" && props.energy <= 0) || !props.task) return;
-
   const isCorrect = answer === props.task.correct;
 
   let taskDelay = settings.correctTaskDelay;

@@ -20,11 +20,11 @@ export class BattleProcessor {
   }
 
   public reset() {
-    this.resetTaskIndex();
+    this.resetTaskID();
     this._lastTaskId = 0;
   }
 
-  private resetTaskIndex() {
+  private resetTaskID() {
     if (!this.tasks) return;
     const clone = JSON.parse(JSON.stringify(this.tasks));
 
@@ -74,7 +74,7 @@ export class BattleProcessor {
       if (clone[newIdx]) {
         this.taskId = clone[newIdx].id;
       } else {
-        this.resetTaskIndex();
+        this.resetTaskID();
       }
 
       return this.tasks.find((task) => task.id === this.taskId);

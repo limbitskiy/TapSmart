@@ -6,8 +6,6 @@
       :type="currentBattleMode"
       :task="currentTask"
       :locales="locale"
-      :energy="data?.energy"
-      :buttonsBlocked="buttonsBlocked"
       @answer="onAnswer"
       @changeMech="() => emit('changeMech')"
     />
@@ -54,6 +52,7 @@ import { useMainStore } from "@/store/main";
 // battle mechanics
 import YesNo from "@/components/battles/YesNo.vue";
 import FourAnswers from "@/components/battles/FourAnswers.vue";
+import MatchPairs from "@/components/battles/MatchPairs.vue";
 
 console.log(`Battle Mech created`);
 
@@ -78,6 +77,7 @@ const { data, сurrentMechanicName, currentTask, currentBattleMode, boostersUsed
 const { handleAnswer, calculateRelaxMultiplierAmount } = store.battleStore;
 
 const bonuses = ref<Bonus[]>([]);
+const mountedMechanic = ref();
 
 const boosterState = ref({
   text: "",
@@ -88,11 +88,20 @@ const boosterState = ref({
 const mechMap = {
   yesno: YesNo,
   "4answers": FourAnswers,
+  match_pairs: MatchPairs,
 };
 
-const buttonsBlocked = ref(false);
-
-const mountedMechanic = computed(() => mechMap[сurrentMechanicName.value]);
+watch(
+  сurrentMechanicName,
+  (val) => {
+    if (val) {
+      mountedMechanic.value = mechMap[val];
+    }
+  },
+  {
+    immediate: true,
+  }
+);
 
 const onAnswer = async ({ isCorrect, answer, event, drawBonus = true, task, nextTaskDelay }: AnswerProps) => {
   if (isCorrect && drawBonus) {
@@ -163,30 +172,7 @@ if (currentBattleMode.value === "challenge") {
       deep: true,
     }
   );
-
-  // watch(challengeTimer, (val) => {
-  // if (val === 0) {
-  //   setTimeout(() => {
-  //     onEndChallenge();
-  //   }, 500);
-  // }
-  // block buttons before challenge end
-  // if (val === 1000) {
-  //   buttonsBlocked.value = true;
-  // }
-  // });
 }
-
-// if (currentBattleMode.value === "relax") {
-//   watch(currentTask, (val) => {
-//     if (val) {
-//       buttonsBlocked.value = true;
-//       setTimeout(() => {
-//         buttonsBlocked.value = false;
-//       }, 500);
-//     }
-//   });
-// }
 
 onMounted(() => {
   console.log(`Battle Mech mounted`);

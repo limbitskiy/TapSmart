@@ -3,9 +3,6 @@
     <!-- bg image -->
     <BackgroundImage />
 
-    <!-- create gif button -->
-    <!-- <Button class="z-10" @click="() => $router.push('/gif-creator')">Create gif</Button> -->
-
     <!-- profile widget -->
     <ProfileWidget />
 
@@ -20,13 +17,6 @@
         <ChangeMechanic @close="() => closeModal('changeMechanic')" />
       </Modal>
     </Teleport>
-
-    <!-- no energy modal -->
-    <!-- <Teleport to="#modals">
-      <Modal id="no-energy-modal" v-model:visible="isNoEnergyVisible" sticky>
-        <NoEnergy @challenge="openBoosterModal" @close="() => closeModal('noEnergy')" />
-      </Modal>
-    </Teleport> -->
 
     <!-- booster select modal -->
     <Teleport to="#modals">
@@ -49,7 +39,6 @@ import { ref, watch, computed, onMounted, onBeforeMount, onUnmounted } from "vue
 import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 import { tg, setThemeColor } from "@/api/telegram";
-import { useWindowSize } from "@vueuse/core";
 
 // stores
 import { useMainStore } from "@/store/main";
@@ -71,14 +60,13 @@ const isBoostersModalVisible = ref(false);
 setThemeColor("#222");
 bgColor.value = "linear-gradient(180deg, #000B14 17.5%, #035DA9 100%)";
 HTMLSnapshots.value = [];
+let mechStartFunction;
 
 await fetchRelaxPageData();
 
 const isAFKModalVisible = computed(() => afkCounter.value >= 3);
 
 const onAnswer = ({ isCorrect, answerString, nextTaskDelay, task }) => {
-  // console.log(task);
-  // console.log(answerString);
   if (data.value.energy === 0) {
     onNoEnergy();
   }
@@ -98,13 +86,10 @@ watch(
   () => data.value.energy,
   (val) => {
     if (val === 0) {
-      // isNoEnergyVisible.value = true;
       onNoEnergy();
     }
   }
 );
-
-const { width } = useWindowSize();
 
 const onNoEnergy = () => {
   useFetch({ key: "option_activate", data: { type: "extra_energy", showModal: 1 } });
@@ -117,14 +102,12 @@ const onChangeMech = () => {
 const closeModal = (modalName: string) => {
   const modals = {
     changeMechanic: isChangeMechModalVisible,
-    noEnergy: isNoEnergyVisible,
   };
 
   modals[modalName].value = false;
 };
 
 const openBoosterModal = () => {
-  isNoEnergyVisible.value = false;
   isBoostersModalVisible.value = true;
 };
 
@@ -133,9 +116,7 @@ const onAfkModalClose = () => {
 };
 
 onMounted(() => {
-  console.log(`relax mounted`);
-
-  startRelax();
+  // startRelax();
   debugMessages.value = [];
 });
 

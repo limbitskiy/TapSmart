@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import { useBattleProcessor } from "@/composables/useBattleProcessor";
 
 // lodash
-import { merge } from "lodash";
+import { merge } from "lodash-es";
 
 // common
 import { Interval as BreakpointInterval, Timer as TaskTimer } from "@/common/interval";
@@ -17,7 +17,6 @@ import { waitFor } from "@/utils";
 
 // types
 import { BattleTypes, BattleState, AnswerProps } from "@/types";
-import { useFetch } from "@vueuse/core";
 
 export const useBattleStore = defineStore("battle", () => {
   const dataStore = useDataStore();
@@ -54,10 +53,10 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   // settings
-  const settings = {
+  const settings = ref({
     energyOnCorrect: 1,
     energyOnWrong: -3,
-  };
+  });
 
   const lastTaskId = ref<number | null>(null);
   const correctStreak = ref(0);
@@ -97,10 +96,10 @@ export const useBattleStore = defineStore("battle", () => {
   const сurrentMechanicName = computed(() => battleTypes[currentBattleType.value]);
 
   // battle processor
-  const { resetTaskIndex, incrementTaskIndex, storeAnswer, answers, _currentTask } = useBattleProcessor(state.value.battleData);
+  const { resetTask, incrementTask, storeAnswer, removeTaskFromBatch, giveNextTask, answers, currentTaskBatch: currentTask } = useBattleProcessor(state.value.battleData);
 
   // returns { api, correct, id, key, task: {} }
-  const currentTask = computed(() => battleStarted.value && !pauseCurrentTask.value && _currentTask.value);
+  // const currentTask = computed(() => battleStarted.value && !pauseCurrentTask.value && _currentTask.value);
 
   // returns { bolts_bonus, disabled, id, order, timeout }
   const currentMechanic = computed(() => state.value.battleData.mechanics?.[getMechanicName(state.value.battleData.battle_type)]);
@@ -146,7 +145,7 @@ export const useBattleStore = defineStore("battle", () => {
     // reset task index
     if (data.data?.length) {
       console.log(`new data: resetting task index`);
-      resetTaskIndex();
+      // resetTask();
     }
 
     if (onCompleteHook) {
@@ -267,14 +266,6 @@ export const useBattleStore = defineStore("battle", () => {
       return;
     }
 
-    if (autoAnswer) {
-      isCorrect = false;
-      answerString = "";
-      afkCounter.value += 1;
-    } else {
-      afkCounter.value = 0;
-    }
-
     // make a task copy because computed will show false when pauseCurrentTask is true
     // maybe needs refactoring
     const thisTask = currentTask.value;
@@ -294,7 +285,7 @@ export const useBattleStore = defineStore("battle", () => {
     // in a relax battle
     if (currentBattleMode.value === "relax" && !thisTask.settings?.isAds) {
       // store answer
-      storeAnswer(answerString);
+      storeAnswer({ task, answerString });
 
       if (thisTask.api) {
         mainStore.useFetch({ key: thisTask.api });
@@ -306,10 +297,10 @@ export const useBattleStore = defineStore("battle", () => {
         const multiplier = calculateRelaxMultiplierAmount();
         correctStreak.value += 1;
         dataStore.addBolts(multiplier);
-        addEnergy(settings.energyOnCorrect);
+        addEnergy(settings.value.energyOnCorrect);
       } else {
         if (!autoAnswer) {
-          addEnergy(settings.energyOnWrong);
+          addEnergy(settings.value.energyOnWrong);
         }
         mainStore.onVibrate("wrong");
         correctStreak.value = 0;
@@ -323,7 +314,7 @@ export const useBattleStore = defineStore("battle", () => {
         msec = Date.now() - +battleStartTime;
       }
 
-      storeAnswer(answerString, msec);
+      storeAnswer({ task, answerString, msec });
 
       if (isCorrect) {
         challengeScore.value += calculateCalcPoint();
@@ -339,7 +330,7 @@ export const useBattleStore = defineStore("battle", () => {
       }
     } else if (thisTask.settings?.isAds) {
       mainStore.bgColor = "linear-gradient(180deg, #000B14 17.5%, #035DA9 100%)";
-      storeAnswer(answerString);
+      storeAnswer({ task, answerString });
       afkCounter.value = 0;
       returnData = await mainStore.useFetch({ key: thisTask.api });
     }
@@ -347,8 +338,6 @@ export const useBattleStore = defineStore("battle", () => {
     if (nextTaskDelay) {
       await waitFor(nextTaskDelay);
     }
-
-    incrementTaskIndex();
 
     pauseCurrentTask.value = false;
 
@@ -359,17 +348,26 @@ export const useBattleStore = defineStore("battle", () => {
     let externalTimeout;
 
     // for ads in questions
-    if (currentTask.value?.settings?.wait) {
-      if (currentTask.value.settings.style?.background) {
-        mainStore.bgColor = currentTask.value.settings.style.background;
-      }
-      externalTimeout = currentTask.value?.settings?.timeout;
-      console.log(`starting external timeout: ${currentTask.value?.settings?.timeout}`);
+    // if (currentTask.value?.settings?.wait) {
+    //   if (currentTask.value.settings.style?.background) {
+    //     mainStore.bgColor = currentTask.value.settings.style.background;
+    //   }
+    //   externalTimeout = currentTask.value?.settings?.timeout;
+    //   console.log(`starting external timeout: ${currentTask.value?.settings?.timeout}`);
+    // }
+
+    // if (currentBattleMode.value === "relax") {
+    //   startTaskTimeout(externalTimeout);
+    // }
+
+    if (autoAnswer) {
+      storeAnswer({ task, auto: true });
+      incrementTask();
+      startTaskTimeout();
+      afkCounter.value += 1;
     }
 
-    if (currentBattleMode.value === "relax") {
-      startTaskTimeout(externalTimeout);
-    }
+    afkCounter.value = 0;
 
     return returnData;
   };
@@ -449,7 +447,7 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   const resetBattleStats = () => {
-    resetTaskIndex();
+    // resetTask();
     lastTaskId.value = null;
     correctStreak.value = 0;
     challengeScore.value = 0;
@@ -554,5 +552,8 @@ export const useBattleStore = defineStore("battle", () => {
     setBackendModal,
     calculateCalcPoint,
     calculateRelaxMultiplierAmount,
+    incrementTask,
+    removeTaskFromBatch,
+    giveNextTask,
   };
 });
