@@ -1,7 +1,7 @@
 <template>
   <div class="battle-body flex-1 flex flex-col">
     <!-- task body -->
-    <div class="flex-1 grid grid-rows-[60px_auto]">
+    <div class="flex-1 flex flex-col">
       <!-- task header -->
       <div class="header flex items-center justify-between border border-gray-600 rounded-xl p-2">
         <Button v-if="type !== 'challenge'" class="!p-0 bg-[var(--grey-dark)]" activeColor="#858585" @click="() => emit('changeMech')">
@@ -16,37 +16,41 @@
         </div>
       </div>
 
-      <div class="task-title flex flex-col mt-4">
+      <div class="task-title flex flex-col my-4">
         <span class="question-title text-center text-[var(--accent-color)]">{{ locales?.["mechanics_5_task"] || "pick a match:" }}</span>
         <div class="underline h-[1px] w-full bg-[var(--accent-color)]"></div>
       </div>
 
       <!-- buttons -->
-      <div class="answer-buttons grid w-full grid-cols-2 gap-4 leading-5 flex-1 mt-4">
-        <div class="left grid grid-rows-5 gap-4">
-          <div v-for="btn in leftButtons" :key="btn.id">
-            <Button
-              v-if="btn.task"
-              :id="`left-${btn.id}`"
-              class="match-pairs-btn w-full"
-              :class="{ '!bg-blue-500': selected[0] === btn.id, wrong: btn.wrong }"
-              @click="(event) => onButton('question', btn, event)"
-            >
-              <span class="fira-regular text-base">{{ btn?.task.task.question }}</span>
-            </Button>
+      <div class="answer-buttons grid w-full grid-cols-2 gap-2 leading-5 flex-1">
+        <div class="left grid grid-rows-5 gap-2">
+          <div v-for="task in shuffledTasks1" :key="task.buttons.left.id">
+            <Transition name="match-pairs-buttons" mode="out-in">
+              <Button
+                v-if="task.task"
+                :id="`left-${task.id}`"
+                class="match-pairs-btn w-full h-full"
+                :class="{ selected: task.buttons.left.selected, success: task.buttons.left.success, wrong: task.buttons.left.wrong }"
+                @click="(event) => onButton(task, task.buttons.left, event)"
+              >
+                <span class="fira-regular text-base">{{ task?.task.task.question }}</span>
+              </Button>
+            </Transition>
           </div>
         </div>
-        <div class="right grid grid-rows-5 gap-4">
-          <div v-for="btn in rightButtons" :key="btn.id">
-            <Button
-              v-if="btn.task"
-              :id="`right-${btn.id}`"
-              class="match-pairs-btn w-full"
-              :class="{ '!bg-blue-500': selected[1] === btn.id, wrong: btn.wrong }"
-              @click="(event) => onButton('answer', btn, event)"
-            >
-              <span class="fira-regular text-base">{{ btn?.task.task.answer }}</span>
-            </Button>
+        <div class="right grid grid-rows-5 gap-2">
+          <div v-for="task in shuffledTasks2" :key="task.buttons.right.id">
+            <Transition name="match-pairs-buttons" mode="out-in">
+              <Button
+                v-if="task.task"
+                :id="`right-${task.id}`"
+                class="match-pairs-btn w-full h-full"
+                :class="{ selected: task.buttons.right.selected, success: task.buttons.right.success, wrong: task.buttons.right.wrong }"
+                @click="(event) => onButton(task, task.buttons.right, event)"
+              >
+                <span class="fira-regular text-base">{{ task?.task.task.answer }}</span>
+              </Button>
+            </Transition>
           </div>
         </div>
       </div>
@@ -111,86 +115,84 @@ const applySettings = () => {
 };
 
 const taskArray = ref({
-  0: {},
-  1: {},
-  2: {},
-  3: {},
-  4: {},
+  0: { buttons: { left: { id: 0 }, right: { id: 5 } } },
+  1: { buttons: { left: { id: 1 }, right: { id: 6 } } },
+  2: { buttons: { left: { id: 2 }, right: { id: 7 } } },
+  3: { buttons: { left: { id: 3 }, right: { id: 8 } } },
+  4: { buttons: { left: { id: 4 }, right: { id: 9 } } },
 });
 
-const selected = ref([null, null]);
+const shuffledTasks1 = computed(() => shuffle(taskArray.value));
+const shuffledTasks2 = computed(() => shuffle(taskArray.value));
 
-const leftButtons = computed(() => shuffle(Object.keys(taskArray.value).map((key) => taskArray.value[key])));
-const rightButtons = computed(() => shuffle(Object.keys(taskArray.value).map((key) => taskArray.value[key])));
+let selected = {};
 
 let buttonsMissing = 0;
 
-const onButton = (type, btn, event) => {
-  if (type === "question") {
-    if (selected.value[0] === btn.id) {
-      selected.value[0] = null;
-      return;
-    }
-    selected.value[0] = btn.id;
-  } else if (type === "answer") {
-    if (selected.value[1] === btn.id) {
-      selected.value[1] = null;
-      return;
-    }
-    selected.value[1] = btn.id;
+const onButton = (task, btn, event) => {
+  // outline a btn
+  btn.selected = !btn.selected;
+  if (selected[btn.id]) {
+    delete selected[btn.id];
+  } else {
+    selected[btn.id] = { task, button: btn };
   }
 
-  if (isNumber(selected.value[0]) && isNumber(selected.value[1])) {
-    const isCorrect = selected.value[0] === selected.value[1];
+  if (Object.keys(selected).length >= 2) {
+    const selected1 = selected[Object.keys(selected)[0]];
+    const selected2 = selected[Object.keys(selected)[1]];
+
+    // remove selected shortcuts
+    selected = {};
+
+    const isCorrect = selected1.task.id === selected2.task.id;
 
     if (!isCorrect) {
-      const _selected = [...selected.value];
-      selected.value = [];
-
-      // animateButtonsWrong(_selected);
+      animateButtonsWrong(selected1, selected2);
       return;
     }
 
-    handleAnswer(selected.value[1], isCorrect, btn.task, event);
+    handleAnswer(selected2, isCorrect, task.task, event);
+
+    const btnId = selected1.button.id;
+
+    // highlight correct answer
+    taskArray.value[btnId].buttons.left.success = true;
+    taskArray.value[btnId].buttons.right.success = true;
 
     setTimeout(() => {
-      // remove buttons
-      // buttonsLeft.value.find((btn) => btn.id === selected.value[0]).visible = false;
-      // buttonsRight.value.find((btn) => btn.id === selected.value[1]).visible = false;
       buttonsMissing += 1;
 
-      selected.value = [];
-
       // remove this task
-      setTimeout(() => {
-        delete btn.task;
+      delete taskArray.value[btnId].task;
 
+      // remove success
+      removeSuccess();
+
+      // remove outline
+      removeHightLights();
+
+      setTimeout(() => {
         if (buttonsMissing >= 2) {
           refillTasks();
           buttonsMissing = 0;
         }
-      }, 500);
-    }, 500);
+      }, 300);
+    }, 300);
   }
 };
 
-const animateButtonsWrong = (buttons) => {
-  buttonsLeft.value[buttons[0]].wrong = true;
-  buttonsRight.value[buttons[1]].wrong = true;
-
+const animateButtonsWrong = (selected1, selected2) => {
   setTimeout(() => {
-    buttonsLeft.value[buttons[0]].wrong = false;
-    buttonsRight.value[buttons[1]].wrong = false;
-  }, 100);
-
-  setTimeout(() => {
-    buttonsLeft.value[buttons[0]].wrong = true;
-    buttonsRight.value[buttons[1]].wrong = true;
+    removeHightLights();
   }, 200);
 
+  selected1.button.wrong = true;
+  selected2.button.wrong = true;
+
   setTimeout(() => {
-    buttonsLeft.value[buttons[0]].wrong = false;
-    buttonsRight.value[buttons[1]].wrong = false;
+    selected1.button.wrong = false;
+    selected2.button.wrong = false;
   }, 300);
 };
 
@@ -207,16 +209,40 @@ const handleAnswer = (answerString: string, isCorrect: boolean, task: Task, even
     isCorrect,
     answer: answerString,
     event,
-    drawBonus: props.type === "challenge" ? false : true,
+    drawBonus: false,
     task,
     nextTaskDelay: 1000,
   });
 };
 
-const shuffleButtons = () => {
-  // buttonsLeft.value = shuffle(buttonsLeft.value);
-  // buttonsRight.value = shuffle(buttonsRight.value);
+const removeHightLights = () => {
+  Object.keys(taskArray.value).forEach((key) => {
+    if (taskArray.value[key].buttons.left.selected) {
+      taskArray.value[key].buttons.left.selected = false;
+    }
+
+    if (taskArray.value[key].buttons.right.selected) {
+      taskArray.value[key].buttons.right.selected = false;
+    }
+  });
 };
+
+const removeSuccess = () => {
+  Object.keys(taskArray.value).forEach((key) => {
+    if (taskArray.value[key].buttons.left.success) {
+      taskArray.value[key].buttons.left.success = false;
+    }
+
+    if (taskArray.value[key].buttons.right.success) {
+      taskArray.value[key].buttons.right.success = false;
+    }
+  });
+};
+
+// const shuffleButtons = () => {
+// buttonsLeft.value = shuffle(buttonsLeft.value);
+// buttonsRight.value = shuffle(buttonsRight.value);
+// };
 
 const isNumber = (variable: any) => {
   return typeof variable === "number";
@@ -233,10 +259,20 @@ const startGame = () => {
   // shuffleButtons();
   Object.keys(taskArray.value).forEach((key) => {
     const loadedTask = giveNextTask();
+    // add task
     taskArray.value[key].task = loadedTask;
-    taskArray.value[key].id = Math.random() * 999999;
+
+    // add id
+    taskArray.value[key].id = Math.floor(Math.random() * 999999);
+
+    // add visible field
     taskArray.value[key].visible = true;
   });
+};
+
+const getTaskById = (id: number) => {
+  const key = Object.keys(taskArray.value).find((key) => taskArray.value[key].id === id);
+  return taskArray.value[key];
 };
 
 onMounted(() => {

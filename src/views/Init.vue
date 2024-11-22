@@ -114,7 +114,7 @@ const { addSound, playSound } = store.soundStore;
 
 const errors = ref([]);
 const gaugeRef = ref();
-const animationDuration = ref(3);
+const animationDuration = ref(2);
 const markerPositions = {
   top: 0,
   bottom: 0,
@@ -171,9 +171,9 @@ Promise.allSettled([
 
   assetsPreloaded.value = true;
 
-  // if (introProgressFinished.value) {
-  startApp();
-  // }
+  if (introProgressFinished.value) {
+    startApp();
+  }
   // playSound("soundtrack");
 });
 
@@ -248,7 +248,7 @@ onMounted(() => {
 
     progressTimeline.to(".gauge-value", {
       width: "100%",
-      duration: 3,
+      duration: animationDuration.value,
       ease: "none",
       // onComplete: onCompleteCb,
     });

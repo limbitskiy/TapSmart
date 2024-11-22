@@ -214,21 +214,16 @@
   // transform: translateY(20%);
 }
 
-.match-pairs-buttons-move, /* apply transition to moving elements */
 .match-pairs-buttons-enter-active,
 .match-pairs-buttons-leave-active {
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
 }
 
 .match-pairs-buttons-enter-from,
 .match-pairs-buttons-leave-to {
   opacity: 0;
-  // transform: translateX(30px);
+  transform: translateX(30px);
 }
-
-// .match-pairs-buttons-leave-active {
-//   position: absolute;
-// }
 
 @keyframes glow {
   0% {

@@ -175,10 +175,19 @@
 }
 
 .match-pairs-btn {
-  @apply bg-[var(--grey-light)] text-white transition-all;
+  @apply bg-[var(--grey-light)] text-white;
+  transition: background-color 0.2s ease;
+
+  &.selected {
+    outline: 1px solid #2c93da;
+  }
 
   &.wrong {
-    background-color: red !important;
+    background-color: var(--red-color) !important;
+  }
+
+  &.success {
+    background-color: #2c93da !important;
   }
 }
 
