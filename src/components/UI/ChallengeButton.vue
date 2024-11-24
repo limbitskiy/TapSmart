@@ -1,5 +1,5 @@
 <template>
-  <div class="challenge-btn-wrap relative flex overflow-hidden rounded-[22px] bg-[#222] p-[6px]" :class="{ heartbeat }">
+  <div class="challenge-btn-wrap relative flex overflow-hidden rounded-[22px] bg-[#222] p-[4px]" :class="{ heartbeat }">
     <div ref="animationRef" class="lightray absolute -top-5 -bottom-5 -left-[100%] w-[15px] bg-white z-20 rotate-45 opacity-80"></div>
     <button
       class="w-full bg-[var(--accent-color)] rounded-[18px] text-[#222] z-[6]"
@@ -9,7 +9,7 @@
       @touchstart="btnTouchstart"
       @touchend="btnTouchend"
     >
-      <div class="flex justify-center gap-2 py-5 !px-2 relative">
+      <div class="flex justify-center gap-2 py-4 !px-2 relative">
         <div class="btn-cnt flex justify-center gap-2 z-10">
           <span v-bind="$attrs" class="text-[20px] fira-condensed-bold leading-4">{{ locale?.["button_challenge"] }}</span>
           <Badge v-if="data?.questions_left > 0" class="relative bottom-1" :data="data?.questions_left" grey />

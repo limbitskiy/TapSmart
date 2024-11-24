@@ -8,7 +8,7 @@ export const useBattleProcessor = (battleData: BattleState) => {
   let lastTask: Task | null = null;
   const answers = ref<Answer[]>([]);
 
-  const giveNextTask = () => {
+  const getNextTask = () => {
     if (!tasks) {
       console.error(`No tasks: battle processor`);
     }
@@ -72,7 +72,7 @@ export const useBattleProcessor = (battleData: BattleState) => {
   return {
     resetTask,
     storeAnswer,
-    giveNextTask,
+    getNextTask,
     cleanAnswers,
     setTasks,
     answers,

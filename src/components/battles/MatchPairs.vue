@@ -3,7 +3,7 @@
     <!-- task body -->
     <div class="flex-1 flex flex-col">
       <!-- task header -->
-      <div class="header flex items-center justify-between border border-gray-600 rounded-xl p-2">
+      <div class="header flex items-center justify-between">
         <Button v-if="type !== 'challenge'" class="!p-0 bg-[var(--grey-dark)]" activeColor="#858585" @click="() => emit('changeMech')">
           <BattleHeader :gameLocale="locales?.['mechanics_category']" :title="locales?.[`match_pairs_title`] || 'match pairs'" />
         </Button>
@@ -24,31 +24,31 @@
       <!-- buttons -->
       <div class="answer-buttons grid w-full grid-cols-2 gap-2 leading-5 flex-1">
         <div class="left grid grid-rows-5 gap-2">
-          <div v-for="task in shuffledTasks1" :key="task.buttons.left.id">
+          <div v-for="pill in shuffledPills1" :key="pill.buttons.left.id">
             <Transition name="match-pairs-buttons" mode="out-in">
               <Button
-                v-if="task.task"
-                :id="`left-${task.id}`"
+                v-if="pill.task"
+                :id="`left-${pill.id}`"
                 class="match-pairs-btn w-full h-full"
-                :class="{ selected: task.buttons.left.selected, success: task.buttons.left.success, wrong: task.buttons.left.wrong }"
-                @click="(event) => onButton(task, task.buttons.left, event)"
+                :class="{ selected: pill.buttons.left.selected, success: pill.buttons.left.success, wrong: pill.buttons.left.wrong }"
+                @click="(event) => onButton(pill, pill.buttons.left, event)"
               >
-                <span class="fira-regular text-base">{{ task?.task.task.question }}</span>
+                <span class="fira-regular text-base">{{ pill?.task?.task?.question }}</span>
               </Button>
             </Transition>
           </div>
         </div>
         <div class="right grid grid-rows-5 gap-2">
-          <div v-for="task in shuffledTasks2" :key="task.buttons.right.id">
+          <div v-for="pill in shuffledPills2" :key="pill.buttons.right.id">
             <Transition name="match-pairs-buttons" mode="out-in">
               <Button
-                v-if="task.task"
-                :id="`right-${task.id}`"
+                v-if="pill.task"
+                :id="`right-${pill.id}`"
                 class="match-pairs-btn w-full h-full"
-                :class="{ selected: task.buttons.right.selected, success: task.buttons.right.success, wrong: task.buttons.right.wrong }"
-                @click="(event) => onButton(task, task.buttons.right, event)"
+                :class="{ selected: pill.buttons.right.selected, success: pill.buttons.right.success, wrong: pill.buttons.right.wrong }"
+                @click="(event) => onButton(pill, pill.buttons.right, event)"
               >
-                <span class="fira-regular text-base">{{ task?.task.task.answer }}</span>
+                <span class="fira-regular text-base">{{ pill?.task?.task?.answer }}</span>
               </Button>
             </Transition>
           </div>
@@ -90,8 +90,8 @@ const props = defineProps<{
   locales: {};
 }>();
 
-const { battleStarted, currentTaskTimeout } = storeToRefs(store.battleStore);
-const { startTaskTimeoutPrototype, startBreakpoint, startTaskTimeout, resetBattleStats, giveNextTask } = store.battleStore;
+const { battleStarted } = storeToRefs(store.battleStore);
+const { startTaskTimeout, startBreakpoint, resetBattleStats, getNextTask } = store.battleStore;
 
 const settings = {
   correctTaskDelay: 0,
@@ -114,28 +114,28 @@ const applySettings = () => {
   }
 };
 
-const taskArray = ref({
-  0: { buttons: { left: { id: 0 }, right: { id: 5 } } },
-  1: { buttons: { left: { id: 1 }, right: { id: 6 } } },
-  2: { buttons: { left: { id: 2 }, right: { id: 7 } } },
-  3: { buttons: { left: { id: 3 }, right: { id: 8 } } },
-  4: { buttons: { left: { id: 4 }, right: { id: 9 } } },
-});
+const pills = ref([
+  { task: {}, buttons: { left: { id: 0 }, right: { id: 5 } } },
+  { task: {}, buttons: { left: { id: 1 }, right: { id: 6 } } },
+  { task: {}, buttons: { left: { id: 2 }, right: { id: 7 } } },
+  { task: {}, buttons: { left: { id: 3 }, right: { id: 8 } } },
+  { task: {}, buttons: { left: { id: 4 }, right: { id: 9 } } },
+]);
 
-const shuffledTasks1 = computed(() => shuffle(taskArray.value));
-const shuffledTasks2 = computed(() => shuffle(taskArray.value));
+const shuffledPills1 = computed(() => shuffle(pills.value));
+const shuffledPills2 = computed(() => shuffle(pills.value));
 
 let selected = {};
 
 let buttonsMissing = 0;
 
-const onButton = (task, btn, event) => {
+const onButton = (pill, btn, event) => {
   // outline a btn
   btn.selected = !btn.selected;
   if (selected[btn.id]) {
     delete selected[btn.id];
   } else {
-    selected[btn.id] = { task: JSON.parse(JSON.stringify(task)), button: btn };
+    selected[btn.id] = { task: JSON.parse(JSON.stringify(pill)), button: btn };
   }
 
   if (Object.keys(selected).length >= 2) {
@@ -155,21 +155,19 @@ const onButton = (task, btn, event) => {
       animateButtonsWrong(selected1, selected2);
       return;
     }
-    console.log(selected2);
 
-    handleAnswer({ answerString: selected2.task.task.task.answer, isCorrect, task: task.task, event });
+    handleAnswer({ answerString: selected2.task.task.task.answer, isCorrect, task: pill.task, event });
 
     const btnId = selected1.button.id;
 
     // highlight correct answer
-    taskArray.value[btnId].buttons.left.success = true;
-    taskArray.value[btnId].buttons.right.success = true;
+    pills.value[btnId].buttons.left.success = true;
+    pills.value[btnId].buttons.right.success = true;
 
     setTimeout(() => {
-      buttonsMissing += 1;
-
       // remove this task
-      delete taskArray.value[btnId].task;
+      const pillToClear = getPillIdxByTaskID(pill.task.id);
+      removeTaskAtPillIdx(pillToClear.index);
 
       // remove success
       removeSuccess();
@@ -181,7 +179,7 @@ const onButton = (task, btn, event) => {
         }
       }, 300);
 
-      startTaskTimeoutPrototype(timeoutCallback);
+      startTaskTimeout(timeoutCallback);
     }, 300);
   }
 };
@@ -195,36 +193,38 @@ const handleAnswer = ({ answerString, isCorrect, task, event, autoAnswer }: { an
     task,
     autoAnswer,
   });
+
+  buttonsMissing += 1;
 };
 
 const refillTasks = () => {
-  Object.keys(taskArray.value).forEach((task) => {
-    if (!taskArray.value[task].task) {
-      taskArray.value[task].task = giveNextTask();
+  Object.keys(pills.value).forEach((task) => {
+    if (!pills.value[task].task) {
+      pills.value[task].task = getNextTask();
     }
   });
 };
 
 const removeHightLights = () => {
-  Object.keys(taskArray.value).forEach((key) => {
-    if (taskArray.value[key].buttons.left.selected) {
-      taskArray.value[key].buttons.left.selected = false;
+  Object.keys(pills.value).forEach((key) => {
+    if (pills.value[key].buttons.left.selected) {
+      pills.value[key].buttons.left.selected = false;
     }
 
-    if (taskArray.value[key].buttons.right.selected) {
-      taskArray.value[key].buttons.right.selected = false;
+    if (pills.value[key].buttons.right.selected) {
+      pills.value[key].buttons.right.selected = false;
     }
   });
 };
 
 const removeSuccess = () => {
-  Object.keys(taskArray.value).forEach((key) => {
-    if (taskArray.value[key].buttons.left.success) {
-      taskArray.value[key].buttons.left.success = false;
+  Object.keys(pills.value).forEach((key) => {
+    if (pills.value[key].buttons.left.success) {
+      pills.value[key].buttons.left.success = false;
     }
 
-    if (taskArray.value[key].buttons.right.success) {
-      taskArray.value[key].buttons.right.success = false;
+    if (pills.value[key].buttons.right.success) {
+      pills.value[key].buttons.right.success = false;
     }
   });
 };
@@ -245,7 +245,6 @@ const animateButtonsWrong = (selected1, selected2) => {
 
 const timeoutCallback = () => {
   const taskWithSmallestID = findTaskWithSmallestID();
-  console.log(taskWithSmallestID);
 
   handleAnswer({
     isCorrect: false,
@@ -253,7 +252,20 @@ const timeoutCallback = () => {
     autoAnswer: true,
     task: taskWithSmallestID,
   });
-  startTaskTimeoutPrototype(timeoutCallback);
+
+  // remove task with smallest ID
+  const pillToClear = getPillIdxByTaskID(taskWithSmallestID.id);
+  removeTaskAtPillIdx(pillToClear.index);
+
+  // refill tasks if needed
+  setTimeout(() => {
+    if (buttonsMissing >= 2) {
+      refillTasks();
+      buttonsMissing = 0;
+    }
+  }, 300);
+
+  startTaskTimeout(timeoutCallback);
 };
 
 const startGame = () => {
@@ -262,40 +274,53 @@ const startGame = () => {
   battleStarted.value = true;
   resetBattleStats();
   startBreakpoint("battle");
-  startTaskTimeoutPrototype(timeoutCallback);
+  startTaskTimeout(timeoutCallback);
 
   // shuffleButtons();
-  Object.keys(taskArray.value).forEach((key) => {
-    const loadedTask = giveNextTask();
+  Object.keys(pills.value).forEach((key) => {
+    const loadedTask = getNextTask();
     // add task
-    taskArray.value[key].task = loadedTask;
+    pills.value[key].task = loadedTask;
 
     // add id
-    taskArray.value[key].id = Math.floor(Math.random() * 999999);
+    pills.value[key].id = Math.floor(Math.random() * 999999);
 
     // add visible field
-    taskArray.value[key].visible = true;
+    pills.value[key].visible = true;
   });
-
-  console.log(taskArray.value);
 };
 
 const findTaskWithSmallestID = () => {
   const idArr = [];
-  Object.keys(taskArray.value).forEach((key) => {
-    if (taskArray.value[key].task?.id) {
-      idArr.push(taskArray.value[key].task?.id);
+  Object.keys(pills.value).forEach((key) => {
+    if (pills.value[key].task?.id) {
+      idArr.push(pills.value[key].task?.id);
     }
   });
   idArr.sort((a, b) => a - b);
 
   let found;
-  Object.keys(taskArray.value).forEach((key) => {
-    if (taskArray.value[key].task?.id === idArr[0]) {
-      found = taskArray.value[key].task;
+  Object.keys(pills.value).forEach((key) => {
+    if (pills.value[key].task?.id === idArr[0]) {
+      found = pills.value[key].task;
     }
   });
   return found;
+};
+
+const getPillIdxByTaskID = (id) => {
+  let found = {};
+  pills.value.forEach((pill, index) => {
+    if (pill.task?.id === id) {
+      found.pill = pill;
+      found.index = index;
+    }
+  });
+  return found;
+};
+
+const removeTaskAtPillIdx = (idx) => {
+  delete pills.value[idx].task;
 };
 
 onMounted(() => {

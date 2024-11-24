@@ -1,5 +1,5 @@
 <template>
-  <div class="battle-header-cnt flex gap-4 items-center px-4 py-2 rounded-xl">
+  <div class="battle-header-cnt flex gap-4 items-center px-4 py-1 rounded-xl border border-gray-700">
     <!-- <img class="w-[60px] -ml-2" :src="getAsset(icon)" /> -->
     <div class="text flex gap-2">
       <span class="fira-regular text-lg text-white">{{ gameLocale }}</span>

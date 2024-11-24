@@ -95,7 +95,7 @@ export const useBattleStore = defineStore("battle", () => {
   const сurrentMechanicName = computed(() => battleTypes[currentBattleType.value]);
 
   // battle processor
-  const { resetTask, storeAnswer, giveNextTask, cleanAnswers, setTasks, answers, currentTaskBatch: currentTask, lastTask } = useBattleProcessor(state.value.battleData);
+  const { resetTask, storeAnswer, getNextTask, cleanAnswers, setTasks, answers, currentTaskBatch: currentTask, lastTask } = useBattleProcessor(state.value.battleData);
 
   // returns { bolts_bonus, disabled, id, order, timeout }
   const currentMechanic = computed(() => state.value.battleData.mechanics?.[getMechanicName(state.value.battleData.battle_type)]);
@@ -176,7 +176,7 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   // breakpoints/timers
-  const startTaskTimeout = (externalTimeout?: number) => {
+  const startTaskTimeoutOLD = (externalTimeout?: number) => {
     if (!currentMechanic.value?.timeout || currentTaskTimeout.value || afkCounter.value >= 3) return;
 
     const callback = () => {
@@ -191,7 +191,7 @@ export const useBattleStore = defineStore("battle", () => {
     currentTaskTimeout.value.start();
   };
 
-  const startTaskTimeoutPrototype = (cb) => {
+  const startTaskTimeout = (cb) => {
     const taskTimeout = new TaskTimer(currentMechanic.value?.timeout, cb);
     currentTaskTimeout.value = taskTimeout;
     currentTaskTimeout.value.start();
@@ -526,7 +526,6 @@ export const useBattleStore = defineStore("battle", () => {
     setBackendModal,
     calculateCalcPoint,
     calculateRelaxMultiplierAmount,
-    giveNextTask,
-    startTaskTimeoutPrototype,
+    getNextTask,
   };
 });
