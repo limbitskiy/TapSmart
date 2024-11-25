@@ -1,7 +1,7 @@
 <template>
   <div class="flex-1 flex flex-col">
     <div class="bg flex-1 flex p-1 rounded-xl" :style="{ background: selected ? 'var(--green-gradient)' : color }">
-      <Pill class="flex-1 flex flex-col gap-2 !p-2" style="box-shadow: 0px 0px 1.6px 1px rgba(0, 0, 0, 0.25)">
+      <Pill class="flex-1 flex flex-col !rounded-xl gap-2 !p-2" style="box-shadow: 0px 0px 1.6px 1px rgba(0, 0, 0, 0.25)">
         <div class="top flex gap-4 p-2">
           <div class="icon min-w-[50px] contain flex items-center">
             <img class="w-[50px]" :src="getAsset(icon)" />

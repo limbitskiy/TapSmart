@@ -413,7 +413,7 @@ export const useBattleStore = defineStore("battle", () => {
     }
 
     if (data.value.battle_mode === "relax") {
-      startTaskTimeout();
+      taskTimer.value.resume();
     }
   };
 

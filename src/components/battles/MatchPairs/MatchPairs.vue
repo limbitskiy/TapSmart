@@ -21,6 +21,12 @@
         <div class="underline h-[1px] w-full bg-[var(--accent-color)]"></div>
       </div>
 
+      <!-- debug -->
+      <!-- <div class="btnc flex gap-2">
+        <Button class="!py-0 !text-sm" @click="removeT">remove</Button>
+        <Button class="!py-0 !text-sm" @click="addT">add</Button>
+      </div> -->
+
       <!-- buttons -->
       <div class="answer-buttons grid w-full grid-cols-2 gap-2 leading-5 flex-1">
         <div class="left grid grid-rows-[repeat(5,_minmax(50px,_60px))] gap-2 content-center">
@@ -59,17 +65,21 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, computed } from "vue";
 import { getAsset } from "@/utils";
-import { Task } from "@/types";
-import { shuffle } from "lodash-es";
 import gsap from "gsap";
+
+// types
+import { Task } from "@/types";
 
 // store
 import { useMainStore } from "@/store/main";
 import { storeToRefs } from "pinia";
 
+// logic
+import { useMatchPairsLogic } from "./useMatchPairsLogic";
+
 interface Pill {
   id: number;
-  task: Task | {};
+  task?: Task;
   wrong?: boolean;
   success?: boolean;
   selected?: boolean;
@@ -100,41 +110,11 @@ const { battleStarted, correctStreak } = storeToRefs(store.battleStore);
 const { startTaskTimeout, startBreakpoint, resetBattleStats, getNextTask } = store.battleStore;
 
 const settings = {
-  correctTaskDelay: 0,
-  wrongTaskDelay: 0,
-  yesBtnDelay: 0,
-  noBtnDelay: 0,
+  maxTasks: 5,
+  animationSpeed: 200,
 };
 
-const applySettings = () => {
-  if (props.type === "relax") {
-    settings.correctTaskDelay = 350;
-    settings.wrongTaskDelay = 2000;
-    settings.yesBtnDelay = 300;
-    settings.noBtnDelay = 2000;
-  } else if (props.type === "challenge") {
-    settings.correctTaskDelay = 350;
-    settings.wrongTaskDelay = 350;
-    settings.yesBtnDelay = 300;
-    settings.noBtnDelay = 300;
-  }
-};
-
-const leftPills = ref<Pill[]>([
-  { id: 2, task: {} },
-  { id: 4, task: {} },
-  { id: 6, task: {} },
-  { id: 8, task: {} },
-  { id: 10, task: {} },
-]);
-
-const rightPills = ref<Pill[]>([
-  { id: 1, task: {} },
-  { id: 3, task: {} },
-  { id: 5, task: {} },
-  { id: 7, task: {} },
-  { id: 9, task: {} },
-]);
+const { leftPills, rightPills, addTask, removeTask, getSmallestIdTask } = useMatchPairsLogic(settings);
 
 let selected = ref({
   left: null,
@@ -166,7 +146,7 @@ const onButton = (pill: Pill, event: MouseEvent) => {
       animateWrong();
       setTimeout(() => {
         clearSelected();
-      }, 300);
+      }, settings.animationSpeed);
       return;
     }
 
@@ -176,8 +156,7 @@ const onButton = (pill: Pill, event: MouseEvent) => {
 
     setTimeout(() => {
       // remove this task
-      selected.value.left.task = null;
-      selected.value.right.task = null;
+      removeTask(pill.task.id);
 
       removeSuccess();
 
@@ -185,17 +164,19 @@ const onButton = (pill: Pill, event: MouseEvent) => {
 
       setTimeout(() => {
         if (buttonsMissing >= 2) {
-          refillTasks(2);
+          fillTaskAmount(2);
           buttonsMissing = 0;
         }
-      }, 300);
+      }, settings.animationSpeed);
 
-      startTaskTimeout(timeoutCallback);
-    }, 300);
+      if (props.type === "relax") {
+        startTaskTimeout(timeoutCallback);
+      }
+    }, settings.animationSpeed);
   }
 };
 
-const handleAnswer = ({ answerString, isCorrect, task, event, autoAnswer }: { answerString: string; isCorrect: boolean; task: Task; event: MouseEvent; autoAnswer: boolean }) => {
+const handleAnswer = ({ answerString, isCorrect, task, event, autoAnswer }: { answerString: string; isCorrect: boolean; task: Task; event?: MouseEvent; autoAnswer: boolean }) => {
   emit("answer", {
     isCorrect,
     answer: answerString,
@@ -208,21 +189,22 @@ const handleAnswer = ({ answerString, isCorrect, task, event, autoAnswer }: { an
   buttonsMissing += 1;
 };
 
-const refillTasks = (amount) => {
-  const emptyLeft = leftPills.value.filter((pill) => !pill.task);
-  const emptyRight = shuffle(rightPills.value.filter((pill) => !pill.task));
-
+const fillTaskAmount = (amount: number) => {
   for (let i = 0; i < amount; i++) {
-    const loadedTask = getNextTask();
-
-    emptyLeft[i].task = loadedTask;
-    emptyRight[i].task = loadedTask;
+    const newTask = getNextTask();
+    addTask(newTask);
   }
 };
 
 const clearSelected = () => {
-  selected.value.left.selected = false;
-  selected.value.right.selected = false;
+  if (selected.value.left) {
+    selected.value.left.selected = false;
+  }
+
+  if (selected.value.right) {
+    selected.value.right.selected = false;
+  }
+
   selected.value.left = null;
   selected.value.right = null;
 };
@@ -239,7 +221,7 @@ const animateWrong = () => {
   setTimeout(() => {
     selected.value.left.wrong = false;
     selected.value.right.wrong = false;
-  }, 300);
+  }, settings.animationSpeed);
 };
 
 const animateCorrect = () => {
@@ -248,23 +230,24 @@ const animateCorrect = () => {
 };
 
 const timeoutCallback = () => {
-  const taskWithSmallestID = findTaskWithSmallestID();
+  const smallestIdTask = getSmallestIdTask();
 
   handleAnswer({
     isCorrect: false,
     answerString: "",
     autoAnswer: true,
-    task: taskWithSmallestID,
+    task: smallestIdTask,
   });
 
   // remove task with smallest ID
-  removeTaskWithSmallestId();
+  removeTask(smallestIdTask.id);
+
   clearSelected();
 
   // refill tasks if needed
   setTimeout(() => {
     if (buttonsMissing >= 2) {
-      refillTasks(2);
+      fillTaskAmount(2);
       buttonsMissing = 0;
     }
   }, 300);
@@ -273,42 +256,27 @@ const timeoutCallback = () => {
 };
 
 const startGame = () => {
-  console.log(`starting relax locally`);
+  console.log(`starting match pairs locally`);
 
   battleStarted.value = true;
   resetBattleStats();
   startBreakpoint("battle");
-  startTaskTimeout(timeoutCallback);
 
-  for (let i = 0; i < leftPills.value.length; i++) {
-    const loadedTask = getNextTask();
-
-    leftPills.value[i].task = loadedTask;
-    rightPills.value[i].task = loadedTask;
+  if (props.type === "relax") {
+    startTaskTimeout(timeoutCallback);
   }
 
-  rightPills.value = shuffle(rightPills.value);
+  for (let i = 0; i < settings.maxTasks; i++) {
+    const newTask = getNextTask();
+    addTask(newTask);
+  }
 };
 
-const findTaskWithSmallestID = () => {
-  const idArr = [];
-  pills.value.forEach((pill) => {
-    if (pill.task?.id) {
-      idArr.push(pill.task?.id);
-    }
-  });
-  idArr.sort((a, b) => a - b);
-
-  let found;
-  pills.value.forEach((pill) => {
-    if (pill.task?.id === idArr[0]) {
-      found = pill.task;
-    }
-  });
-  return found;
+const applySettings = () => {
+  if (props.type === "relax") {
+  } else if (props.type === "challenge") {
+  }
 };
-
-const removeTaskWithSmallestId = () => {};
 
 onMounted(() => {
   console.log(`match pairs mounted`);

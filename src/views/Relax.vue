@@ -93,7 +93,7 @@ watch(
 
 // watch afk counter
 watch(afkCounter, (val) => {
-  if (val >= 1) {
+  if (val >= 3) {
     isAFKModalVisible.value = true;
   }
 });

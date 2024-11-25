@@ -52,7 +52,7 @@ import { useMainStore } from "@/store/main";
 // battle mechanics
 import YesNo from "@/components/battles/YesNo.vue";
 import FourAnswers from "@/components/battles/FourAnswers.vue";
-import MatchPairs from "@/components/battles/MatchPairs.vue";
+import MatchPairs from "@/components/battles/MatchPairs/MatchPairs.vue";
 
 console.log(`Battle Mech created`);
 
@@ -75,7 +75,7 @@ const store = useMainStore();
 
 // const { useFetch, redirectTo } = store;
 const { battles: locale } = storeToRefs(store.localeStore);
-const { data, сurrentMechanicName, currentTask, currentBattleMode, boostersUsed } = storeToRefs(store.battleStore);
+const { data, сurrentMechanicName, currentBattleMode, boostersUsed } = storeToRefs(store.battleStore);
 const { handleAnswer, calculateRelaxMultiplierAmount } = store.battleStore;
 
 const bonuses = ref<Bonus[]>([]);
