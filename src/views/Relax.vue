@@ -14,7 +14,7 @@
     <!-- mechanic change modal -->
     <Teleport to="#modals">
       <Modal id="mechanic-change-modal" v-model:visible="isChangeMechModalVisible">
-        <ChangeMechanic @close="() => closeModal('changeMechanic')" />
+        <ChangeMechanic />
       </Modal>
     </Teleport>
 
@@ -28,7 +28,9 @@
     <!-- afk modal -->
     <Teleport to="#modals">
       <Modal id="afk-modal" v-model:visible="isAFKModalVisible" sticky>
-        <AFK @close="onAfkModalClose" />
+        <template v-slot="{ closeModal }">
+          <AFK @close="closeModal" />
+        </template>
       </Modal>
     </Teleport>
   </div>
@@ -51,20 +53,18 @@ const { fetchRelaxPageData, useFetch } = store;
 const { debugMessages, bgColor, HTMLSnapshots } = storeToRefs(store);
 const { battles: locale } = storeToRefs(store.localeStore);
 const { data, afkCounter } = storeToRefs(store.battleStore);
-const { startRelax, stopRelax, setRelaxModal } = store.battleStore;
+const { stopRelax, setRelaxModal } = store.battleStore;
 
 const isChangeMechModalVisible = ref(false);
 const isNoEnergyVisible = ref(false);
 const isBoostersModalVisible = ref(false);
+const isAFKModalVisible = ref(false);
 
 setThemeColor("#222");
 bgColor.value = "linear-gradient(180deg, #000B14 17.5%, #035DA9 100%)";
 HTMLSnapshots.value = [];
-let mechStartFunction;
 
 await fetchRelaxPageData();
-
-const isAFKModalVisible = computed(() => afkCounter.value >= 3);
 
 const onAnswer = ({ isCorrect, answerString, nextTaskDelay, task }) => {
   if (data.value.energy === 0) {
@@ -91,6 +91,13 @@ watch(
   }
 );
 
+// watch afk counter
+watch(afkCounter, (val) => {
+  if (val >= 1) {
+    isAFKModalVisible.value = true;
+  }
+});
+
 const onNoEnergy = () => {
   useFetch({ key: "option_activate", data: { type: "extra_energy", showModal: 1 } });
 };
@@ -99,20 +106,8 @@ const onChangeMech = () => {
   isChangeMechModalVisible.value = true;
 };
 
-const closeModal = (modalName: string) => {
-  const modals = {
-    changeMechanic: isChangeMechModalVisible,
-  };
-
-  modals[modalName].value = false;
-};
-
 const openBoosterModal = () => {
   isBoostersModalVisible.value = true;
-};
-
-const onAfkModalClose = () => {
-  afkCounter.value = 0;
 };
 
 onMounted(() => {

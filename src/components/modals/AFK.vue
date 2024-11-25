@@ -12,32 +12,20 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount } from "vue";
 import { storeToRefs } from "pinia";
 
 // stores
-import { useDataStore } from "@/store/data";
 import { useLocaleStore } from "@/store/locale";
 
 const emit = defineEmits<{
   close: [];
 }>();
 
-const dataStore = useDataStore();
 const localeStore = useLocaleStore();
 
 const { battles: locale } = storeToRefs(localeStore);
-const { stopBreakpoint, startBreakpoint } = dataStore.battles;
 
 const onClose = () => {
   emit("close");
 };
-
-onMounted(() => {
-  stopBreakpoint();
-});
-
-onBeforeUnmount(() => {
-  startBreakpoint("battle");
-});
 </script>

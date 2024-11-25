@@ -74,7 +74,7 @@ export const useBattleStore = defineStore("battle", () => {
     fn: <BreakpointInterval | null>null,
     type: <string | null>null,
   };
-  const currentTaskTimeout: Ref<TaskTimer | null> = ref(null);
+  const taskTimer: Ref<TaskTimer> = ref(new TaskTimer());
 
   const state = ref({
     battleData: <BattleState>{},
@@ -94,9 +94,6 @@ export const useBattleStore = defineStore("battle", () => {
 
   // battle processor
   const { storeAnswer, getNextTask, cleanAnswers, setTasks, expandTasks, reset: resetBattleProcessor, answers } = useBattleProcessor();
-
-  // returns { bolts_bonus, disabled, id, order, timeout }
-  const currentMechanic = computed(() => state.value.battleData.mechanics?.[getMechanicName(state.value.battleData.battle_type)]);
 
   // setter/getter
   const set = (data: BattleState) => {
@@ -167,20 +164,17 @@ export const useBattleStore = defineStore("battle", () => {
     // console.log("expanded battle store:", state.value.battleData);
   };
 
-  const startTaskTimeout = (cb) => {
-    const taskTimeout = new TaskTimer(currentMechanic.value?.timeout, cb);
-    currentTaskTimeout.value = taskTimeout;
-    currentTaskTimeout.value.start();
+  // task timeout
+  const startTaskTimeout = (cb: () => any) => {
+    const mech = state.value.battleData.mechanics?.[сurrentMechanicName.value];
+    taskTimer.value.start(mech?.timeout, cb);
   };
 
   const stopTaskTimeout = () => {
-    if (currentTaskTimeout.value) {
-      // console.log(`stopping task timeout`);
-      currentTaskTimeout.value.stop();
-      currentTaskTimeout.value = null;
-    }
+    taskTimer.value.stop();
   };
 
+  // breakpoints
   const startBreakpoint = (type: string) => {
     // console.log(`starting breakpoint`);
 
@@ -329,7 +323,6 @@ export const useBattleStore = defineStore("battle", () => {
 
     // start things after new response data recieved
     stopTaskTimeout();
-    startTaskTimeout();
     return;
   };
 
@@ -345,7 +338,7 @@ export const useBattleStore = defineStore("battle", () => {
       mainStore.hideTooltip();
     } else if (value === "closed") {
       afkCounter.value = 0;
-      startTaskTimeout();
+      taskTimer.value.resume();
       startBreakpoint("battle");
       battleStarted.value = true;
       relaxModalOpen.value = false;
@@ -471,12 +464,13 @@ export const useBattleStore = defineStore("battle", () => {
     answers,
     challengeScore,
     boostersUsed,
-    currentTaskTimeout,
     currentBattleMode,
     currentBattleType,
     afkCounter,
     сurrentMechanicName,
     battleStarted,
+    taskTimer,
+    correctStreak,
     set,
     expand,
     pauseBattle,

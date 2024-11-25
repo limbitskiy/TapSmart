@@ -11,7 +11,7 @@
       >
         <div class="w-8 h-1 bg-gray-600 rounded-full m-auto relative -top-2"></div>
         <div class="modal-scroll flex overflow-y-scroll">
-          <slot></slot>
+          <slot :closeModal="onCloseClick"></slot>
         </div>
 
         <Button

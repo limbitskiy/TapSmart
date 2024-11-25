@@ -1,6 +1,6 @@
 <template>
   <Transition name="fade" mode="out-in">
-    <svg v-show="currentTaskTimeout" :width="size" :height="size" :viewBox="`0 0 ${size} ${size}`">
+    <svg v-show="taskTimer" :width="size" :height="size" :viewBox="`0 0 ${size} ${size}`">
       <circle class="bg" :cx="size / 2" :cy="size / 2" :r="radius" fill="none" stroke="#222" :stroke-width="strokeWidth ?? 6" stroke-linecap="round"></circle>
       <circle
         ref="circleRef"
@@ -22,6 +22,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
 import { storeToRefs } from "pinia";
+import gsap from "gsap";
 
 // stores
 import { useDataStore } from "@/store/data";
@@ -35,7 +36,7 @@ const props = defineProps<{
 
 const dataStore = useDataStore();
 
-const { currentTaskTimeout } = storeToRefs(dataStore.battles);
+const { taskTimer } = storeToRefs(dataStore.battles);
 
 const circleRef = ref();
 let animation = null;
@@ -52,18 +53,18 @@ const stopAnimation = () => {
   animation = null;
 };
 
-watch(currentTaskTimeout, (val) => {
-  if (!val?.interval) {
-    stopAnimation();
-    return;
+watch(
+  taskTimer,
+  (val) => {
+    if (val.status === "stopped") {
+      stopAnimation();
+    } else {
+      startAnimation(val.interval);
+    }
+  },
+  {
+    deep: true,
+    immediate: true,
   }
-
-  startAnimation(val.interval);
-});
-
-onMounted(() => {
-  if (currentTaskTimeout.value?.interval) {
-    startAnimation(currentTaskTimeout.value?.interval);
-  }
-});
+);
 </script>

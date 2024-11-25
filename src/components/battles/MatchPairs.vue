@@ -24,31 +24,29 @@
       <!-- buttons -->
       <div class="answer-buttons grid w-full grid-cols-2 gap-2 leading-5 flex-1">
         <div class="left grid grid-rows-[repeat(5,_minmax(50px,_60px))] gap-2 content-center">
-          <div v-for="pill in shuffledPills1" :key="pill.buttons.left.id">
+          <div v-for="pill in leftPills" :key="pill.id">
             <Transition name="match-pairs-buttons" mode="out-in">
               <Button
                 v-if="pill.task"
-                :id="`left-${pill.id}`"
                 class="match-pairs-btn w-full h-full"
-                :class="{ selected: selected.left?.button.id === pill.buttons.left.id, success: pill.buttons.left.success, wrong: pill.buttons.left.wrong }"
-                @click="(event: MouseEvent) => onButton(pill, pill.buttons.left, event)"
+                :class="{ selected: pill.selected, success: pill.success, wrong: pill.wrong }"
+                @click="(event: MouseEvent) => onButton(pill, event)"
               >
-                <span class="fira-regular text-base inline-block line-clamp-2" style="line-height: 20px">{{ pill?.task?.task?.question }}</span>
+                <span class="fira-regular text-base inline-block line-clamp-2" style="line-height: 20px">{{ pill.task.task?.question }}</span>
               </Button>
             </Transition>
           </div>
         </div>
         <div class="right grid grid-rows-[repeat(5,_minmax(50px,_60px))] gap-2 content-center">
-          <div v-for="pill in shuffledPills2" :key="pill.buttons.right.id">
+          <div v-for="pill in rightPills" :key="pill.id">
             <Transition name="match-pairs-buttons" mode="out-in">
               <Button
                 v-if="pill.task"
-                :id="`right-${pill.id}`"
                 class="match-pairs-btn w-full h-full"
-                :class="{ selected: selected.right?.button.id === pill.buttons.right.id, success: pill.buttons.right.success, wrong: pill.buttons.right.wrong }"
-                @click="(event: MouseEvent) => onButton(pill, pill.buttons.right, event)"
+                :class="{ selected: pill.selected, success: pill.success, wrong: pill.wrong }"
+                @click="(event: MouseEvent) => onButton(pill, event)"
               >
-                <span class="fira-regular text-base inline-block line-clamp-2" style="line-height: 20px">{{ pill?.task?.task?.answer }}</span>
+                <span class="fira-regular text-base inline-block line-clamp-2" style="line-height: 20px">{{ pill.task.task?.answer }}</span>
               </Button>
             </Transition>
           </div>
@@ -70,12 +68,11 @@ import { useMainStore } from "@/store/main";
 import { storeToRefs } from "pinia";
 
 interface Pill {
-  task: Task;
-  buttons: { left: PillButton; right: PillButton };
-}
-
-interface PillButton {
-  id: 0;
+  id: number;
+  task: Task | {};
+  wrong?: boolean;
+  success?: boolean;
+  selected?: boolean;
 }
 
 const store = useMainStore();
@@ -99,7 +96,7 @@ const props = defineProps<{
   locales: {};
 }>();
 
-const { battleStarted } = storeToRefs(store.battleStore);
+const { battleStarted, correctStreak } = storeToRefs(store.battleStore);
 const { startTaskTimeout, startBreakpoint, resetBattleStats, getNextTask } = store.battleStore;
 
 const settings = {
@@ -123,16 +120,21 @@ const applySettings = () => {
   }
 };
 
-const pills = ref([
-  { task: {}, buttons: { left: { id: 2 }, right: { id: 1 } } },
-  { task: {}, buttons: { left: { id: 4 }, right: { id: 3 } } },
-  { task: {}, buttons: { left: { id: 6 }, right: { id: 5 } } },
-  { task: {}, buttons: { left: { id: 8 }, right: { id: 7 } } },
-  { task: {}, buttons: { left: { id: 10 }, right: { id: 9 } } },
+const leftPills = ref<Pill[]>([
+  { id: 2, task: {} },
+  { id: 4, task: {} },
+  { id: 6, task: {} },
+  { id: 8, task: {} },
+  { id: 10, task: {} },
 ]);
 
-const shuffledPills1 = computed(() => shuffle(pills.value));
-const shuffledPills2 = computed(() => shuffle(pills.value));
+const rightPills = ref<Pill[]>([
+  { id: 1, task: {} },
+  { id: 3, task: {} },
+  { id: 5, task: {} },
+  { id: 7, task: {} },
+  { id: 9, task: {} },
+]);
 
 let selected = ref({
   left: null,
@@ -141,18 +143,27 @@ let selected = ref({
 
 let buttonsMissing = 0;
 
-const onButton = (pill: Pill, btn: PillButton, event: MouseEvent) => {
-  if (btn.id % 2 === 0) {
-    selected.value.left = { task: JSON.parse(JSON.stringify(pill)), button: btn };
+const onButton = (pill: Pill, event: MouseEvent) => {
+  if (pill.id % 2 === 0) {
+    if (selected.value.left?.selected) {
+      selected.value.left.selected = false;
+    }
+    selected.value.left = pill;
+    selected.value.left.selected = true;
   } else {
-    selected.value.right = { task: JSON.parse(JSON.stringify(pill)), button: btn };
+    if (selected.value.right?.selected) {
+      selected.value.right.selected = false;
+    }
+    selected.value.right = pill;
+    selected.value.right.selected = true;
   }
 
   if (selected.value.left && selected.value.right) {
     const isCorrect = selected.value.left.task.id === selected.value.right.task.id;
 
     if (!isCorrect) {
-      animateButtonsWrong(selected.value.left, selected.value.right);
+      correctStreak.value = 0;
+      animateWrong();
       setTimeout(() => {
         clearSelected();
       }, 300);
@@ -161,23 +172,20 @@ const onButton = (pill: Pill, btn: PillButton, event: MouseEvent) => {
 
     handleAnswer({ answerString: pill.task.task.answer, isCorrect, task: pill.task, event });
 
-    // highlight correct answer
-    pill.buttons.left.success = true;
-    pill.buttons.right.success = true;
+    animateCorrect();
 
     setTimeout(() => {
       // remove this task
-      const pillToClear = getPillIdxByTaskID(pill.task.id);
-      removeTaskAtPillIdx(pillToClear.index);
+      selected.value.left.task = null;
+      selected.value.right.task = null;
 
-      // remove success
       removeSuccess();
 
       clearSelected();
 
       setTimeout(() => {
         if (buttonsMissing >= 2) {
-          refillTasks();
+          refillTasks(2);
           buttonsMissing = 0;
         }
       }, 300);
@@ -200,39 +208,43 @@ const handleAnswer = ({ answerString, isCorrect, task, event, autoAnswer }: { an
   buttonsMissing += 1;
 };
 
-const refillTasks = () => {
-  pills.value.forEach((pill) => {
-    if (!pill.task) {
-      pill.task = getNextTask();
-    }
-  });
+const refillTasks = (amount) => {
+  const emptyLeft = leftPills.value.filter((pill) => !pill.task);
+  const emptyRight = shuffle(rightPills.value.filter((pill) => !pill.task));
+
+  for (let i = 0; i < amount; i++) {
+    const loadedTask = getNextTask();
+
+    emptyLeft[i].task = loadedTask;
+    emptyRight[i].task = loadedTask;
+  }
 };
 
 const clearSelected = () => {
+  selected.value.left.selected = false;
+  selected.value.right.selected = false;
   selected.value.left = null;
   selected.value.right = null;
 };
 
 const removeSuccess = () => {
-  pills.value.forEach((pill) => {
-    if (pill.buttons.left.success) {
-      pill.buttons.left.success = false;
-    }
-
-    if (pill.buttons.right.success) {
-      pill.buttons.right.success = false;
-    }
-  });
+  selected.value.left.success = false;
+  selected.value.right.success = false;
 };
 
-const animateButtonsWrong = (selected1, selected2) => {
-  selected1.button.wrong = true;
-  selected2.button.wrong = true;
+const animateWrong = () => {
+  selected.value.left.wrong = true;
+  selected.value.right.wrong = true;
 
   setTimeout(() => {
-    selected1.button.wrong = false;
-    selected2.button.wrong = false;
+    selected.value.left.wrong = false;
+    selected.value.right.wrong = false;
   }, 300);
+};
+
+const animateCorrect = () => {
+  selected.value.left.success = true;
+  selected.value.right.success = true;
 };
 
 const timeoutCallback = () => {
@@ -246,14 +258,13 @@ const timeoutCallback = () => {
   });
 
   // remove task with smallest ID
-  const pillToClear = getPillIdxByTaskID(taskWithSmallestID.id);
-  removeTaskAtPillIdx(pillToClear.index);
+  removeTaskWithSmallestId();
   clearSelected();
 
   // refill tasks if needed
   setTimeout(() => {
     if (buttonsMissing >= 2) {
-      refillTasks();
+      refillTasks(2);
       buttonsMissing = 0;
     }
   }, 300);
@@ -269,18 +280,14 @@ const startGame = () => {
   startBreakpoint("battle");
   startTaskTimeout(timeoutCallback);
 
-  // shuffleButtons();
-  pills.value.forEach((pill) => {
+  for (let i = 0; i < leftPills.value.length; i++) {
     const loadedTask = getNextTask();
-    // add task
-    pill.task = loadedTask;
 
-    // add id
-    pill.id = Math.floor(Math.random() * 999999);
+    leftPills.value[i].task = loadedTask;
+    rightPills.value[i].task = loadedTask;
+  }
 
-    // add visible field
-    pill.visible = true;
-  });
+  rightPills.value = shuffle(rightPills.value);
 };
 
 const findTaskWithSmallestID = () => {
@@ -301,20 +308,7 @@ const findTaskWithSmallestID = () => {
   return found;
 };
 
-const getPillIdxByTaskID = (id: number) => {
-  let found = {};
-  pills.value.forEach((pill, index) => {
-    if (pill.task?.id === id) {
-      found.pill = pill;
-      found.index = index;
-    }
-  });
-  return found;
-};
-
-const removeTaskAtPillIdx = (idx: number) => {
-  delete pills.value[idx].task;
-};
+const removeTaskWithSmallestId = () => {};
 
 onMounted(() => {
   console.log(`match pairs mounted`);
