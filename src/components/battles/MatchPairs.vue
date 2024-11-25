@@ -187,7 +187,7 @@ const onButton = (pill: Pill, btn: PillButton, event: MouseEvent) => {
   }
 };
 
-const handleAnswer = ({ answerString, isCorrect, task, event, autoAnswer }: { answerString: string; isCorrect: boolean; task: Task; event: MouseEvent }) => {
+const handleAnswer = ({ answerString, isCorrect, task, event, autoAnswer }: { answerString: string; isCorrect: boolean; task: Task; event: MouseEvent; autoAnswer: boolean }) => {
   emit("answer", {
     isCorrect,
     answer: answerString,
@@ -209,15 +209,6 @@ const refillTasks = () => {
 };
 
 const clearSelected = () => {
-  // pills.value.forEach((pill) => {
-  //   if (pill.buttons.left.selected) {
-  //     pill.buttons.left.selected = false;
-  //   }
-
-  //   if (pill.buttons.right.selected) {
-  //     pill.buttons.right.selected = false;
-  //   }
-  // });
   selected.value.left = null;
   selected.value.right = null;
 };
@@ -310,7 +301,7 @@ const findTaskWithSmallestID = () => {
   return found;
 };
 
-const getPillIdxByTaskID = (id) => {
+const getPillIdxByTaskID = (id: number) => {
   let found = {};
   pills.value.forEach((pill, index) => {
     if (pill.task?.id === id) {
@@ -321,7 +312,7 @@ const getPillIdxByTaskID = (id) => {
   return found;
 };
 
-const removeTaskAtPillIdx = (idx) => {
+const removeTaskAtPillIdx = (idx: number) => {
   delete pills.value[idx].task;
 };
 
