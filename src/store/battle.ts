@@ -1,12 +1,11 @@
 import { computed, ref, watch, Ref } from "vue";
 import { defineStore } from "pinia";
 import { useBattleProcessor } from "@/composables/useBattleProcessor";
+import TaskTimer from "@/class/Timeout";
+import BreakpointInterval from "@/class/Interval";
 
 // lodash
 import { merge } from "lodash-es";
-
-// common
-import { Interval as BreakpointInterval, Timer as TaskTimer } from "@/common/interval";
 
 // stores
 import { useDataStore } from "@/store/data";
@@ -65,7 +64,6 @@ export const useBattleStore = defineStore("battle", () => {
   const afkCounter = ref(0);
 
   const battleStarted = ref(false);
-  const pauseCurrentTask = ref(false);
 
   const relaxModalOpen = ref(false);
 
@@ -95,7 +93,7 @@ export const useBattleStore = defineStore("battle", () => {
   const сurrentMechanicName = computed(() => battleTypes[currentBattleType.value]);
 
   // battle processor
-  const { resetTask, storeAnswer, getNextTask, cleanAnswers, setTasks, answers, currentTaskBatch: currentTask, lastTask } = useBattleProcessor(state.value.battleData);
+  const { storeAnswer, getNextTask, cleanAnswers, setTasks, expandTasks, reset: resetBattleProcessor, answers } = useBattleProcessor();
 
   // returns { bolts_bonus, disabled, id, order, timeout }
   const currentMechanic = computed(() => state.value.battleData.mechanics?.[getMechanicName(state.value.battleData.battle_type)]);
@@ -153,42 +151,20 @@ export const useBattleStore = defineStore("battle", () => {
   const expand = (data) => {
     // console.log(`expand`);
     Object.keys(data).forEach((key) => {
-      // check if array and merge
-      if (state.value.battleData[key] && Array.isArray(state.value.battleData[key])) {
-        data[key].forEach((item) => {
-          const foundIdx = state.value.battleData[key].findIndex((storeItem) => storeItem.id === item.id);
-
-          if (foundIdx != -1) {
-            state.value.battleData[key].splice(foundIdx, 1, item);
-          } else {
-            console.warn(`expand: Warning - property does not exist, creating a new one`);
-            state.value.battleData[key].push(item);
-          }
-        });
-        // check if object and merge
-      } else if (state.value.battleData[key] && Object.keys(state.value.battleData[key]).length) {
-        merge(state.value.battleData[key], data[key]);
+      // expand tasks
+      if (key === "data") {
+        expandTasks(data[key]);
+        return;
       } else {
-        console.error(`expand: Error - property not of type: array or object`);
+        // expand other keys
+        if (state.value.battleData[key] && Object.keys(state.value.battleData[key]).length) {
+          merge(state.value.battleData[key], data[key]);
+        } else {
+          console.error(`expand: Error - property not of type: array or object`);
+        }
       }
     });
     // console.log("expanded battle store:", state.value.battleData);
-  };
-
-  // breakpoints/timers
-  const startTaskTimeoutOLD = (externalTimeout?: number) => {
-    if (!currentMechanic.value?.timeout || currentTaskTimeout.value || afkCounter.value >= 3) return;
-
-    const callback = () => {
-      stopTaskTimeout();
-      // handleAnswer({
-      //   autoAnswer: true,
-      // });
-    };
-
-    const taskTimeout = new TaskTimer(externalTimeout ?? currentMechanic.value?.timeout, callback);
-    currentTaskTimeout.value = taskTimeout;
-    currentTaskTimeout.value.start();
   };
 
   const startTaskTimeout = (cb) => {
@@ -280,10 +256,6 @@ export const useBattleStore = defineStore("battle", () => {
     if (currentBattleMode.value === "relax" && !task.settings?.isAds) {
       // store answer
       storeAnswer({ task, answerString });
-
-      if (task.api) {
-        mainStore.useFetch({ key: task.api });
-      }
 
       // process correct/wrong anwser
       if (isCorrect) {
@@ -456,6 +428,7 @@ export const useBattleStore = defineStore("battle", () => {
     console.log(`starting challenge: stats reset`);
 
     resetBattleStats();
+    resetBattleProcessor();
     battleStarted.value = true;
     battleStartTime = Date.now();
     startBreakpoint("battle");
@@ -495,7 +468,6 @@ export const useBattleStore = defineStore("battle", () => {
 
   return {
     data,
-    currentTask,
     answers,
     challengeScore,
     boostersUsed,

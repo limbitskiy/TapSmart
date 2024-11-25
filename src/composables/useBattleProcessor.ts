@@ -1,9 +1,14 @@
 import { ref, computed } from "vue";
 
 // types
-import { Answer, BattleState, Task } from "@/types";
+import { Answer, Task } from "@/types";
 
-export const useBattleProcessor = (battleData: BattleState) => {
+// stores
+import { useMainStore } from "@/store/main";
+
+export const useBattleProcessor = () => {
+  const mainStore = useMainStore();
+
   let tasks: Task[] | [] = [];
   let lastTask: Task | null = null;
   const answers = ref<Answer[]>([]);
@@ -16,20 +21,27 @@ export const useBattleProcessor = (battleData: BattleState) => {
     const clone = JSON.parse(JSON.stringify(tasks));
     clone.sort((a, b) => a.id - b.id);
 
+    let found;
+
     if (!lastTask) {
-      lastTask = clone[0];
-      return clone[0];
+      found = clone[0];
     } else {
       const idx = clone.findIndex((task) => task.id === lastTask?.id);
 
       if (clone[idx + 1]) {
-        lastTask = clone[idx + 1];
-        return clone[idx + 1];
+        found = clone[idx + 1];
       } else {
-        lastTask = clone[0];
-        return clone[0];
+        found = clone[0];
       }
     }
+
+    // make an api call
+    if (found.api) {
+      mainStore.useFetch({ key: found.api });
+    }
+
+    lastTask = found;
+    return found;
   };
 
   const storeAnswer = ({ task, answerString, msec }: { task: Task; answerString?: string; msec?: number; auto?: boolean }) => {
@@ -40,6 +52,7 @@ export const useBattleProcessor = (battleData: BattleState) => {
       key: task.key,
       answer: answerString,
       msec,
+      lastTaskId: lastTask?.id,
     };
 
     if (foundIdx !== -1) {
@@ -48,33 +61,42 @@ export const useBattleProcessor = (battleData: BattleState) => {
       answers.value.push(answerObject);
     }
 
-    console.log(`answer recorded`);
-    console.log(answers.value);
+    // console.log(`answer recorded`);
+    // console.log(answers.value);
   };
 
   const cleanAnswers = () => {
-    // lastTask = null;
     answers.value = [];
   };
 
-  const resetTask = () => {
+  const reset = () => {
     lastTask = null;
-    // if (!tasks) return;
-    // const clone = JSON.parse(JSON.stringify(tasks));
-
-    // clone.sort((a, b) => a.id - b.id);
   };
 
-  const setTasks = (taskArray) => {
+  const setTasks = (taskArray: Task[]) => {
     tasks = taskArray;
   };
 
+  const expandTasks = (taskArray: Task[]) => {
+    taskArray.forEach((newTask) => {
+      const foundIdx = tasks.findIndex((storeTask) => storeTask.id === newTask.id);
+
+      if (foundIdx != -1) {
+        tasks.splice(foundIdx, 1, newTask);
+      } else {
+        console.warn(`expand: Warning - property does not exist, creating a new one`);
+        tasks.push(newTask);
+      }
+    });
+  };
+
   return {
-    resetTask,
+    reset,
     storeAnswer,
     getNextTask,
     cleanAnswers,
     setTasks,
+    expandTasks,
     answers,
     lastTask,
   };

@@ -175,7 +175,7 @@
 }
 
 .match-pairs-btn {
-  @apply bg-[var(--grey-light)] text-white;
+  @apply bg-[#00000075] text-white;
   transition: background-color 0.2s ease;
 
   &.selected {

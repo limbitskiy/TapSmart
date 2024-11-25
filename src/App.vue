@@ -3,7 +3,7 @@
     <span v-for="(msg, index) in debugMessages" :key="index">{{ msg }}</span>
   </div>
   <div
-    class="main-page flex flex-col min-h-[100dvh]"
+    class="main-page flex flex-col min-h-dvh"
     :style="{
       'padding-left': left,
       'padding-right': right,

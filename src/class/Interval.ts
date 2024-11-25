@@ -1,4 +1,4 @@
-export class Interval {
+class Interval {
   interval: number;
   callback: () => void;
   _intervalFn: ReturnType<typeof setInterval> | null;
@@ -24,3 +24,5 @@ export class Interval {
     }
   }
 }
+
+export default Interval;

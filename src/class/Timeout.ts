@@ -1,4 +1,4 @@
-export class Timeout {
+class Timeout {
   interval: number;
   callback: () => void;
   _timeoutFn: ReturnType<typeof setTimeout> | null;
@@ -12,7 +12,9 @@ export class Timeout {
   start() {
     // console.log(`Starting timeout`);
     this._timeoutFn = setTimeout(() => {
-      this.callback();
+      if (this.callback) {
+        this.callback();
+      }
     }, this.interval);
   }
 
@@ -24,3 +26,5 @@ export class Timeout {
     }
   }
 }
+
+export default Timeout;

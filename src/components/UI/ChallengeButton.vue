@@ -1,5 +1,5 @@
 <template>
-  <div class="challenge-btn-wrap relative flex overflow-hidden rounded-[22px] bg-[#222] p-[4px]" :class="{ heartbeat }">
+  <div class="challenge-btn-wrap relative flex overflow-hidden rounded-[22px] bg-[#222] p-[4px] min-h-[56px]" :class="{ heartbeat }">
     <div ref="animationRef" class="lightray absolute -top-5 -bottom-5 -left-[100%] w-[15px] bg-white z-20 rotate-45 opacity-80"></div>
     <button
       class="w-full bg-[var(--accent-color)] rounded-[18px] text-[#222] z-[6]"
