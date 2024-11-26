@@ -13,6 +13,11 @@ class Timeout {
 
   start(interval: number, callback: () => void) {
     // console.log(`Starting timeout`);
+
+    if (this.status === "running") {
+      this.stop();
+    }
+
     this.interval = interval;
     this.callback = callback;
     this.status = "running";
@@ -34,6 +39,10 @@ class Timeout {
 
   resume() {
     if (this.interval) {
+      if (this.status === "running") {
+        this.stop();
+      }
+
       this.status = "running";
       this._timeoutFn = setTimeout(() => {
         if (this.callback) {

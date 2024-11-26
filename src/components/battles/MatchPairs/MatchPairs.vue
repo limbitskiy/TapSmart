@@ -106,8 +106,8 @@ const props = defineProps<{
   locales: {};
 }>();
 
-const { battleStarted, correctStreak } = storeToRefs(store.battleStore);
-const { startTaskTimeout, startBreakpoint, resetBattleStats, getNextTask } = store.battleStore;
+const { battleStarted, correctStreak, afkCounter, settings: battleSettings } = storeToRefs(store.battleStore);
+const { startTaskTimeout, startBreakpoint, resetBattleStats, getNextTask, addEnergy } = store.battleStore;
 
 const settings = {
   maxTasks: 5,
@@ -126,7 +126,7 @@ const bothPillsAreSelected = computed(() => selected.value.left && selected.valu
 let isAnimationRunning = false;
 let buttonsMissing = 0;
 
-const handleSelection = (pill) => {
+const handleSelection = (pill: Pill) => {
   if (pill.id % 2 === 0) {
     if (selected.value.left?.selected) {
       selected.value.left.selected = false;
@@ -148,16 +148,18 @@ const onButton = (pill: Pill, event: MouseEvent) => {
   if (bothPillsAreSelected.value && !isAnimationRunning) {
     isAnimationRunning = true;
 
-    // make local copy
+    // make local copy and clear shortcuts
     const selectedLeft = selected.value.left!;
     const selectedRight = selected.value.right!;
-
-    const isCorrect = selectedLeft?.task?.id === selectedRight?.task?.id;
     selected.value.left = null;
     selected.value.right = null;
 
+    const isCorrect = selectedLeft?.task?.id === selectedRight?.task?.id;
+
     if (!isCorrect) {
+      afkCounter.value = 0;
       correctStreak.value = 0;
+      addEnergy(battleSettings.value.energyOnWrong);
       clearSelected(selectedLeft, selectedRight);
       animateWrong(selectedLeft, selectedRight);
       setTimeout(() => {
@@ -188,10 +190,34 @@ const onButton = (pill: Pill, event: MouseEvent) => {
       }, settings.animationSpeed);
 
       if (props.type === "relax") {
-        startTaskTimeout(timeoutCallback);
+        startTaskTimeout(autoAnswer);
       }
     }, settings.animationSpeed);
   }
+};
+
+const autoAnswer = () => {
+  const smallestIdTask = getSmallestIdTask();
+
+  emitAnswer({
+    isCorrect: false,
+    answerString: "",
+    autoAnswer: true,
+    task: smallestIdTask,
+  });
+
+  // remove task with smallest ID
+  removeTask(smallestIdTask.id);
+
+  // refill tasks if needed
+  setTimeout(() => {
+    if (buttonsMissing >= 2) {
+      fillTaskAmount(2);
+      buttonsMissing = 0;
+    }
+  }, 300);
+
+  startTaskTimeout(autoAnswer);
 };
 
 const emitAnswer = ({ answerString, isCorrect, task, event, autoAnswer }: { answerString: string; isCorrect: boolean; task: Task; event?: MouseEvent; autoAnswer: boolean }) => {
@@ -244,32 +270,6 @@ const animateCorrect = (selectedLeft: Pill, selectedRight: Pill) => {
   selectedRight.success = true;
 };
 
-const timeoutCallback = () => {
-  const smallestIdTask = getSmallestIdTask();
-
-  emitAnswer({
-    isCorrect: false,
-    answerString: "",
-    autoAnswer: true,
-    task: smallestIdTask,
-  });
-
-  // remove task with smallest ID
-  removeTask(smallestIdTask.id);
-
-  clearSelected();
-
-  // refill tasks if needed
-  setTimeout(() => {
-    if (buttonsMissing >= 2) {
-      fillTaskAmount(2);
-      buttonsMissing = 0;
-    }
-  }, 300);
-
-  startTaskTimeout(timeoutCallback);
-};
-
 const startGame = () => {
   console.log(`starting match pairs locally`);
 
@@ -278,7 +278,7 @@ const startGame = () => {
   startBreakpoint("battle");
 
   if (props.type === "relax") {
-    startTaskTimeout(timeoutCallback);
+    startTaskTimeout(autoAnswer);
   }
 
   for (let i = 0; i < settings.maxTasks; i++) {

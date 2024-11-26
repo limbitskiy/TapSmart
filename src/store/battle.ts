@@ -15,7 +15,7 @@ import { useMainStore } from "@/store/main";
 import { waitFor } from "@/utils";
 
 // types
-import { BattleTypes, BattleState, AnswerProps } from "@/types";
+import { BattleTypes, BattleState, AnswerProps, Task } from "@/types";
 
 export const useBattleStore = defineStore("battle", () => {
   const dataStore = useDataStore();
@@ -229,90 +229,207 @@ export const useBattleStore = defineStore("battle", () => {
     }
   };
 
-  // answer handlers
-  const handleAnswer = async ({ isCorrect, answerString, autoAnswer = false, task }: AnswerProps) => {
-    if (currentBattleMode.value === "relax" && data.value.energy === 0) return;
-
-    if (autoAnswer) {
-      storeAnswer({ task, answerString });
-      afkCounter.value += 1;
-      return;
-    }
-
-    stopTaskTimeout();
-
-    // for screenshot (otherwize we don't see the question)
-    await waitFor(100);
-
+  // latest
+  const handleAnswer = async ({ isCorrect, answerString, task, autoAnswer }: { isCorrect: boolean; answerString: string; task: Task; autoAnswer: boolean }) => {
+    let msec;
     let returnData;
 
-    // in a relax battle
-    if (currentBattleMode.value === "relax" && !task.settings?.isAds) {
-      // store answer
-      storeAnswer({ task, answerString });
+    switch (currentBattleMode.value) {
+      case "challenge": {
+        msec = Date.now() - (battleStartTime ?? 0);
 
-      // process correct/wrong anwser
-      if (isCorrect) {
-        mainStore.onVibrate("correct");
-        const multiplier = calculateRelaxMultiplierAmount();
-        correctStreak.value += 1;
-        dataStore.addBolts(multiplier);
-        addEnergy(settings.value.energyOnCorrect);
-      } else {
-        if (!autoAnswer) {
-          addEnergy(settings.value.energyOnWrong);
-        }
-        mainStore.onVibrate("wrong");
-        correctStreak.value = 0;
-      }
-
-      // in a challenge battle
-    } else if (currentBattleMode.value === "challenge" && !task.settings?.isAds) {
-      let msec;
-
-      if (battleStartTime) {
-        msec = Date.now() - +battleStartTime;
-      }
-
-      storeAnswer({ task, answerString, msec });
-
-      if (isCorrect) {
-        challengeScore.value += calculateCalcPoint();
-        correctStreak.value += 1;
-        mainStore.onVibrate("correct");
-      } else {
-        if (data.value?.battle_extra_mistake && !boostersUsed.value["extra_mistake"]) {
-          boostersUsed.value["extra_mistake"] = true;
+        if (isCorrect) {
+          challengeScore.value += calculateCalcPoint();
+          correctStreak.value += 1;
         } else {
-          correctStreak.value = 0;
+          if (data.value?.battle_extra_mistake && !boostersUsed.value["extra_mistake"]) {
+            boostersUsed.value["extra_mistake"] = true;
+          } else {
+            correctStreak.value = 0;
+          }
         }
-        mainStore.onVibrate("wrong");
+        break;
       }
-    } else if (task.settings?.isAds) {
-      mainStore.bgColor = "linear-gradient(180deg, #000B14 17.5%, #035DA9 100%)";
-      storeAnswer({ task, answerString });
-      returnData = await mainStore.useFetch({ key: task.api });
+
+      case "relax": {
+        if (task.settings?.isAds) {
+          returnData = await mainStore.useFetch({ key: task.api });
+        } else {
+          if (isCorrect) {
+            dataStore.addBolts(calculateRelaxMultiplierAmount());
+            addEnergy(settings.value.energyOnCorrect);
+            correctStreak.value += 1;
+          } else {
+            if (!autoAnswer) {
+              addEnergy(settings.value.energyOnWrong);
+            }
+            correctStreak.value = 0;
+          }
+        }
+        break;
+      }
     }
 
-    // let externalTimeout;
+    // general case
+    if (isCorrect) {
+      mainStore.vibrate("correct");
+    } else {
+      mainStore.vibrate("wrong");
+    }
 
-    // for ads in questions
-    // if (currentTask.value?.settings?.wait) {
-    //   if (currentTask.value.settings.style?.background) {
-    //     mainStore.bgColor = currentTask.value.settings.style.background;
-    //   }
-    //   externalTimeout = currentTask.value?.settings?.timeout;
-    //   console.log(`starting external timeout: ${currentTask.value?.settings?.timeout}`);
-    // }
+    storeAnswer({ task, answerString, msec });
 
-    // if (currentBattleMode.value === "relax") {
-    //   startTaskTimeout(externalTimeout);
-    // }
-
-    afkCounter.value = 0;
+    taskTimer.value.resume();
 
     return returnData;
   };
+
+  // answer handlers middle
+  // const handleAnswer = async ({ isCorrect, answerString, autoAnswer = false, task, isAd = false }: AnswerProps) => {
+  //   let returnData;
+
+  //   stopTaskTimeout();
+
+  //   switch (currentBattleMode.value) {
+  //     case "relax": {
+  //       // auto answer
+  //       if (autoAnswer) {
+  //         afkCounter.value += 1;
+  //       } else if (isAd) {
+  //         mainStore.bgColor = "linear-gradient(180deg, #000B14 17.5%, #035DA9 100%)";
+  //         returnData = await mainStore.useFetch({ key: task.api });
+  //       } else {
+  //         // process correct/wrong anwser
+  //         if (isCorrect) {
+  //           mainStore.vibrate("correct");
+  //           correctStreak.value += 1;
+  //           dataStore.addBolts();
+  //           addEnergy(settings.value.energyOnCorrect);
+  //         } else {
+  //           addEnergy(settings.value.energyOnWrong);
+  //           mainStore.vibrate("wrong");
+  //           correctStreak.value = 0;
+  //         }
+
+  //         afkCounter.value = 0;
+  //       }
+
+  //       storeAnswer({ task, answerString });
+
+  //       break;
+  //     }
+
+  //     case "challenge": {
+  //       let msec;
+
+  //       if (battleStartTime) {
+  //         msec = Date.now() - +battleStartTime;
+  //       }
+
+  //       if (isCorrect) {
+  //         challengeScore.value += calculateCalcPoint();
+  //         correctStreak.value += 1;
+  //         mainStore.vibrate("correct");
+  //       } else {
+  //         if (data.value?.battle_extra_mistake && !boostersUsed.value["extra_mistake"]) {
+  //           boostersUsed.value["extra_mistake"] = true;
+  //         } else {
+  //           correctStreak.value = 0;
+  //         }
+  //         mainStore.vibrate("wrong");
+  //       }
+
+  //       storeAnswer({ task, answerString, msec });
+
+  //       break;
+  //     }
+  //   }
+
+  //   return returnData;
+  // };
+
+  // // answer handlers OLD
+  // const handleAnswer = async ({ isCorrect, answerString, autoAnswer = false, task }: AnswerProps) => {
+  //   if (currentBattleMode.value === "relax" && data.value.energy === 0) return;
+
+  //   if (autoAnswer) {
+  //     storeAnswer({ task, answerString });
+  //     afkCounter.value += 1;
+  //     return;
+  //   }
+
+  //   stopTaskTimeout();
+
+  //   // for screenshot (otherwize we don't see the question)
+  //   await waitFor(100);
+
+  //   let returnData;
+
+  //   // in a relax battle
+  //   if (currentBattleMode.value === "relax" && !task.settings?.isAds) {
+  //     // store answer
+  //     storeAnswer({ task, answerString });
+
+  //     // process correct/wrong anwser
+  //     if (isCorrect) {
+  //       mainStore.vibrate("correct");
+  //       const multiplier = calculateRelaxMultiplierAmount();
+  //       correctStreak.value += 1;
+  //       dataStore.addBolts(multiplier);
+  //       addEnergy(settings.value.energyOnCorrect);
+  //     } else {
+  //       addEnergy(settings.value.energyOnWrong);
+  //       mainStore.vibrate("wrong");
+  //       correctStreak.value = 0;
+  //     }
+
+  //     // in a challenge battle
+  //   } else if (currentBattleMode.value === "challenge" && !task.settings?.isAds) {
+  //     let msec;
+
+  //     if (battleStartTime) {
+  //       msec = Date.now() - +battleStartTime;
+  //     }
+
+  //     storeAnswer({ task, answerString, msec });
+
+  //     if (isCorrect) {
+  //       challengeScore.value += calculateCalcPoint();
+  //       correctStreak.value += 1;
+  //       mainStore.vibrate("correct");
+  //     } else {
+  //       if (data.value?.battle_extra_mistake && !boostersUsed.value["extra_mistake"]) {
+  //         boostersUsed.value["extra_mistake"] = true;
+  //       } else {
+  //         correctStreak.value = 0;
+  //       }
+  //       mainStore.vibrate("wrong");
+  //     }
+  //   } else if (task.settings?.isAds) {
+  //     mainStore.bgColor = "linear-gradient(180deg, #000B14 17.5%, #035DA9 100%)";
+  //     storeAnswer({ task, answerString });
+  //     returnData = await mainStore.useFetch({ key: task.api });
+  //   }
+
+  //   // let externalTimeout;
+
+  //   // for ads in questions
+  //   // if (currentTask.value?.settings?.wait) {
+  //   //   if (currentTask.value.settings.style?.background) {
+  //   //     mainStore.bgColor = currentTask.value.settings.style.background;
+  //   //   }
+  //   //   externalTimeout = currentTask.value?.settings?.timeout;
+  //   //   console.log(`starting external timeout: ${currentTask.value?.settings?.timeout}`);
+  //   // }
+
+  //   // if (currentBattleMode.value === "relax") {
+  //   //   startTaskTimeout(externalTimeout);
+  //   // }
+
+  //   afkCounter.value = 0;
+
+  //   return returnData;
+  // };
 
   // mechanic
   const changeMechanic = async (mechId: number) => {
@@ -471,6 +588,7 @@ export const useBattleStore = defineStore("battle", () => {
     battleStarted,
     taskTimer,
     correctStreak,
+    settings,
     set,
     expand,
     pauseBattle,
@@ -493,5 +611,6 @@ export const useBattleStore = defineStore("battle", () => {
     calculateCalcPoint,
     calculateRelaxMultiplierAmount,
     getNextTask,
+    addEnergy,
   };
 });

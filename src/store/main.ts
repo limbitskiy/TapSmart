@@ -207,7 +207,7 @@ export const useMainStore = defineStore("main", () => {
     await useFetch({ key: api, data });
   };
 
-  const onVibrate = (type: string) => {
+  const vibrate = (type: string) => {
     if (dataStore.settings.vibro) {
       let pattern;
       switch (type) {
@@ -457,7 +457,7 @@ export const useMainStore = defineStore("main", () => {
     hideTooltip,
     hideModal,
     redirectTo,
-    onVibrate,
+    vibrate,
     showModal,
     takeHTMLSnapshot,
     createFinalImage,
