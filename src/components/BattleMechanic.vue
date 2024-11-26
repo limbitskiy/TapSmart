@@ -105,7 +105,7 @@ watch(
   }
 );
 
-const onAnswer = async ({ isCorrect, answer, event, drawBonus = true, task, autoAnswer }: AnswerProps) => {
+const onAnswer = async ({ isCorrect, answer, event, drawBonus = true, task, autoAnswer = false }: AnswerProps) => {
   if (isCorrect && drawBonus) {
     drawBonusAnimation(event);
   }
