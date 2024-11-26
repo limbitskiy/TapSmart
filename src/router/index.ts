@@ -21,7 +21,7 @@ import IntroView from "@/views/IntroView.vue";
 
 // battles
 import YesNo from "@/components/battles/YesNo/YesNo.vue";
-import FourAnswers from "@/components/battles/FourAnswers.vue";
+import FourAnswers from "@/components/battles/FourAnswers/FourAnswers.vue";
 
 // stores
 import { useMainStore } from "@/store/main";

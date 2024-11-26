@@ -8,8 +8,6 @@
       <!-- bg pattern & color -->
       <BackgroundImage />
 
-      <!-- <BattleStartAnimation v-if="showStartChallengeAnimation" /> -->
-
       <div class="screenshot-content z-10 flex flex-col gap-2 flex-1 p-4">
         <!-- battle stats -->
         <div class="challenge-stats flex flex-col gap-2 min-h-[136px]">
@@ -35,6 +33,25 @@
     <div class="animation-cnt absolute inset-0 z-[10] flex">
       <BattleCompleteAnimation />
     </div>
+
+    <!-- onscreen booster usage -->
+    <div class="boosters-cnt">
+      <Transition name="challenge-bonus-1">
+        <div v-if="boosterState.isShown" class="booster absolute top-[35dvh] left-0 right-0 grid place-items-center z-30">
+          <div class="bonus">
+            <span
+              class="text-[8vw] exo-black text-[#edaa38]"
+              style="
+                background: linear-gradient(to top left, #ff75c3, #ffa647, #ffe83f, #9fff5b, #70e2ff, #cd93ff);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+              "
+              >{{ boosterState.text }}</span
+            >
+          </div>
+        </div>
+      </Transition>
+    </div>
   </div>
 </template>
 
@@ -55,10 +72,17 @@ const store = useMainStore();
 const { bgColor } = storeToRefs(store);
 const { fetchChallengePageData, redirectTo, takeHTMLSnapshot } = store;
 const { startChallenge, stopChallenge } = store.battleStore;
-const { data, challengeScore } = storeToRefs(store.battleStore);
+const { data, challengeScore, boostersUsed } = storeToRefs(store.battleStore);
+const { battles: locale } = storeToRefs(store.localeStore);
 
 const screenshotEl = ref();
 const screenshotSrc = ref();
+
+const boosterState = ref({
+  text: "",
+  isShown: false,
+  used: {},
+});
 
 const ctx = gsap.context(() => {});
 
@@ -102,6 +126,38 @@ const onAnswer = async () => {
 const showEndChallengeScreen = () => {
   ctx.slideScreenUp();
 };
+
+const onBoosterUsed = (bonusName: string) => {
+  const bonusLocale = locale?.value[`${bonusName}_title`];
+  console.log(bonusLocale);
+
+  boosterState.value.text = bonusLocale;
+  boosterState.value.isShown = true;
+
+  setTimeout(() => {
+    boosterState.value.text = "";
+    boosterState.value.isShown = false;
+
+    boosterState.value.used[bonusName] = true;
+  }, 1000);
+};
+
+// watch boosters
+watch(
+  boostersUsed,
+  (val) => {
+    if (Object.keys(val).length) {
+      Object.keys(val).forEach((bonus) => {
+        if (!boosterState.value.used[bonus]) {
+          onBoosterUsed(bonus);
+        }
+      });
+    }
+  },
+  {
+    deep: true,
+  }
+);
 
 onMounted(() => {
   console.log(`challenge mounted`);

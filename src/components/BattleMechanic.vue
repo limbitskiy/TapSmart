@@ -19,25 +19,6 @@
     <img class="h-4 scale-150" :src="getAsset('bolt')" />
     <span class="font-bold text-xl">+{{ bonus.amount }}</span>
   </div>
-
-  <!-- onscreen booster usage -->
-  <div v-if="currentBattleMode === 'challenge'" class="boosters-cnt">
-    <Transition name="challenge-bonus-1">
-      <div v-if="boosterState.isShown" class="booster absolute top-[35dvh] left-0 right-0 grid place-items-center z-30">
-        <div class="bonus">
-          <span
-            class="text-[8vw] exo-black text-[#edaa38]"
-            style="
-              background: linear-gradient(to top left, #ff75c3, #ffa647, #ffe83f, #9fff5b, #70e2ff, #cd93ff);
-              -webkit-background-clip: text;
-              -webkit-text-fill-color: transparent;
-            "
-            >{{ boosterState.text }}</span
-          >
-        </div>
-      </div>
-    </Transition>
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -53,7 +34,7 @@ import { useMainStore } from "@/store/main";
 
 // battle mechanics
 import YesNo from "@/components/battles/YesNo/YesNo.vue";
-import FourAnswers from "@/components/battles/FourAnswers.vue";
+import FourAnswers from "@/components/battles/FourAnswers/FourAnswers.vue";
 import MatchPairs from "@/components/battles/MatchPairs/MatchPairs.vue";
 
 console.log(`Battle Mech created`);
@@ -77,17 +58,11 @@ const store = useMainStore();
 
 const { useFetch } = store;
 const { battles: locale } = storeToRefs(store.localeStore);
-const { сurrentMechanicName, currentBattleMode, boostersUsed } = storeToRefs(store.battleStore);
+const { сurrentMechanicName, currentBattleMode } = storeToRefs(store.battleStore);
 const { handleAnswer, calculateRelaxMultiplierAmount, getNextTask, startTaskTimeout, resetBattleProcessor } = store.battleStore;
 
 const bonuses = ref<Bonus[]>([]);
 const mountedMechanic = shallowRef();
-
-const boosterState = ref({
-  text: "",
-  isShown: false,
-  used: {},
-});
 
 const mechMap = {
   yesno: YesNo,
@@ -144,40 +119,6 @@ const drawBonusAnimation = ({ x, y }: { x: number; y: number }) => {
 
   return true;
 };
-
-const onBoosterUsed = (bonusName: string) => {
-  const bonusLocale = locale?.value[`${bonusName}_title`];
-  console.log(bonusLocale);
-
-  boosterState.value.text = bonusLocale;
-  boosterState.value.isShown = true;
-
-  setTimeout(() => {
-    boosterState.value.text = "";
-    boosterState.value.isShown = false;
-
-    boosterState.value.used[bonusName] = true;
-  }, 1000);
-};
-
-if (currentBattleMode.value === "challenge") {
-  // watch boosters
-  watch(
-    boostersUsed,
-    (val) => {
-      if (Object.keys(val).length) {
-        Object.keys(val).forEach((bonus) => {
-          if (!boosterState.value.used[bonus]) {
-            onBoosterUsed(bonus);
-          }
-        });
-      }
-    },
-    {
-      deep: true,
-    }
-  );
-}
 
 onMounted(() => {
   console.log(`Battle Mech mounted`);

@@ -31,7 +31,7 @@ import { ref, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 
 // battles
-import FourAnswers from "@/components/battles/FourAnswers.vue";
+import FourAnswers from "@/components/battles/FourAnswers/FourAnswers.vue";
 
 // stores
 import { useMainStore } from "@/store/main";
