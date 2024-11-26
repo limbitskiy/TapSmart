@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, computed, watch, onMounted, shallowRef } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 
@@ -80,7 +80,7 @@ const { сurrentMechanicName, currentBattleMode, boostersUsed } = storeToRefs(st
 const { handleAnswer, calculateRelaxMultiplierAmount, getNextTask, startTaskTimeout } = store.battleStore;
 
 const bonuses = ref<Bonus[]>([]);
-const mountedMechanic = ref();
+const mountedMechanic = shallowRef();
 
 const boosterState = ref({
   text: "",
