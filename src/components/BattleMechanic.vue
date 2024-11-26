@@ -7,6 +7,7 @@
       :locales="locale"
       :startTaskTimeout="startTaskTimeout"
       :getNextTask="getNextTask"
+      :resetBattleProcessor="resetBattleProcessor"
       @answer="onAnswer"
       @changeMech="() => emit('changeMech')"
     />
@@ -77,7 +78,7 @@ const store = useMainStore();
 // const { useFetch, redirectTo } = store;
 const { battles: locale } = storeToRefs(store.localeStore);
 const { сurrentMechanicName, currentBattleMode, boostersUsed } = storeToRefs(store.battleStore);
-const { handleAnswer, calculateRelaxMultiplierAmount, getNextTask, startTaskTimeout } = store.battleStore;
+const { handleAnswer, calculateRelaxMultiplierAmount, getNextTask, startTaskTimeout, resetBattleProcessor } = store.battleStore;
 
 const bonuses = ref<Bonus[]>([]);
 const mountedMechanic = shallowRef();

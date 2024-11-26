@@ -104,6 +104,7 @@ const emit = defineEmits<{
 const props = defineProps<{
   type: "relax" | "challenge";
   getNextTask: () => Task;
+  resetBattleProcessor: () => void;
   startTaskTimeout: (callback: () => void) => void;
   locales: {};
 }>();
@@ -217,9 +218,9 @@ const autoAnswer = () => {
     }
   }, 300);
 
-  // if (props.type === "relax") {
-  // props.startTaskTimeout(autoAnswer);
-  // }
+  if (props.type === "relax") {
+    props.startTaskTimeout(autoAnswer);
+  }
 };
 
 const emitAnswer = ({
@@ -287,9 +288,11 @@ const animateCorrect = (selectedLeft: Pill, selectedRight: Pill) => {
 const startGame = () => {
   console.log(`starting match pairs locally`);
 
-  // if (props.type === "relax") {
-  //   props.startTaskTimeout(autoAnswer);
-  // }
+  if (props.type === "relax") {
+    props.startTaskTimeout(autoAnswer);
+  }
+
+  props.resetBattleProcessor();
 
   for (let i = 0; i < settings.maxTasks; i++) {
     const newTask = props.getNextTask();

@@ -87,7 +87,7 @@ const props = defineProps<{
   timer?: number;
   battleDuration: number;
   progressBarValue: number;
-  playersProgress: [];
+  playersProgress: [] | undefined;
 }>();
 
 const colors = {

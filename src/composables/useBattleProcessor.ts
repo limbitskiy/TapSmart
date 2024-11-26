@@ -15,6 +15,10 @@ export const useBattleProcessor = () => {
   const answers = ref<Answer[]>([]);
 
   const getNextTask = () => {
+    console.log(`Getting new task`);
+    console.log(`lastTask:`);
+    console.log(lastTask);
+
     if (!tasks) {
       console.error(`No tasks: battle processor`);
     }

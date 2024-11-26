@@ -232,12 +232,12 @@ export const useBattleStore = defineStore("battle", () => {
 
   // latest
   const handleAnswer = async ({ isCorrect, answerString, task, autoAnswer = false }: { isCorrect: boolean; answerString: string; task: Task; autoAnswer?: boolean }) => {
-    console.group();
-    console.log("is correct: ", isCorrect);
-    console.log("answer string:", answerString);
-    console.log(task);
-    console.log("auto answer: ", autoAnswer);
-    console.groupEnd();
+    // console.group();
+    // console.log("is correct: ", isCorrect);
+    // console.log("answer string:", answerString);
+    // console.log(task);
+    // console.log("auto answer: ", autoAnswer);
+    // console.groupEnd();
 
     let msec;
     let returnData;
@@ -550,7 +550,6 @@ export const useBattleStore = defineStore("battle", () => {
     console.log(`starting challenge: stats reset`);
 
     resetBattleStats();
-    resetBattleProcessor();
     battleStarted.value = true;
     battleStartTime = Date.now();
     startBreakpoint("battle");
@@ -613,6 +612,7 @@ export const useBattleStore = defineStore("battle", () => {
     stopBreakpoint,
     decreaseWaitingTimer,
     resetBattleStats,
+    resetBattleProcessor,
     startChallenge,
     stopChallenge,
     startRelax,

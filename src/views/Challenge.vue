@@ -27,7 +27,7 @@
         </div>
 
         <!-- battle mechanic -->
-        <BattleMechanic @mechMounted="onMechMounted" @mechUnmounted="onMechUnmounted" @answer="onAnswer" />
+        <BattleMechanic @answer="onAnswer" />
       </div>
     </div>
 
