@@ -35,13 +35,13 @@
         </Transition>
 
         <!-- correct answer -->
-        <Transition name="correct-text" mode="out-in">
-          <div v-if="correctAnswer.visible" class="correct-answer absolute z-20 inset-0 grid place-items-center pointer-events-none">
-            <div class="flex flex-col items-center justify-center text-center overflow-x-hidden break-words rounded-[30px] bg-black border-2 border-[#B60502] p-4 min-w-[70vw]">
+        <Transition name="correct-text">
+          <div v-if="correctAnswer.visible" class="correct-answer absolute z-20 inset-0 grid place-items-center">
+            <div class="flex flex-col items-center justify-center text-center overflow-x-hidden break-words rounded-[15px] bg-black border border-[#850303] p-4 min-w-[70vw]">
               <div class="max-w-[calc(100dvw-5rem)]">
-                <span class="fira-condensed-black text-white line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)">{{ correctAnswer.question }} </span>
+                <span class="fira-condensed-black text-white line-clamp-2" style="font-size: clamp(26px, 8vw, 36px)">{{ correctAnswer.question }} </span>
               </div>
-              <div class="arrow">
+              <div class="correct-answer-arrow translate-y-[-10px] opacity-0">
                 <svg width="16" height="26" viewBox="0 0 16 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M7.29289 25.7071C7.68342 26.0976 8.31658 26.0976 8.70711 25.7071L15.0711 19.3431C15.4616 18.9526 15.4616 18.3195 15.0711 17.9289C14.6805 17.5384 14.0474 17.5384 13.6569 17.9289L8 23.5858L2.34315 17.9289C1.95262 17.5384 1.31946 17.5384 0.928932 17.9289C0.538408 18.3195 0.538408 18.9526 0.928932 19.3431L7.29289 25.7071ZM7 0V25H9V0H7Z"
@@ -49,8 +49,8 @@
                   />
                 </svg>
               </div>
-              <div class="max-w-[calc(100dvw-5rem)]">
-                <span class="fira-condensed-black text-gray-400 line-clamp-2" style="font-size: clamp(26px, 8vw, 42px)">{{ correctAnswer.answer }}</span>
+              <div class="correct-answer-answer max-w-[calc(100dvw-5rem)] translate-y-[-10px] opacity-0">
+                <span class="fira-condensed-black text-green-500 line-clamp-2" style="font-size: clamp(32px, 10vw, 46px)">{{ correctAnswer.answer }}</span>
               </div>
             </div>
           </div>
@@ -84,8 +84,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import { getAsset } from "@/utils";
+import gsap from "gsap";
 
 // types
 import { Task } from "@/types";
@@ -120,6 +121,9 @@ const props = defineProps<{
 
 const currentTask = ref();
 
+const settings = {};
+let gsapCtx;
+
 const buttons = ref({
   no: { success: false, danger: false, type: "no" },
   yes: { success: false, danger: false, type: "yes" },
@@ -131,8 +135,6 @@ const correctAnswer = ref({
   answer: "",
   timeout: null,
 });
-
-const settings = {};
 
 const onButton = (button: Button, event: MouseEvent) => {
   if (correctAnswer.value.visible) return;
@@ -156,19 +158,8 @@ const onButton = (button: Button, event: MouseEvent) => {
   } else {
     button.danger = true;
 
-    if (props.type === "relax" && !currentTask.value.settings?.isAds) {
-      // wrong answer in relax mode creates correct answer popup
-      clearTimeout(correctAnswer.value.timeout);
-
-      correctAnswer.value.visible = true;
-      correctAnswer.value.question = currentTask.value.task.question;
-      correctAnswer.value.answer = currentTask.value.correct;
-
-      correctAnswer.value.timeout = setTimeout(() => {
-        correctAnswer.value.visible = false;
-        correctAnswer.value.question = "";
-        correctAnswer.value.answer = "";
-      }, 1500);
+    if (props.type === "relax") {
+      animateCorrectAnswer();
     }
   }
 
@@ -178,20 +169,46 @@ const onButton = (button: Button, event: MouseEvent) => {
   }, 300);
 
   currentTask.value = props.getNextTask();
+
+  // debug
+  // currentTask.value = {
+  //   api: "relax_action",
+  //   bonus_score: null,
+  //   correct: "Да, конечно",
+  //   id: 5,
+  //   key: "-1",
+  //   settings: {
+  //     isAds: true,
+  //     style: {
+  //       answer: {
+  //         color: "orange",
+  //       },
+  //       background: "red",
+  //       question: {
+  //         "font-size": "22px",
+  //       },
+  //     },
+  //     timeout: 8000,
+  //     wait: true,
+  //   },
+  //   task: {
+  //     answer: "Да, конечно",
+  //     question: "Запустить баттл с другими игроками ?",
+  //     variants: ["Да, конечно", "Да, прямо сейчас"],
+  //     variantsData: null,
+  //   },
+  // };
 };
 
-const applySettings = () => {
-  if (props.type === "relax") {
-    settings.correctTaskDelay = 350;
-    settings.wrongTaskDelay = 2000;
-    settings.yesBtnDelay = 300;
-    settings.noBtnDelay = 2000;
-  } else if (props.type === "challenge") {
-    settings.correctTaskDelay = 0;
-    settings.wrongTaskDelay = 0;
-    settings.yesBtnDelay = 300;
-    settings.noBtnDelay = 300;
-  }
+const setup = () => {
+  gsapCtx = gsap.context(() => {});
+
+  gsapCtx.add("animateArrow", () => {
+    gsap.to(".correct-answer-arrow", { opacity: 1, y: 0, duration: 0.5 });
+  });
+  gsapCtx.add("animateAnswer", () => {
+    gsap.to(".correct-answer-answer", { opacity: 1, y: 0, duration: 0.5 });
+  });
 };
 
 const emitAnswer = ({
@@ -217,6 +234,28 @@ const emitAnswer = ({
     drawBonus,
     event,
   });
+};
+
+const animateCorrectAnswer = () => {
+  clearTimeout(correctAnswer.value.timeout);
+
+  correctAnswer.value.visible = true;
+  correctAnswer.value.question = currentTask.value.task.question;
+  correctAnswer.value.answer = currentTask.value.correct;
+
+  setTimeout(() => {
+    gsapCtx.animateArrow();
+  }, 300);
+
+  setTimeout(() => {
+    gsapCtx.animateAnswer();
+  }, 600);
+
+  correctAnswer.value.timeout = setTimeout(() => {
+    correctAnswer.value.visible = false;
+    correctAnswer.value.question = "";
+    correctAnswer.value.answer = "";
+  }, 1500);
 };
 
 const autoAnswer = () => {
@@ -247,8 +286,12 @@ const startGame = () => {
 onMounted(() => {
   console.log(`yes-no mounted`);
 
-  applySettings();
+  setup();
 
   startGame();
+});
+
+onUnmounted(() => {
+  gsapCtx.revert();
 });
 </script>

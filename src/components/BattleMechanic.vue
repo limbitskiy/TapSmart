@@ -23,7 +23,7 @@
   <!-- onscreen booster usage -->
   <div v-if="currentBattleMode === 'challenge'" class="boosters-cnt">
     <Transition name="challenge-bonus-1">
-      <div v-if="boosterState.isShown" class="booster absolute top-[40dvh] left-0 right-0 grid place-items-center z-30">
+      <div v-if="boosterState.isShown" class="booster absolute top-[35dvh] left-0 right-0 grid place-items-center z-30">
         <div class="bonus">
           <span
             class="text-[8vw] exo-black text-[#edaa38]"
@@ -75,7 +75,7 @@ const emit = defineEmits<{
 
 const store = useMainStore();
 
-// const { useFetch, redirectTo } = store;
+const { useFetch } = store;
 const { battles: locale } = storeToRefs(store.localeStore);
 const { сurrentMechanicName, currentBattleMode, boostersUsed } = storeToRefs(store.battleStore);
 const { handleAnswer, calculateRelaxMultiplierAmount, getNextTask, startTaskTimeout, resetBattleProcessor } = store.battleStore;
@@ -108,19 +108,20 @@ watch(
 );
 
 const onAnswer = async ({ isCorrect, answerString, event, drawBonus = true, task, autoAnswer = false }: MechanicAnswerProps) => {
+  if (task.settings?.isAds && task.api) {
+    const res = await useFetch({ key: task.api, handleResponse: false });
+
+    if (res?.action === "start-challenge") {
+      emit("startChallenge");
+    }
+    return;
+  }
+
   if (isCorrect && drawBonus) {
     drawBonusAnimation(event);
   }
 
-  if (task.settings?.isAds && task.api) {
-    const res = await handleAnswer({ isCorrect, answerString, task });
-
-    if (res.action === "start-challenge") {
-      emit("startChallenge");
-    }
-  } else {
-    handleAnswer({ isCorrect, answerString, task, autoAnswer });
-  }
+  handleAnswer({ isCorrect, answerString, task, autoAnswer });
 
   emit("answer", { isCorrect, answerString, task });
 };

@@ -286,7 +286,7 @@ export const useMainStore = defineStore("main", () => {
     return useFetch({ key: "invite_click", data: { route } });
   };
 
-  const useFetch = ({ key, data }: { key?: string; data?: {} }) => {
+  const useFetch = ({ key, data, handleResponse = true }: { key?: string; data?: {}; handleResponse?: boolean }) => {
     if (requestQueue.value.length > 3) return;
 
     return new Promise((res, rej) => {
@@ -306,7 +306,9 @@ export const useMainStore = defineStore("main", () => {
             },
           });
 
-          parseResponse(result.data);
+          if (handleResponse) {
+            parseResponse(result.data);
+          }
 
           res(result.data);
         } catch (error) {

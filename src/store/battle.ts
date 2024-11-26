@@ -260,24 +260,24 @@ export const useBattleStore = defineStore("battle", () => {
       }
 
       case "relax": {
-        if (task.settings?.isAds) {
-          returnData = await mainStore.useFetch({ key: task.api });
+        // if (task.settings?.isAds) {
+        //   returnData = await mainStore.useFetch({ key: task.api });
+        // } else {
+        if (isCorrect) {
+          dataStore.addBolts(calculateRelaxMultiplierAmount());
+          addEnergy(settings.value.energyOnCorrect);
+          correctStreak.value += 1;
         } else {
-          if (isCorrect) {
-            dataStore.addBolts(calculateRelaxMultiplierAmount());
-            addEnergy(settings.value.energyOnCorrect);
-            correctStreak.value += 1;
+          if (autoAnswer) {
+            afkCounter.value += 1;
           } else {
-            if (autoAnswer) {
-              afkCounter.value += 1;
-            } else {
-              addEnergy(settings.value.energyOnWrong);
-              afkCounter.value = 0;
-            }
-
-            correctStreak.value = 0;
+            addEnergy(settings.value.energyOnWrong);
+            afkCounter.value = 0;
           }
+
+          correctStreak.value = 0;
         }
+        // }
         break;
       }
     }
