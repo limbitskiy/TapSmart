@@ -158,7 +158,7 @@ const onButton = (pill: Pill, event: MouseEvent) => {
 
     const isCorrect = selectedLeft?.task?.id === selectedRight?.task?.id;
 
-    emitAnswer({ isCorrect, answerString: pill.task.task.answer, task: selectedLeft.task });
+    emitAnswer({ isCorrect, answerString: pill.task.task.answer, task: selectedLeft.task, drawBonus: false });
 
     if (!isCorrect) {
       clearSelected(selectedLeft, selectedRight);
@@ -202,6 +202,7 @@ const autoAnswer = () => {
     isCorrect: false,
     answerString: "",
     autoAnswer: true,
+    drawBonus: false,
     task: smallestIdTask,
   });
 
@@ -216,15 +217,31 @@ const autoAnswer = () => {
     }
   }, 300);
 
-  props.startTaskTimeout(autoAnswer);
+  // if (props.type === "relax") {
+  // props.startTaskTimeout(autoAnswer);
+  // }
 };
 
-const emitAnswer = ({ answerString, isCorrect, task, autoAnswer }: { answerString: string; isCorrect: boolean; task: Task; event?: MouseEvent; autoAnswer?: boolean }) => {
+const emitAnswer = ({
+  answerString,
+  isCorrect,
+  task,
+  autoAnswer,
+  drawBonus,
+}: {
+  answerString: string;
+  isCorrect: boolean;
+  task: Task;
+  event?: MouseEvent;
+  autoAnswer?: boolean;
+  drawBonus?: boolean;
+}) => {
   emit("answer", {
     isCorrect,
     answerString,
     task,
     autoAnswer,
+    drawBonus,
   });
 
   buttonsMissing += 1;
@@ -270,9 +287,9 @@ const animateCorrect = (selectedLeft: Pill, selectedRight: Pill) => {
 const startGame = () => {
   console.log(`starting match pairs locally`);
 
-  if (props.type === "relax") {
-    props.startTaskTimeout(autoAnswer);
-  }
+  // if (props.type === "relax") {
+  //   props.startTaskTimeout(autoAnswer);
+  // }
 
   for (let i = 0; i < settings.maxTasks; i++) {
     const newTask = props.getNextTask();

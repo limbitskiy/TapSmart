@@ -46,9 +46,7 @@ export const useBattleProcessor = () => {
     return currentTask;
   };
 
-  const storeAnswer = ({ task, answerString, msec }: { task: Task; answerString?: string; msec?: number; auto?: boolean }) => {
-    const foundIdx = answers.value.findIndex((answer) => answer.id === task.id);
-
+  const storeAnswer = ({ task, answerString, msec }: { task: Task; answerString: string; msec?: number }) => {
     const answerObject = {
       id: task.id,
       key: task.key,
@@ -56,14 +54,10 @@ export const useBattleProcessor = () => {
       msec,
     };
 
-    if (foundIdx !== -1) {
-      answers.value[foundIdx] = answerObject;
-    } else {
-      answers.value.push(answerObject);
-    }
+    answers.value.push(answerObject);
 
-    // console.log(`answer recorded`);
-    // console.log(answers.value);
+    console.warn(`answer recorded`);
+    console.warn(answers.value);
   };
 
   const cleanAnswers = () => {
