@@ -16,6 +16,7 @@ import { waitFor } from "@/utils";
 
 // types
 import { BattleTypes, BattleState, AnswerProps, Task } from "@/types";
+import { group } from "console";
 
 export const useBattleStore = defineStore("battle", () => {
   const dataStore = useDataStore();
@@ -230,7 +231,14 @@ export const useBattleStore = defineStore("battle", () => {
   };
 
   // latest
-  const handleAnswer = async ({ isCorrect, answerString, task, autoAnswer }: { isCorrect: boolean; answerString: string; task: Task; autoAnswer: boolean }) => {
+  const handleAnswer = async ({ isCorrect, answerString, task, autoAnswer = false }: { isCorrect: boolean; answerString: string; task: Task; autoAnswer?: boolean }) => {
+    console.group();
+    console.log("is correct: ", isCorrect);
+    console.log("answer string:", answerString);
+    console.log(task);
+    console.log("auto answer: ", autoAnswer);
+    console.groupEnd();
+
     let msec;
     let returnData;
 
@@ -260,9 +268,13 @@ export const useBattleStore = defineStore("battle", () => {
             addEnergy(settings.value.energyOnCorrect);
             correctStreak.value += 1;
           } else {
-            if (!autoAnswer) {
+            if (autoAnswer) {
+              afkCounter.value += 1;
+            } else {
               addEnergy(settings.value.energyOnWrong);
+              afkCounter.value = 0;
             }
+
             correctStreak.value = 0;
           }
         }
@@ -562,7 +574,6 @@ export const useBattleStore = defineStore("battle", () => {
     battleStarted.value = true;
     resetBattleStats();
     startBreakpoint("battle");
-    startTaskTimeout();
   };
 
   const stopRelax = () => {

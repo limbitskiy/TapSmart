@@ -53,7 +53,7 @@ const { fetchRelaxPageData, useFetch } = store;
 const { debugMessages, bgColor, HTMLSnapshots } = storeToRefs(store);
 const { battles: locale } = storeToRefs(store.localeStore);
 const { data, afkCounter } = storeToRefs(store.battleStore);
-const { stopRelax, setRelaxModal } = store.battleStore;
+const { startRelax, stopRelax, setRelaxModal } = store.battleStore;
 
 const isChangeMechModalVisible = ref(false);
 const isNoEnergyVisible = ref(false);
@@ -66,7 +66,7 @@ HTMLSnapshots.value = [];
 
 await fetchRelaxPageData();
 
-const onAnswer = ({ isCorrect, answerString, nextTaskDelay, task }) => {
+const onAnswer = ({ isCorrect, answerString, task }) => {
   if (data.value.energy === 0) {
     onNoEnergy();
   }
@@ -111,7 +111,7 @@ const openBoosterModal = () => {
 };
 
 onMounted(() => {
-  // startRelax();
+  startRelax();
   debugMessages.value = [];
 });
 

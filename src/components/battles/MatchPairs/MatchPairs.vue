@@ -91,10 +91,10 @@ const emit = defineEmits<{
   answer: [
     data: {
       isCorrect: boolean;
-      answer: string;
-      event: MouseEvent;
+      answerString: string;
+      event?: MouseEvent;
       task: Task;
-      drawBonus: boolean;
+      drawBonus?: boolean;
       autoAnswer?: boolean;
     }
   ];
@@ -103,11 +103,13 @@ const emit = defineEmits<{
 
 const props = defineProps<{
   type: "relax" | "challenge";
+  getNextTask: () => Task;
+  startTaskTimeout: (callback: () => void) => void;
   locales: {};
 }>();
 
-const { battleStarted, correctStreak, afkCounter, settings: battleSettings } = storeToRefs(store.battleStore);
-const { startTaskTimeout, startBreakpoint, resetBattleStats, getNextTask, addEnergy } = store.battleStore;
+const {} = storeToRefs(store.battleStore);
+const {} = store.battleStore;
 
 const settings = {
   maxTasks: 5,
@@ -156,10 +158,9 @@ const onButton = (pill: Pill, event: MouseEvent) => {
 
     const isCorrect = selectedLeft?.task?.id === selectedRight?.task?.id;
 
+    emitAnswer({ isCorrect, answerString: pill.task.task.answer, task: selectedLeft.task });
+
     if (!isCorrect) {
-      afkCounter.value = 0;
-      correctStreak.value = 0;
-      addEnergy(battleSettings.value.energyOnWrong);
       clearSelected(selectedLeft, selectedRight);
       animateWrong(selectedLeft, selectedRight);
       setTimeout(() => {
@@ -167,8 +168,6 @@ const onButton = (pill: Pill, event: MouseEvent) => {
       }, settings.animationSpeed);
       return;
     }
-
-    emitAnswer({ answerString: pill.task.task.answer, isCorrect, task: pill.task, event });
 
     animateCorrect(selectedLeft, selectedRight);
 
@@ -190,7 +189,7 @@ const onButton = (pill: Pill, event: MouseEvent) => {
       }, settings.animationSpeed);
 
       if (props.type === "relax") {
-        startTaskTimeout(autoAnswer);
+        props.startTaskTimeout(autoAnswer);
       }
     }, settings.animationSpeed);
   }
@@ -217,15 +216,13 @@ const autoAnswer = () => {
     }
   }, 300);
 
-  startTaskTimeout(autoAnswer);
+  props.startTaskTimeout(autoAnswer);
 };
 
-const emitAnswer = ({ answerString, isCorrect, task, event, autoAnswer }: { answerString: string; isCorrect: boolean; task: Task; event?: MouseEvent; autoAnswer: boolean }) => {
+const emitAnswer = ({ answerString, isCorrect, task, autoAnswer }: { answerString: string; isCorrect: boolean; task: Task; event?: MouseEvent; autoAnswer?: boolean }) => {
   emit("answer", {
     isCorrect,
-    answer: answerString,
-    event,
-    drawBonus: false,
+    answerString,
     task,
     autoAnswer,
   });
@@ -235,7 +232,7 @@ const emitAnswer = ({ answerString, isCorrect, task, event, autoAnswer }: { answ
 
 const fillTaskAmount = (amount: number) => {
   for (let i = 0; i < amount; i++) {
-    const newTask = getNextTask();
+    const newTask = props.getNextTask();
     addTask(newTask);
   }
 };
@@ -273,16 +270,12 @@ const animateCorrect = (selectedLeft: Pill, selectedRight: Pill) => {
 const startGame = () => {
   console.log(`starting match pairs locally`);
 
-  battleStarted.value = true;
-  resetBattleStats();
-  startBreakpoint("battle");
-
   if (props.type === "relax") {
-    startTaskTimeout(autoAnswer);
+    props.startTaskTimeout(autoAnswer);
   }
 
   for (let i = 0; i < settings.maxTasks; i++) {
-    const newTask = getNextTask();
+    const newTask = props.getNextTask();
     addTask(newTask);
   }
 };

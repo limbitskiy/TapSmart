@@ -90,13 +90,6 @@ bgColor.value = "linear-gradient(180deg, #000B14 17.5%, #A90306 100%)";
 
 await fetchChallengePageData();
 
-const onMechMounted = () => {};
-
-const onMechUnmounted = () => {
-  // optional
-  stopChallenge();
-};
-
 const onAnswer = async () => {
   if (needToMakeScreenshot) {
     setTimeout(() => {
@@ -148,5 +141,6 @@ onMounted(() => {
 
 onUnmounted(() => {
   ctx.revert();
+  stopChallenge();
 });
 </script>

@@ -4,8 +4,9 @@
       v-if="mountedMechanic"
       :is="mountedMechanic"
       :type="currentBattleMode"
-      :task="currentTask"
       :locales="locale"
+      :startTaskTimeout="startTaskTimeout"
+      :getNextTask="getNextTask"
       @answer="onAnswer"
       @changeMech="() => emit('changeMech')"
     />
@@ -50,19 +51,19 @@ import { Bonus, Task } from "@/types";
 import { useMainStore } from "@/store/main";
 
 // battle mechanics
-import YesNo from "@/components/battles/YesNo.vue";
+import YesNo from "@/components/battles/YesNo/YesNo.vue";
 import FourAnswers from "@/components/battles/FourAnswers.vue";
 import MatchPairs from "@/components/battles/MatchPairs/MatchPairs.vue";
 
 console.log(`Battle Mech created`);
 
-interface AnswerProps {
+interface MechanicAnswerProps {
   isCorrect: boolean;
-  answer: string;
-  event: MouseEvent;
+  answerString: string;
+  task: Task;
+  event?: MouseEvent;
   drawBonus?: boolean;
   autoAnswer?: boolean;
-  task: Task;
 }
 
 const emit = defineEmits<{
@@ -75,8 +76,8 @@ const store = useMainStore();
 
 // const { useFetch, redirectTo } = store;
 const { battles: locale } = storeToRefs(store.localeStore);
-const { data, сurrentMechanicName, currentBattleMode, boostersUsed } = storeToRefs(store.battleStore);
-const { handleAnswer, calculateRelaxMultiplierAmount } = store.battleStore;
+const { сurrentMechanicName, currentBattleMode, boostersUsed } = storeToRefs(store.battleStore);
+const { handleAnswer, calculateRelaxMultiplierAmount, getNextTask, startTaskTimeout } = store.battleStore;
 
 const bonuses = ref<Bonus[]>([]);
 const mountedMechanic = ref();
@@ -105,22 +106,22 @@ watch(
   }
 );
 
-const onAnswer = async ({ isCorrect, answer, event, drawBonus = true, task, autoAnswer = false }: AnswerProps) => {
+const onAnswer = async ({ isCorrect, answerString, event, drawBonus = true, task, autoAnswer = false }: MechanicAnswerProps) => {
   if (isCorrect && drawBonus) {
     drawBonusAnimation(event);
   }
 
   if (task.settings?.isAds && task.api) {
-    const res = await handleAnswer({ isCorrect, answerString: answer, task });
+    const res = await handleAnswer({ isCorrect, answerString, task });
 
     if (res.action === "start-challenge") {
       emit("startChallenge");
     }
   } else {
-    handleAnswer({ isCorrect, answerString: answer, task, autoAnswer });
+    handleAnswer({ isCorrect, answerString, task, autoAnswer });
   }
 
-  emit("answer", { isCorrect, answerString: answer, task });
+  emit("answer", { isCorrect, answerString, task });
 };
 
 const drawBonusAnimation = ({ x, y }: { x: number; y: number }) => {

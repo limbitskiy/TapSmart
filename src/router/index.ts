@@ -20,7 +20,7 @@ import Waiting from "@/views/Waiting.vue";
 import IntroView from "@/views/IntroView.vue";
 
 // battles
-import YesNo from "@/components/battles/YesNo.vue";
+import YesNo from "@/components/battles/YesNo/YesNo.vue";
 import FourAnswers from "@/components/battles/FourAnswers.vue";
 
 // stores

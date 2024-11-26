@@ -315,13 +315,13 @@ onMounted(() => {
         }
       }
 
-      setTimeout(() => {
-        introProgressFinished.value = true;
+      // setTimeout(() => {
+      //   introProgressFinished.value = true;
 
-        if (assetsPreloaded.value) {
-          startApp();
-        }
-      }, 1000);
+      // if (assetsPreloaded.value) {
+      startApp();
+      // }
+      // }, 1000);
     }
   });
 });
