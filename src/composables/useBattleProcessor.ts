@@ -11,6 +11,7 @@ export const useBattleProcessor = () => {
 
   let tasks: Task[] | [] = [];
   let lastTask: Task | null = null;
+  let lastTaskWithApi: Task | null = null;
   const answers = ref<Answer[]>([]);
 
   const getNextTask = () => {
@@ -21,27 +22,28 @@ export const useBattleProcessor = () => {
     const clone = JSON.parse(JSON.stringify(tasks));
     clone.sort((a, b) => a.id - b.id);
 
-    let found;
+    let currentTask;
 
     if (!lastTask) {
-      found = clone[0];
+      currentTask = clone[0];
     } else {
       const idx = clone.findIndex((task) => task.id === lastTask?.id);
 
       if (clone[idx + 1]) {
-        found = clone[idx + 1];
+        currentTask = clone[idx + 1];
       } else {
-        found = clone[0];
+        currentTask = clone[0];
       }
     }
 
     // make an api call
-    if (found.api) {
-      mainStore.useFetch({ key: found.api });
+    if (currentTask.api) {
+      lastTaskWithApi = currentTask;
+      mainStore.useFetch({ key: currentTask.api, data: { lastTaskId: lastTaskWithApi?.id } });
     }
 
-    lastTask = found;
-    return found;
+    lastTask = currentTask;
+    return currentTask;
   };
 
   const storeAnswer = ({ task, answerString, msec }: { task: Task; answerString?: string; msec?: number; auto?: boolean }) => {
@@ -52,7 +54,6 @@ export const useBattleProcessor = () => {
       key: task.key,
       answer: answerString,
       msec,
-      lastTaskId: lastTask?.id,
     };
 
     if (foundIdx !== -1) {
@@ -99,5 +100,6 @@ export const useBattleProcessor = () => {
     expandTasks,
     answers,
     lastTask,
+    lastTaskWithApi,
   };
 };

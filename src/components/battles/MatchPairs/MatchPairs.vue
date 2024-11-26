@@ -121,9 +121,12 @@ let selected = ref({
   right: null,
 });
 
+const bothPillsAreSelected = computed(() => selected.value.left && selected.value.right);
+
+let isAnimationRunning = false;
 let buttonsMissing = 0;
 
-const onButton = (pill: Pill, event: MouseEvent) => {
+const handleSelection = (pill) => {
   if (pill.id % 2 === 0) {
     if (selected.value.left?.selected) {
       selected.value.left.selected = false;
@@ -137,30 +140,45 @@ const onButton = (pill: Pill, event: MouseEvent) => {
     selected.value.right = pill;
     selected.value.right.selected = true;
   }
+};
 
-  if (selected.value.left && selected.value.right) {
-    const isCorrect = selected.value.left.task.id === selected.value.right.task.id;
+const onButton = (pill: Pill, event: MouseEvent) => {
+  handleSelection(pill);
+
+  if (bothPillsAreSelected.value && !isAnimationRunning) {
+    isAnimationRunning = true;
+
+    // make local copy
+    const selectedLeft = selected.value.left!;
+    const selectedRight = selected.value.right!;
+
+    const isCorrect = selectedLeft?.task?.id === selectedRight?.task?.id;
+    selected.value.left = null;
+    selected.value.right = null;
 
     if (!isCorrect) {
       correctStreak.value = 0;
-      animateWrong();
+      clearSelected(selectedLeft, selectedRight);
+      animateWrong(selectedLeft, selectedRight);
       setTimeout(() => {
-        clearSelected();
+        isAnimationRunning = false;
       }, settings.animationSpeed);
       return;
     }
 
-    handleAnswer({ answerString: pill.task.task.answer, isCorrect, task: pill.task, event });
+    emitAnswer({ answerString: pill.task.task.answer, isCorrect, task: pill.task, event });
 
-    animateCorrect();
+    animateCorrect(selectedLeft, selectedRight);
 
     setTimeout(() => {
       // remove this task
       removeTask(pill.task.id);
 
-      removeSuccess();
+      clearSelected(selectedLeft, selectedRight);
 
-      clearSelected();
+      removeSuccess(selectedLeft, selectedRight);
+
+      isAnimationRunning = false;
 
       setTimeout(() => {
         if (buttonsMissing >= 2) {
@@ -176,7 +194,7 @@ const onButton = (pill: Pill, event: MouseEvent) => {
   }
 };
 
-const handleAnswer = ({ answerString, isCorrect, task, event, autoAnswer }: { answerString: string; isCorrect: boolean; task: Task; event?: MouseEvent; autoAnswer: boolean }) => {
+const emitAnswer = ({ answerString, isCorrect, task, event, autoAnswer }: { answerString: string; isCorrect: boolean; task: Task; event?: MouseEvent; autoAnswer: boolean }) => {
   emit("answer", {
     isCorrect,
     answer: answerString,
@@ -196,43 +214,40 @@ const fillTaskAmount = (amount: number) => {
   }
 };
 
-const clearSelected = () => {
-  if (selected.value.left) {
-    selected.value.left.selected = false;
+const clearSelected = (selectedLeft: Pill, selectedRight: Pill) => {
+  if (selectedLeft) {
+    selectedLeft.selected = false;
   }
 
-  if (selected.value.right) {
-    selected.value.right.selected = false;
+  if (selectedRight) {
+    selectedRight.selected = false;
   }
-
-  selected.value.left = null;
-  selected.value.right = null;
 };
 
-const removeSuccess = () => {
-  selected.value.left.success = false;
-  selected.value.right.success = false;
+const removeSuccess = (selectedLeft: Pill, selectedRight: Pill) => {
+  selectedLeft.success = false;
+  selectedRight.success = false;
 };
 
-const animateWrong = () => {
-  selected.value.left.wrong = true;
-  selected.value.right.wrong = true;
+const animateWrong = (selectedLeft: Pill, selectedRight: Pill) => {
+  selectedLeft.wrong = true;
+  selectedRight.wrong = true;
 
   setTimeout(() => {
-    selected.value.left.wrong = false;
-    selected.value.right.wrong = false;
+    selectedLeft.wrong = false;
+    selectedRight.wrong = false;
   }, settings.animationSpeed);
 };
 
-const animateCorrect = () => {
-  selected.value.left.success = true;
-  selected.value.right.success = true;
+const animateCorrect = (selectedLeft: Pill, selectedRight: Pill) => {
+  selectedLeft.success = true;
+  selectedRight.success = true;
 };
 
 const timeoutCallback = () => {
   const smallestIdTask = getSmallestIdTask();
 
-  handleAnswer({
+  emitAnswer({
     isCorrect: false,
     answerString: "",
     autoAnswer: true,

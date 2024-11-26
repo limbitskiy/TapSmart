@@ -301,7 +301,6 @@ export const useMainStore = defineStore("main", () => {
               data: {
                 ...data,
                 answers: battleStore.answers,
-                lastTaskId: battleStore.lastTaskId,
               },
               service: state.value.service,
             },
