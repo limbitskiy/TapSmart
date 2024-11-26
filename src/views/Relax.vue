@@ -8,13 +8,18 @@
 
     <ChallengeButton @challenge="openBoosterModal" />
 
+    <!-- battle header -->
+    <BattleHeader :locale="locale" :title="headerTitle" @changeMech="onChangeMech" />
+
     <!-- battle mechanic -->
     <BattleMechanic @changeMech="onChangeMech" @answer="onAnswer" @startChallenge="openBoosterModal" />
 
     <!-- mechanic change modal -->
     <Teleport to="#modals">
       <Modal id="mechanic-change-modal" v-model:visible="isChangeMechModalVisible">
-        <ChangeMechanic />
+        <template v-slot="{ closeModal }">
+          <ChangeMechanic @close="closeModal" />
+        </template>
       </Modal>
     </Teleport>
 
@@ -52,7 +57,7 @@ const store = useMainStore();
 const { fetchRelaxPageData, useFetch } = store;
 const { debugMessages, bgColor, HTMLSnapshots } = storeToRefs(store);
 const { battles: locale } = storeToRefs(store.localeStore);
-const { data, afkCounter } = storeToRefs(store.battleStore);
+const { data, afkCounter, сurrentMechanicName } = storeToRefs(store.battleStore);
 const { startRelax, stopRelax, setRelaxModal } = store.battleStore;
 
 const isChangeMechModalVisible = ref(false);
@@ -97,6 +102,8 @@ watch(afkCounter, (val) => {
     isAFKModalVisible.value = true;
   }
 });
+
+const headerTitle = computed(() => locale.value[`${сurrentMechanicName.value}_title`]);
 
 const onNoEnergy = () => {
   useFetch({ key: "option_activate", data: { type: "extra_energy", showModal: 1 } });
