@@ -84,12 +84,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from "vue";
-import { getAsset } from "@/utils";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import { getAsset, waitFor } from "@/utils";
 import gsap from "gsap";
 
+// composables
+import { useActions } from "@/composables/useActions";
+
 // types
-import { Task } from "@/types";
+import { AnswerProps, Task } from "@/types";
 
 interface Button {
   success: boolean;
@@ -103,26 +106,29 @@ const emit = defineEmits<{
       isCorrect: boolean;
       answerString: string;
       event?: MouseEvent;
-      task: Task;
+      task?: Task;
       drawBonus?: boolean;
       autoAnswer?: boolean;
     }
   ];
   changeMech: [];
+  startChallenge: [];
 }>();
 
 const props = defineProps<{
   type: "relax" | "challenge";
   getNextTask: () => Task;
-  resetBattleProcessor: () => void;
-  startTaskTimeout: (callback: () => void) => void;
   locales: {};
+  taskTimeoutStatus: { timeout: number | null; status: string };
+  startTaskTimeout: (customTimeout?: number) => void;
+  pauseTaskTimeout: () => void;
 }>();
 
 const currentTask = ref();
-
 const settings = {};
 let gsapCtx;
+
+const { useAction } = useActions(emit);
 
 const buttons = ref({
   no: { success: false, danger: false, type: "no" },
@@ -136,8 +142,39 @@ const correctAnswer = ref({
   timeout: null,
 });
 
-const onButton = (button: Button, event: MouseEvent) => {
+// watching task timeout
+watch(
+  props.taskTimeoutStatus,
+  (val) => {
+    if (val.status === "stopped") {
+      autoAnswer();
+    }
+  },
+  {
+    deep: true,
+  }
+);
+
+const submitTask = async (answerProps: AnswerProps) => {
+  emit("answer", answerProps);
+  await useAction(answerProps.task);
+};
+
+const autoAnswer = async () => {
+  await submitTask({
+    isCorrect: false,
+    answerString: "",
+    autoAnswer: true,
+    task: currentTask.value,
+  });
+
+  nextTask();
+};
+
+const onButton = async (button: Button, event: MouseEvent) => {
   if (correctAnswer.value.visible) return;
+
+  props.pauseTaskTimeout();
 
   const buttonMap = {
     yes: 0,
@@ -148,16 +185,15 @@ const onButton = (button: Button, event: MouseEvent) => {
 
   const isCorrect = currentTask.value.correct === currentTask.value.task.variants[variant];
 
-  emitAnswer({ answerString: currentTask.value.task.variants[variant], isCorrect, task: currentTask.value, event });
-
   // animate buttons
   if (isCorrect) {
     button.success = true;
   } else {
     button.danger = true;
 
-    if (props.type === "relax") {
+    if (props.type === "relax" && !currentTask.value.action?.api) {
       animateCorrectAnswer();
+      await waitFor(1800);
     }
   }
 
@@ -166,9 +202,68 @@ const onButton = (button: Button, event: MouseEvent) => {
     button.danger = false;
   }, 300);
 
-  currentTask.value = props.getNextTask();
+  await submitTask({ answerString: currentTask.value.task.variants[variant], isCorrect, task: currentTask.value, event });
 
-  // debug
+  nextTask();
+};
+
+const animateCorrectAnswer = async () => {
+  clearTimeout(correctAnswer.value.timeout);
+
+  correctAnswer.value.visible = true;
+  correctAnswer.value.question = currentTask.value.task.question;
+  correctAnswer.value.answer = currentTask.value.correct;
+
+  setTimeout(() => {
+    gsapCtx.animateArrow();
+  }, 300);
+
+  setTimeout(() => {
+    gsapCtx.animateAnswer();
+  }, 600);
+
+  correctAnswer.value.timeout = setTimeout(() => {
+    correctAnswer.value.visible = false;
+    correctAnswer.value.question = "";
+    correctAnswer.value.answer = "";
+  }, 1500);
+};
+
+const setup = () => {
+  gsapCtx = gsap.context(() => {});
+
+  gsapCtx.add("animateArrow", () => {
+    gsap.to(".correct-answer-arrow", { opacity: 1, y: 0, duration: 0.5 });
+  });
+  gsapCtx.add("animateAnswer", () => {
+    gsap.to(".correct-answer-answer", { opacity: 1, y: 0, duration: 0.5 });
+  });
+};
+
+const startGame = () => {
+  nextTask();
+};
+
+const nextTask = () => {
+  const newTask = props.getNextTask();
+  props.startTaskTimeout(newTask.settings?.timeout);
+  currentTask.value = newTask;
+};
+
+onMounted(() => {
+  console.log(`yes-no mounted`);
+
+  setup();
+
+  startGame();
+});
+
+onUnmounted(() => {
+  gsapCtx.revert();
+});
+</script>
+
+<!-- // debug
   // currentTask.value = {
   //   api: "relax_action",
   //   bonus_score: null,
@@ -195,101 +290,4 @@ const onButton = (button: Button, event: MouseEvent) => {
   //     variants: ["Да, конечно", "Да, прямо сейчас"],
   //     variantsData: null,
   //   },
-  // };
-};
-
-const emitAnswer = ({
-  answerString,
-  isCorrect,
-  task,
-  autoAnswer,
-  drawBonus,
-  event,
-}: {
-  answerString: string;
-  isCorrect: boolean;
-  task: Task;
-  event?: MouseEvent;
-  autoAnswer?: boolean;
-  drawBonus?: boolean;
-}) => {
-  emit("answer", {
-    isCorrect,
-    answerString,
-    task,
-    autoAnswer,
-    drawBonus,
-    event,
-  });
-};
-
-const animateCorrectAnswer = () => {
-  clearTimeout(correctAnswer.value.timeout);
-
-  correctAnswer.value.visible = true;
-  correctAnswer.value.question = currentTask.value.task.question;
-  correctAnswer.value.answer = currentTask.value.correct;
-
-  setTimeout(() => {
-    gsapCtx.animateArrow();
-  }, 300);
-
-  setTimeout(() => {
-    gsapCtx.animateAnswer();
-  }, 600);
-
-  correctAnswer.value.timeout = setTimeout(() => {
-    correctAnswer.value.visible = false;
-    correctAnswer.value.question = "";
-    correctAnswer.value.answer = "";
-  }, 1500);
-};
-
-const autoAnswer = () => {
-  emitAnswer({
-    isCorrect: false,
-    answerString: "",
-    autoAnswer: true,
-    task: currentTask.value,
-  });
-
-  if (props.type === "relax") {
-    props.startTaskTimeout(autoAnswer);
-  }
-};
-
-const setup = () => {
-  props.resetBattleProcessor();
-
-  gsapCtx = gsap.context(() => {});
-
-  gsapCtx.add("animateArrow", () => {
-    gsap.to(".correct-answer-arrow", { opacity: 1, y: 0, duration: 0.5 });
-  });
-  gsapCtx.add("animateAnswer", () => {
-    gsap.to(".correct-answer-answer", { opacity: 1, y: 0, duration: 0.5 });
-  });
-};
-
-const startGame = () => {
-  console.log(`starting yes-no locally`);
-
-  if (props.type === "relax") {
-    // props.startTaskTimeout(autoAnswer);
-  }
-
-  currentTask.value = props.getNextTask();
-};
-
-onMounted(() => {
-  console.log(`yes-no mounted`);
-
-  setup();
-
-  startGame();
-});
-
-onUnmounted(() => {
-  gsapCtx.revert();
-});
-</script>
+  // }; -->

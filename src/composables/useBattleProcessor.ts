@@ -11,13 +11,12 @@ export const useBattleProcessor = () => {
 
   let tasks: Task[] | [] = [];
   let lastTask: Task | null = null;
-  let lastTaskWithApi: Task | null = null;
   const answers = ref<Answer[]>([]);
 
   const getNextTask = () => {
-    console.log(`Getting new task`);
-    console.log(`lastTask:`);
-    console.log(lastTask);
+    // console.log(`Getting new task`);
+    // console.log(`lastTask:`);
+    // console.log(lastTask);
 
     if (!tasks) {
       console.error(`No tasks: battle processor`);
@@ -42,8 +41,7 @@ export const useBattleProcessor = () => {
 
     // make an api call
     if (currentTask.api) {
-      lastTaskWithApi = currentTask;
-      mainStore.useFetch({ key: currentTask.api, data: { lastTaskId: lastTaskWithApi?.id } });
+      mainStore.useFetch({ key: currentTask.api, data: { lastTaskId: currentTask?.id } });
     }
 
     lastTask = currentTask;
@@ -60,8 +58,8 @@ export const useBattleProcessor = () => {
 
     answers.value.push(answerObject);
 
-    console.warn(`answer recorded`);
-    console.warn(answers.value);
+    // console.warn(`answer recorded`);
+    // console.warn(answers.value);
   };
 
   const cleanAnswers = () => {
@@ -98,6 +96,5 @@ export const useBattleProcessor = () => {
     expandTasks,
     answers,
     lastTask,
-    lastTaskWithApi,
   };
 };

@@ -9,7 +9,7 @@ import { onBeforeUnmount, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset, replaceWithSpecialSymbols } from "@/utils";
 
-// Backend Modal Content
+// backend modal content
 import BackendModalContent from "@/components/modals/BackendModalContent.vue";
 
 // store
@@ -31,7 +31,6 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   // console.log(`unmounted`);
-
   setBackendModal("closed");
 });
 </script>

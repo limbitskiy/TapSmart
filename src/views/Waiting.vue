@@ -118,7 +118,7 @@ const store = useMainStore();
 
 const { fetchWaitingData, useFetch, redirectTo, sendInviteAnalitycsData, hideNotification, takeHTMLSnapshot } = store;
 const { data } = storeToRefs(store.battleStore);
-const { startBreakpoint, stopBreakpoint, decreaseWaitingTimer } = store.battleStore;
+const { startBreakpoint, stopBreakpoint, changeWaitingTimer } = store.battleStore;
 const { battles: locale } = storeToRefs(store.localeStore);
 
 const startBtnBlocked = ref(false);
@@ -176,7 +176,7 @@ onMounted(() => {
       return;
     }
 
-    decreaseWaitingTimer();
+    changeWaitingTimer(-1000);
   }, 1000);
 });
 

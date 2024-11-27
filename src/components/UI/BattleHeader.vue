@@ -21,7 +21,7 @@
     </Button>
 
     <div class="right flex items-center gap-3">
-      <CircleCountdown :strokeWidth="2" color="grey" :size="20" />
+      <CircleCountdown :taskTimeoutStatus="taskTimeoutStatus" :strokeWidth="2" color="grey" :size="20" />
       <VolumeControl />
     </div>
   </div>
@@ -37,5 +37,6 @@ const emit = defineEmits<{
 const props = defineProps<{
   locale: {};
   title: string;
+  taskTimeoutStatus: { timeout: number | null; status: string };
 }>();
 </script>

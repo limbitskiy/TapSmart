@@ -24,4 +24,5 @@ src/constants.ts
 *.sln
 *.sw?
 
-todo
+TODO
+commonCode

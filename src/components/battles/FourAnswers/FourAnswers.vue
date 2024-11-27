@@ -48,7 +48,7 @@
       <div class="answer-buttons grid w-full grid-cols-2 grid-rows-2 gap-4 leading-5">
         <Button
           v-for="button in buttons"
-          class="four-answer-btn"
+          class="four-answer-btn break-words"
           :class="{
             correct: button.success,
             wrong: button.danger,
@@ -56,7 +56,7 @@
           style="background: linear-gradient(180deg, rgba(4, 4, 4, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%); transition: 0.2s"
           @click="(event: MouseEvent) => onButton(button, event)"
         >
-          {{ button.label }}
+          <span class="fira-regular text-base line-clamp-2" style="line-height: 20px">{{ button.label }}</span>
         </Button>
       </div>
     </div>
@@ -64,9 +64,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from "vue";
-import { getAsset } from "@/utils";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import { getAsset, waitFor } from "@/utils";
 import gsap from "gsap";
+
+// composables
+import { useActions } from "@/composables/useActions";
 
 // types
 import { Task } from "@/types";
@@ -90,20 +93,23 @@ const emit = defineEmits<{
     }
   ];
   changeMech: [];
+  startChallenge: [];
 }>();
 
 const props = defineProps<{
   type: "relax" | "challenge";
   getNextTask: () => Task;
-  resetBattleProcessor: () => void;
-  startTaskTimeout: (callback: () => void) => void;
   locales: {};
+  taskTimeoutStatus: { timeout: number | null; status: string };
+  startTaskTimeout: (customTimeout?: number) => void;
+  pauseTaskTimeout: () => void;
 }>();
 
 const currentTask = ref();
-
 const settings = {};
 let gsapCtx;
+
+const { useAction } = useActions(emit);
 
 const buttons = ref([
   { id: 0, success: false, danger: false, label: "" },
@@ -119,8 +125,22 @@ const correctAnswer = ref({
   timeout: null,
 });
 
-const loadNewTask = () => {
+// watching task timeout
+watch(
+  props.taskTimeoutStatus,
+  (val) => {
+    if (val.status === "stopped") {
+      autoAnswer();
+    }
+  },
+  {
+    deep: true,
+  }
+);
+
+const nextTask = () => {
   const newTask = props.getNextTask();
+  props.startTaskTimeout(newTask.settings?.timeout);
   currentTask.value = newTask;
 
   for (let i = 0; i < buttons.value.length; i++) {
@@ -128,12 +148,12 @@ const loadNewTask = () => {
   }
 };
 
-const onButton = (button: Button, event: MouseEvent) => {
+const onButton = async (button: Button, event: MouseEvent) => {
   if (correctAnswer.value.visible) return;
 
-  const isCorrect = currentTask.value.correct === button.label;
+  props.pauseTaskTimeout();
 
-  emitAnswer({ answerString: button.label, isCorrect, task: currentTask.value, event });
+  const isCorrect = currentTask.value.correct === button.label;
 
   // animate buttons
   if (isCorrect) {
@@ -141,8 +161,9 @@ const onButton = (button: Button, event: MouseEvent) => {
   } else {
     button.danger = true;
 
-    if (props.type === "relax") {
+    if (props.type === "relax" && !currentTask.value.action?.api) {
       animateCorrectAnswer();
+      await waitFor(1800);
     }
   }
 
@@ -151,32 +172,14 @@ const onButton = (button: Button, event: MouseEvent) => {
     button.danger = false;
   }, 300);
 
-  loadNewTask();
+  await submitTask({ answerString: button.label, isCorrect, task: currentTask.value, event });
+
+  nextTask();
 };
 
-const emitAnswer = ({
-  answerString,
-  isCorrect,
-  task,
-  autoAnswer,
-  drawBonus,
-  event,
-}: {
-  answerString: string;
-  isCorrect: boolean;
-  task: Task;
-  event?: MouseEvent;
-  autoAnswer?: boolean;
-  drawBonus?: boolean;
-}) => {
-  emit("answer", {
-    isCorrect,
-    answerString,
-    task,
-    autoAnswer,
-    drawBonus,
-    event,
-  });
+const submitTask = async (answerProps: AnswerProps) => {
+  emit("answer", answerProps);
+  await useAction(answerProps.task);
 };
 
 const animateCorrectAnswer = () => {
@@ -201,22 +204,19 @@ const animateCorrectAnswer = () => {
   }, 1500);
 };
 
-const autoAnswer = () => {
-  emitAnswer({
+const autoAnswer = async () => {
+  await submitTask({
     isCorrect: false,
     answerString: "",
     autoAnswer: true,
     task: currentTask.value,
   });
 
-  if (props.type === "relax") {
-    props.startTaskTimeout(autoAnswer);
-  }
+  nextTask();
+  console.log(`auto next task`);
 };
 
 const setup = () => {
-  props.resetBattleProcessor();
-
   gsapCtx = gsap.context(() => {});
 
   gsapCtx.add("animateArrow", () => {
@@ -228,13 +228,7 @@ const setup = () => {
 };
 
 const startGame = () => {
-  console.log(`starting four answers locally`);
-
-  if (props.type === "relax") {
-    // props.startTaskTimeout(autoAnswer);
-  }
-
-  loadNewTask();
+  nextTask();
 };
 
 onMounted(() => {

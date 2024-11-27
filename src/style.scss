@@ -179,7 +179,8 @@
   transition: background-color 0.2s ease;
 
   &.selected {
-    outline: 1px solid #2c93da;
+    // outline: 1px solid #2c93da;
+    box-shadow: inset 0 0 0px 2px #2c93da;
   }
 
   &.wrong {

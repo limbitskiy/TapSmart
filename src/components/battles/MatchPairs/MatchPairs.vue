@@ -16,7 +16,7 @@
       <!-- buttons -->
       <div class="answer-buttons grid w-full grid-cols-2 gap-2 leading-5 flex-1">
         <div class="left grid grid-rows-[repeat(5,_minmax(50px,_60px))] gap-2 content-center">
-          <div v-for="pill in leftPills" :key="pill.id" class="overflow-hidden">
+          <div v-for="pill in leftPills" :key="pill.id" class="overflow-hidden rounded-xl">
             <Transition name="match-pairs-buttons" mode="out-in">
               <Button
                 v-if="pill.task"
@@ -30,12 +30,13 @@
           </div>
         </div>
         <div class="right grid grid-rows-[repeat(5,_minmax(50px,_60px))] gap-2 content-center">
-          <div v-for="pill in rightPills" :key="pill.id" class="overflow-hidden">
+          <div v-for="pill in rightPills" :key="pill.id" class="overflow-hidden rounded-xl">
             <Transition name="match-pairs-buttons" mode="out-in">
               <Button
                 v-if="pill.task"
                 class="match-pairs-btn w-full h-full !px-2 break-words"
                 :class="{ selected: pill.selected, success: pill.success, wrong: pill.wrong }"
+                style="background: linear-gradient(180deg, rgba(4, 4, 4, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%)"
                 @click="(event: MouseEvent) => onButton(pill, event)"
               >
                 <span class="fira-regular text-base line-clamp-2" style="line-height: 20px">{{ pill.task.task?.answer }}</span>
@@ -49,11 +50,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { getAsset } from "@/utils";
 
 // types
-import { Task } from "@/types";
+import { AnswerProps, Task } from "@/types";
 
 // logic
 import { useMatchPairsLogic } from "./useMatchPairsLogic";
@@ -72,7 +73,7 @@ const emit = defineEmits<{
       isCorrect: boolean;
       answerString: string;
       event?: MouseEvent;
-      task: Task;
+      task?: Task;
       drawBonus?: boolean;
       autoAnswer?: boolean;
     }
@@ -83,9 +84,10 @@ const emit = defineEmits<{
 const props = defineProps<{
   type: "relax" | "challenge";
   getNextTask: () => Task;
-  resetBattleProcessor: () => void;
-  startTaskTimeout: (callback: () => void) => void;
   locales: {};
+  taskTimeoutStatus: { timeout: number | null; status: string };
+  startTaskTimeout: (customTimeout?: number) => void;
+  pauseTaskTimeout: () => void;
 }>();
 
 const settings = {
@@ -104,6 +106,19 @@ const bothPillsAreSelected = computed(() => selected.value.left && selected.valu
 
 let isAnimationRunning = false;
 let buttonsMissing = 0;
+
+// watching task timeout
+watch(
+  props.taskTimeoutStatus,
+  (val) => {
+    if (val.status === "stopped") {
+      autoAnswer();
+    }
+  },
+  {
+    deep: true,
+  }
+);
 
 const handleSelection = (pill: Pill) => {
   if (pill.id % 2 === 0) {
@@ -135,7 +150,7 @@ const onButton = (pill: Pill, event: MouseEvent) => {
 
     const isCorrect = selectedLeft?.task?.id === selectedRight?.task?.id;
 
-    emitAnswer({ isCorrect, answerString: pill.task.task.answer, task: selectedLeft.task, drawBonus: false });
+    emitAnswer({ isCorrect, answerString: pill.task.task.answer, task: selectedLeft.task, event });
 
     if (!isCorrect) {
       clearSelected(selectedLeft, selectedRight);
@@ -165,9 +180,7 @@ const onButton = (pill: Pill, event: MouseEvent) => {
         }
       }, settings.animationSpeed);
 
-      if (props.type === "relax") {
-        props.startTaskTimeout(autoAnswer);
-      }
+      props.startTaskTimeout();
     }, settings.animationSpeed);
   }
 };
@@ -193,31 +206,11 @@ const autoAnswer = () => {
     }
   }, 300);
 
-  if (props.type === "relax") {
-    props.startTaskTimeout(autoAnswer);
-  }
+  props.startTaskTimeout();
 };
 
-const emitAnswer = ({
-  answerString,
-  isCorrect,
-  task,
-  autoAnswer,
-  drawBonus,
-}: {
-  answerString: string;
-  isCorrect: boolean;
-  task: Task;
-  autoAnswer?: boolean;
-  drawBonus?: boolean;
-}) => {
-  emit("answer", {
-    isCorrect,
-    answerString,
-    task,
-    autoAnswer,
-    drawBonus,
-  });
+const emitAnswer = (props: AnswerProps) => {
+  emit("answer", props);
 
   buttonsMissing += 1;
 };
@@ -260,25 +253,15 @@ const animateCorrect = (selectedLeft: Pill, selectedRight: Pill) => {
 };
 
 const startGame = () => {
-  console.log(`starting match pairs locally`);
-
-  if (props.type === "relax") {
-    // props.startTaskTimeout(autoAnswer);
-  }
-
-  props.resetBattleProcessor();
-
   for (let i = 0; i < settings.maxTasks; i++) {
     const newTask = props.getNextTask();
     addTask(newTask);
   }
+
+  props.startTaskTimeout();
 };
 
-const applySettings = () => {
-  if (props.type === "relax") {
-  } else if (props.type === "challenge") {
-  }
-};
+const applySettings = () => {};
 
 onMounted(() => {
   console.log(`match pairs mounted`);
