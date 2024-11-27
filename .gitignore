@@ -23,3 +23,5 @@ src/constants.ts
 *.njsproj
 *.sln
 *.sw?
+
+todo
