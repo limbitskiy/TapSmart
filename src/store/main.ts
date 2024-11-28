@@ -65,7 +65,7 @@ export const useMainStore = defineStore("main", () => {
 
   const requestPending = ref(false);
   const requestQueue = ref([]);
-  const bgColor = ref(null);
+  const bgColor = ref("");
 
   const HTMLSnapshots = ref<string[]>([]);
 
@@ -412,6 +412,10 @@ export const useMainStore = defineStore("main", () => {
     });
   };
 
+  const setBgColor = (color: string) => {
+    bgColor.value = color;
+  };
+
   window.showNotification = showTestNotification;
 
   // watch(
@@ -437,6 +441,7 @@ export const useMainStore = defineStore("main", () => {
     debugMessages,
     HTMLSnapshots,
     bgColor,
+    setBgColor,
     startApp,
     fetchFriendsList,
     getOnlineFriends,

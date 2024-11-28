@@ -185,6 +185,16 @@ const createImagesFromSnapshots = async () => {
     screenshots.push(url);
   }
 
+  // debug
+  screenshots.forEach((scr, idx) => {
+    // if (idx === 4) {
+    var link = document.createElement("a");
+    link.download = `my-image-name${idx}.jpeg`;
+    link.href = scr;
+    link.click();
+    // }
+  });
+
   HTMLSnapshots.value = screenshots;
 
   return true;

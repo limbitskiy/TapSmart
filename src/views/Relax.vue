@@ -71,8 +71,8 @@ console.log(`relax created`);
 
 const store = useMainStore();
 
-const { fetchRelaxPageData, useFetch, hideTooltip } = store;
-const { debugMessages, bgColor, HTMLSnapshots } = storeToRefs(store);
+const { fetchRelaxPageData, useFetch, hideTooltip, setBgColor } = store;
+const { debugMessages, HTMLSnapshots } = storeToRefs(store);
 const { battles: locale } = storeToRefs(store.localeStore);
 const { data, afkCounter, сurrentMechanicName, backendModalOpen, relaxPaused } = storeToRefs(store.battleStore);
 const { startBreakpoint, stopBreakpoint, calculateRelaxMultiplierAmount } = store.battleStore;
@@ -87,7 +87,7 @@ const bonuses = ref<Bonus[]>([]);
 const { taskTimeoutStatus, startTaskTimeout: _startTaskTimeout, stopTaskTimeout, pauseTaskTimeout, resumeTaskTimeout } = useTaskTimeout();
 
 setThemeColor("#222");
-bgColor.value = "linear-gradient(180deg, #000B14 17.5%, #035DA9 100%)";
+setBgColor("linear-gradient(180deg, #000B14 17.5%, #035DA9 100%");
 HTMLSnapshots.value = [];
 
 await fetchRelaxPageData();

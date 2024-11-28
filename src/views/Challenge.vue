@@ -69,14 +69,22 @@ console.log(`challenge created`);
 
 const store = useMainStore();
 
-const { bgColor } = storeToRefs(store);
-const { fetchChallengePageData, redirectTo, takeHTMLSnapshot } = store;
+const {} = storeToRefs(store);
+const { fetchChallengePageData, redirectTo, takeHTMLSnapshot, setBgColor } = store;
 const { startChallenge, stopChallenge } = store.battleStore;
 const { data, challengeScore, boostersUsed } = storeToRefs(store.battleStore);
 const { battles: locale } = storeToRefs(store.localeStore);
 
+const ctx = gsap.context(() => {});
+const settings = {
+  screenshotInterval: 1 / 5,
+};
+
 const screenshotEl = ref();
 const screenshotSrc = ref();
+const challengeTimer = ref(data.value?.battle_duration);
+const timeLeft = computed(() => data.value?.["battle_duration"] - challengeTimer.value);
+const isMakeScreenshot = computed(() => timeLeft.value % (data.value?.battle_duration * settings.screenshotInterval) === 0 && challengeTimer.value !== 0);
 
 const boosterState = ref({
   text: "",
@@ -84,17 +92,7 @@ const boosterState = ref({
   used: {},
 });
 
-const ctx = gsap.context(() => {});
-
-ctx.add("slideScreenUp", () => {
-  gsap.to(".challenge-main", {
-    yPercent: -100,
-    duration: 0.5,
-  });
-});
-
-// challenge interval
-const challengeTimer = ref();
+let needToMakeScreenshot = false;
 let challengeTimerInterval = null;
 
 const playerPosition = computed(() => {
@@ -106,19 +104,18 @@ const playerPosition = computed(() => {
 
   return [playersSorted?.findIndex((player) => player.isPlayer) + 1 || data.value?.["player_progress"].length, data.value?.["player_progress"].length];
 });
-let needToMakeScreenshot = false;
 
-const progressBarValue = computed(() => ((data.value?.["battle_duration"] - challengeTimer.value) * 100) / data.value?.["battle_duration"]);
+const progressBarValue = computed(() => (timeLeft.value * 100) / data.value?.["battle_duration"]);
 
-bgColor.value = "linear-gradient(180deg, #000B14 17.5%, #A90306 100%)";
+setBgColor("linear-gradient(180deg, #000B14 17.5%, #A90306 100%");
 
 await fetchChallengePageData();
 
 const onAnswer = async () => {
   if (needToMakeScreenshot) {
-    takeHTMLSnapshot(screenshotEl.value);
-    // setTimeout(() => {
-    // }, 10);
+    setTimeout(() => {
+      takeHTMLSnapshot(screenshotEl.value);
+    }, 10);
   }
   needToMakeScreenshot = false;
 };
@@ -159,20 +156,28 @@ watch(
   }
 );
 
+const setup = () => {
+  ctx.add("slideScreenUp", () => {
+    gsap.to(".challenge-main", {
+      yPercent: -100,
+      duration: 0.5,
+    });
+  });
+};
+
 onMounted(() => {
   console.log(`challenge mounted`);
+
+  setup();
 
   // reset previous battle players progress
   data.value["player_progress"] = null;
 
   startChallenge();
 
-  challengeTimer.value = data.value?.battle_duration;
-  const screenshotInterval = data.value?.battle_duration / 5;
-
   challengeTimerInterval = setInterval(async () => {
     // make screenshot every (duration/screenshotInterval)
-    if ((data.value?.battle_duration - challengeTimer.value) % screenshotInterval === 0 && challengeTimer.value !== 0 && data.value?.battle_duration !== challengeTimer.value) {
+    if (isMakeScreenshot.value) {
       needToMakeScreenshot = true;
     }
 
