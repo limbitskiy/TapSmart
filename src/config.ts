@@ -85,6 +85,8 @@ export const essentialAssets = {
   mech_4: "/mechanic_4.svg",
   mech_5: "/mechanic_5.svg",
   mech_6: "/mechanic_6.svg",
+  mech_7: "/mechanic_7.svg",
+  mech_placeholder: "/mechanic_placeholder.svg",
   congrats: "/congrats.webp",
   x2: "/x2.webp",
   winner_token: "/winner_token.webp",

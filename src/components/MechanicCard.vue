@@ -23,7 +23,7 @@
       <!-- content -->
       <div class="content flex flex-col gap-2 items-center justify-between text-center">
         <div class="pill-img">
-          <img class="" :src="getAsset(`mech_${propData.id}`)" />
+          <img class="" :src="getAsset(`mech_${propData.id}`) ?? getAsset('mech_placeholder')" />
         </div>
         <span class="fira-semibold">{{ locale?.[`${mechName}_title`] }}</span>
         <span class="fira-condensed text-[#838383] leading-5">{{ locale?.[`${mechName}_desc`] }}</span>
