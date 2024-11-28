@@ -108,17 +108,19 @@ let isAnimationRunning = false;
 let buttonsMissing = 0;
 
 // watching task timeout
-watch(
-  props.taskTimeoutStatus,
-  (val) => {
-    if (val.status === "stopped") {
-      autoAnswer();
+if (props.taskTimeoutStatus) {
+  watch(
+    props.taskTimeoutStatus,
+    (val) => {
+      if (val.status === "stopped") {
+        autoAnswer();
+      }
+    },
+    {
+      deep: true,
     }
-  },
-  {
-    deep: true,
-  }
-);
+  );
+}
 
 const handleSelection = (pill: Pill) => {
   if (pill.id % 2 === 0) {
@@ -161,6 +163,8 @@ const onButton = (pill: Pill, event: MouseEvent) => {
       return;
     }
 
+    buttonsMissing += 1;
+
     animateCorrect(selectedLeft, selectedRight);
 
     setTimeout(() => {
@@ -180,7 +184,7 @@ const onButton = (pill: Pill, event: MouseEvent) => {
         }
       }, settings.animationSpeed);
 
-      props.startTaskTimeout();
+      startTaskTimeout();
     }, settings.animationSpeed);
   }
 };
@@ -195,6 +199,8 @@ const autoAnswer = () => {
     task: smallestIdTask,
   });
 
+  buttonsMissing += 1;
+
   // remove task with smallest ID
   removeTask(smallestIdTask.id);
 
@@ -206,13 +212,11 @@ const autoAnswer = () => {
     }
   }, 300);
 
-  props.startTaskTimeout();
+  startTaskTimeout();
 };
 
 const emitAnswer = (props: AnswerProps) => {
   emit("answer", props);
-
-  buttonsMissing += 1;
 };
 
 const fillTaskAmount = (amount: number) => {
@@ -258,7 +262,13 @@ const startGame = () => {
     addTask(newTask);
   }
 
-  props.startTaskTimeout();
+  startTaskTimeout();
+};
+
+const startTaskTimeout = () => {
+  if (props.startTaskTimeout) {
+    props.startTaskTimeout();
+  }
 };
 
 const applySettings = () => {};

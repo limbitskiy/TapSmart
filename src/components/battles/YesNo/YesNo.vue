@@ -143,17 +143,19 @@ const correctAnswer = ref({
 });
 
 // watching task timeout
-watch(
-  props.taskTimeoutStatus,
-  (val) => {
-    if (val.status === "stopped") {
-      autoAnswer();
+if (props.taskTimeoutStatus) {
+  watch(
+    props.taskTimeoutStatus,
+    (val) => {
+      if (val.status === "stopped") {
+        autoAnswer();
+      }
+    },
+    {
+      deep: true,
     }
-  },
-  {
-    deep: true,
-  }
-);
+  );
+}
 
 const submitTask = async (answerProps: AnswerProps) => {
   emit("answer", answerProps);
@@ -174,7 +176,9 @@ const autoAnswer = async () => {
 const onButton = async (button: Button, event: MouseEvent) => {
   if (correctAnswer.value.visible) return;
 
-  props.pauseTaskTimeout();
+  if (props.pauseTaskTimeout) {
+    props.pauseTaskTimeout();
+  }
 
   const buttonMap = {
     yes: 0,
@@ -246,7 +250,9 @@ const startGame = () => {
 
 const nextTask = () => {
   const newTask = props.getNextTask();
-  props.startTaskTimeout(newTask.settings?.timeout);
+  if (props.startTaskTimeout) {
+    props.startTaskTimeout(newTask.settings?.timeout);
+  }
   currentTask.value = newTask;
 };
 
