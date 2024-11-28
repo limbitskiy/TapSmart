@@ -7,7 +7,7 @@
       <span class="page-subtitle">{{ tutorialLocale?.slides[1]?.["subtitle"] ?? "Подзаголовок" }}</span>
     </div>
     <div ref="battleCntRef" class="flex-1 flex p-4 mb-[50px] pointer-events-none relative scale-90">
-      <FourAnswers type="relax" :task="tutorialLocale?.questions?.[currentTaskIdx]" :locales="battleLocale" :energy="10" :buttonsBlocked="false" @answer="onAnswer" />
+      <FourAnswers v-if="mechVisible" type="relax" :getNextTask="getNextTask" :locales="battleLocale" />
       <div
         v-if="cursorPosition.top && cursorPosition.left"
         class="cursor absolute z-50"
@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, nextTick } from "vue";
 import { storeToRefs } from "pinia";
 
 // battles
@@ -39,23 +39,20 @@ const store = useMainStore();
 
 const { tutorial: tutorialLocale, battles: battleLocale } = storeToRefs(store.localeStore);
 
-// const tasks = ref(tutorialLocale.value?.questions);
+const mechVisible = ref(false);
+let taskIdx = 0;
 
 const battleCntRef = ref();
-const currentTaskIdx = ref(0);
 const cursorPosition = ref({
   left: null,
   top: null,
 });
 const cursorScale = ref(1);
 
-const onAnswer = async ({ isCorrect, answer, task, nextTaskDelay }) => {
-  const lastIndex = currentTaskIdx.value;
-  currentTaskIdx.value = null;
-
-  setTimeout(() => {
-    currentTaskIdx.value = lastIndex + 1;
-  }, nextTaskDelay);
+const getNextTask = () => {
+  const newTask = tutorialLocale.value?.questions[taskIdx];
+  taskIdx++;
+  return newTask;
 };
 
 const cursorClick = () => {
@@ -66,12 +63,16 @@ const cursorClick = () => {
   }, 300);
 };
 
-const playAnimationCycle = () => {
+const playAnimationCycle = async () => {
+  mechVisible.value = false;
+  await nextTick();
+  taskIdx = 0;
+  mechVisible.value = true;
+  await nextTick();
+
   const scale = devicePixelRatio;
   const battleCntRect = battleCntRef.value.getBoundingClientRect();
   const btns = document.querySelectorAll(".four-answer-btn");
-
-  currentTaskIdx.value = 0;
 
   cursorPosition.value.left = battleCntRect.width / 2;
   cursorPosition.value.top = battleCntRect.height / 2;
@@ -114,7 +115,7 @@ const playAnimationCycle = () => {
 
   setTimeout(() => {
     playAnimationCycle();
-  }, 14000);
+  }, 13000);
 };
 
 onMounted(() => {

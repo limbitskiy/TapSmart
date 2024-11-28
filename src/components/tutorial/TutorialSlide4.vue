@@ -8,7 +8,7 @@
     </div>
     <div ref="battleCntRef" class="flex-1 flex flex-col gap-2 p-4 mb-[150px] -mt-[20px] relative scale-90 pointer-events-none">
       <ChallengeButton />
-      <FourAnswers type="relax" :task="tutorialLocale?.questions?.[currentTaskIdx]" :locales="battleLocale" :energy="10" :buttonsBlocked="false" />
+      <FourAnswers type="relax" :getNextTask="getNextTask" :locales="battleLocale" />
       <div
         v-if="cursorPosition.top && cursorPosition.left"
         class="cursor absolute z-50"
@@ -40,28 +40,16 @@ const store = useMainStore();
 
 const { tutorial: tutorialLocale, battles: battleLocale } = storeToRefs(store.localeStore);
 
-const tasks = [
-  {
-    api: null,
-    bonus_score: null,
-    correct: "лёгкий",
-    id: 1,
-    key: "1454",
-    task: {
-      answer: "лёгкий",
-      question: "light",
-      variants: ["лёгкий", "слабый", "идеальный", "пластиковый"],
-    },
-  },
-];
-
 const battleCntRef = ref();
-const currentTaskIdx = ref(0);
 const cursorPosition = ref({
   left: null,
   top: null,
 });
 const cursorScale = ref(1);
+
+const getNextTask = () => {
+  return tutorialLocale.value?.questions[0];
+};
 
 const cursorClick = () => {
   cursorScale.value = 0.7;
@@ -77,8 +65,6 @@ const playAnimationCycle = () => {
   const btnWrap = document.querySelector(".challenge-btn-wrap");
 
   const challengeBtn = btnWrap?.children[1];
-
-  console.log(challengeBtn);
 
   cursorPosition.value.left = battleCntRect.width / 2;
   cursorPosition.value.top = battleCntRect.height / 2;

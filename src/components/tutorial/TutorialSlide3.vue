@@ -6,8 +6,9 @@
       </h2>
       <span class="page-subtitle">{{ tutorialLocale?.slides[2]?.["subtitle"] ?? "Подзаголовок" }}</span>
     </div>
-    <div ref="battleCntRef" class="flex-1 flex p-4 mb-[50px] pointer-events-none relative scale-90">
-      <FourAnswers type="relax" :task="tutorialLocale?.questions?.[currentTaskIdx]" :locales="battleLocale" :energy="10" :buttonsBlocked="false" />
+    <div ref="battleCntRef" class="flex-1 flex flex-col p-4 mb-[50px] pointer-events-none relative scale-90">
+      <BattleHeader :locale="battleLocale" :title="battleLocale?.['4answers_title']" />
+      <FourAnswers type="relax" :getNextTask="getNextTask" :locales="battleLocale" />
       <div
         v-if="cursorPosition.top && cursorPosition.left"
         class="cursor absolute z-50"
@@ -22,6 +23,15 @@
         </svg>
       </div>
     </div>
+
+    <!-- mechanic change modal -->
+    <Teleport to="#modals">
+      <Modal id="mechanic-change-modal" v-model:visible="isChangeMechModalVisible">
+        <template v-slot="{ closeModal }">
+          <ChangeMechanic @close="closeModal" />
+        </template>
+      </Modal>
+    </Teleport>
   </div>
 </template>
 
@@ -39,13 +49,17 @@ const store = useMainStore();
 
 const { tutorial: tutorialLocale, battles: battleLocale } = storeToRefs(store.localeStore);
 
+const isChangeMechModalVisible = ref(false);
 const battleCntRef = ref();
-const currentTaskIdx = ref(0);
 const cursorPosition = ref({
   left: null,
   top: null,
 });
 const cursorScale = ref(1);
+
+const getNextTask = () => {
+  return tutorialLocale.value?.questions[0];
+};
 
 const cursorClick = () => {
   cursorScale.value = 0.7;
@@ -55,28 +69,27 @@ const cursorClick = () => {
   }, 300);
 };
 
-const playAnimationCycle = () => {
+const playAnimationCycle = async () => {
   const scale = devicePixelRatio;
   const battleCntRect = battleCntRef.value.getBoundingClientRect();
   const header = document.querySelector(".battle-header-cnt");
 
   const mechBtn = header?.closest(".generic-btn");
 
-  console.log(mechBtn);
-
   cursorPosition.value.left = battleCntRect.width / 2;
   cursorPosition.value.top = battleCntRect.height / 2;
 
   // first move
   setTimeout(() => {
-    cursorPosition.value.left = 60 * scale;
-    cursorPosition.value.top = 20 * scale;
+    cursorPosition.value.left = 30 * scale;
+    cursorPosition.value.top = 12 * scale;
   }, 1000);
 
   // mech btn click
   setTimeout(() => {
     cursorClick();
     mechBtn.style.backgroundColor = "#858585";
+    // isChangeMechModalVisible.value = true;
   }, 3000);
 
   setTimeout(() => {

@@ -45,18 +45,20 @@ const stopAnimation = () => {
   animation = null;
 };
 
-watch(
-  props.taskTimeoutStatus,
-  (val) => {
-    if (val.status === "stopped" || val.status === "paused") {
-      stopAnimation();
-    } else {
-      startAnimation(val.timeout);
+if (props.taskTimeoutStatus) {
+  watch(
+    props.taskTimeoutStatus,
+    (val) => {
+      if (val.status === "stopped" || val.status === "paused") {
+        stopAnimation();
+      } else {
+        startAnimation(val.timeout);
+      }
+    },
+    {
+      deep: true,
+      immediate: true,
     }
-  },
-  {
-    deep: true,
-    immediate: true,
-  }
-);
+  );
+}
 </script>

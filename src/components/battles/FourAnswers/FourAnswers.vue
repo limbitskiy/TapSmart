@@ -72,7 +72,7 @@ import gsap from "gsap";
 import { useActions } from "@/composables/useActions";
 
 // types
-import { Task } from "@/types";
+import { AnswerProps, Task } from "@/types";
 
 interface Button {
   id: number;
