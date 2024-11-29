@@ -109,11 +109,10 @@
 
     <!-- invite buttons -->
     <div class="invite-btn-cnt fixed bottom-20 left-2 right-2 flex justify-between gap-3 z-10">
+      <Button class="!px-4 border border-gray-800" dark @click="onCopyToClipboard"><img :src="getAsset('copy')" /></Button>
       <Button class="flex-1" @click="onInviteFriend">
         <span class="text-xl">{{ locale?.["invite_a_friend"] }}</span>
-        <!-- <img :src="getAsset('paw')" /> -->
       </Button>
-      <Button class="!px-4 border border-gray-800" dark @click="onCopyToClipboard"><img :src="getAsset('copy')" /></Button>
       <Button class="!px-4 border border-gray-800" dark @click="onQRCode"
         ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
