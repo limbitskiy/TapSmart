@@ -58,8 +58,8 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from "vue";
 import { storeToRefs } from "pinia";
-import { getAsset, takeScreenshot } from "@/utils";
-import { tg, setThemeColor } from "@/api/telegram";
+import { getAsset } from "@/utils";
+import { tg } from "@/api/telegram";
 import { gsap } from "gsap";
 
 // stores
@@ -80,11 +80,12 @@ const settings = {
   screenshotInterval: 1 / 5,
 };
 
+let needToMakeScreenshot = false;
+let challengeTimerInterval = null;
+
 const screenshotEl = ref();
 const screenshotSrc = ref();
 const challengeTimer = ref(data.value?.battle_duration);
-const timeLeft = computed(() => data.value?.["battle_duration"] - challengeTimer.value);
-const isMakeScreenshot = computed(() => timeLeft.value % (data.value?.battle_duration * settings.screenshotInterval) === 0 && challengeTimer.value !== 0);
 
 const boosterState = ref({
   text: "",
@@ -92,8 +93,8 @@ const boosterState = ref({
   used: {},
 });
 
-let needToMakeScreenshot = false;
-let challengeTimerInterval = null;
+const timeLeft = computed(() => data.value?.["battle_duration"] - challengeTimer.value);
+const isMakeScreenshot = computed(() => timeLeft.value % (data.value?.battle_duration * settings.screenshotInterval) === 0 && challengeTimer.value !== 0);
 
 const playerPosition = computed(() => {
   if (!data.value?.["player_progress"]?.length) return [0, 0];
@@ -115,7 +116,7 @@ const onAnswer = async () => {
   if (needToMakeScreenshot) {
     setTimeout(() => {
       takeHTMLSnapshot(screenshotEl.value);
-    }, 10);
+    }, 50);
   }
   needToMakeScreenshot = false;
 };

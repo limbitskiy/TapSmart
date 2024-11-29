@@ -25,14 +25,16 @@
         <div class="pill-img">
           <img class="" :src="getAsset(`mech_${propData.id}`) ?? getAsset('mech_placeholder')" />
         </div>
-        <span class="fira-semibold">{{ locale?.[`${mechName}_title`] }}</span>
+        <span class="fira-semibold mx-2">{{ locale?.[`${mechName}_title`] }}</span>
         <span class="fira-condensed text-[#838383] leading-5">{{ locale?.[`${mechName}_desc`] }}</span>
       </div>
     </div>
+
     <!-- active -->
     <Button v-if="data.battle_type == propData.id" class="!px-2 w-full bg-[var(--accent-color)] text-black !text-lg rounded-full fira-condensed-bold mt-2 !py-1">
       {{ locale?.["button_active"] || "Active" }}
     </Button>
+
     <!-- trial message -->
     <Button v-else-if="propData.nuts" class="!px-2 w-full bg-[var(--green-color)] text-white fira-condensed-bold mt-2 !py-1" activeColor="#74d77d">
       <div class="btn-content flex items-center justify-center gap-3 !text-lg">
@@ -43,6 +45,7 @@
         </div>
       </div>
     </Button>
+
     <!--  disabled -->
     <Button
       v-else-if="propData.disabled"

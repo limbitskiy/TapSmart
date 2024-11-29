@@ -140,7 +140,8 @@ if (props.taskTimeoutStatus) {
   );
 }
 
-const nextTask = () => {
+const nextTask = async () => {
+  await waitFor(100);
   const newTask = props.getNextTask();
   if (props.startTaskTimeout) {
     props.startTaskTimeout(newTask.settings?.timeout);
@@ -219,7 +220,6 @@ const autoAnswer = async () => {
   });
 
   nextTask();
-  console.log(`auto next task`);
 };
 
 const setup = () => {

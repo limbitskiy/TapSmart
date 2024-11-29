@@ -121,6 +121,7 @@ export const essentialAssets = {
   ask_feedback: "/ask_feedback.webp",
   "player-marker": "/player-marker.webp",
   check: "/check.webp",
+  present: "/present.webp",
 };
 
 export const nonEssentialAssets = {
