@@ -56,6 +56,7 @@ export interface LocaleState {
   tasks?: LocaleEntry;
   leaders?: LocaleEntry;
   market?: LocaleEntry;
+  intro?: LocaleEntry;
 }
 
 export interface BattleState {

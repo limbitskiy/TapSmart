@@ -43,7 +43,7 @@
 
         <!-- progress pill -->
         <div class="flex items-center gap-4">
-          <div class="progress-bar flex-1 flex flex-col relative">
+          <div class="progress-bar flex-1 flex flex-col relative mr-[2]">
             <!-- top row -->
             <div class="top-row px-[25px] py-1">
               <img class="top-marker w-[36px]" src="/loader/tiger-cutout1-small.webp" />
@@ -62,8 +62,46 @@
             </div>
 
             <!-- present -->
-            <div class="present absolute -right-5 top-[27px]">
-              <img class="w-[50px]" src="/loader/present.webp" />
+            <div class="present absolute -right-[9vw] top-[10px] flex flex-col justify-center items-center">
+              <img class="w-[60px]" src="/loader/present.webp" />
+              <div class="absolute bottom-[20px] right-[5px]" src="/loader/present.webp">
+                <Transition name="fade">
+                  <svg v-if="locale?.prize_image === 'star'" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="15" cy="15" r="15" fill="white" />
+                    <circle cx="14.9994" cy="15.0001" r="12.6" fill="url(#paint0_linear_2404_2345)" />
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M16.1907 6.28476C15.8613 5.43177 14.6544 5.43177 14.325 6.28476L12.5145 10.9727C12.3728 11.3398 12.029 11.5896 11.6361 11.611L6.6181 11.8842C5.70507 11.9339 5.33213 13.0817 6.04156 13.6585L9.07204 16.1228C9.28654 16.1894 9.51272 16.2236 9.72795 16.1937C10.3366 16.1091 13.8805 15.5766 15.5764 15.3209C15.7017 15.3515 15.9028 15.4648 15.7048 15.6738C15.5069 15.8829 12.2005 17.6535 10.5721 18.5127C10.4083 18.6377 10.1147 18.9197 9.89948 19.279L8.98535 22.7186C8.75048 23.6023 9.72685 24.3117 10.4947 23.8152L14.7149 21.0867C15.0454 20.8731 15.4704 20.8731 15.8008 21.0867L20.021 23.8152C20.7889 24.3117 21.7653 23.6023 21.5304 22.7186L20.2396 17.8618C20.1385 17.4815 20.2698 17.0773 20.5751 16.8291L24.4742 13.6585C25.1836 13.0817 24.8107 11.9339 23.8976 11.8842L18.8797 11.611C18.4868 11.5896 18.1429 11.3398 18.0012 10.9727L16.1907 6.28476Z"
+                      fill="url(#paint1_linear_2404_2345)"
+                    />
+                    <defs>
+                      <linearGradient id="paint0_linear_2404_2345" x1="14.9994" y1="2.40015" x2="14.9994" y2="27.6001" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#98339A" />
+                        <stop offset="1" stop-color="#520FDA" />
+                      </linearGradient>
+                      <linearGradient id="paint1_linear_2404_2345" x1="8.88822" y1="17.7365" x2="25.1881" y2="12.1987" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#F7C20F" />
+                        <stop offset="1" stop-color="#FF9B14" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  <svg v-else-if="locale?.prize_image === 'ton'" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="15" cy="15" r="15" fill="white" />
+                    <path d="M15 27C21.6274 27 27 21.6274 27 15C27 8.37257 21.6274 3 15 3C8.37257 3 3 8.37257 3 15C3 21.6274 8.37257 27 15 27Z" fill="#0098EA" />
+                    <path
+                      d="M19.0972 9.69751H10.9022C9.39543 9.69751 8.4404 11.3229 9.19846 12.6368L14.2561 21.4032C14.5862 21.9756 15.4133 21.9756 15.7433 21.4032L20.802 12.6368C21.559 11.325 20.604 9.69751 19.0982 9.69751H19.0972ZM14.252 18.7743L13.1505 16.6425L10.4928 11.8891C10.3175 11.5849 10.534 11.195 10.9012 11.195H14.251V18.7753L14.252 18.7743ZM19.5046 11.8881L16.8479 16.6435L15.7464 18.7743V11.194H19.0962C19.4633 11.194 19.6799 11.5838 19.5046 11.8881Z"
+                      fill="white"
+                    />
+                  </svg>
+                </Transition>
+              </div>
+
+              <div class="h-[17px]">
+                <Transition name="fade">
+                  <span v-if="locale?.prize_text" class="exo-black text-sm">{{ locale?.["prize_text"] ?? "" }}</span>
+                </Transition>
+              </div>
             </div>
           </div>
         </div>
@@ -124,6 +162,7 @@ import { tg, setThemeColor } from "@/api/telegram";
 import constants from "@/constants";
 import { version } from "@/../package.json";
 import gsap from "gsap";
+import { storeToRefs } from "pinia";
 
 // composables
 import preloadAssets from "@/utils/preloadAssets";
@@ -139,6 +178,7 @@ const store = useMainStore();
 
 const { startApp, initialFetch } = store;
 const { addSound, playSound } = store.soundStore;
+const { intro: locale } = storeToRefs(store.localeStore);
 
 const errors = ref([]);
 const gaugeRef = ref();
@@ -200,7 +240,7 @@ Promise.allSettled([
   assetsPreloaded.value = true;
 
   if (introProgressFinished.value) {
-    // startApp();
+    startApp();
   }
   // playSound("soundtrack");
 });
@@ -343,13 +383,13 @@ onMounted(() => {
         }
       }
 
-      // setTimeout(() => {
-      //   introProgressFinished.value = true;
+      setTimeout(() => {
+        introProgressFinished.value = true;
 
-      // if (assetsPreloaded.value) {
-      startApp();
-      // }
-      // }, 1000);
+        if (assetsPreloaded.value) {
+          startApp();
+        }
+      }, 1000);
     }
   });
 });
