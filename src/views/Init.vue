@@ -14,6 +14,20 @@
       <div class="tiger1-circle h-full">
         <div class="image-wrap relative h-full aspect-square">
           <div class="wave-top bg-[#4AE823] inset-0 rounded-full absolute scale-75"></div>
+          <div class="shadow-cnt absolute inset-0">
+            <svg class="absolute left-0 right-0 -bottom-[8dvh] w-full" width="276" height="130" viewBox="0 0 276 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g filter="url(#filter0_f_2400_2272)">
+                <ellipse cx="136" cy="65" rx="90" ry="15" fill="black" fill-opacity="0.8" />
+              </g>
+              <defs>
+                <filter id="filter0_f_2400_2272" x="-4" y="0" width="280" height="130" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                  <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+                  <feGaussianBlur stdDeviation="25" result="effect1_foregroundBlur_2400_2272" />
+                </filter>
+              </defs>
+            </svg>
+          </div>
           <img class="object-contain absolute inset-0 h-full" src="/loader/white-circle1.webp" />
           <Transition name="fade">
             <img v-if="tiger1Animations.success" class="object-contain absolute inset-0 h-full" src="/loader/green-circle1.webp" />
@@ -59,6 +73,20 @@
       <div class="tiger2-circle h-full">
         <div class="image-wrap relative h-full aspect-square ml-auto">
           <div class="wave-bottom bg-[#4AE823] inset-0 rounded-full absolute scale-75"></div>
+          <div class="shadow-cnt absolute inset-0">
+            <svg class="absolute left-0 right-0 -bottom-[8dvh] w-full" width="276" height="130" viewBox="0 0 276 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g filter="url(#filter0_f_2400_2272)">
+                <ellipse cx="136" cy="65" rx="90" ry="15" fill="black" fill-opacity="0.8" />
+              </g>
+              <defs>
+                <filter id="filter0_f_2400_2272" x="-4" y="0" width="280" height="130" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                  <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+                  <feGaussianBlur stdDeviation="25" result="effect1_foregroundBlur_2400_2272" />
+                </filter>
+              </defs>
+            </svg>
+          </div>
           <img class="object-contain ml-auto absolute inset-0 h-full" src="/loader/white-circle1.webp" />
           <Transition name="fade">
             <img v-if="tiger2Animations.success" class="object-contain ml-auto absolute inset-0 h-full" src="/loader/green-circle1.webp" />
@@ -172,7 +200,7 @@ Promise.allSettled([
   assetsPreloaded.value = true;
 
   if (introProgressFinished.value) {
-    startApp();
+    // startApp();
   }
   // playSound("soundtrack");
 });

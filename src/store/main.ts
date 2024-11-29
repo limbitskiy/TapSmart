@@ -237,6 +237,10 @@ export const useMainStore = defineStore("main", () => {
     return await useFetch({ key: "friend_table_list" });
   };
 
+  const fetchMarketPageData = async () => {
+    return await useFetch({ key: "market_list" });
+  };
+
   const fetchRelaxPageData = async () => {
     return await useFetch({ key: "battle_init" });
   };
@@ -449,6 +453,7 @@ export const useMainStore = defineStore("main", () => {
     fetchWaitingData,
     fetchProfilePageData,
     fetchChallengePageData,
+    fetchMarketPageData,
     fetchTasksList,
     fetchLeadersList,
     fetchBattleCompleteData,

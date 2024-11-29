@@ -17,6 +17,9 @@ import { useMainStore } from "@/store/main";
 
 const store = useMainStore();
 
+const { fetchMarketPageData } = store;
 const { market: data } = storeToRefs(store.dataStore);
 const { market: locale } = storeToRefs(store.localeStore);
+
+await fetchMarketPageData();
 </script>
