@@ -1,11 +1,11 @@
 <template>
-  <div id="friends" class="flex flex-col gap-4 p-4 mb-[60px]">
+  <div id="friends" class="flex flex-col flex-1 gap-4 p-4 mb-[60px]">
     <div class="top-part">
       <div class="icon-and-title flex items-center gap-4">
         <img class="h-[60px]" :src="getAsset('friends')" />
         <div class="page-title mb-2">{{ locale?.["title"] }}</div>
       </div>
-      <div class="page-subtitle text-gray-200 mt-2" v-html="locale?.['subtitle']"></div>
+      <RouteSubtitle :text="locale?.['subtitle']" />
 
       <div class="pills flex flex-col gap-4 mt-4">
         <IconPill color="dark">
@@ -150,13 +150,14 @@ import { computed, ref, onMounted, nextTick } from "vue";
 import { tg, generateShareLink, inviteFriend, showMainButton } from "@/api/telegram";
 import { getAsset, shortenNumber } from "@/utils";
 import { storeToRefs } from "pinia";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import QRCode from "qrcode";
 
 // store
 import { useMainStore } from "@/store/main";
 
 const route = useRoute();
+const router = useRouter();
 const store = useMainStore();
 
 const { fetchFriendsList, sendInviteAnalitycsData } = store;

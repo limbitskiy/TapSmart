@@ -5,7 +5,7 @@
         <img class="h-[60px]" :src="getAsset('tasks')" />
         <div class="page-title">{{ locale?.["title"] || "Tasks" }}</div>
       </div>
-      <div class="page-subtitle mt-2" v-html="locale?.['subtitle'] || 'Our new section! Complete tasks and get something! Maybe bolts, maybe nuts, maybe fame - who knows?'"></div>
+      <RouteSubtitle :text="locale?.['subtitle']" />
     </div>
 
     <div class="flex-1 flex flex-col gap-4">

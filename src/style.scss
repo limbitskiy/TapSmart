@@ -28,6 +28,10 @@
   --green-gradient: linear-gradient(180deg, #519a58 0%, #2e7034 100%);
 }
 
+.custom-link {
+  @apply text-[var(--accent-color)] underline;
+}
+
 // colors
 .green-gradient {
   background: linear-gradient(180deg, #519a58 0%, #2e7034 100%);

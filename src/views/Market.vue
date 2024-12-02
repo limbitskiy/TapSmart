@@ -2,7 +2,7 @@
   <div id="market" class="flex-1">
     <div class="top-part p-5 mb-4">
       <div class="page-title mb-4">{{ locale?.["title"] }}</div>
-      <div class="page-subtitle" v-html="locale?.['subtitle']"></div>
+      <RouteSubtitle :text="locale?.['subtitle']" />
     </div>
   </div>
 </template>
