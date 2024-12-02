@@ -122,6 +122,8 @@ export const essentialAssets = {
   "player-marker": "/player-marker.webp",
   check: "/check.webp",
   present: "/present.webp",
+  prize_bg: "/prize_bg.webp",
+  prize_img: "/prize_img.webp",
 };
 
 export const nonEssentialAssets = {

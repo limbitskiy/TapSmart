@@ -203,6 +203,5 @@ onMounted(() => {
 
 onUnmounted(() => {
   ctx.revert();
-  stopChallenge();
 });
 </script>
