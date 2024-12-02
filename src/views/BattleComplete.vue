@@ -91,31 +91,31 @@
 
         <!-- ad -->
         <div class="ad flex items-center justify-center mt-4">
-          <Ad image="x2" :text="locale?.['battle_complete_ad_text']" :tooltip="locale?.['tooltip_battle_complete_ad']" />
+          <Ad :image="data?.['battle_complete_ad_image']" :text="locale?.['battle_complete_ad_text']" :tooltip="locale?.['tooltip_battle_complete_ad']" />
         </div>
       </div>
 
       <!-- buttons -->
       <div class="ad-btns w-full flex gap-4 mt-8">
         <Button class="flex-1 py-3 !px-0 text-white bg-[var(--grey-light)]" activeColor="#525252" :data="data?.['button_claim']">
-          <div class="flex flex-col gap-1 items-center">
-            <div class="flex gap-1 items-baseline">
-              <span class="text-base leading-4">{{ getBtnTextArr(locale?.["button_claim"])?.[0] ?? 0 }}</span>
-              <img class="h-4" :src="getAsset('bolt')" />
-              <span>{{ data?.["battle_complete_bolts"] }}</span>
-            </div>
-            <span class="text-sm fira-regular !leading-3">{{ getBtnTextArr(locale?.["button_claim"])?.[1] ?? 0 }}</span>
-          </div>
+          <!-- <span>{{ data?.["battle_complete_bolts"] }}</span> -->
+          <!-- <div class="flex flex-col gap-1 items-center">
+            <div class="flex gap-1 items-baseline"> -->
+          <!-- <span class="text-base leading-4">{{ getBtnTextArr(locale?.["button_claim"])?.[0] ?? 0 }}</span>
+              <img class="h-4" :src="getAsset('bolt')" /> -->
+          <!-- </div> -->
+          <!-- <span class="text-sm fira-regular !leading-3">{{ getBtnTextArr(locale?.["button_claim"])?.[1] ?? 0 }}</span> -->
+          <!-- </div> -->
         </Button>
         <Button class="flex-1 py-3 !px-0" activeColor="#fcdcb0" :data="data?.['button_claim_with_ton']">
-          <div class="flex flex-col gap-1 items-center">
-            <div class="flex gap-1 items-baseline">
-              <span class="text-base leading-4">{{ getBtnTextArr(locale?.["button_claim_with_ton"])?.[0] ?? 0 }}</span>
-              <img class="h-4" :src="getAsset('bolt-dark')" />
-              <span>{{ data?.["battle_complete_bolts_with_ton"] }}</span>
-            </div>
-            <span class="text-sm fira-regular !leading-3">{{ getBtnTextArr(locale?.["button_claim_with_ton"])?.[1] ?? 0 }}</span>
-          </div>
+          <!-- <span v-html="replaceWithSpecialSymbols(data?.['battle_complete_bolts_with_ton'])"></span> -->
+          <!-- <div class="flex flex-col gap-1 items-center">
+            <div class="flex gap-1 items-baseline"> -->
+          <!-- <span class="text-base leading-4">{{ getBtnTextArr(locale?.["button_claim_with_ton"])?.[0] ?? 0 }}</span>
+              <img class="h-4" :src="getAsset('bolt-dark')" /> -->
+          <!-- </div> -->
+          <!-- <span class="text-sm fira-regular !leading-3">{{ getBtnTextArr(locale?.["button_claim_with_ton"])?.[1] ?? 0 }}</span> -->
+          <!-- </div> -->
         </Button>
       </div>
     </BackgroundPill>
@@ -155,7 +155,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { getAsset, waitFor } from "@/utils";
+import { getAsset, waitFor, replaceWithSpecialSymbols } from "@/utils";
 import { storeToRefs } from "pinia";
 import { setThemeColor } from "@/api/telegram";
 import { useRoute } from "vue-router";

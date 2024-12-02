@@ -7,7 +7,7 @@
         </Transition>
       </div>
     </div>
-    <div class="bnt-cnt flex justify-between w-[calc(100vw-2rem)] z-10">
+    <div class="bnt-cnt flex justify-between w-[calc(100vw-2rem)] z-50">
       <Button dark @click="onSkip">{{ locale?.["button_skip"] }}</Button>
       <Button @click="nextSlide">{{ currentSlide === 5 ? locale?.["button_finish"] : locale?.["button_next"] }}</Button>
     </div>
@@ -24,6 +24,7 @@ import TutorialSlide2 from "@/components/tutorial/TutorialSlide2.vue";
 import TutorialSlide3 from "@/components/tutorial/TutorialSlide3.vue";
 import TutorialSlide4 from "@/components/tutorial/TutorialSlide4.vue";
 import TutorialSlide5 from "@/components/tutorial/TutorialSlide5.vue";
+import TutorialSlide6 from "@/components/tutorial/TutorialSlide6.vue";
 
 // stores
 import { useMainStore } from "@/store/main";
@@ -40,12 +41,13 @@ const slidesMap = {
   3: TutorialSlide3,
   4: TutorialSlide4,
   5: TutorialSlide5,
+  6: TutorialSlide6,
 };
 
 const currentSlide = ref(1);
 
 const nextSlide = () => {
-  if (currentSlide.value === 5) {
+  if (currentSlide.value === Object.keys(slidesMap).length) {
     redirectTo("/required-settings");
   } else {
     currentSlide.value += 1;

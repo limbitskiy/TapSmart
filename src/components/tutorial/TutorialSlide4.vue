@@ -2,12 +2,12 @@
   <div class="tutorial-slide flex-1 flex flex-col gap-2 p-4" style="background: linear-gradient(180deg, #000000 0%, #362581 100%)">
     <div class="slide-text">
       <h2 class="fira-bold mb-3 text-[34px]">
-        {{ tutorialLocale?.slides[3]?.["title"] ?? "Заголовок" }}
+        {{ tutorialLocale?.slides[2]?.["title"] ?? "Заголовок" }}
       </h2>
-      <span class="page-subtitle">{{ tutorialLocale?.slides[3]?.["subtitle"] ?? "Подзаголовок" }}</span>
+      <span class="page-subtitle">{{ tutorialLocale?.slides[2]?.["subtitle"] ?? "Подзаголовок" }}</span>
     </div>
-    <div ref="battleCntRef" class="flex-1 flex flex-col gap-2 p-4 mb-[150px] -mt-[20px] relative scale-90 pointer-events-none">
-      <ChallengeButton />
+    <div ref="battleCntRef" class="flex-1 flex flex-col p-4 mb-[50px] pointer-events-none relative scale-90">
+      <BattleHeader :locale="battleLocale" :title="battleLocale?.['4answers_title']" />
       <FourAnswers type="relax" :getNextTask="getNextTask" :locales="battleLocale" />
       <div
         v-if="cursorPosition.top && cursorPosition.left"
@@ -23,6 +23,15 @@
         </svg>
       </div>
     </div>
+
+    <!-- mechanic change modal -->
+    <Teleport to="#modals">
+      <Modal id="mechanic-change-modal" v-model:visible="isChangeMechModalVisible">
+        <template v-slot="{ closeModal }">
+          <ChangeMechanic @close="closeModal" />
+        </template>
+      </Modal>
+    </Teleport>
   </div>
 </template>
 
@@ -40,6 +49,7 @@ const store = useMainStore();
 
 const { tutorial: tutorialLocale, battles: battleLocale } = storeToRefs(store.localeStore);
 
+const isChangeMechModalVisible = ref(false);
 const battleCntRef = ref();
 const cursorPosition = ref({
   left: null,
@@ -59,31 +69,31 @@ const cursorClick = () => {
   }, 300);
 };
 
-const playAnimationCycle = () => {
+const playAnimationCycle = async () => {
   const scale = devicePixelRatio;
   const battleCntRect = battleCntRef.value.getBoundingClientRect();
-  const btnWrap = document.querySelector(".challenge-btn-wrap");
+  const header = document.querySelector(".battle-header-cnt");
 
-  const challengeBtn = btnWrap?.children[1];
+  const mechBtn = header?.closest(".generic-btn");
 
   cursorPosition.value.left = battleCntRect.width / 2;
   cursorPosition.value.top = battleCntRect.height / 2;
 
   // first move
   setTimeout(() => {
-    cursorPosition.value.left = 70 * scale;
-    cursorPosition.value.top = 10 * scale;
+    cursorPosition.value.left = 30 * scale;
+    cursorPosition.value.top = 12 * scale;
   }, 1000);
 
   // mech btn click
   setTimeout(() => {
     cursorClick();
-    challengeBtn.style.background = "#fcdcb0";
+    mechBtn.style.backgroundColor = "#858585";
+    // isChangeMechModalVisible.value = true;
   }, 3000);
 
   setTimeout(() => {
-    cursorClick();
-    challengeBtn.style.background = "orange";
+    mechBtn.style.backgroundColor = "#272727";
   }, 3500);
 
   setTimeout(() => {

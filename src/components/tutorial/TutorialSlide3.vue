@@ -2,13 +2,12 @@
   <div class="tutorial-slide flex-1 flex flex-col gap-2 p-4" style="background: linear-gradient(180deg, #000000 0%, #362581 100%)">
     <div class="slide-text">
       <h2 class="fira-bold mb-3 text-[34px]">
-        {{ tutorialLocale?.slides[2]?.["title"] ?? "Заголовок" }}
+        {{ tutorialLocale?.slides[1]?.["title"] ?? "Заголовок" }}
       </h2>
-      <span class="page-subtitle">{{ tutorialLocale?.slides[2]?.["subtitle"] ?? "Подзаголовок" }}</span>
+      <span class="page-subtitle">{{ tutorialLocale?.slides[1]?.["subtitle"] ?? "Подзаголовок" }}</span>
     </div>
-    <div ref="battleCntRef" class="flex-1 flex flex-col p-4 mb-[50px] pointer-events-none relative scale-90">
-      <BattleHeader :locale="battleLocale" :title="battleLocale?.['4answers_title']" />
-      <FourAnswers type="relax" :getNextTask="getNextTask" :locales="battleLocale" />
+    <div ref="battleCntRef" class="flex-1 flex p-4 mb-[50px] pointer-events-none relative scale-90">
+      <FourAnswers v-if="mechVisible" type="relax" :getNextTask="getNextTask" :locales="battleLocale" />
       <div
         v-if="cursorPosition.top && cursorPosition.left"
         class="cursor absolute z-50"
@@ -23,20 +22,11 @@
         </svg>
       </div>
     </div>
-
-    <!-- mechanic change modal -->
-    <Teleport to="#modals">
-      <Modal id="mechanic-change-modal" v-model:visible="isChangeMechModalVisible">
-        <template v-slot="{ closeModal }">
-          <ChangeMechanic @close="closeModal" />
-        </template>
-      </Modal>
-    </Teleport>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, nextTick } from "vue";
 import { storeToRefs } from "pinia";
 
 // battles
@@ -49,7 +39,9 @@ const store = useMainStore();
 
 const { tutorial: tutorialLocale, battles: battleLocale } = storeToRefs(store.localeStore);
 
-const isChangeMechModalVisible = ref(false);
+const mechVisible = ref(false);
+let taskIdx = 0;
+
 const battleCntRef = ref();
 const cursorPosition = ref({
   left: null,
@@ -58,7 +50,9 @@ const cursorPosition = ref({
 const cursorScale = ref(1);
 
 const getNextTask = () => {
-  return tutorialLocale.value?.questions[0];
+  const newTask = tutorialLocale.value?.questions[taskIdx];
+  taskIdx++;
+  return newTask;
 };
 
 const cursorClick = () => {
@@ -70,35 +64,58 @@ const cursorClick = () => {
 };
 
 const playAnimationCycle = async () => {
+  mechVisible.value = false;
+  await nextTick();
+  taskIdx = 0;
+  mechVisible.value = true;
+  await nextTick();
+
   const scale = devicePixelRatio;
   const battleCntRect = battleCntRef.value.getBoundingClientRect();
-  const header = document.querySelector(".battle-header-cnt");
-
-  const mechBtn = header?.closest(".generic-btn");
+  const btns = document.querySelectorAll(".four-answer-btn");
 
   cursorPosition.value.left = battleCntRect.width / 2;
   cursorPosition.value.top = battleCntRect.height / 2;
 
   // first move
   setTimeout(() => {
-    cursorPosition.value.left = 30 * scale;
-    cursorPosition.value.top = 12 * scale;
+    cursorPosition.value.left = 42 * scale;
+    cursorPosition.value.top = 110 * scale;
   }, 1000);
 
-  // mech btn click
+  // 1st correct answer
   setTimeout(() => {
     cursorClick();
-    mechBtn.style.backgroundColor = "#858585";
-    // isChangeMechModalVisible.value = true;
+    btns[0]?.click();
   }, 3000);
 
+  // second move
   setTimeout(() => {
-    mechBtn.style.backgroundColor = "#272727";
-  }, 3500);
+    cursorPosition.value.left = 75 * scale;
+    cursorPosition.value.top = 110 * scale;
+  }, 4000);
+
+  // 2nd answer - wrong
+  setTimeout(() => {
+    cursorClick();
+    btns[1]?.click();
+  }, 6000);
+
+  // third move
+  setTimeout(() => {
+    cursorPosition.value.left = 75 * scale;
+    cursorPosition.value.top = 135 * scale;
+  }, 8500);
+
+  // 3d answer - correct
+  setTimeout(() => {
+    cursorClick();
+    btns[3]?.click();
+  }, 10000);
 
   setTimeout(() => {
     playAnimationCycle();
-  }, 5000);
+  }, 13000);
 };
 
 onMounted(() => {

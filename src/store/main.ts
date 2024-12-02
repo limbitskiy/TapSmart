@@ -2,7 +2,7 @@ import { computed, nextTick, ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { defineStore } from "pinia";
 import { useVibrate } from "@vueuse/core";
-import { tg, followExternalLink } from "@/api/telegram";
+import { tg, followExternalLink, addToHomescreen } from "@/api/telegram";
 import { getAsset, waitFor } from "@/utils";
 import axios from "axios";
 import { postEvent } from "@telegram-apps/sdk";
@@ -102,6 +102,10 @@ export const useMainStore = defineStore("main", () => {
         // location.href = response.externalUrl;
         // console.log(response);
         followExternalLink(response.externalUrl);
+      } else if (key === "action") {
+        if (response.action === "add_to_home_screen") {
+          addToHomescreen();
+        }
       } else {
         state.value[key] = response[key];
       }

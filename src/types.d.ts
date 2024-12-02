@@ -21,6 +21,7 @@ export interface ResponseObject {
   externalUrl?: string | null;
   service: {};
   apiUrl?: string;
+  action: string;
 }
 
 export interface MainState {
