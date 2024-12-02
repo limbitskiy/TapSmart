@@ -71,7 +71,10 @@ const cursorClick = () => {
 
 const playAnimationCycle = async () => {
   const scale = devicePixelRatio;
-  const battleCntRect = battleCntRef.value.getBoundingClientRect();
+  const battleCntRect = battleCntRef.value?.getBoundingClientRect();
+
+  if (!battleCntRect) return;
+
   const header = document.querySelector(".battle-header-cnt");
 
   const mechBtn = header?.closest(".generic-btn");

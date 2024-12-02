@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue";
+import { onMounted, onUnmounted } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 import gsap from "gsap";
@@ -97,6 +97,6 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  gsapCtx.revert();
+  gsapCtx.kill();
 });
 </script>

@@ -71,7 +71,10 @@ const playAnimationCycle = async () => {
   await nextTick();
 
   const scale = devicePixelRatio;
-  const battleCntRect = battleCntRef.value.getBoundingClientRect();
+  const battleCntRect = battleCntRef.value?.getBoundingClientRect();
+
+  if (!battleCntRect) return;
+
   const btns = document.querySelectorAll(".four-answer-btn");
 
   cursorPosition.value.left = battleCntRect.width / 2;

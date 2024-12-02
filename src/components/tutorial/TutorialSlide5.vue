@@ -61,7 +61,10 @@ const cursorClick = () => {
 
 const playAnimationCycle = () => {
   const scale = devicePixelRatio;
-  const battleCntRect = battleCntRef.value.getBoundingClientRect();
+  const battleCntRect = battleCntRef.value?.getBoundingClientRect();
+
+  if (!battleCntRect) return;
+
   const btnWrap = document.querySelector(".challenge-btn-wrap");
 
   const challengeBtn = btnWrap?.children[1];
