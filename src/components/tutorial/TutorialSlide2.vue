@@ -9,11 +9,11 @@
     <div class="intro-elements flex flex-col gap-2 p-4 z-20">
       <div class="intro-title">
         <h2 class="fira-bold mb-3 text-[34px]">
-          {{ locale?.slides[1]?.["title"] ?? "title" }}
+          {{ locale?.["title"] ?? "title" }}
         </h2>
       </div>
       <div class="intro-subtitle">
-        <span class="page-subtitle">{{ locale?.slides[1]?.["subtitle"] ?? "subtitle" }}</span>
+        <span class="page-subtitle">{{ locale?.["subtitle"] ?? "subtitle" }}</span>
       </div>
     </div>
 
@@ -35,16 +35,12 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted } from "vue";
-import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 import gsap from "gsap";
 
-// stores
-import { useMainStore } from "@/store/main";
-
-const store = useMainStore();
-
-const { tutorial: locale } = storeToRefs(store.localeStore);
+defineProps<{
+  locale: {};
+}>();
 
 let gsapCtx;
 

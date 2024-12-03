@@ -3,13 +3,13 @@
     <div class="slide-cnt flex-1 flex">
       <div class="tutorial-body flex-1 flex absolute inset-0 z-1">
         <Transition name="fade" mode="out-in">
-          <component :is="slidesMap[currentSlide]" />
+          <component :is="slidesMap[locale.slides[currentSlide]?.key]" :locale="locale.slides[currentSlide]" />
         </Transition>
       </div>
     </div>
     <div class="bnt-cnt flex justify-between w-[calc(100vw-2rem)] z-50">
       <Button dark @click="onSkip">{{ locale?.["button_skip"] }}</Button>
-      <Button @click="nextSlide">{{ currentSlide === 5 ? locale?.["button_finish"] : locale?.["button_next"] }}</Button>
+      <Button @click="nextSlide">{{ isNextSlide ? locale?.["button_next"] : locale?.["button_finish"] }}</Button>
     </div>
   </div>
 </template>
@@ -36,21 +36,23 @@ const { tutorial: data } = storeToRefs(store.dataStore);
 const { tutorial: locale } = storeToRefs(store.localeStore);
 
 const slidesMap = {
-  1: TutorialSlide1,
-  2: TutorialSlide2,
-  3: TutorialSlide3,
-  4: TutorialSlide4,
-  5: TutorialSlide5,
-  6: TutorialSlide6,
+  intro: TutorialSlide1,
+  prize: TutorialSlide2,
+  rule_1: TutorialSlide3,
+  rule_2: TutorialSlide4,
+  rule_3: TutorialSlide5,
+  good_luck: TutorialSlide6,
 };
 
-const currentSlide = ref(1);
+const currentSlide = ref(0);
+
+const isNextSlide = computed(() => currentSlide.value !== Object.keys(locale.value.slides).length - 1);
 
 const nextSlide = () => {
-  if (currentSlide.value === Object.keys(slidesMap).length) {
-    redirectTo("/required-settings");
-  } else {
+  if (isNextSlide) {
     currentSlide.value += 1;
+  } else {
+    redirectTo("/required-settings");
   }
 };
 

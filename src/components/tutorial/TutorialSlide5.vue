@@ -2,9 +2,9 @@
   <div class="tutorial-slide flex-1 flex flex-col gap-2 p-4" style="background: linear-gradient(180deg, #000000 0%, #362581 100%)">
     <div class="slide-text">
       <h2 class="fira-bold mb-3 text-[34px]">
-        {{ tutorialLocale?.slides[3]?.["title"] ?? "Заголовок" }}
+        {{ locale?.["title"] ?? "Заголовок" }}
       </h2>
-      <span class="page-subtitle">{{ tutorialLocale?.slides[3]?.["subtitle"] ?? "Подзаголовок" }}</span>
+      <span class="page-subtitle">{{ locale?.["subtitle"] ?? "Подзаголовок" }}</span>
     </div>
     <div ref="battleCntRef" class="flex-1 flex flex-col gap-2 p-4 mb-[150px] -mt-[20px] relative scale-90 pointer-events-none">
       <ChallengeButton />
@@ -35,6 +35,10 @@ import FourAnswers from "@/components/battles/FourAnswers/FourAnswers.vue";
 
 // stores
 import { useMainStore } from "@/store/main";
+
+defineProps<{
+  locale: {};
+}>();
 
 const store = useMainStore();
 
