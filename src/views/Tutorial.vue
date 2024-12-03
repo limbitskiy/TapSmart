@@ -9,8 +9,9 @@
     </div>
     <div class="bnt-cnt flex justify-between w-[calc(100vw-2rem)] z-50">
       <Button dark @click="onSkip">{{ locale?.["button_skip"] }}</Button>
-      <Button @click="nextSlide">{{ isNextSlide ? locale?.["button_next"] : locale?.["button_finish"] }}</Button>
+      <Button @click="nextSlide">{{ isLastSlide ? locale?.["button_finish"] : locale?.["button_next"] }}</Button>
     </div>
+    <span class="z-[999]">{{ isLastSlide }}</span>
   </div>
 </template>
 
@@ -46,13 +47,13 @@ const slidesMap = {
 
 const currentSlide = ref(0);
 
-const isNextSlide = computed(() => currentSlide.value !== Object.keys(locale.value.slides).length - 1);
+const isLastSlide = computed(() => currentSlide.value === Object.keys(locale.value.slides).length - 1);
 
 const nextSlide = () => {
-  if (isNextSlide) {
-    currentSlide.value += 1;
-  } else {
+  if (isLastSlide.value) {
     redirectTo("/required-settings");
+  } else {
+    currentSlide.value += 1;
   }
 };
 
