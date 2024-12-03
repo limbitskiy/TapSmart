@@ -25,8 +25,8 @@
 import { ref, useCssModule } from "vue";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
-import { inviteFriend, addToHomescreen } from "@/api/telegram";
-import { replaceWithSpecialSymbols } from "@/utils";
+import {} from "@/api/telegram";
+import { doAction, replaceWithSpecialSymbols } from "@/utils";
 
 // stores
 import { useMainStore } from "@/store/main";
@@ -39,7 +39,7 @@ const route = useRoute();
 const { active: activeClass } = useCssModule();
 
 const store = useMainStore();
-const { redirectTo, useFetch, sendInviteAnalitycsData, shareToStory } = store;
+const { redirectTo, useFetch } = store;
 const { friends: friendsLocale } = storeToRefs(store.localeStore);
 
 const btnRef = ref();
@@ -89,22 +89,8 @@ const onClick = () => {
   }
 };
 
-const parseAction = (action) => {
-  switch (action) {
-    case "invite": {
-      sendInviteAnalitycsData(route.path);
-      inviteFriend(friendsLocale.value?.["invite_message"] || "Invite message");
-      break;
-    }
-    case "tg_story_editor": {
-      shareToStory();
-      break;
-    }
-    case "add_to_home_screen": {
-      addToHomescreen();
-      break;
-    }
-  }
+const parseAction = (action: string) => {
+  doAction(action);
 };
 
 const btnTouchstart = (event: TouchEvent) => {

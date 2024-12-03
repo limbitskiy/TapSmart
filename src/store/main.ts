@@ -3,7 +3,7 @@ import { useRouter, useRoute } from "vue-router";
 import { defineStore } from "pinia";
 import { useVibrate } from "@vueuse/core";
 import { tg, followExternalLink, addToHomescreen } from "@/api/telegram";
-import { getAsset, waitFor } from "@/utils";
+import { doAction, getAsset, waitFor } from "@/utils";
 import axios from "axios";
 import { postEvent } from "@telegram-apps/sdk";
 
@@ -103,9 +103,7 @@ export const useMainStore = defineStore("main", () => {
         // console.log(response);
         followExternalLink(response.externalUrl);
       } else if (key === "action") {
-        if (response.action === "add_to_home_screen") {
-          addToHomescreen();
-        }
+        doAction(response.action);
       } else {
         state.value[key] = response[key];
       }
@@ -290,8 +288,8 @@ export const useMainStore = defineStore("main", () => {
     return await useFetch({ key: "profile_set", data });
   };
 
-  const sendInviteAnalitycsData = (route) => {
-    return useFetch({ key: "invite_click", data: { route } });
+  const sendInviteAnalitycsData = () => {
+    return useFetch({ key: "invite_click", data: route.path });
   };
 
   const useFetch = ({ key, data, handleResponse = true }: { key?: string; data?: {}; handleResponse?: boolean }) => {

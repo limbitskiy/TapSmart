@@ -1,5 +1,10 @@
 import { assets, sounds, essentialAssets, nonEssentialAssets } from "@/config";
 import * as htmlToImage from "html-to-image";
+import { inviteFriend, addToHomescreen } from "@/api/telegram";
+import { storeToRefs } from "pinia";
+
+// stores
+import { useMainStore } from "@/store/main";
 
 const assetLibrary = { ...essentialAssets, ...nonEssentialAssets, ...assets, ...sounds };
 
@@ -99,4 +104,27 @@ export const takeScreenshot = async (element: HTMLElement) => {
   console.log(`taking screenshot`);
   const result = await htmlToImage.toJpeg(element, { quality: 0.85 });
   return result;
+};
+
+export const doAction = (action: string) => {
+  const store = useMainStore();
+
+  const { friends: friendsLocale } = storeToRefs(store.localeStore);
+  const { sendInviteAnalitycsData, shareToStory } = store;
+
+  switch (action) {
+    case "invite": {
+      sendInviteAnalitycsData();
+      inviteFriend(friendsLocale.value?.["invite_message"] || "Invite message");
+      break;
+    }
+    case "tg_story_editor": {
+      shareToStory();
+      break;
+    }
+    case "add_to_home_screen": {
+      addToHomescreen();
+      break;
+    }
+  }
 };
