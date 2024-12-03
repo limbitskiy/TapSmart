@@ -2,7 +2,7 @@
   <div id="required-settings" class="flex-1 p-4">
     <div class="top-part mb-4">
       <div class="page-title mb-2">{{ locale?.["title"] }}</div>
-      <div class="page-subtitle">{{ locale?.["subtitle"] }}</div>
+      <RouteSubtitle :text="locale?.['subtitle']" />
     </div>
 
     <LanguageSettings @change="onSettingsChange" />
