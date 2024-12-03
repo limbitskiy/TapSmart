@@ -11,7 +11,6 @@
       <Button dark @click="onSkip">{{ locale?.["button_skip"] }}</Button>
       <Button @click="nextSlide">{{ isLastSlide ? locale?.["button_finish"] : locale?.["button_next"] }}</Button>
     </div>
-    <span class="z-[999]">{{ isLastSlide }}</span>
   </div>
 </template>
 
