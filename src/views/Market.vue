@@ -52,6 +52,8 @@
                   <div class="position flex items-center gap-2 h-6">
                     <img class="h-4 w-4 object-contain scale-[2]" :src="getAsset('cup')" />
                     <span class="text-lg text-[var(--accent-color)]">{{ prize.positions.prize }}</span>
+                    <img class="h-4 w-4 object-contain scale-[2] ml-4" :src="getAsset('cup')" />
+                    <span class="text-lg text-[var(--accent-color)]">{{ prize.positions.user }}</span>
                   </div>
                 </div>
               </div>
@@ -70,8 +72,6 @@
           :data="selectedPrize"
           @close="
             () => {
-              console.log(`close`);
-
               isPrizeModal = false;
             }
           "
