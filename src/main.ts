@@ -47,6 +47,7 @@ import Errors from "@/components/modals/Errors.vue";
 import BoosterSelect from "@/components/modals/BoosterSelect.vue";
 import AFK from "@/components/modals/AFK.vue";
 import TaskModal from "@/components/modals/TaskModal.vue";
+import PrizeModal from "@/components/modals/PrizeModal.vue";
 
 const pinia = createPinia();
 const app = createApp(App);
@@ -94,6 +95,7 @@ app
   .component("BattleHeader", BattleHeader)
   .component("BackendModal", BackendModal)
   .component("RouteSubtitle", RouteSubtitle)
+  .component("PrizeModal", PrizeModal)
   .component("Toggle", Toggle);
 
 app.mount("#app");

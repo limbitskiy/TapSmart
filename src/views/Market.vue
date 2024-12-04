@@ -1,8 +1,11 @@
 <template>
   <div id="market" class="flex-1">
-    <div class="top-part p-5 mb-4">
-      <div class="page-title mb-4">{{ locale?.["title"] }}</div>
-      <RouteSubtitle :text="locale?.['subtitle']" />
+    <div class="top-part p-5">
+      <div class="icon-and-title flex items-center gap-4">
+        <img class="h-[60px]" :src="getAsset('present')" />
+        <div class="page-title">{{ locale?.["title"] }}</div>
+      </div>
+      <RouteSubtitle v-if="locale?.['subtitle']" :text="locale?.['subtitle']" />
     </div>
 
     <div class="flex-1 flex flex-col gap-4">
@@ -23,37 +26,31 @@
           </Button>
         </div>
 
-        <!-- task pills -->
-        <div class="section-tasks flex flex-col gap-2 pt-4">
+        <!-- prize pills -->
+        <div class="section-tasks flex flex-col gap-2">
           <Pill
-            v-for="task in section.prizes.filter((task) => {
-              if (task.filterKeys?.length) {
-                return task.filterKeys.includes(activeFilters[section.id]);
+            v-for="prize in section.prizes.filter((prize) => {
+              if (prize.filterKeys?.length) {
+                return prize.filterKeys.includes(activeFilters[section.id]);
               } else {
-                return task;
+                return prize;
               }
             })"
-            :key="task.id"
+            :key="prize.id"
             class="!py-2 rounded-xl"
-            @click="() => onPrizeClick(task)"
+            @click="() => onPrizeClick(prize)"
             light
           >
             <div class="content flex gap-2 items-center justify-between">
               <div class="start flex gap-4 items-center">
                 <div class="flex gap-2 items-center p-2">
-                  <img class="h-4 w-4 object-contain scale-[2]" :src="getAsset(task.icon)" />
+                  <img class="h-4 w-4 object-contain scale-[2]" :src="getAsset(prize.icon)" />
                 </div>
-                <div class="task-meta">
-                  <span class="text-lg fira-regular text-gray-300">{{ task.title }}</span>
-                  <div class="rewards flex items-center gap-4 ml-1 h-6">
-                    <div v-if="task.nuts" class="nuts flex gap-2 items-center">
-                      <img class="h-4 scale-125" :src="getAsset('nut')" />
-                      <span class="text-lg exo-bold text-[var(--accent-color)]">{{ showFormattedNumber(task.nuts) }}</span>
-                    </div>
-                    <div class="bolts flex gap-2 items-center">
-                      <img class="h-4 scale-125" :src="getAsset('bolt')" />
-                      <span class="text-lg exo-bold text-[var(--accent-color)]">{{ showFormattedNumber(task.bolts) }}</span>
-                    </div>
+                <div class="prize-meta">
+                  <span class="text-lg fira-regular text-gray-300">{{ prize.title }}</span>
+                  <div class="position flex items-center gap-2 h-6">
+                    <img class="h-4 w-4 object-contain scale-[2]" :src="getAsset('cup')" />
+                    <span class="text-lg text-[var(--accent-color)]">{{ prize.positions.prize }}</span>
                   </div>
                 </div>
               </div>
@@ -68,7 +65,7 @@
 
     <Teleport to="#modals">
       <Modal id="task-modal" v-model:visible="isPrizeModal">
-        <TaskModal
+        <PrizeModal
           :data="selectedPrize"
           @close="
             () => {
