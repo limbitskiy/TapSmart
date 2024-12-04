@@ -66,7 +66,7 @@
               <img class="w-[60px]" src="/loader/present.webp" />
               <div class="absolute bottom-[20px] right-[5px]" src="/loader/present.webp">
                 <Transition name="fade">
-                  <svg v-if="locale?.prize_image === 'star'" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg v-if="data?.prize_image === 'star'" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="15" cy="15" r="15" fill="white" />
                     <circle cx="14.9994" cy="15.0001" r="12.6" fill="url(#paint0_linear_2404_2345)" />
                     <path
@@ -86,7 +86,7 @@
                       </linearGradient>
                     </defs>
                   </svg>
-                  <svg v-else-if="locale?.prize_image === 'ton'" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg v-else-if="data?.prize_image === 'ton'" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="15" cy="15" r="15" fill="white" />
                     <path d="M15 27C21.6274 27 27 21.6274 27 15C27 8.37257 21.6274 3 15 3C8.37257 3 3 8.37257 3 15C3 21.6274 8.37257 27 15 27Z" fill="#0098EA" />
                     <path
@@ -178,7 +178,8 @@ const store = useMainStore();
 
 const { startApp, initialFetch } = store;
 const { addSound, playSound } = store.soundStore;
-const { intro: locale } = storeToRefs(store.localeStore);
+const { loader: data } = storeToRefs(store.dataStore);
+const { loader: locale } = storeToRefs(store.localeStore);
 
 const errors = ref([]);
 const gaugeRef = ref();

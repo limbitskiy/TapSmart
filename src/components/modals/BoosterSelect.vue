@@ -170,11 +170,11 @@ const onStartBattle = ({ friendsOnly }) => {
   const params = new URLSearchParams();
 
   // append selected bonuses to quesry string
-  Object.keys(pickedBonuses.value).forEach((pickedBonus) => {
+  for (const pickedBonus in pickedBonuses.value) {
     if (pickedBonuses.value[pickedBonus]) {
       params.append(pickedBonus, "1");
     }
-  });
+  }
 
   if (friendsOnly) {
     params.append("friends_only", "1");

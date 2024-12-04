@@ -44,6 +44,7 @@ export interface DataState {
   tasks?: {};
   leaders?: {};
   market?: {};
+  loader?: {};
   settings: Settings;
 }
 
@@ -58,6 +59,7 @@ export interface LocaleState {
   leaders?: LocaleEntry;
   market?: LocaleEntry;
   intro?: LocaleEntry;
+  loader?: LocaleEntry;
 }
 
 export interface BattleState {

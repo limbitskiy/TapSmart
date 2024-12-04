@@ -101,10 +101,10 @@ export const useBattleStore = defineStore("battle", () => {
   const set = (data: BattleState) => {
     let onCompleteHook: () => void = () => {};
 
-    Object.keys(data).forEach((key) => {
+    for (const key in data) {
       if (key === "cleanAnswers" && data.cleanAnswers) {
         cleanAnswers();
-        return;
+        continue;
       }
 
       // restart working breakpoint if new breakpoint time recieved
@@ -129,7 +129,7 @@ export const useBattleStore = defineStore("battle", () => {
       // set tasks
       if (key === "data") {
         setTasks(data[key]);
-        return;
+        continue;
       }
 
       // // if no such key - create an empty object
@@ -139,7 +139,7 @@ export const useBattleStore = defineStore("battle", () => {
 
       // copy data to the key
       state.value.battleData[key] = JSON.parse(JSON.stringify(data[key]));
-    });
+    }
 
     if (onCompleteHook) {
       onCompleteHook();
@@ -149,11 +149,11 @@ export const useBattleStore = defineStore("battle", () => {
 
   const expand = (data) => {
     // console.log(`expand`);
-    Object.keys(data).forEach((key) => {
+    for (const key in data) {
       // expand tasks
       if (key === "data") {
         expandTasks(data[key]);
-        return;
+        continue;
       } else {
         // expand other keys
         if (state.value.battleData[key] && Object.keys(state.value.battleData[key]).length) {
@@ -162,7 +162,7 @@ export const useBattleStore = defineStore("battle", () => {
           console.error(`expand: Error - property not of type: array or object`);
         }
       }
-    });
+    }
     // console.log("expanded battle store:", state.value.battleData);
   };
 

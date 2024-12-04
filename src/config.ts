@@ -128,6 +128,7 @@ export const essentialAssets = {
   prize_rays: "/prize/prize-rays.webp",
   prize_star: "/prize/prize-star.webp",
   prize_ton: "/prize/prize-ton.webp",
+  stars: "/stars.webp",
 };
 
 export const nonEssentialAssets = {

@@ -20,6 +20,7 @@ export const useLocaleStore = defineStore("locale", () => {
   const tasks = computed(() => state.value.tasks);
   const leaders = computed(() => state.value.leaders);
   const market = computed(() => state.value.market);
+  const loader = computed(() => state.value.loader);
   const intro = computed(() => state.value.intro);
 
   const set = (section: LocaleSections, data: {}) => {
@@ -31,5 +32,5 @@ export const useLocaleStore = defineStore("locale", () => {
     state.value[section] = { ...state.value[section], ...data };
   };
 
-  return { tutorial, requiredSettings, profile, friends, battles, tasks, leaders, market, intro, set };
+  return { tutorial, requiredSettings, profile, friends, battles, tasks, leaders, market, intro, loader, set };
 });

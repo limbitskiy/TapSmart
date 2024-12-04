@@ -81,12 +81,12 @@ export const useMainStore = defineStore("main", () => {
   );
 
   const parseResponse = (response: ResponseObject) => {
-    (Object.keys(response) as Array<keyof ResponseObject>).forEach((key) => {
+    for (const key in response) {
       if (key === "data") {
-        (Object.keys(response.data) as Array<keyof ResponseData>).forEach((section) => {
+        for (const section in response.data) {
           const sectionData = response.data[section];
 
-          if (sectionData === null) return;
+          if (sectionData === null) continue;
 
           if (section === "notification") {
             showNotification(sectionData as NotificationProps);
@@ -95,19 +95,17 @@ export const useMainStore = defineStore("main", () => {
           } else {
             dataStore.set(section, sectionData);
           }
-        });
+        }
       } else if (key === "route" && isAppLoaded.value) {
         redirectTo(response.route);
       } else if (key === "externalUrl") {
-        // location.href = response.externalUrl;
-        // console.log(response);
         followExternalLink(response.externalUrl);
       } else if (key === "action") {
         doAction(response.action);
       } else {
         state.value[key] = response[key];
       }
-    });
+    }
   };
 
   const startApp = () => {

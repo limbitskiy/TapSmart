@@ -78,6 +78,13 @@
             <Pill class="rounded-lg py-[10px] px-1 pr-2">
               <div class="filter-grid grid grid-cols-5 gap-2 fira-condensed">
                 <div
+                  class="prize flex items-center justify-center"
+                  :class="{ '!text-[var(--accent-color)] fira-bold': filter.bigFilter === 'prize' }"
+                  @click="() => onBigFilter('prize')"
+                >
+                  <span class="text-[12px] inline-block text-center" style="line-height: 14px">{{ locale?.["value_prize"] ?? "prizes" }}</span>
+                </div>
+                <div
                   class="bolts flex items-center justify-center"
                   :class="{ '!text-[var(--accent-color)] fira-bold': filter.bigFilter === 'bolt' }"
                   @click="() => onBigFilter('bolt')"
@@ -100,13 +107,6 @@
                   @click="() => onBigFilter('learned')"
                 >
                   <span class="text-[12px] inline-block text-center" style="line-height: 14px">{{ locale?.["value_learned"] ?? "learned" }}</span>
-                </div>
-                <div
-                  class="friends flex items-center justify-center"
-                  :class="{ '!text-[var(--accent-color)] fira-bold': filter.bigFilter === 'friends_in_battles' }"
-                  @click="() => onBigFilter('friends_in_battles')"
-                >
-                  <span class="text-[12px] inline-block text-center" style="line-height: 14px">{{ locale?.["value_friends_battles"] ?? "friends in battles" }}</span>
                 </div>
               </div>
             </Pill>
@@ -309,14 +309,14 @@ interface Filter {
   period: "total" | "week";
   country: boolean;
   friends: boolean;
-  bigFilter: "bolt" | "winner_token" | "battle_win" | "learned" | "friends_in_battles";
+  bigFilter: "bolt" | "winner_token" | "battle_win" | "learned" | "prize";
 }
 
 const filter = ref<Filter>({
   period: "total",
   country: false,
   friends: false,
-  bigFilter: "bolt",
+  bigFilter: "prize",
 });
 const targetIsVisible = ref(true);
 const leaderListLoading = ref(false);

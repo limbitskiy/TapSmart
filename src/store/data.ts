@@ -30,6 +30,7 @@ export const useDataStore = defineStore("data", () => {
   const tasks = computed(() => state.value.tasks);
   const leaders = computed(() => state.value.leaders);
   const market = computed(() => state.value.market);
+  const loader = computed(() => state.value.loader);
 
   const set = (section: DataSections, data: { locale: {}; store: {}; expand: {} }) => {
     if (data.locale) {
@@ -71,5 +72,5 @@ export const useDataStore = defineStore("data", () => {
     state.value.settings[key] = value;
   };
 
-  return { menu, tutorial, profile, battles, friends, settings, tasks, leaders, market, set, setSettings, addBolts };
+  return { menu, tutorial, profile, battles, friends, settings, tasks, leaders, market, loader, set, setSettings, addBolts };
 });
