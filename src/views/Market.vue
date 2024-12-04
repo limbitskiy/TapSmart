@@ -10,8 +10,9 @@
 
     <div class="flex-1 flex flex-col gap-4">
       <BackgroundPill v-for="section in data.data" :key="section.id" class="task-section flex-1">
-        <div class="pill-header flex items-center justify-between">
+        <div class="pill-header flex flex-col">
           <span class="bg-pill-title">{{ section.title }}</span>
+          <span class="bg-pill-subtitle !mt-[8px]">{{ section.subtitle }}</span>
         </div>
 
         <!-- filters -->
@@ -69,6 +70,8 @@
           :data="selectedPrize"
           @close="
             () => {
+              console.log(`close`);
+
               isPrizeModal = false;
             }
           "

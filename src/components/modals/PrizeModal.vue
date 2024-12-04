@@ -5,7 +5,7 @@
     </div>
     <div class="pill-header flex flex-col items-center text-center gap-4">
       <span class="bg-pill-title">{{ data.title }}</span>
-      <p>{{ data.desc }}</p>
+      <p v-html="data.desc"></p>
     </div>
 
     <div class="task-rewards flex flex-col gap-4 text-center items-center">
@@ -22,7 +22,7 @@
     </div>
 
     <div v-if="data.buttons?.length <= 2" class="btns flex flex-col gap-2 mt-4 w-full">
-      <Button v-for="button in data?.buttons" :key="button.label" class="w-full" activeColor="#525252" :data="button" @click="() => emit('close')" />
+      <Button v-for="button in data?.buttons" :key="button.label" class="w-full" activeColor="#525252" :data="button" />
     </div>
     <div v-else class="btns grid grid-cols-2 gap-2 mt-4 w-full">
       <Button
@@ -32,13 +32,8 @@
         :class="[data.buttons?.length === 3 && index === 2 ? 'col-span-2' : '']"
         activeColor="#525252"
         :data="button"
-        @click="() => emit('close')"
       />
     </div>
-
-    <!-- <div class="tsk-btns flex flex-col gap-2 w-full">
-      <Button v-for="button in data?.buttons" :key="button.label" class="w-full" activeColor="#525252" :data="button" @click="() => emit('close')" />
-    </div> -->
   </div>
 </template>
 

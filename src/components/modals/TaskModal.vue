@@ -22,8 +22,8 @@
     </div>
 
     <div class="tsk-btns flex flex-col gap-2 w-full">
-      <Button v-if="data?.buttons?.top" class="w-full" activeColor="#525252" :data="data.buttons.top" @click="() => emit('close')" />
-      <Button v-if="data?.buttons?.bottom" class="w-full text-white bg-[var(--grey-light)]" activeColor="#fcdcb0" :data="data.buttons.bottom" @click="() => emit('close')" />
+      <Button v-if="data?.buttons?.top" class="w-full" activeColor="#525252" :data="data.buttons.top" />
+      <Button v-if="data?.buttons?.bottom" class="w-full text-white bg-[var(--grey-light)]" activeColor="#fcdcb0" :data="data.buttons.bottom" />
     </div>
   </div>
 </template>
