@@ -50,7 +50,6 @@
 import { storeToRefs } from "pinia";
 import { onMounted } from "vue";
 import { useScreenSafeArea } from "@vueuse/core";
-import { tg } from "@/api/telegram";
 
 // store
 import { useMainStore } from "@/store/main";
@@ -77,12 +76,6 @@ const onCloseBackendModal = () => {
 
 onMounted(() => {
   document.addEventListener("visibilitychange", handleVisibilityChange);
-
-  if (tg.viewportStableHeight) {
-    const app = document.querySelector("#app");
-    app.style.height = tg.viewportStableHeight + "px";
-    app.style.overflow = "hidden";
-  }
 
   // post({ message: "hello, worker" });
 });
