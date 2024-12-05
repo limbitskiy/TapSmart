@@ -140,6 +140,7 @@ export const useBattleStore = defineStore("battle", () => {
 
       // copy data to the typedKey
       state.value.battleData[typedKey] = JSON.parse(JSON.stringify(data[typedKey]));
+    }
 
     if (onCompleteHook) {
       onCompleteHook();
