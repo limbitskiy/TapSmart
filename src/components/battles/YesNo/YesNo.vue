@@ -244,7 +244,8 @@ const startGame = () => {
   nextTask();
 };
 
-const nextTask = () => {
+const nextTask = async () => {
+  await waitFor(200);
   const newTask = props.getNextTask();
   if (props.startTaskTimeout) {
     props.startTaskTimeout(newTask.settings?.timeout);
