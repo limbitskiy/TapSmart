@@ -114,9 +114,9 @@ await fetchChallengePageData();
 
 const onAnswer = async () => {
   if (needToMakeScreenshot) {
-    setTimeout(() => {
-      takeHTMLSnapshot(screenshotEl.value);
-    }, 50);
+    takeHTMLSnapshot(screenshotEl.value);
+    // setTimeout(() => {
+    // }, 50);
   }
   needToMakeScreenshot = false;
 };
