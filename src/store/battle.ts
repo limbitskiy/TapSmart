@@ -151,14 +151,16 @@ export const useBattleStore = defineStore("battle", () => {
   const expand = (data) => {
     // console.log(`expand`);
     for (const key in data) {
+      const typedKey = key as keyof BattleState;
+
       // expand tasks
-      if (key === "data") {
-        expandTasks(data[key]);
+      if (typedKey === "data") {
+        expandTasks(data[typedKey]);
         continue;
       } else {
         // expand other keys
-        if (state.value.battleData[key] && Object.keys(state.value.battleData[key]).length) {
-          merge(state.value.battleData[key], data[key]);
+        if (state.value.battleData[typedKey] && Object.keys(state.value.battleData[typedKey]).length) {
+          merge(state.value.battleData[typedKey], data[typedKey]);
         } else {
           console.error(`expand: Error - property not of type: array or object`);
         }
