@@ -48,20 +48,6 @@ export interface DataState {
   settings: Settings;
 }
 
-export interface LocaleState {
-  tutorial?: LocaleEntry;
-  profile?: LocaleEntry;
-  menu?: LocaleEntry;
-  friends?: LocaleEntry;
-  battles?: LocaleEntry;
-  "required-settings"?: LocaleEntry;
-  tasks?: LocaleEntry;
-  leaders?: LocaleEntry;
-  market?: LocaleEntry;
-  intro?: LocaleEntry;
-  loader?: LocaleEntry;
-}
-
 export interface BattleState {
   data?: Task[];
   mechanics?: {
@@ -86,6 +72,8 @@ export interface BattleState {
   player_progress?: [];
   battle_duration?: number;
   display_ads?: boolean;
+  challenge_breakpoint?: number;
+  waiting_breakpoint?: number;
 }
 
 export interface NotificationProps {
@@ -178,9 +166,6 @@ export type Booster = {
   button: BackendButton;
 };
 
-export type LocaleEntry = {
-  [key: string]: string;
-};
 export interface AnswerProps {
   isCorrect: boolean;
   answerString: string;
@@ -204,12 +189,6 @@ export interface Bonus {
   amount: number;
 }
 
-export type LocaleSections = "tutorial" | "profile" | "battles" | "menu" | "friends" | "required-settings" | "leaders" | "market" | "tasks";
+export type LocaleSection = "tutorial" | "profile" | "battles" | "menu" | "friends" | "required-settings" | "leaders" | "market" | "tasks" | "loader" | "intro";
 
-export type SettingsKeys = "sound" | "music" | "vibro";
-
-export type DataSections = "tutorial" | "profile" | "battles" | "menu" | "friends" | "leaders" | "market" | "tasks";
-
-export type BattleTypes = {
-  readonly [x: number]: "yesno" | "4answers" | "bubble_pairs" | "audio_question" | "match_pairs" | "work_on_mistakes" | "picture_question";
-};
+export type BattleType = "yesno" | "4answers" | "bubble_pairs" | "audio_question" | "match_pairs" | "work_on_mistakes" | "picture_question";

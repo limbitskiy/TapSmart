@@ -14,14 +14,13 @@ import { useMainStore } from "@/store/main";
 import { waitFor } from "@/utils";
 
 // types
-import { BattleTypes, BattleState, AnswerProps, Task } from "@/types";
+import { BattleType, BattleState, AnswerProps, Task } from "@/types";
 
 export const useBattleStore = defineStore("battle", () => {
   const dataStore = useDataStore();
   const mainStore = useMainStore();
 
-  // should be an enum
-  const battleTypes: BattleTypes = {
+  const battleTypes: { [key: number]: BattleType } = {
     1: "yesno",
     2: "4answers",
     3: "bubble_pairs",
@@ -102,23 +101,25 @@ export const useBattleStore = defineStore("battle", () => {
     let onCompleteHook: () => void = () => {};
 
     for (const key in data) {
-      if (key === "cleanAnswers" && data.cleanAnswers) {
+      const typedKey = key as keyof BattleState;
+
+      if (typedKey === "cleanAnswers" && data.cleanAnswers) {
         cleanAnswers();
         continue;
       }
 
       // restart working breakpoint if new breakpoint time recieved
-      if (key === "breakpoint" || key === "challenge_breakpoint" || key === "waiting_breakpoint") {
-        if (currentBreakpointInterval.fn && data[key] !== state.value.battleData[key]) {
-          if (key === "breakpoint") {
+      if (typedKey === "breakpoint" || typedKey === "challenge_breakpoint" || typedKey === "waiting_breakpoint") {
+        if (currentBreakpointInterval.fn && data[typedKey] !== state.value.battleData[typedKey]) {
+          if (typedKey === "breakpoint") {
             onCompleteHook = () => {
               startBreakpoint("battle");
             };
-          } else if (key === "challenge_breakpoint") {
+          } else if (typedKey === "challenge_breakpoint") {
             onCompleteHook = () => {
               startBreakpoint("challenge");
             };
-          } else if (key === "waiting_breakpoint") {
+          } else if (typedKey === "waiting_breakpoint") {
             onCompleteHook = () => {
               startBreakpoint("waiting");
             };
@@ -127,19 +128,18 @@ export const useBattleStore = defineStore("battle", () => {
       }
 
       // set tasks
-      if (key === "data") {
-        setTasks(data[key]);
+      if (typedKey === "data" && data[typedKey]) {
+        setTasks(data[typedKey]);
         continue;
       }
 
-      // // if no such key - create an empty object
-      if (!state.value.battleData[key]) {
-        state.value.battleData[key] = null;
-      }
+      // // if no such typedKey - create an empty object
+      // if (!state.value.battleData[typedKey]) {
+      //   state.value.battleData[typedKey] = null;
+      // }
 
-      // copy data to the key
-      state.value.battleData[key] = JSON.parse(JSON.stringify(data[key]));
-    }
+      // copy data to the typedKey
+      state.value.battleData[typedKey] = JSON.parse(JSON.stringify(data[typedKey]));
 
     if (onCompleteHook) {
       onCompleteHook();

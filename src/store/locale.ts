@@ -5,12 +5,12 @@ import { defineStore } from "pinia";
 import { useMainStore } from "@/store/main";
 
 // types
-import { LocaleSections, LocaleState } from "@/types";
+import { LocaleSection } from "@/types";
 
 export const useLocaleStore = defineStore("locale", () => {
   const mainStore = useMainStore();
 
-  const state = ref<LocaleState>({});
+  const state = ref<{ [key in LocaleSection]?: {} }>({});
 
   const tutorial = computed(() => state.value.tutorial);
   const profile = computed(() => state.value.profile);
@@ -23,7 +23,7 @@ export const useLocaleStore = defineStore("locale", () => {
   const loader = computed(() => state.value.loader);
   const intro = computed(() => state.value.intro);
 
-  const set = (section: LocaleSections, data: {}) => {
+  const set = (section: LocaleSection, data: {}) => {
     if (!state.value[section]) {
       state.value[section] = data;
       return;
