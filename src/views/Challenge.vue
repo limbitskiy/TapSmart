@@ -56,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted } from "vue";
+import { ref, computed, watch, onMounted, onUnmounted, nextTick } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 import { tg } from "@/api/telegram";
@@ -114,6 +114,7 @@ await fetchChallengePageData();
 
 const onAnswer = async () => {
   if (needToMakeScreenshot) {
+    await nextTick();
     takeHTMLSnapshot(screenshotEl.value);
     // setTimeout(() => {
     // }, 50);
