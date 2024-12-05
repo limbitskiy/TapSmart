@@ -11,24 +11,24 @@
 
       <!-- question -->
       <div class="slide-cnt flex flex-col justify-center relative">
-        <Transition name="fade" mode="out-in">
-          <div v-if="currentTask" :key="currentTask.task?.question" class="flex flex-col gap-2 items-center text-center break-words">
-            <div class="question-cnt max-w-[calc(100dvw-5rem)]">
-              <span class="line-clamp-2" style="font-size: clamp(28px, 10vw, 38px)" :style="currentTask.settings?.style?.question">{{ currentTask?.task?.question }} </span>
-            </div>
-            <div class="arrow">
-              <svg width="16" height="26" viewBox="0 0 16 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M7.29289 25.7071C7.68342 26.0976 8.31658 26.0976 8.70711 25.7071L15.0711 19.3431C15.4616 18.9526 15.4616 18.3195 15.0711 17.9289C14.6805 17.5384 14.0474 17.5384 13.6569 17.9289L8 23.5858L2.34315 17.9289C1.95262 17.5384 1.31946 17.5384 0.928932 17.9289C0.538408 18.3195 0.538408 18.9526 0.928932 19.3431L7.29289 25.7071ZM7 0V25H9V0H7Z"
-                  fill="#BCBCBC"
-                />
-              </svg>
-            </div>
-            <div class="question-cnt max-w-[calc(100dvw-5rem)]">
-              <span class="text-gray-400 line-clamp-2" style="font-size: clamp(26px, 8vw, 42px)" :style="currentTask.settings?.style?.answer">{{ currentTask?.task?.answer }}</span>
-            </div>
+        <!-- <Transition name="fade" mode="out-in"> -->
+        <div v-if="currentTask" :key="currentTask.task?.question" class="flex flex-col gap-2 items-center text-center break-words">
+          <div class="question-cnt max-w-[calc(100dvw-5rem)]">
+            <span class="line-clamp-2" style="font-size: clamp(28px, 10vw, 38px)" :style="currentTask.settings?.style?.question">{{ currentTask?.task?.question }} </span>
           </div>
-        </Transition>
+          <div class="arrow">
+            <svg width="16" height="26" viewBox="0 0 16 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M7.29289 25.7071C7.68342 26.0976 8.31658 26.0976 8.70711 25.7071L15.0711 19.3431C15.4616 18.9526 15.4616 18.3195 15.0711 17.9289C14.6805 17.5384 14.0474 17.5384 13.6569 17.9289L8 23.5858L2.34315 17.9289C1.95262 17.5384 1.31946 17.5384 0.928932 17.9289C0.538408 18.3195 0.538408 18.9526 0.928932 19.3431L7.29289 25.7071ZM7 0V25H9V0H7Z"
+                fill="#BCBCBC"
+              />
+            </svg>
+          </div>
+          <div class="question-cnt max-w-[calc(100dvw-5rem)]">
+            <span class="text-gray-400 line-clamp-2" style="font-size: clamp(26px, 8vw, 42px)" :style="currentTask.settings?.style?.answer">{{ currentTask?.task?.answer }}</span>
+          </div>
+        </div>
+        <!-- </Transition> -->
 
         <!-- correct answer -->
         <Transition name="correct-text">
@@ -245,7 +245,7 @@ const startGame = () => {
 };
 
 const nextTask = async () => {
-  await waitFor(200);
+  await waitFor(100);
   const newTask = props.getNextTask();
   if (props.startTaskTimeout) {
     props.startTaskTimeout(newTask.settings?.timeout);
