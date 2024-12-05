@@ -25,18 +25,18 @@
         <div class="pill-img">
           <img class="" :src="getAsset(`mech_${propData.id}`) ?? getAsset('mech_placeholder')" />
         </div>
-        <span class="fira-semibold mx-2">{{ locale?.[`${mechName}_title`] }}</span>
+        <span class="mx-2">{{ locale?.[`${mechName}_title`] }}</span>
         <span class="fira-condensed text-[#838383] leading-5">{{ locale?.[`${mechName}_desc`] }}</span>
       </div>
     </div>
 
     <!-- active -->
-    <Button v-if="data.battle_type == propData.id" class="!px-2 w-full bg-[var(--accent-color)] text-black !text-lg rounded-full fira-condensed-bold mt-2 !py-1">
+    <Button v-if="data.battle_type == propData.id" class="!px-2 w-full bg-[var(--accent-color)] text-black !text-lg rounded-full mt-2 !py-1">
       {{ locale?.["button_active"] || "Active" }}
     </Button>
 
     <!-- trial message -->
-    <Button v-else-if="propData.nuts" class="!px-2 w-full bg-[var(--green-color)] text-white fira-condensed-bold mt-2 !py-1" activeColor="#74d77d">
+    <Button v-else-if="propData.nuts" class="!px-2 w-full bg-[var(--green-color)] text-white mt-2 !py-1" activeColor="#74d77d">
       <div class="btn-content flex items-center justify-center gap-3 !text-lg">
         {{ locale?.["button_trial_message"] }}
         <div class="bolts flex items-center gap-1">
@@ -47,18 +47,14 @@
     </Button>
 
     <!--  disabled -->
-    <Button
-      v-else-if="propData.disabled"
-      class="!px-2 w-full bg-transparent border border-gray-500 text-gray-200 fira-condensed-bold !py-1 !text-lg"
-      :class="{ '': propData.disabled }"
-    >
+    <Button v-else-if="propData.disabled" class="!px-2 w-full bg-transparent border border-gray-500 text-gray-200 !py-1 !text-lg" :class="{ '': propData.disabled }">
       {{ buttonLabel }}
     </Button>
 
     <!-- normal -->
     <Button
       v-else
-      class="!px-2 w-full bg-[var(--green-color)] text-white fira-condensed-bold !py-1 !text-lg"
+      class="!px-2 w-full bg-[var(--green-color)] text-white !py-1 !text-lg"
       :class="{ 'bg-transparent border border-gray-500 text-gray-200': propData.disabled }"
       activeColor="#74d77d"
     >

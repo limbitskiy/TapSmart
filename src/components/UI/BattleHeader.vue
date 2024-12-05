@@ -9,11 +9,11 @@
     >
       <div class="battle-header-cnt flex gap-4 items-center px-4 py-1 rounded-xl border border-gray-700">
         <div class="text flex gap-2">
-          <span class="fira-regular text-lg text-white">{{ locale?.["mechanics_category"] }}</span>
-          <span class="fira-regular text-lg text-[#B7B7B7]">{{ title }}</span>
+          <span class="text-base fira-regular text-white">{{ locale?.["mechanics_category"] }}</span>
+          <span class="capitalize text-base fira-regular text-[#B7B7B7]">{{ title }}</span>
         </div>
 
-        <svg class="mb-[1px]" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="mb-[1px] scale-75" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="10" cy="10" r="10" fill="white" />
           <path d="M8.23535 5.88281L12.9412 10.0005L8.23535 14.1181" stroke="#222222" stroke-width="2" stroke-linecap="round" />
         </svg>

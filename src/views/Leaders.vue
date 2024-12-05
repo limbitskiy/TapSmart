@@ -225,7 +225,7 @@
 
     <!-- bottom player pill -->
     <Transition name="slight-move-up">
-      <div v-if="!targetIsVisible" class="fixed-player fixed left-8 right-8" :class="[leaders?.['has_story'] ? 'bottom-[135px]' : 'bottom-[80px]']">
+      <div v-if="!targetIsVisible" class="fixed-player fixed left-8 right-8" :class="[leaders?.['has_story'] ? 'bottom-[130px]' : 'bottom-[80px]']">
         <!-- normal player -->
         <Pill class="!py-2 !px-3 rounded-xl bg-black">
           <div class="content flex gap-2 items-center justify-between">
@@ -268,7 +268,7 @@
     <!-- story button -->
     <div v-if="leaders?.['has_story']" class="story-btn-cnt fixed bottom-[80px] left-2 right-2 flex justify-between gap-3 z-10">
       <Button class="flex-1" @click="onPostStory">
-        <span class="text-xl">{{ locale?.["post_story"] ?? "post tg story" }}</span>
+        <span>{{ locale?.["post_story"] ?? "post tg story" }}</span>
       </Button>
     </div>
 

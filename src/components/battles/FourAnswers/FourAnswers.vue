@@ -56,7 +56,7 @@
           style="background: linear-gradient(180deg, rgba(4, 4, 4, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%); transition: 0.2s"
           @click="(event: MouseEvent) => onButton(button, event)"
         >
-          <span class="fira-regular text-base line-clamp-2" style="line-height: 20px">{{ button.label }}</span>
+          <span class="fira-regular capitalize text-lg line-clamp-2" style="line-height: 20px">{{ button.label }}</span>
         </Button>
       </div>
     </div>

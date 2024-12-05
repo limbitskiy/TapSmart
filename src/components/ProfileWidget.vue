@@ -1,8 +1,8 @@
 <template>
-  <div class="profile-widget flex items-center z-10 relative mt-4">
+  <div class="profile-widget flex items-center z-10 relative mt-2">
     <div class="avatar-cnt w-[35px] h-full">
       <div
-        class="avatar w-[90px] h-[90px] rounded-full overflow-hidden border-[var(--grey-light)] border-4 absolute bottom-0"
+        class="avatar w-[80px] h-[80px] rounded-full overflow-hidden border-[var(--grey-light)] border-4 absolute bottom-0"
         @click="$router.push(`/profile?from=${$route.path}`)"
       >
         <div class="gray-bg absolute inset-0 bg-[var(--grey-dark)] z-[1] grid place-items-center">
@@ -22,7 +22,7 @@
             <LeagueProgress />
           </div>
           <Button class="boost-btn !py-[2px] !px-3 !rounded-lg bg-gradient-to-r from-[#408CFF] to-[#894899]" :data="battleData?.data?.['button_boost']">
-            <span class="text-gray-200 px-4">{{ battleLocale?.["button_boost"] || "Boost" }}</span>
+            <span class="text-gray-200 px-4 text-sm">{{ battleLocale?.["button_boost"] || "Boost" }}</span>
           </Button>
         </div>
       </div>

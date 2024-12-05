@@ -5,7 +5,7 @@
       <div class="page-subtitle text-gray-200 mb-2" v-html="locale?.['no_answers_subtitle'] || 'AFK Subtitle'"></div>
 
       <Button grey @click="onClose"
-        ><span class="text-xl leading-4">{{ locale?.["button_no_answers"] || "Back Btn" }}</span>
+        ><span>{{ locale?.["button_no_answers"] || "Back Btn" }}</span>
       </Button>
     </div>
   </div>

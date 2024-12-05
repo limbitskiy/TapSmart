@@ -70,18 +70,17 @@
 
     <div class="bottom-btns flex-1 flex flex-col gap-2">
       <Button
-        class="py-4 rounded-lg"
         :style="data?.['friends_online'] ? 'background-color: black; color: white' : 'background-color: var(--accent-color); color: black'"
         activeColor="#5a5a5a"
         @click="onStartBattle"
       >
         <div class="flex justify-center gap-1">
-          <span class="text-xl leading-4">{{ locale?.["button_booster_select"] || "Challenge" }}</span>
+          <span>{{ locale?.["button_booster_select"] || "Challenge" }}</span>
         </div>
       </Button>
       <Button :class="data?.['friends_online'] ? '' : '!bg-black !text-white'" @click="() => onStartBattle({ friendsOnly: true })">
         <div class="flex gap-1 justify-center">
-          <span class="">{{ locale?.["button_booster_friends"] || "Challenge friends" }}</span>
+          <span>{{ locale?.["button_booster_friends"] || "Challenge friends" }}</span>
           <Badge class="bg-green-500" :data="data?.['friends_online'] || 0" grey />
         </div>
       </Button>
