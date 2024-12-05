@@ -22,7 +22,7 @@
             <LeagueProgress />
           </div>
           <Button class="boost-btn !py-[2px] !px-3 !rounded-lg bg-gradient-to-r from-[#408CFF] to-[#894899]" :data="battleData?.data?.['button_boost']">
-            <span class="text-base text-gray-200">{{ battleLocale?.["button_boost"] || "Boost" }}</span>
+            <span class="text-gray-200 px-4">{{ battleLocale?.["button_boost"] || "Boost" }}</span>
           </Button>
         </div>
       </div>
