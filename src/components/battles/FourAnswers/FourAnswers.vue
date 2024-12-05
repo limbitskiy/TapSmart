@@ -139,7 +139,7 @@ if (props.taskTimeoutStatus) {
 }
 
 const nextTask = async () => {
-  await waitFor(100);
+  await waitFor(50);
 
   const newTask = props.getNextTask();
   if (props.startTaskTimeout) {
