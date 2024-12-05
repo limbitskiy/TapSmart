@@ -37,6 +37,7 @@ import Badge from "@/components/UI/Badge.vue";
 import Toggle from "@/components/UI/Toggle.vue";
 import RouteSubtitle from "@/components/UI/RouteSubtitle.vue";
 import BattleHeader from "@/components/UI/BattleHeader.vue";
+import PrizeCountdown from "@/components/UI/PrizeCountdown.vue";
 import BattleCompleteAnimation from "@/components/animations/BattleCompleteAnimation.vue";
 import BattleStartAnimation from "@/components/animations/BattleStartAnimation.vue";
 
@@ -96,6 +97,7 @@ app
   .component("BackendModal", BackendModal)
   .component("RouteSubtitle", RouteSubtitle)
   .component("PrizeModal", PrizeModal)
+  .component("PrizeCountdown", PrizeCountdown)
   .component("Toggle", Toggle);
 
 app.mount("#app");

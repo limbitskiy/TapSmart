@@ -1,6 +1,6 @@
 <template>
   <Pill
-    class="flex flex-col gap-2 !p-2 justify-between outline-1 relative"
+    class="flex flex-col gap-2 !p-3 justify-between outline-1 relative"
     :class="{ 'outline outline-2 outline-[var(--accent-color)]': data.battle_type == propData.id }"
     color="light"
     @click="() => emit('select', propData.id)"
@@ -31,13 +31,13 @@
     </div>
 
     <!-- active -->
-    <Button v-if="data.battle_type == propData.id" class="!px-2 w-full bg-[var(--accent-color)] text-black !text-lg rounded-full mt-2 !py-1">
+    <Button v-if="data.battle_type == propData.id" class="!px-2 w-full bg-[var(--accent-color)] text-black rounded-full mt-2 !py-2">
       {{ locale?.["button_active"] || "Active" }}
     </Button>
 
     <!-- trial message -->
-    <Button v-else-if="propData.nuts" class="!px-2 w-full bg-[var(--green-color)] text-white mt-2 !py-1" activeColor="#74d77d">
-      <div class="btn-content flex items-center justify-center gap-3 !text-lg">
+    <Button v-else-if="propData.nuts" class="!px-2 w-full bg-[var(--green-color)] text-white mt-2 !py-2" activeColor="#74d77d">
+      <div class="btn-content flex items-center justify-center gap-3">
         {{ locale?.["button_trial_message"] }}
         <div class="bolts flex items-center gap-1">
           <img class="h-4" :src="getAsset('nut')" />
@@ -47,14 +47,14 @@
     </Button>
 
     <!--  disabled -->
-    <Button v-else-if="propData.disabled" class="!px-2 w-full bg-transparent border border-gray-500 text-gray-200 !py-1 !text-lg" :class="{ '': propData.disabled }">
+    <Button v-else-if="propData.disabled" class="!px-2 w-full bg-transparent border border-gray-500 text-gray-200 !py-2" :class="{ '': propData.disabled }">
       {{ buttonLabel }}
     </Button>
 
     <!-- normal -->
     <Button
       v-else
-      class="!px-2 w-full bg-[var(--green-color)] text-white !py-1 !text-lg"
+      class="!px-2 w-full bg-[var(--green-color)] text-white !py-2"
       :class="{ 'bg-transparent border border-gray-500 text-gray-200': propData.disabled }"
       activeColor="#74d77d"
     >

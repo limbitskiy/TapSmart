@@ -1,10 +1,10 @@
 <template>
-  <div id="change-mechanic" class="flex-1 flex flex-col gap-4 py-1">
+  <div id="change-mechanic" class="flex-1 flex flex-col gap-2 py-1">
     <div class="pill-header flex items-center justify-between">
-      <span class="bg-pill-title">{{ locale?.["select_mechanic_title"] || "Select mechanic" }}</span>
+      <span class="bg-pill-title ml-2">{{ locale?.["select_mechanic_title"] || "Select mechanic" }}</span>
     </div>
 
-    <div class="pill-grid grid grid-cols-2 gap-6 p-2 flex-1 overflow-y-scroll" @scroll="onScroll">
+    <div class="pill-grid grid grid-cols-2 gap-4 p-[2px] flex-1 overflow-y-scroll" @scroll="onScroll">
       <MechanicCard v-for="mech in battleMechanics" :key="mech!.id" :propData="mech!" @select="onMechSelect">
         <template #image>
           <svg width="116" height="60" viewBox="0 0 116 60" fill="none" xmlns="http://www.w3.org/2000/svg">

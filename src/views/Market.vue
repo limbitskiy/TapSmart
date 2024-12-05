@@ -11,7 +11,10 @@
     <div class="flex-1 flex flex-col gap-4">
       <BackgroundPill v-for="section in data.data" :key="section.id" class="task-section flex-1">
         <div class="pill-header flex flex-col">
-          <span class="bg-pill-title">{{ section.title }}</span>
+          <div class="top flex items-center justify-between mb-2">
+            <span class="bg-pill-title">{{ section.title }}</span>
+            <PrizeCountdown :timeout="section.countdown" @complete="onTimerComplete" />
+          </div>
           <span class="bg-pill-subtitle !mt-1">{{ section.subtitle }}</span>
         </div>
 
@@ -107,8 +110,6 @@ const { market: locale } = storeToRefs(store.localeStore);
 
 await fetchMarketPageData();
 
-console.log(data.value);
-
 const activeFilters = ref({});
 const selectedPrize = ref({});
 const isPrizeModal = ref(false);
@@ -135,6 +136,10 @@ data.value.data.forEach((section) => {
     }
   });
 });
+
+const onTimerComplete = () => {
+  fetchMarketPageData();
+};
 
 // console.log(activeFilters.value);
 onMounted(() => {
