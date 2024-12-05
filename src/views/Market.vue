@@ -1,8 +1,8 @@
 <template>
-  <div id="market" class="flex-1">
-    <div class="top-part p-5">
+  <div id="market" class="flex flex-col gap-4 flex-1 p-4 relative">
+    <div class="top-part">
       <div class="icon-and-title flex items-center gap-4">
-        <img class="h-[60px]" :src="getAsset('present')" />
+        <img class="h-[40px]" :src="getAsset('present')" />
         <div class="page-title">{{ locale?.["title"] }}</div>
       </div>
       <RouteSubtitle v-if="locale?.['subtitle']" :text="locale?.['subtitle']" />
@@ -50,10 +50,14 @@
                 <div class="prize-meta">
                   <span class="text-lg fira-regular text-gray-300">{{ prize.title }}</span>
                   <div class="position flex items-center gap-2 h-6">
-                    <img class="h-4 w-4 object-contain scale-[2]" :src="getAsset('cup')" />
-                    <span class="text-lg text-[var(--accent-color)]">{{ prize.positions.prize }}</span>
-                    <img class="h-4 w-4 object-contain scale-[1.8] ml-4 relative bottom-[1px]" :src="getAsset('user')" />
-                    <span class="text-lg text-[var(--accent-color)]">{{ prize.positions.user }}</span>
+                    <div class="neededPos flex items-center gap-2">
+                      <img class="h-4 w-4 object-contain scale-[2]" :src="getAsset('cup')" />
+                      <span class="text-lg text-[var(--accent-color)]">{{ prize.positions.prize }}</span>
+                    </div>
+                    <div v-if="prize.positions.user" class="userPos flex items-center gap-2">
+                      <img class="h-4 w-4 object-contain scale-[1.8] ml-4 relative bottom-[1px]" :src="getAsset('user')" />
+                      <span class="text-lg text-[var(--accent-color)]">{{ prize.positions.user }}</span>
+                    </div>
                   </div>
                 </div>
               </div>

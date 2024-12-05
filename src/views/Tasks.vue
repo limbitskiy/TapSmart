@@ -1,8 +1,8 @@
 <template>
   <div id="tasks" class="flex flex-col gap-4 flex-1 p-4">
     <div class="top-part">
-      <div class="icon-and-title flex items-center gap-4">
-        <img class="h-[60px]" :src="getAsset('tasks')" />
+      <div class="icon-and-title flex items-center gap-4 mb-2">
+        <img class="h-[40px]" :src="getAsset('tasks')" />
         <div class="page-title">{{ locale?.["title"] || "Tasks" }}</div>
       </div>
       <RouteSubtitle :text="locale?.['subtitle']" />
@@ -47,15 +47,15 @@
                   <img class="h-4 w-4 object-contain scale-[2]" :src="getAsset(task.icon)" />
                 </div>
                 <div class="task-meta">
-                  <span class="text-lg fira-regular text-gray-300">{{ task.title }}</span>
+                  <span class="fira-regular text-gray-300">{{ task.title }}</span>
                   <div class="rewards flex items-center gap-4 ml-1 h-6">
                     <div v-if="task.nuts" class="nuts flex gap-2 items-center">
                       <img class="h-4 scale-125" :src="getAsset('nut')" />
-                      <span class="text-lg exo-bold text-[var(--accent-color)]">{{ showFormattedNumber(task.nuts) }}</span>
+                      <span class="exo-bold text-[var(--accent-color)]">{{ showFormattedNumber(task.nuts) }}</span>
                     </div>
                     <div class="bolts flex gap-2 items-center">
                       <img class="h-4 scale-125" :src="getAsset('bolt')" />
-                      <span class="text-lg exo-bold text-[var(--accent-color)]">{{ showFormattedNumber(task.bolts) }}</span>
+                      <span class="exo-bold text-[var(--accent-color)]">{{ showFormattedNumber(task.bolts) }}</span>
                     </div>
                   </div>
                 </div>

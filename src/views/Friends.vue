@@ -1,8 +1,8 @@
 <template>
   <div id="friends" class="flex flex-col flex-1 gap-4 p-4 mb-[60px]">
     <div class="top-part">
-      <div class="icon-and-title flex items-center gap-4">
-        <img class="h-[60px]" :src="getAsset('friends')" />
+      <div class="icon-and-title flex items-center gap-4 mb-2">
+        <img class="h-[40px]" :src="getAsset('friends')" />
         <div class="page-title mb-2">{{ locale?.["title"] }}</div>
       </div>
       <RouteSubtitle :text="locale?.['subtitle']" />
@@ -46,28 +46,28 @@
     <BackgroundPill>
       <span class="bg-pill-title">{{ locale?.["income_title"] }}</span>
 
-      <div class="flex flex-col gap-2 mt-4">
+      <div class="flex flex-col gap-2 mt-2">
         <Pill class="!py-2 rounded-xl" :tooltip="locale?.['tooltip_bolts_earned']">
           <div class="content flex items-center justify-between">
-            <span class="text-lg text-gray-300">{{ locale?.["bolts_earned"] || "Bolts earned" }}</span>
+            <span class="text-gray-300">{{ locale?.["bolts_earned"] || "Bolts earned" }}</span>
             <div class="price flex gap-2 items-center">
               <img class="h-4 scale-150" :src="getAsset('bolt')" />
-              <span class="text-lg font-bold exo-bold">{{ shortenNumber(data?.["income"]) || 0 }}</span>
+              <span class="exo-bold">{{ shortenNumber(data?.["income"]) || 0 }}</span>
             </div>
           </div>
         </Pill>
 
         <Pill class="!py-2 rounded-xl" :tooltip="locale?.['tooltip_battles_played']">
           <div class="content flex justify-between">
-            <span class="text-lg text-gray-300">{{ locale?.["battles_played"] || "Battles played" }}</span>
-            <span class="text-lg font-bold exo-bold">{{ data?.["battles"] || 0 }}</span>
+            <span class="text-gray-300">{{ locale?.["battles_played"] || "Battles played" }}</span>
+            <span class="exo-bold">{{ data?.["battles"] || 0 }}</span>
           </div>
         </Pill>
 
         <Pill class="!py-2 rounded-xl" :tooltip="locale?.['tooltip_points_earned']">
           <div class="content flex justify-between">
-            <span class="text-lg text-gray-300">{{ locale?.["points_earned"] || "Points earned" }}</span>
-            <span class="text-lg font-bold exo-bold">{{ data?.["points"] || 0 }}</span>
+            <span class="text-gray-300">{{ locale?.["points_earned"] || "Points earned" }}</span>
+            <span class="exo-bold">{{ data?.["points"] || 0 }}</span>
           </div>
         </Pill>
       </div>
@@ -108,7 +108,7 @@
     </BackgroundPill>
 
     <!-- invite buttons -->
-    <div class="invite-btn-cnt fixed bottom-20 left-2 right-2 flex justify-between gap-3 z-10">
+    <div class="invite-btn-cnt fixed bottom-24 left-2 right-2 flex justify-between gap-3 z-10">
       <Button class="!px-4 border border-gray-800" dark @click="onCopyToClipboard"><img :src="getAsset('copy')" /></Button>
       <Button class="flex-1" @click="onInviteFriend">
         <span class="text-xl">{{ locale?.["invite_a_friend"] }}</span>

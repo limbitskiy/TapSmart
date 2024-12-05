@@ -37,9 +37,9 @@
             <div class="league-icon">
               <img class="h-[50px]" :src="getAsset('league')" />
             </div>
-            <div class="league-details flex flex-col">
+            <div class="league-details flex flex-col justify-center">
               <span class="text-gray-300 text-sm">{{ locale?.["current_league"] ?? "current league" }}</span>
-              <span class="fira-condensed-bold text-[26px] leading-5 text-nowrap">{{ profile?.["league_name"] }}</span>
+              <span class="fira-regular text-lg text-nowrap">{{ profile?.["league_name"] }}</span>
             </div>
           </div>
         </div>
@@ -140,7 +140,7 @@
                       <img v-else :src="getAsset('avatar-placeholder')" />
                     </div>
                     <div class="player-info">
-                      <span class="text-lg fira-bold text-nowrap">{{ sliceTextAmount(player.name, 15) }}</span>
+                      <span class="text-nowrap">{{ sliceTextAmount(player.name, 15) }}</span>
                       <div class="other-info flex items-center gap-4">
                         <div class="score py-1 px-3 bg-[var(--grey-dark)] rounded-lg flex gap-[6px] items-center">
                           <img v-if="filter.bigFilter === 'bolt'" class="h-[18px]" :src="getAsset('bolt')" />
@@ -235,7 +235,7 @@
                 <img v-else :src="getAsset('avatar-placeholder')" />
               </div>
               <div class="player-info">
-                <span class="text-lg fira-bold">{{ sliceTextAmount(computedPlayer.name, 15) }}</span>
+                <span>{{ sliceTextAmount(computedPlayer.name, 15) }}</span>
                 <div class="other-info flex items-center gap-4">
                   <div class="score px-2 py-1 bg-[var(--grey-dark)] rounded-lg flex gap-[6px] items-center">
                     <img v-if="filter.bigFilter === 'bolt'" class="h-[18px]" :src="getAsset('bolt')" />
@@ -266,7 +266,7 @@
     </Transition>
 
     <!-- story button -->
-    <div v-if="leaders?.['has_story']" class="story-btn-cnt fixed bottom-20 left-2 right-2 flex justify-between gap-3 z-10">
+    <div v-if="leaders?.['has_story']" class="story-btn-cnt fixed bottom-[80px] left-2 right-2 flex justify-between gap-3 z-10">
       <Button class="flex-1" @click="onPostStory">
         <span class="text-xl">{{ locale?.["post_story"] ?? "post tg story" }}</span>
       </Button>
