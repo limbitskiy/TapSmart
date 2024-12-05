@@ -1,5 +1,5 @@
 <template>
-  <div class="profile-widget flex items-center z-10 relative">
+  <div class="profile-widget flex items-center z-10 relative mt-4">
     <div class="avatar-cnt w-[35px] h-full">
       <div
         class="avatar w-[90px] h-[90px] rounded-full overflow-hidden border-[var(--grey-light)] border-4 absolute bottom-0"
