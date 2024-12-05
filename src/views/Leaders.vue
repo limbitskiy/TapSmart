@@ -12,7 +12,7 @@
         <img class="h-[40px]" :src="getAsset('leaders')" />
         <div class="title-box flex flex-col">
           <div class="page-title text-nowrap">{{ locale?.["title"] || "Leaders" }}</div>
-          <div v-if="capturingScreenshot" class="fira-condensed text-nowrap">{{ locale?.["story_subtitle"] || "story subtitle`" }}</div>
+          <div v-if="capturingScreenshot" class="text-nowrap">{{ locale?.["story_subtitle"] || "story subtitle`" }}</div>
         </div>
         <div class="subtitle-icon p-1 relative bottom-2" @click="onShowSubtitleModal">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -39,7 +39,7 @@
             </div>
             <div class="league-details flex flex-col justify-center">
               <span class="text-gray-300 text-sm">{{ locale?.["current_league"] ?? "current league" }}</span>
-              <span class="fira-regular text-lg text-nowrap">{{ profile?.["league_name"] }}</span>
+              <span class="font-semibold text-lg text-nowrap">{{ profile?.["league_name"] }}</span>
             </div>
           </div>
         </div>
@@ -56,19 +56,11 @@
               />
             </div>
             <div class="country-friends-btns flex gap-2">
-              <Button
-                class="!py-1 !px-3 !rounded-lg flex"
-                font="fira-condensed"
-                :class="{ '!bg-[var(--grey-light)] text-white': !filter.country }"
-                @click="() => onSmallFilter('country')"
-                ><span class="text-base line-clamp-1">{{ locale?.["filter_country"] ?? "country" }}</span></Button
+              <Button class="!py-1 !px-3 !rounded-lg flex" :class="{ '!bg-[var(--grey-light)] text-white': !filter.country }" @click="() => onSmallFilter('country')"
+                ><span class="font-normal capitalize text-base line-clamp-1">{{ locale?.["filter_country"] ?? "country" }}</span></Button
               >
-              <Button
-                class="!py-1 !px-3 !rounded-lg flex"
-                font="fira-condensed"
-                :class="{ '!bg-[var(--grey-light)] text-white': !filter.friends }"
-                @click="() => onSmallFilter('friends')"
-                ><span class="text-base">{{ locale?.["filter_friends"] ?? "friends" }}</span></Button
+              <Button class="!py-1 !px-3 !rounded-lg flex" :class="{ '!bg-[var(--grey-light)] text-white': !filter.friends }" @click="() => onSmallFilter('friends')"
+                ><span class="font-normal capitalize text-base">{{ locale?.["filter_friends"] ?? "friends" }}</span></Button
               >
             </div>
           </div>
@@ -76,34 +68,39 @@
           <!-- bottom-filter -->
           <div class="bottom-filter">
             <Pill class="rounded-lg py-[10px] px-1 pr-2">
-              <div class="filter-grid grid grid-cols-5 gap-2 fira-condensed">
+              <div class="filter-grid grid grid-cols-5 gap-2">
                 <div
                   class="prize flex items-center justify-center"
-                  :class="{ '!text-[var(--accent-color)] fira-bold': filter.bigFilter === 'prize' }"
+                  :class="{ '!text-[var(--accent-color)] font-semibold': filter.bigFilter === 'prize' }"
                   @click="() => onBigFilter('prize')"
                 >
                   <span class="text-[12px] inline-block text-center" style="line-height: 14px">{{ locale?.["value_prize"] ?? "prizes" }}</span>
                 </div>
                 <div
                   class="bolts flex items-center justify-center"
-                  :class="{ '!text-[var(--accent-color)] fira-bold': filter.bigFilter === 'bolt' }"
+                  :class="{ '!text-[var(--accent-color)] font-semibold': filter.bigFilter === 'bolt' }"
                   @click="() => onBigFilter('bolt')"
                 >
                   <span class="text-[12px] inline-block text-center" style="line-height: 14px">{{ locale?.["value_bolts"] ?? "bolts" }}</span>
                 </div>
                 <div class="tokens flex items-center justify-center" @click="() => onBigFilter('winner_token')">
-                  <span class="text-[12px] inline-block text-center" style="line-height: 14px">{{ locale?.["value_winner_token"] ?? "winner tokens" }}</span>
+                  <span
+                    :class="{ '!text-[var(--accent-color)] font-semibold': filter.bigFilter === 'winner_token' }"
+                    class="text-[12px] inline-block text-center"
+                    style="line-height: 14px"
+                    >{{ locale?.["value_winner_token"] ?? "winner tokens" }}</span
+                  >
                 </div>
                 <div
                   class="victories flex items-center justify-center"
-                  :class="{ '!text-[var(--accent-color)] fira-bold': filter.bigFilter === 'battle_win' }"
+                  :class="{ '!text-[var(--accent-color)] font-semibold': filter.bigFilter === 'battle_win' }"
                   @click="() => onBigFilter('battle_win')"
                 >
                   <span class="text-[12px] inline-block text-center" style="line-height: 14px">{{ locale?.["value_battle_victory"] ?? "victories" }}</span>
                 </div>
                 <div
                   class="learned flex items-center justify-center"
-                  :class="{ '!text-[var(--accent-color)] fira-bold': filter.bigFilter === 'learned' }"
+                  :class="{ '!text-[var(--accent-color)] font-semibold': filter.bigFilter === 'learned' }"
                   @click="() => onBigFilter('learned')"
                 >
                   <span class="text-[12px] inline-block text-center" style="line-height: 14px">{{ locale?.["value_learned"] ?? "learned" }}</span>
@@ -148,22 +145,22 @@
                           <img v-else-if="filter.bigFilter === 'learned'" class="h-[18px]" :src="getAsset('book')" />
                           <img v-else-if="filter.bigFilter === 'friends_in_battles'" class="h-[18px]" :src="getAsset('swords')" />
                           <img v-else-if="filter.bigFilter === 'winner_token'" class="h-[18px]" :src="getAsset('winner_token')" />
-                          <span class="text-sm fira-condensed-bold" style="line-height: 13px">{{ showFormattedNumber(player.score) }}</span>
+                          <span class="text-sm font-semibold" style="line-height: 13px">{{ showFormattedNumber(player.score) }}</span>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="end">
-                    <div v-if="player.pos === 1" class="text-lg text-gray-400 exo-bold">
+                    <div v-if="player.pos === 1" class="text-lg text-gray-400 font-semibold">
                       <img class="h-[36px]" :src="getAsset('leaderboard_1st')" />
                     </div>
-                    <div v-else-if="player.pos === 2" class="text-lg text-gray-400 exo-bold">
+                    <div v-else-if="player.pos === 2" class="text-lg text-gray-400 font-semibold">
                       <img class="h-[36px]" :src="getAsset('leaderboard_2nd')" />
                     </div>
-                    <div v-else-if="player.pos === 3" class="text-lg text-gray-400 exo-bold">
+                    <div v-else-if="player.pos === 3" class="text-lg text-gray-400 font-semibold">
                       <img class="h-[36px]" :src="getAsset('leaderboard_3rd')" />
                     </div>
-                    <span v-else class="text-lg text-gray-400 exo-bold mr-2">#{{ player.pos }}</span>
+                    <span v-else class="text-lg text-gray-400 font-semibold mr-2">#{{ player.pos }}</span>
                   </div>
                 </div>
               </Pill>
@@ -191,29 +188,29 @@
                       <img v-else="player.isPlayer" class="h-[50px]" :src="getAsset('avatar-placeholder')" />
                     </div>
                     <div class="player-info">
-                      <span class="text-lg fira-bold text-nowrap">{{ player.name }}</span>
+                      <span class="text-lg text-nowrap">{{ player.name }}</span>
                       <div class="other-info flex items-center gap-4">
                         <div class="score py-1 px-3 bg-[var(--grey-dark)] rounded-lg flex gap-[6px] items-center">
                           <img v-if="filter.bigFilter === 'bolt'" class="h-[18px]" :src="getAsset('bolt')" />
                           <img v-else-if="filter.bigFilter === 'battle_win'" class="h-[18px]" :src="getAsset('cup')" />
                           <img v-else-if="filter.bigFilter === 'learned'" class="h-[18px]" :src="getAsset('book')" />
                           <img v-else-if="filter.bigFilter === 'friends_in_battles'" class="h-[18px]" :src="getAsset('swords')" />
-                          <span class="text-sm fira-condensed-bold" style="line-height: 13px">{{ showFormattedNumber(player.score) }}</span>
+                          <span class="text-sm font-semibold" style="line-height: 13px">{{ showFormattedNumber(player.score) }}</span>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="end">
-                    <div v-if="player.pos === 1" class="text-lg text-gray-400 exo-bold">
+                    <div v-if="player.pos === 1" class="text-lg text-gray-400 font-semibold">
                       <img class="h-[36px]" :src="getAsset('leaderboard_1st')" />
                     </div>
-                    <div v-else-if="player.pos === 2" class="text-lg text-gray-400 exo-bold">
+                    <div v-else-if="player.pos === 2" class="text-lg text-gray-400 font-semibold">
                       <img class="h-[36px]" :src="getAsset('leaderboard_2nd')" />
                     </div>
-                    <div v-else-if="player.pos === 3" class="text-lg text-gray-400 exo-bold">
+                    <div v-else-if="player.pos === 3" class="text-lg text-gray-400 font-semibold">
                       <img class="h-[36px]" :src="getAsset('leaderboard_3rd')" />
                     </div>
-                    <span v-else class="text-lg text-gray-400 exo-bold mr-2">#{{ player.pos }}</span>
+                    <span v-else class="text-lg text-gray-400 font-semibold mr-2">#{{ player.pos }}</span>
                   </div>
                 </div>
               </Pill>
@@ -225,7 +222,7 @@
 
     <!-- bottom player pill -->
     <Transition name="slight-move-up">
-      <div v-if="!targetIsVisible" class="fixed-player fixed left-8 right-8" :class="[leaders?.['has_story'] ? 'bottom-[130px]' : 'bottom-[80px]']">
+      <div v-if="!targetIsVisible" class="fixed-player fixed left-8 right-8" :class="[leaders?.['has_story'] ? 'bottom-[140px]' : 'bottom-[80px]']">
         <!-- normal player -->
         <Pill class="!py-2 !px-3 rounded-xl bg-black">
           <div class="content flex gap-2 items-center justify-between">
@@ -243,22 +240,22 @@
                     <img v-else-if="filter.bigFilter === 'learned'" class="h-[18px]" :src="getAsset('book')" />
                     <img v-else-if="filter.bigFilter === 'friends_in_battles'" class="h-[18px]" :src="getAsset('friends')" />
                     <img v-else-if="filter.bigFilter === 'winner_token'" class="h-[18px]" :src="getAsset('winner_token')" />
-                    <span class="text-sm" style="line-height: 13px">{{ showFormattedNumber(computedPlayer.score) }}</span>
+                    <span class="text-sm font-semibold" style="line-height: 13px">{{ showFormattedNumber(computedPlayer.score) }}</span>
                   </div>
                 </div>
               </div>
             </div>
             <div class="end">
-              <div v-if="computedPlayer.pos === 1" class="text-lg text-gray-400 exo-bold">
+              <div v-if="computedPlayer.pos === 1" class="text-lg text-gray-400 font-semibold">
                 <img class="h-[36px]" :src="getAsset('leaderboard_1st')" />
               </div>
-              <div v-else-if="computedPlayer.pos === 2" class="text-lg text-gray-400 exo-bold">
+              <div v-else-if="computedPlayer.pos === 2" class="text-lg text-gray-400 font-semibold">
                 <img class="h-[36px]" :src="getAsset('leaderboard_2nd')" />
               </div>
-              <div v-else-if="computedPlayer.pos === 3" class="text-lg text-gray-400 exo-bold">
+              <div v-else-if="computedPlayer.pos === 3" class="text-lg text-gray-400 font-semibold">
                 <img class="h-[36px]" :src="getAsset('leaderboard_3rd')" />
               </div>
-              <span v-else class="text-lg text-gray-400 exo-bold mr-2">#{{ computedPlayer.pos }}</span>
+              <span v-else class="text-lg text-gray-400 font-semibold mr-2">#{{ computedPlayer.pos }}</span>
             </div>
           </div>
         </Pill>

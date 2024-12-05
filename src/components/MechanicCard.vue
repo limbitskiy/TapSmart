@@ -26,7 +26,7 @@
           <img class="" :src="getAsset(`mech_${propData.id}`) ?? getAsset('mech_placeholder')" />
         </div>
         <span class="mx-2">{{ locale?.[`${mechName}_title`] }}</span>
-        <span class="fira-condensed text-[#838383] leading-5">{{ locale?.[`${mechName}_desc`] }}</span>
+        <span class="text-[#838383] leading-5">{{ locale?.[`${mechName}_desc`] }}</span>
       </div>
     </div>
 

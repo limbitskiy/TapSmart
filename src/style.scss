@@ -3,9 +3,15 @@
 @tailwind utilities;
 
 :root {
-  font-family: "FiraSansRegular", sans-serif;
-  line-height: 1.5;
+  // font-family: "FiraSansRegular", sans-serif;
+  // line-height: 1.5;
+  // font-weight: 400;
+  // font-size: 14px;
+
+  font-family: "Manrope", sans-serif;
+  font-optical-sizing: auto;
   font-weight: 400;
+  font-style: normal;
   font-size: 14px;
 
   color: white;
@@ -94,11 +100,11 @@
 }
 
 .page-title {
-  @apply text-2xl mt-2 leading-8 max-w-[80%];
+  @apply text-2xl font-semibold mt-2 leading-8 max-w-[80%];
 
-  font-family: "FiraSansBold", sans-serif;
-  font-weight: 700;
-  font-style: normal;
+  // font-family: "FiraSansBold", sans-serif;
+  // font-weight: 700;
+  // font-style: normal;
 }
 
 .page-subtitle {
@@ -106,17 +112,17 @@
 }
 
 .bg-pill-title {
-  @apply text-lg leading-5 font-bold;
+  @apply text-lg leading-5 font-semibold;
 
-  font-family: "FiraSansCondensedBlack", sans-serif;
-  font-weight: 900;
+  // font-family: "FiraSansCondensedBlack", sans-serif;
+  // font-weight: 900;
 }
 
 .bg-pill-subtitle {
   @apply text-gray-300 mt-4;
 
-  font-family: "FiraSansCondensedRegular", sans-serif;
-  font-weight: 400;
+  // font-family: "FiraSansCondensedRegular", sans-serif;
+  // font-weight: 400;
 }
 
 .triangle-down {

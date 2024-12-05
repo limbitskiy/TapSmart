@@ -29,7 +29,7 @@
               <path d="M16.5982 17.8557L11.6072 12.8647V4.46289H13.3929V12.1236L17.8572 16.5968L16.5982 17.8557Z" fill="#C0C0C0" />
             </svg>
 
-            <span class="exo-black text-3xl mr-[38px]">{{ formattedTime(data?.["waiting_timer"]) ?? "00:00" }}</span>
+            <span class="font-semibold text-3xl mr-[38px]">{{ formattedTime(data?.["waiting_timer"]) ?? "00:00" }}</span>
           </div>
         </Pill>
       </div>
@@ -50,7 +50,7 @@
                 <div class="player-name flex">
                   <!-- <div class="fixed-length-name whitespace-nowrap overflow-x-hidden text-ellipsis"> -->
                   <div class="fixed-length-name">
-                    <span class="fira-bold text-lg">{{ sliceTextAmount(player.name, 15) }}</span>
+                    <span class="font-semibold text-lg">{{ sliceTextAmount(player.name, 15) }}</span>
                   </div>
                   <div v-if="player?.isFriend" class="friend-badge ml-2">
                     <!-- friend icon -->
@@ -72,16 +72,16 @@
               <!-- other info -->
               <div class="other-info flex gap-4 items-center">
                 <div class="league flex gap-1">
-                  <span class="league exo-bold">L:</span>
-                  <span class="league exo-bold">{{ player?.league || 0 }}</span>
+                  <span class="league font-semibold">L:</span>
+                  <span class="league font-semibold">{{ player?.league || 0 }}</span>
                 </div>
                 <div class="battles flex items-center gap-1">
                   <img class="h-4" :src="getAsset('swords')" />
-                  <span class="exo-bold">{{ player?.battles || 0 }}</span>
+                  <span class="font-semibold">{{ player?.battles || 0 }}</span>
                 </div>
                 <div class="bolts flex items-center gap-1">
                   <img class="h-4" :src="getAsset('bolt')" />
-                  <span class="exo-black text-[var(--accent-color)]">{{ shortenNumber(player?.bolts) || 0 }}</span>
+                  <span class="font-semibold text-[var(--accent-color)]">{{ shortenNumber(player?.bolts) || 0 }}</span>
                 </div>
               </div>
             </div>
@@ -91,10 +91,10 @@
 
       <div v-if="data?.['is_friends_battle']" class="btns w-full flex gap-4 mt-8">
         <Button class="flex-1 !py-2" activeColor="#525252" @click="onInviteFriend" :dark="data?.['players_waiting']?.length !== 1">
-          <span class="text-lg leading-5 inline-block">{{ locale?.["button_waiting_invite"] || "Invite" }}</span>
+          <span class="">{{ locale?.["button_waiting_invite"] || "Invite" }}</span>
         </Button>
         <Button class="flex-1 !py-2" activeColor="#fcdcb0" @click="onReadyBtn" :disabled="isReady" :dark="data?.['players_waiting']?.length === 1">
-          <span class="text-lg leading-5 inline-block">{{ locale?.["button_waiting_ready"] || "Ready" }}</span>
+          <span class="">{{ locale?.["button_waiting_ready"] || "Ready" }}</span>
         </Button>
       </div>
     </BackgroundPill>

@@ -4,13 +4,13 @@
       <!-- header -->
       <div class="header text-center">
         <div class="header-text">
-          <span class="text-lg fira-condensed-bold text-white">{{ data.title }}</span>
+          <span class="text-lg text-white">{{ data.title }}</span>
         </div>
       </div>
 
       <!-- content -->
       <div class="content flex-1 text-center leading-4">
-        <span class="fira-condensed text-sm text-gray-300 inline-svg svg-top-margin" v-html="replaceWithSpecialSymbols(data.subtitle)"></span>
+        <span class="text-sm text-gray-300 inline-svg svg-top-margin" v-html="replaceWithSpecialSymbols(data.subtitle)"></span>
       </div>
 
       <!-- buttons -->

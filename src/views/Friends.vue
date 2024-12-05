@@ -18,7 +18,7 @@
               <span class="text-lg pill-title">{{ locale?.["premium_pill_title"] }}</span>
               <div class="flex items-center gap-2 h-4 mb-1">
                 <img class="h-4 scale-150" :src="getAsset('bolt')" />
-                <span class="exo-bold" v-html="locale?.['premium_pill_subtitle']"></span>
+                <span v-html="locale?.['premium_pill_subtitle']"></span>
               </div>
             </div>
           </template>
@@ -34,7 +34,7 @@
               <span class="text-lg pill-title">{{ locale?.["tg_pill_title"] }}</span>
               <div class="flex items-center gap-2 h-4 mb-1">
                 <img class="h-4 scale-150" :src="getAsset('bolt')" />
-                <span class="exo-bold" v-html="locale?.['tg_pill_subtitle']"></span>
+                <span v-html="locale?.['tg_pill_subtitle']"></span>
               </div>
             </div>
           </template>
@@ -52,7 +52,7 @@
             <span class="text-gray-300">{{ locale?.["bolts_earned"] || "Bolts earned" }}</span>
             <div class="price flex gap-2 items-center">
               <img class="h-4 scale-150" :src="getAsset('bolt')" />
-              <span class="exo-bold">{{ shortenNumber(data?.["income"]) || 0 }}</span>
+              <span class="font-semibold">{{ shortenNumber(data?.["income"]) || 0 }}</span>
             </div>
           </div>
         </Pill>
@@ -60,14 +60,14 @@
         <Pill class="!py-2 rounded-xl" :tooltip="locale?.['tooltip_battles_played']">
           <div class="content flex justify-between">
             <span class="text-gray-300">{{ locale?.["battles_played"] || "Battles played" }}</span>
-            <span class="exo-bold">{{ data?.["battles"] || 0 }}</span>
+            <span class="font-semibold">{{ data?.["battles"] || 0 }}</span>
           </div>
         </Pill>
 
         <Pill class="!py-2 rounded-xl" :tooltip="locale?.['tooltip_points_earned']">
           <div class="content flex justify-between">
             <span class="text-gray-300">{{ locale?.["points_earned"] || "Points earned" }}</span>
-            <span class="exo-bold">{{ data?.["points"] || 0 }}</span>
+            <span class="font-semibold">{{ data?.["points"] || 0 }}</span>
           </div>
         </Pill>
       </div>
@@ -78,7 +78,7 @@
       <div class="header flex items-center justify-between">
         <div class="title flex items-center gap-2">
           <span class="bg-pill-title">{{ locale?.["friends_title"] }}</span>
-          <div class="counter bg-[var(--grey-light)] py-1 px-2 rounded flex items-center h-7 exo-black">{{ data?.friendList?.length }}</div>
+          <div class="counter bg-[var(--grey-light)] py-1 px-2 rounded flex items-center h-7">{{ data?.friendList?.length }}</div>
         </div>
         <div ref="el" class="refresh-friends mr-4" @click="onRefreshFriends">
           <img :src="getAsset('refresh')" />
@@ -89,12 +89,12 @@
         <div class="switches flex justify-start gap-3">
           <Button class="!py-0 !px-3 !rounded-lg" :class="filters.online ? '' : 'bg-gray-500 text-white'" @click="onOnlineFilter">
             <div class="flex gap-1">
-              <span class="fira-regular text-base">{{ locale?.["online"] }}</span>
+              <span class="font-medium text-sm">{{ locale?.["online"] }}</span>
               <Badge :data="onlineFriends.length" :dark="filters.online" :grey="!filters.online" />
             </div>
           </Button>
           <Button class="!py-0 !px-3 !rounded-lg" :class="filters.battles ? '' : 'bg-gray-500 text-white'" @click="onBattlesFilter">
-            <span class="fira-regular text-base">{{ locale?.["battles"] }}</span>
+            <span class="font-medium text-sm leading-7">{{ locale?.["battles"] }}</span>
           </Button>
         </div>
 
@@ -133,10 +133,10 @@
     <!-- qrcode modal -->
     <Teleport to="#modals">
       <Modal id="task-modal" v-model:visible="isQRCodeModal">
-        <div class="qrcode-modal flex-1 flex flex-col justify-center items-center mt-[6dvh] mb-4 mx-8 text-center">
+        <div class="qrcode-modal flex-1 flex flex-col justify-center items-center my-[6dvh] mx-8 text-center">
           <canvas ref="canvasRef" class="!w-full !h-full"></canvas>
           <div class="flex flex-col gap-2">
-            <span class="title text-lg fira-bold text-[var(--accent-color)]">{{ locale?.["qr_modal_title"] }}</span>
+            <span class="title text-lg font-semibold text-[var(--accent-color)]">{{ locale?.["qr_modal_title"] }}</span>
             <span class="subtitle">{{ locale?.["qr_modal_subtitle"] }}</span>
           </div>
         </div>

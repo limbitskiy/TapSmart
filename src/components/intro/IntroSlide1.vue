@@ -8,7 +8,7 @@
 
     <div class="intro-elements flex flex-col gap-2 p-4 z-20">
       <div class="intro-title">
-        <h2 class="fira-bold mb-3 text-[34px]">
+        <h2 class="font-semibold mb-3 text-[34px]">
           {{ locale?.["title"] ?? "title" }}
         </h2>
       </div>

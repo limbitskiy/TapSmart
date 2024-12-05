@@ -4,9 +4,9 @@
     ref="btnRef"
     :class="[
       'generic-btn',
-      !unstyled && 'rounded-xl py-4 px-8 text-lg leading-5 uppercase',
+      !unstyled && 'rounded-xl py-4 px-8 uppercase text-[14px] leading-5',
       dark ? 'bg-black' : grey ? 'bg-[var(--grey-light)]' : !unstyled && 'bg-[var(--accent-color)] text-black',
-      font ? font : 'fira-semibold',
+      font ? font : 'font-extrabold',
       data?.disabled ?? disabled ? '!bg-gray-500 bg-none' : '',
       backgroundMap[data?.accent],
     ]"

@@ -8,7 +8,7 @@
           </div>
           <div class="text flex flex-col gap-2">
             <div class="title flex gap-2 justify-between">
-              <span class="fira-bold text-xl leading-5 w-fit">{{ title }}</span>
+              <span class="font-semibold text-xl leading-5 w-fit">{{ title }}</span>
               <div class="info-btn relative -top-2 -right-2">
                 <div class="btn" @click="(event) => emit('booster-tooltip', event)">
                   <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -24,14 +24,14 @@
                 </div>
               </div>
             </div>
-            <p class="text-gray-300 text-sm fira-condensed leading-5">
+            <p class="text-gray-300 text-sm leading-5">
               {{ subtitle }}
             </p>
           </div>
         </div>
         <div class="bottom">
           <Button
-            class="w-full bg-[var(--accent-color)] !py-2"
+            class="w-full bg-[var(--accent-color)] !py-2 text-base"
             style="transition: 0.5s ease"
             :style="{ background: selected ? 'var(--green-gradient)' : 'var(--grey-dark)', color: selected ? '#fff' : '#fff' }"
             activeColor="#fcdcb0"

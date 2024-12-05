@@ -16,7 +16,7 @@
       <CircleProgress :size="80" :progress="progressValue" />
     </div>
     <img v-else-if="image" class="h-12 my-3" :src="getAsset(image)" />
-    <span class="fira-bold text-lg text-[var(--accent-color)]">{{ title }}</span>
+    <span class="font-semibold text-lg text-[var(--accent-color)]">{{ title }}</span>
     <span class="inline-svg" v-html="replaceWithSpecialSymbols(text) || 'Ad text is located around here somewhere'"></span>
   </div>
 </template>

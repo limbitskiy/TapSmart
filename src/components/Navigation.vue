@@ -27,7 +27,7 @@
             {{ getBadge(menuItem.id)?.value }}
           </div>
 
-          <span class="nav-text fira-condensed text-sm">{{ menuItem.title }}</span>
+          <span class="nav-text text-sm">{{ menuItem.title }}</span>
         </div>
       </RouterLink>
     </ul>

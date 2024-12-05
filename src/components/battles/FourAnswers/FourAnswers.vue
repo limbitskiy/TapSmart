@@ -14,9 +14,7 @@
         <Transition name="fade" mode="out-in">
           <div v-if="currentTask" :key="currentTask.task?.question" class="flex flex-col gap-2 items-center text-center break-words">
             <div class="question-cnt max-w-[calc(100dvw-5rem)]">
-              <span class="fira-condensed-black line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)" :style="currentTask.settings?.style?.question"
-                >{{ currentTask?.task?.question }}
-              </span>
+              <span class="line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)" :style="currentTask.settings?.style?.question">{{ currentTask?.task?.question }} </span>
             </div>
           </div>
         </Transition>
@@ -26,7 +24,7 @@
           <div v-if="correctAnswer.visible" class="correct-answer absolute z-20 inset-0 grid place-items-center">
             <div class="flex flex-col items-center justify-center text-center overflow-x-hidden break-words rounded-[15px] bg-black border border-[#850303] p-4 min-w-[70vw]">
               <div class="max-w-[calc(100dvw-5rem)]">
-                <span class="fira-condensed-black text-white line-clamp-2" style="font-size: clamp(26px, 8vw, 36px)">{{ correctAnswer.question }} </span>
+                <span class="text-white line-clamp-2" style="font-size: clamp(26px, 8vw, 36px)">{{ correctAnswer.question }} </span>
               </div>
               <div class="correct-answer-arrow translate-y-[-10px] opacity-0">
                 <svg width="16" height="26" viewBox="0 0 16 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -37,7 +35,7 @@
                 </svg>
               </div>
               <div class="correct-answer-answer max-w-[calc(100dvw-5rem)] translate-y-[-10px] opacity-0">
-                <span class="fira-condensed-black text-green-500 line-clamp-2" style="font-size: clamp(32px, 10vw, 46px)">{{ correctAnswer.answer }}</span>
+                <span class="text-green-500 line-clamp-2" style="font-size: clamp(32px, 10vw, 46px)">{{ correctAnswer.answer }}</span>
               </div>
             </div>
           </div>
@@ -56,7 +54,7 @@
           style="background: linear-gradient(180deg, rgba(4, 4, 4, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%); transition: 0.2s"
           @click="(event: MouseEvent) => onButton(button, event)"
         >
-          <span class="fira-regular capitalize text-lg line-clamp-2" style="line-height: 20px">{{ button.label }}</span>
+          <span class="font-normal capitalize text-lg line-clamp-2" style="line-height: 20px">{{ button.label }}</span>
         </Button>
       </div>
     </div>

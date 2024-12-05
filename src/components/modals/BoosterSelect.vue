@@ -26,7 +26,7 @@
     </div>
 
     <div class="boosters flex flex-col gap-2 px-[2px] overflow-auto" @scroll="onScroll">
-      <span class="fira-bold text-lg">{{ locale?.["available_boosters"] || "Available boosters" }}</span>
+      <span class="text-lg">{{ locale?.["available_boosters"] || "Available boosters" }}</span>
       <Pill>
         <div class="boosters-content flex flex-col gap-4">
           <!-- prize fund -->

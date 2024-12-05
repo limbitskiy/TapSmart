@@ -19,12 +19,12 @@
 
           <Pill class="!py-2 rounded-lg flex items-center justify-between" light>
             <span>Total:</span>
-            <span class="exo-bold">{{ showFormattedNumber(data?.["bolts"]) || 0 }}</span>
+            <span class="font-semibold">{{ showFormattedNumber(data?.["bolts"]) || 0 }}</span>
           </Pill>
 
           <Pill class="!py-2 rounded-lg flex items-center justify-between" light>
             <span>{{ locale?.["bolts_today"] || "Today" }}</span>
-            <span class="exo-bold">{{ showFormattedNumber(data?.["bolts_today"]) || 0 }}</span>
+            <span class="font-semibold">{{ showFormattedNumber(data?.["bolts_today"]) || 0 }}</span>
           </Pill>
         </Pill> -->
 
@@ -35,7 +35,7 @@
               <span class="text-lg text-gray-300">{{ locale?.["bolts"] || "Bolts" }}</span>
               <div class="flex gap-2 items-center">
                 <img class="h-4 scale-150" :src="getAsset('bolt')" />
-                <span class="text-xl exo-bold">{{ showFormattedNumber(data?.["bolts"]) || 0 }}</span>
+                <span class="text-xl font-semibold">{{ showFormattedNumber(data?.["bolts"]) || 0 }}</span>
               </div>
             </div>
           </Pill>
@@ -46,7 +46,7 @@
               <span class="text-sm text-gray-300">{{ locale?.["bolts_today"] || "Today" }}</span>
               <div class="flex gap-2 items-center">
                 <img class="h-4 scale-100" :src="getAsset('bolt')" />
-                <span class="exo-bold text-gray-300">{{ showFormattedNumber(data?.["bolts_today"]) || 0 }}</span>
+                <span class="font-semibold text-gray-300">{{ showFormattedNumber(data?.["bolts_today"]) || 0 }}</span>
               </div>
             </div>
           </Pill>
@@ -59,7 +59,7 @@
               <span class="text-lg text-gray-300">{{ locale?.["nuts"] || "Nuts" }}</span>
               <div class="flex gap-2 items-center">
                 <img class="h-4 scale-150" :src="getAsset('nut')" />
-                <span class="text-xl exo-bold">{{ showFormattedNumber(data?.["nuts"]) || 0 }}</span>
+                <span class="text-xl font-semibold">{{ showFormattedNumber(data?.["nuts"]) || 0 }}</span>
               </div>
             </div>
           </Pill>
@@ -70,7 +70,7 @@
               <span class="text-sm text-gray-300">{{ locale?.["nuts_today"] || "Nuts earned today" }}</span>
               <div class="flex gap-2 items-center">
                 <!-- <img class="h-4 scale-100" :src="getAsset('nut')" /> -->
-                <span class="exo-bold text-gray-300">{{ showFormattedNumber(data?.["nuts_today"]) || 0 }}</span>
+                <span class="font-semibold text-gray-300">{{ showFormattedNumber(data?.["nuts_today"]) || 0 }}</span>
               </div>
             </div>
           </Pill>
@@ -81,7 +81,7 @@
           <Pill class="rounded-xl" :tooltip="locale?.['tooltip_league']">
             <LeagueProgress grey="bg-gray-500">
               <template #leagueName>
-                <span class="text-lg fira-condensed text-nowrap">{{ data?.["league_name"] }}</span>
+                <span class="text-lg text-nowrap">{{ data?.["league_name"] }}</span>
               </template>
             </LeagueProgress>
           </Pill>
@@ -92,7 +92,7 @@
               <span class="text-sm text-gray-300">{{ locale?.["bolts_remain"] || "Bolts left" }}</span>
               <div class="flex gap-2 items-center">
                 <!-- <img class="h-4 scale-100" :src="getAsset('bolt')" /> -->
-                <span class="exo-bold text-gray-300">{{ showFormattedNumber(data?.["bolts_remain"]) ?? 0 }}</span>
+                <span class="font-semibold text-gray-300">{{ showFormattedNumber(data?.["bolts_remain"]) ?? 0 }}</span>
               </div>
             </div>
           </Pill>
@@ -105,7 +105,7 @@
               <span class="text-lg text-gray-300">{{ locale?.["battles_played"] || "Battles" }}</span>
               <div class="flex gap-2 items-center">
                 <img class="h-6" :src="getAsset('swords')" />
-                <span class="text-xl exo-bold">{{ data?.["battles_played"] || 0 }}</span>
+                <span class="text-xl font-semibold">{{ data?.["battles_played"] || 0 }}</span>
               </div>
             </div>
           </Pill>
@@ -116,7 +116,7 @@
               <span class="text-sm text-gray-300">{{ locale?.["battles_played_today"] || "Battles played today" }}</span>
               <div class="flex gap-2 items-center">
                 <!-- <img class="h-4 scale-100" :src="getAsset('swords')" /> -->
-                <span class="exo-bold text-gray-300">{{ showFormattedNumber(data?.["battles_played_today"]) || 0 }}</span>
+                <span class="font-semibold text-gray-300">{{ showFormattedNumber(data?.["battles_played_today"]) || 0 }}</span>
               </div>
             </div>
           </Pill>
@@ -129,7 +129,7 @@
               <span class="text-lg text-gray-300">{{ locale?.["winner_token"] || "Winner token" }}</span>
               <div class="flex gap-2 items-center">
                 <img class="h-6" :src="getAsset('winner_token')" />
-                <span class="text-xl exo-bold">{{ data?.["winner_token"] || 0 }}</span>
+                <span class="text-xl font-semibold">{{ data?.["winner_token"] || 0 }}</span>
               </div>
             </div>
           </Pill>
@@ -139,7 +139,7 @@
             <div class="content flex items-center justify-between">
               <span class="text-sm text-gray-300">{{ locale?.["winner_token_today"] || "Winner token today" }}</span>
               <div class="flex gap-2 items-center">
-                <span class="exo-bold text-gray-300">{{ showFormattedNumber(data?.["winner_token_today"]) || 0 }}</span>
+                <span class="font-semibold text-gray-300">{{ showFormattedNumber(data?.["winner_token_today"]) || 0 }}</span>
               </div>
             </div>
           </Pill>
@@ -152,7 +152,7 @@
               <span class="text-lg text-gray-300">{{ locale?.["winner_token_invest"] || "Winner token invest" }}</span>
               <div class="flex gap-2 items-center">
                 <img class="h-6" :src="getAsset('winner_token')" />
-                <span class="text-xl exo-bold">{{ data?.["winner_token_invest"] || 0 }}</span>
+                <span class="text-xl font-semibold">{{ data?.["winner_token_invest"] || 0 }}</span>
               </div>
             </div>
           </Pill>
@@ -162,7 +162,7 @@
             <div class="content flex items-center justify-between">
               <span class="text-sm text-gray-300">{{ locale?.["winner_token_invest_today"] || "Winner token invest today" }}</span>
               <div class="flex gap-2 items-center">
-                <span class="exo-bold text-gray-300">{{ showFormattedNumber(data?.["winner_token_invest_today"]) || 0 }}</span>
+                <span class="font-semibold text-gray-300">{{ showFormattedNumber(data?.["winner_token_invest_today"]) || 0 }}</span>
               </div>
             </div>
           </Pill>
@@ -181,7 +181,7 @@
               <span class="text-lg text-gray-300">{{ locale?.["questions_trained"] || "Words trained" }}</span>
               <div class="flex gap-2 items-center">
                 <img class="h-6" :src="getAsset('book')" />
-                <span class="text-xl exo-bold">{{ data?.["questions_trained"] || 0 }}</span>
+                <span class="text-xl font-semibold">{{ data?.["questions_trained"] || 0 }}</span>
               </div>
             </div>
           </Pill>
@@ -191,7 +191,7 @@
             <div class="content flex items-center justify-between">
               <span class="text-sm text-gray-300">{{ locale?.["questions_trained_today"] || "Words trained today" }}</span>
               <div class="flex gap-2 items-center">
-                <span class="exo-bold text-gray-300">{{ showFormattedNumber(data?.["questions_trained_today"]) || 0 }}</span>
+                <span class="font-semibold text-gray-300">{{ showFormattedNumber(data?.["questions_trained_today"]) || 0 }}</span>
               </div>
             </div>
           </Pill>
@@ -204,7 +204,7 @@
               <span class="text-lg text-gray-300">{{ locale?.["questions_learned"] || "Words learned" }}</span>
               <div class="flex gap-2 items-center">
                 <img class="h-6" :src="getAsset('book')" />
-                <span class="text-xl exo-bold">{{ data?.["questions_learned"] || 0 }}</span>
+                <span class="text-xl font-semibold">{{ data?.["questions_learned"] || 0 }}</span>
               </div>
             </div>
           </Pill>
@@ -214,7 +214,7 @@
             <div class="content flex items-center justify-between">
               <span class="text-sm text-gray-300">{{ locale?.["questions_learned_today"] || "Words learned today" }}</span>
               <div class="flex gap-2 items-center">
-                <span class="exo-bold text-gray-300">{{ showFormattedNumber(data?.["questions_learned_today"]) || 0 }}</span>
+                <span class="font-semibold text-gray-300">{{ showFormattedNumber(data?.["questions_learned_today"]) || 0 }}</span>
               </div>
             </div>
           </Pill>
@@ -227,7 +227,7 @@
               <span class="text-lg text-gray-300">{{ locale?.["questions_repetition"] || "Repetitions" }}</span>
               <div class="flex gap-2 items-center">
                 <img class="h-6" :src="getAsset('book')" />
-                <span class="text-xl exo-bold">{{ data?.["questions_repetition"] || 0 }}</span>
+                <span class="text-xl font-semibold">{{ data?.["questions_repetition"] || 0 }}</span>
               </div>
             </div>
           </Pill>
@@ -237,7 +237,7 @@
             <div class="content flex items-center justify-between">
               <span class="text-sm text-gray-300">{{ locale?.["questions_repetition_today"] || "Words repeated today" }}</span>
               <div class="flex gap-2 items-center">
-                <span class="text-lg exo-bold">{{ showFormattedNumber(data?.["questions_repetition_today"]) || 0 }}</span>
+                <span class="text-lg font-semibold">{{ showFormattedNumber(data?.["questions_repetition_today"]) || 0 }}</span>
               </div>
             </div>
           </Pill>
@@ -250,9 +250,9 @@
               <div class="top flex items-baseline justify-between">
                 <div class="level">
                   <span class="text-lg text-gray-300">{{ locale?.["level"] }}: </span>
-                  <span class="text-base exo-bold text-gray-300">{{ data?.["level"] }}</span>
+                  <span class="text-base font-semibold text-gray-300">{{ data?.["level"] }}</span>
                 </div>
-                <span class="text-[10px] exo-bold text-gray-300">{{ data?.["level_progress"] }}%</span>
+                <span class="text-[10px] font-semibold text-gray-300">{{ data?.["level_progress"] }}%</span>
               </div>
               <div class="bottom">
                 <div class="progressbar h-[7px] w-full rounded-full bg-gray-500 relative">
@@ -272,7 +272,7 @@
               <span class="text-sm text-gray-300">{{ locale?.["questions_remain"] || "Level remain" }}</span>
               <div class="flex gap-2 items-center">
                 <!-- <img class="h-4 scale-100" :src="getAsset('bolt')" /> -->
-                <span class="exo-bold text-gray-300">{{ showFormattedNumber(data?.["questions_remain"]) ?? 0 }}</span>
+                <span class="font-semibold text-gray-300">{{ showFormattedNumber(data?.["questions_remain"]) ?? 0 }}</span>
               </div>
             </div>
           </Pill>

@@ -12,7 +12,7 @@
       <BackgroundPill v-for="section in data.data" :key="section.id" class="task-section flex-1">
         <div class="pill-header flex flex-col">
           <span class="bg-pill-title">{{ section.title }}</span>
-          <span class="bg-pill-subtitle !mt-[8px]">{{ section.subtitle }}</span>
+          <span class="bg-pill-subtitle !mt-1">{{ section.subtitle }}</span>
         </div>
 
         <!-- filters -->
@@ -23,7 +23,7 @@
             :class="activeFilters[section.id]?.includes(filter.key) ? '' : 'bg-gray-500 text-white'"
             @click="() => onFilter(section.id, filter)"
           >
-            <span class="fira-regular text-base">{{ filter.label }}</span>
+            <span class="text-base">{{ filter.label }}</span>
           </Button>
         </div>
 
@@ -48,11 +48,11 @@
                   <img class="h-4 w-4 object-contain scale-[2]" :src="getAsset(prize.icon)" />
                 </div>
                 <div class="prize-meta">
-                  <span class="text-lg fira-regular text-gray-300">{{ prize.title }}</span>
+                  <span class="text-lg text-gray-300">{{ prize.title }}</span>
                   <div class="position flex items-center gap-2 h-6">
                     <div class="neededPos flex items-center gap-2">
                       <img class="h-4 w-4 object-contain scale-[2]" :src="getAsset('cup')" />
-                      <span class="text-lg text-[var(--accent-color)]">{{ prize.positions.prize }}</span>
+                      <span class="font-semibold text-[var(--accent-color)]">{{ prize.positions.pos }}</span>
                     </div>
                     <div v-if="prize.positions.user" class="userPos flex items-center gap-2">
                       <img class="h-4 w-4 object-contain scale-[1.8] ml-4 relative bottom-[1px]" :src="getAsset('user')" />

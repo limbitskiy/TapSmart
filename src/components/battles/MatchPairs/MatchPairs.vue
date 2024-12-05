@@ -24,7 +24,7 @@
                 :class="{ selected: pill.selected, success: pill.success, wrong: pill.wrong }"
                 @click="(event: MouseEvent) => onButton(pill, event)"
               >
-                <span class="fira-regular capitalize text-lg line-clamp-2" style="line-height: 20px">{{ pill.task.task?.question }}</span>
+                <span class="font-normal capitalize text-lg line-clamp-2" style="line-height: 20px">{{ pill.task.task?.question }}</span>
               </Button>
             </Transition>
           </div>
@@ -39,7 +39,7 @@
                 style="background: linear-gradient(180deg, rgba(4, 4, 4, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%)"
                 @click="(event: MouseEvent) => onButton(pill, event)"
               >
-                <span class="fira-regular capitalize text-lg line-clamp-2" style="line-height: 20px">{{ pill.task.task?.answer }}</span>
+                <span class="font-normal capitalize text-lg line-clamp-2" style="line-height: 20px">{{ pill.task.task?.answer }}</span>
               </Button>
             </Transition>
           </div>

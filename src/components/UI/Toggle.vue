@@ -1,5 +1,5 @@
 <template>
-  <div class="toggle bg-[var(--grey-light)] rounded-[8px] flex p-1 w-fit fira-condensed relative">
+  <div class="toggle bg-[var(--grey-light)] rounded-[8px] flex p-1 w-fit relative">
     <div class="option1 px-3 rounded-[8px]" :class="{ 'bg-[var(--accent-color)] text-black ': selected === option1.value }" @click="() => onSelect(option1)">
       <span>{{ option1.label }}</span>
     </div>

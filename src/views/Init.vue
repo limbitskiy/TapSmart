@@ -141,7 +141,7 @@
         <div class="loading-text text-[var(--accent-color)] exo-bold">Loading...</div>
 
         <!-- version number -->
-        <div class="build-no text-[12px] text-[var(--accent-color)] fira-bold leading-4">build: {{ version }}</div>
+        <div class="build-no text-[12px] text-[var(--accent-color)] leading-4">build: {{ version }}</div>
       </div>
 
       <!-- errors -->

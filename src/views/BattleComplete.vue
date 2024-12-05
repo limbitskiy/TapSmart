@@ -17,11 +17,11 @@
           <Pill class="!py-1">
             <div class="content flex flex-col items-center justify-between">
               <div class="place-icon-text flex gap-2 items-center">
-                <span class="fira-bold text-2xl">{{ data?.["completed_place"] || "Place:" }}</span>
+                <span class="font-semibold text-2xl">{{ data?.["completed_place"] || "Place:" }}</span>
                 <img v-if="data?.['battle_complete_place'] === 1" class="h-10" :src="getAsset('1st_place')" />
                 <img v-else-if="data?.['battle_complete_place'] === 2" class="h-10" :src="getAsset('2nd_place')" />
                 <img v-else-if="data?.['battle_complete_place'] === 3" class="h-10" :src="getAsset('3rd_place')" />
-                <span v-else class="fira-bold text-2xl">{{ data?.["battle_complete_place"] || 0 }}</span>
+                <span v-else class="font-semibold text-2xl">{{ data?.["battle_complete_place"] || 0 }}</span>
               </div>
 
               <div class="rewards flex item-center gap-2">
@@ -43,7 +43,7 @@
                     </defs>
                   </svg>
 
-                  <span class="text-xl exo-black">{{ data?.["battle_complete_score"] || 0 }}</span>
+                  <span class="text-xl font-semibold">{{ data?.["battle_complete_score"] || 0 }}</span>
                 </div>
 
                 <div class="mult flex gap-1 items-baseline">
@@ -55,14 +55,14 @@
                     />
                   </svg>
 
-                  <span class="text-xl exo-black">{{ data?.["battle_complete_multiplicator"] || 0 }}</span>
+                  <span class="text-xl font-semibold">{{ data?.["battle_complete_multiplicator"] || 0 }}</span>
                 </div>
 
-                <span class="leading-[28px]"> = </span>
+                <span class=""> = </span>
 
                 <div class="bolts flex gap-2 items-center ml-1">
                   <img class="h-4 scale-150" :src="getAsset('bolt')" />
-                  <span class="text-xl exo-black">{{ data?.["battle_complete_bolts"] || 0 }}</span>
+                  <span class="text-xl font-semibold">{{ data?.["battle_complete_bolts"] || 0 }}</span>
                 </div>
               </div>
             </div>
@@ -73,8 +73,8 @@
         <div v-if="data?.['error_data']?.length" class="errors">
           <Pill class="!py-2 flex flex-col gap-2">
             <div class="stat flex gap-4 items-center justify-between">
-              <span class="fira-condensed text-lg">{{ locale?.["error_data_title"] || "Errors" }}</span>
-              <span class="text-xl exo-black text-red-600">{{ data?.["error_data"]?.length || 0 }}</span>
+              <span class="text-lg">{{ locale?.["error_data_title"] || "Errors" }}</span>
+              <span class="text-xl font-semibold text-red-600">{{ data?.["error_data"]?.length || 0 }}</span>
             </div>
             <Button
               class="bg-[var(--grey-dark)] text-white flex-1"
@@ -97,26 +97,8 @@
 
       <!-- buttons -->
       <div class="ad-btns w-full flex gap-4 mt-8">
-        <Button class="flex-1 py-3 !px-0 text-white bg-[var(--grey-light)]" activeColor="#525252" :data="data?.['button_claim']">
-          <!-- <span>{{ data?.["battle_complete_bolts"] }}</span> -->
-          <!-- <div class="flex flex-col gap-1 items-center">
-            <div class="flex gap-1 items-baseline"> -->
-          <!-- <span class="text-base leading-4">{{ getBtnTextArr(locale?.["button_claim"])?.[0] ?? 0 }}</span>
-              <img class="h-4" :src="getAsset('bolt')" /> -->
-          <!-- </div> -->
-          <!-- <span class="text-sm fira-regular !leading-3">{{ getBtnTextArr(locale?.["button_claim"])?.[1] ?? 0 }}</span> -->
-          <!-- </div> -->
-        </Button>
-        <Button class="flex-1 py-3 !px-0" activeColor="#fcdcb0" :data="data?.['button_claim_with_ton']">
-          <!-- <span v-html="replaceWithSpecialSymbols(data?.['battle_complete_bolts_with_ton'])"></span> -->
-          <!-- <div class="flex flex-col gap-1 items-center">
-            <div class="flex gap-1 items-baseline"> -->
-          <!-- <span class="text-base leading-4">{{ getBtnTextArr(locale?.["button_claim_with_ton"])?.[0] ?? 0 }}</span>
-              <img class="h-4" :src="getAsset('bolt-dark')" /> -->
-          <!-- </div> -->
-          <!-- <span class="text-sm fira-regular !leading-3">{{ getBtnTextArr(locale?.["button_claim_with_ton"])?.[1] ?? 0 }}</span> -->
-          <!-- </div> -->
-        </Button>
+        <Button class="flex-1 py-3 !px-0 text-white bg-[var(--grey-light)]" activeColor="#525252" :data="data?.['button_claim']"> </Button>
+        <Button class="flex-1 py-3 !px-0" activeColor="#fcdcb0" :data="data?.['button_claim_with_ton']"> </Button>
       </div>
     </BackgroundPill>
 
@@ -132,13 +114,13 @@
     <Transition name="closeup-score">
       <div v-if="isCloseup" class="place-icon-text-cnt absolute inset-0 grid place-items-center z-[25]">
         <div class="place-icon-text flex flex-col gap-1 items-center justify-center w-full">
-          <span class="fira-condensed-bold text-4xl text-[var(--accent-color)]">{{ locale?.["battle_complete_modal_title"] || "Congrats!" }} </span>
+          <span class="font-semibold text-4xl text-[var(--accent-color)]">{{ locale?.["battle_complete_modal_title"] || "Congrats!" }} </span>
           <div class="place flex flex-col gap-6 items-center">
-            <span class="fira-semibold text-2xl">{{ locale?.["battle_complete_modal_subtitle"] || "Your place is:" }}</span>
+            <span class="text-2xl">{{ locale?.["battle_complete_modal_subtitle"] || "Your place is:" }}</span>
             <img v-if="data?.['battle_complete_place'] === 1" class="h-12 scale-[2]" :src="getAsset('1st_place')" />
             <img v-else-if="data?.['battle_complete_place'] === 2" class="h-12 scale-[2]" :src="getAsset('2nd_place')" />
             <img v-else-if="data?.['battle_complete_place'] === 3" class="h-12 scale-[2]" :src="getAsset('3rd_place')" />
-            <span v-else class="fira-bold text-2xl">{{ data?.["battle_complete_place"] || 0 }}</span>
+            <span v-else class="font-semibold text-2xl">{{ data?.["battle_complete_place"] || 0 }}</span>
           </div>
         </div>
       </div>
