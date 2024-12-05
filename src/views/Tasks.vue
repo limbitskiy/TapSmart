@@ -8,14 +8,14 @@
       <RouteSubtitle :text="locale?.['subtitle']" />
     </div>
 
-    <div class="flex-1 flex flex-col gap-4">
+    <!-- <div class="flex-1 flex flex-col gap-4">
       <BackgroundPill v-for="section in tasks.data" :key="section.id" class="task-section flex-1">
         <div class="pill-header flex items-center justify-between">
           <span class="bg-pill-title">{{ section.title }}</span>
-        </div>
+        </div> -->
 
-        <!-- filters -->
-        <div class="filters flex gap-2 mt-2">
+    <!-- filters -->
+    <!-- <div class="filters flex gap-2 mt-2">
           <Button
             v-for="filter in section.filters"
             class="!py-0 !px-3 !rounded-lg"
@@ -24,11 +24,11 @@
           >
             <span class="fira-regular text-base">{{ filter.label }}</span>
           </Button>
-        </div>
+        </div> -->
 
-        <!-- task pills -->
-        <div class="section-tasks flex flex-col gap-2 pt-4">
-          <Pill
+    <!-- task pills -->
+    <!-- <div class="section-tasks flex flex-col gap-2 pt-4"> -->
+    <!-- <Pill
             v-for="task in section.tasks.filter((task) => {
               if (task.filterKeys?.length) {
                 return task.filterKeys.includes(activeFilters[section.id]);
@@ -67,7 +67,9 @@
           </Pill>
         </div>
       </BackgroundPill>
-    </div>
+    </div> -->
+
+    <iframe src="https://tokling.com"></iframe>
 
     <Teleport to="#modals">
       <Modal id="task-modal" v-model:visible="isTaskModal">
