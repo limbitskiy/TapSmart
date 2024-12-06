@@ -52,12 +52,16 @@
             <!-- money & score -->
             <div class="wrap flex items-center gap-4">
               <div class="money flex items-center gap-1">
-                <img class="h-4" :src="getAsset('bolt')" />
-                <span class="text-sm font-semibold">{{ shortenNumber(data.bolts) || 0 }}</span>
+                <img class="h-5" :src="getAsset('bolt')" />
+                <span class="text-sm font-semibold leading-4">{{ shortenNumber(data.bolts) || 0 }}</span>
               </div>
               <div class="battle quan flex items-center gap-1">
-                <img class="h-4" :src="getAsset('swords')" />
-                <span class="text-sm font-semibold">{{ data.battle_quan || 0 }}</span>
+                <img class="h-5" :src="getAsset('swords')" />
+                <span class="text-sm font-semibold leading-4">{{ data.battle_quan || 0 }}</span>
+              </div>
+
+              <div v-if="data.has_cup_icon" class="cup-icon">
+                <img class="h-5" :src="getAsset('cup')" />
               </div>
             </div>
           </div>
@@ -85,6 +89,7 @@ defineProps<{
     battle_quan: number;
     bolts_earned: number;
     points_earned: number;
+    has_cup_icon: boolean;
   };
   battleFilter: boolean;
 }>();

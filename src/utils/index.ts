@@ -106,10 +106,11 @@ export const takeScreenshot = async (element: HTMLElement) => {
   return result;
 };
 
-export const doAction = (action: string) => {
+export const doButtonAction = (action: string) => {
   const store = useMainStore();
 
   const { friends: friendsLocale } = storeToRefs(store.localeStore);
+  const { startChallengeModalOpened } = storeToRefs(store.battleStore);
   const { sendInviteAnalitycsData, shareToStory } = store;
 
   switch (action) {
@@ -124,6 +125,10 @@ export const doAction = (action: string) => {
     }
     case "add_to_home_screen": {
       addToHomescreen();
+      break;
+    }
+    case "start-challenge": {
+      startChallengeModalOpened.value = true;
       break;
     }
   }

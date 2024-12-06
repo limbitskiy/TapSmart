@@ -26,7 +26,7 @@ import { ref, useCssModule } from "vue";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 import {} from "@/api/telegram";
-import { doAction, replaceWithSpecialSymbols } from "@/utils";
+import { doButtonAction, replaceWithSpecialSymbols } from "@/utils";
 
 // stores
 import { useMainStore } from "@/store/main";
@@ -73,7 +73,7 @@ const backgroundMap = {
 
 const onClick = () => {
   if (props.data?.action) {
-    parseAction(props.data?.action);
+    doButtonAction(props.data?.action);
   }
 
   if (props.data?.api) {
@@ -87,10 +87,6 @@ const onClick = () => {
   if (props.data?.isClose) {
     emit("close");
   }
-};
-
-const parseAction = (action: string) => {
-  doAction(action);
 };
 
 const btnTouchstart = (event: TouchEvent) => {

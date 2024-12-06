@@ -1,7 +1,5 @@
 <template>
-  <Transition name="fade" mode="out-in">
-    <BackendModalContent :key="modal.id" :data="modal" @close="() => emit('close')" />
-  </Transition>
+  <BackendModalContent :key="modal.id" :data="modal" @close="() => emit('close')" />
 </template>
 
 <script setup lang="ts">

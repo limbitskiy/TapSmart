@@ -64,6 +64,7 @@ export const useBattleStore = defineStore("battle", () => {
   const afkCounter = ref(0);
 
   const backendModalOpen = ref(false);
+  const startChallengeModalOpened = ref(false);
   const relaxPaused = ref(false);
 
   // challenge vars
@@ -395,6 +396,7 @@ export const useBattleStore = defineStore("battle", () => {
     settings,
     backendModalOpen,
     relaxPaused,
+    startChallengeModalOpened,
     set,
     expand,
     pauseBattle,

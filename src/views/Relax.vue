@@ -74,7 +74,7 @@ const store = useMainStore();
 const { fetchRelaxPageData, useFetch, hideTooltip, setBgColor } = store;
 const { debugMessages, HTMLSnapshots } = storeToRefs(store);
 const { battles: locale } = storeToRefs(store.localeStore);
-const { data, afkCounter, сurrentMechanicName, backendModalOpen, relaxPaused } = storeToRefs(store.battleStore);
+const { data, afkCounter, сurrentMechanicName, backendModalOpen, relaxPaused, startChallengeModalOpened } = storeToRefs(store.battleStore);
 const { startBreakpoint, stopBreakpoint, calculateRelaxMultiplierAmount } = store.battleStore;
 
 const isChangeMechModalVisible = ref(false);
@@ -121,6 +121,11 @@ watch(afkCounter, (val) => {
   if (val >= 3) {
     isAFKModalVisible.value = true;
   }
+});
+
+// watch for external opening of start challenge modal
+watch(startChallengeModalOpened, () => {
+  isBoostersModalVisible.value = true;
 });
 
 const headerTitle = computed(() => locale.value[`${сurrentMechanicName.value}_title`]);

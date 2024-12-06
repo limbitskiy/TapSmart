@@ -7,7 +7,7 @@ export const essentialAssets = {
   leaders: "/leaders.webp",
   market: "/market.webp",
   tasks: "/tasks.webp",
-  swords: "/swords.webp",
+  // swords: "/swords.webp",
   telegram: "/telegram.webp",
   "telegram-premium": "/telegram-premium.webp",
   "tutorial-0": "/tiger-bg.webp",
@@ -86,6 +86,7 @@ export const assets = {
   "chevron-right": "assets/icons/chevron-right.svg",
   "enemy-marker": "assets/icons/enemy-marker.svg",
   friend: "assets/icons/friend.svg",
+  swords: "assets/icons/swords.svg",
 };
 
 export const sounds = {

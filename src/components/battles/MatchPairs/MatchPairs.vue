@@ -159,6 +159,7 @@ const onButton = (pill: Pill, event: MouseEvent) => {
       animateWrong(selectedLeft, selectedRight);
       setTimeout(() => {
         isAnimationRunning = false;
+        startTaskTimeout();
       }, settings.animationSpeed);
       return;
     }

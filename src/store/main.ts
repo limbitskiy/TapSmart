@@ -3,7 +3,7 @@ import { useRouter, useRoute } from "vue-router";
 import { defineStore } from "pinia";
 import { useVibrate } from "@vueuse/core";
 import { tg, followExternalLink } from "@/api/telegram";
-import { doAction, getAsset, waitFor } from "@/utils";
+import { doButtonAction, getAsset, waitFor } from "@/utils";
 import axios from "axios";
 import { postEvent } from "@telegram-apps/sdk";
 
@@ -101,7 +101,7 @@ export const useMainStore = defineStore("main", () => {
       } else if (key === "externalUrl") {
         followExternalLink(response.externalUrl);
       } else if (key === "action") {
-        doAction(response.action);
+        doButtonAction(response.action);
       } else {
         state.value[key] = response[key];
       }

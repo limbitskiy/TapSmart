@@ -146,7 +146,7 @@
                           <img v-else-if="filter.bigFilter === 'prize'" class="h-[12px]" :src="getAsset('friend')" />
                           <img v-else-if="filter.bigFilter === 'friends_in_battles'" class="h-[18px]" :src="getAsset('swords')" />
                           <img v-else-if="filter.bigFilter === 'winner_token'" class="h-[18px]" :src="getAsset('winner_token')" />
-                          <span class="text-sm font-semibold" style="line-height: 13px">{{ showFormattedNumber(player.score) }}</span>
+                          <span class="font-semibold" style="line-height: 16px">{{ showFormattedNumber(player.score) }}</span>
                         </div>
                       </div>
                     </div>
