@@ -13,9 +13,9 @@
         <div class="pill-header flex flex-col">
           <div class="top flex items-center justify-between mb-2">
             <span class="bg-pill-title">{{ section.title }}</span>
-            <PrizeCountdown :timeout="section.countdown" @complete="onTimerComplete" />
+            <Countdown :timeout="section.countdown" @complete="onTimerComplete" />
           </div>
-          <span class="bg-pill-subtitle !mt-1">{{ section.subtitle }}</span>
+          <span class="bg-pill-subtitle !mt-1" v-html="section.subtitle"></span>
         </div>
 
         <!-- filters -->
@@ -48,20 +48,17 @@
             <div class="content flex gap-2 items-center justify-between">
               <div class="start flex gap-4 items-center">
                 <div class="flex gap-2 items-center p-2">
-                  <img class="h-4 w-4 object-contain scale-[2]" :src="getAsset(prize.icon)" />
+                  <img v-if="prize.positions.pos === 1" class="h-4 w-4 object-contain scale-[2]" :src="getAsset('leaderboard_1st')" />
+                  <img v-else-if="prize.positions.pos === 2" class="h-4 w-4 object-contain scale-[2]" :src="getAsset('leaderboard_2nd')" />
+                  <img v-else-if="prize.positions.pos === 3" class="h-4 w-4 object-contain scale-[2]" :src="getAsset('leaderboard_3rd')" />
+                  <img v-else class="h-4 w-4 object-contain scale-[2]" :src="getAsset('cup')" />
                 </div>
                 <div class="prize-meta">
-                  <span class="text-lg text-gray-300">{{ prize.title }}</span>
-                  <div class="position flex items-center gap-2 h-6">
-                    <div class="neededPos flex items-center gap-2">
-                      <img class="h-4 w-4 object-contain scale-[2]" :src="getAsset('cup')" />
-                      <span class="font-semibold text-[var(--accent-color)]">{{ prize.positions.pos }}</span>
-                    </div>
-                    <div v-if="prize.positions.user" class="userPos flex items-center gap-2">
-                      <img class="h-4 w-4 object-contain scale-[1.8] ml-4 relative bottom-[1px]" :src="getAsset('user')" />
-                      <span class="text-lg text-[var(--accent-color)]">{{ prize.positions.user }}</span>
-                    </div>
+                  <div class="top flex gap-2 items-center">
+                    <img class="h-6" :src="getAsset(prize.image)" />
+                    <span class="text-lg text-gray-300">{{ prize.title }}</span>
                   </div>
+                  <div class="bottom position flex items-center gap-2 h-6"></div>
                 </div>
               </div>
               <div class="end">

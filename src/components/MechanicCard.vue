@@ -10,12 +10,12 @@
         <!-- league -->
         <div v-if="propData.league" ref="leagueRef" class="league flex gap-1 items-center rounded-full px-2 bg-[var(--grey-dark)]" @click="onLeagueClick">
           <img class="h-4" :src="getAsset('league')" />
-          <span class="text-sm exo-bold">: {{ propData.league }}</span>
+          <span class="text-sm">: {{ propData.league }}</span>
         </div>
 
         <!-- bolts -->
         <div v-if="propData.bolts_bonus" ref="boltsRef" class="bolts-bonus flex gap-1 items-center rounded-full px-2 bg-[var(--grey-dark)]" @click="onBoltClick">
-          <span class="text-sm exo-bold">+{{ propData.bolts_bonus }}%</span>
+          <span class="text-sm">+{{ propData.bolts_bonus }}%</span>
           <img class="h-4" :src="getAsset('bolt')" />
         </div>
       </div>
@@ -41,7 +41,7 @@
         {{ locale?.["button_trial_message"] }}
         <div class="bolts flex items-center gap-1">
           <img class="h-4" :src="getAsset('nut')" />
-          <span class="exo-black">{{ propData.nuts }}</span>
+          <span class="">{{ propData.nuts }}</span>
         </div>
       </div>
     </Button>

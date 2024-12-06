@@ -15,7 +15,7 @@
       <div class="scrollable-cnt flex flex-col gap-2 flex-1 overflow-y-auto mt-2">
         <div class="battle-rewards flex flex-col gap-1 pt-4">
           <Pill class="!py-1">
-            <div class="content flex flex-col items-center justify-between">
+            <div class="content flex flex-col items-center justify-between gap-1">
               <div class="place-icon-text flex gap-2 items-center">
                 <span class="font-semibold text-2xl">{{ data?.["completed_place"] || "Place:" }}</span>
                 <img v-if="data?.['battle_complete_place'] === 1" class="h-10" :src="getAsset('1st_place')" />

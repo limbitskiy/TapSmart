@@ -21,7 +21,7 @@
           <img :src="getAsset(menuItem.icon)" class="nav-icon h-7 object-contain grayscale" />
           <div
             v-if="getBadge(menuItem.id)?.value"
-            class="badge absolute px-[5px] py-1 h-4 rounded-full bg-[var(--accent-color)] text-[10px] text-black exo-black top-0 right-0"
+            class="badge absolute px-[5px] py-1 h-4 rounded-full bg-[var(--accent-color)] text-[10px] text-black top-0 right-0"
             style="line-height: 8px"
           >
             {{ getBadge(menuItem.id)?.value }}

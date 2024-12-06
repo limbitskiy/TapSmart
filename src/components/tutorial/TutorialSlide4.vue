@@ -89,7 +89,7 @@ const playAnimationCycle = async () => {
   // first move
   setTimeout(() => {
     cursorPosition.value.left = 30 * scale;
-    cursorPosition.value.top = 12 * scale;
+    cursorPosition.value.top = 10 * scale;
   }, 1000);
 
   // mech btn click

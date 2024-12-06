@@ -99,7 +99,7 @@
 
               <div class="h-[17px]">
                 <Transition name="fade">
-                  <span v-if="locale?.prize_text" class="exo-black text-sm">{{ locale?.["prize_text"] ?? "" }}</span>
+                  <span v-if="locale?.prize_text" class="text-sm">{{ locale?.["prize_text"] ?? "" }}</span>
                 </Transition>
               </div>
             </div>
@@ -138,7 +138,7 @@
     <div class="service-cnt flex flex-col items-center px-4 py-0 bg-[var(--grey-dark)] absolute bottom-0 left-0 right-0 z-[2]">
       <div class="top flex items-center justify-between w-full">
         <!-- loading text -->
-        <div class="loading-text text-[var(--accent-color)] exo-bold">Loading...</div>
+        <div class="loading-text text-[var(--accent-color)]">Loading...</div>
 
         <!-- version number -->
         <div class="build-no text-[12px] text-[var(--accent-color)] leading-4">build: {{ version }}</div>

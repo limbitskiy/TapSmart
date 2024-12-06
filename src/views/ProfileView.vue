@@ -288,7 +288,9 @@
 
     <LanguageSettings @change="onSettingsChange" />
 
-    <Button @click="onFeedback">{{ locale?.["feedback"] }}</Button>
+    <Button @click="onFeedback">
+      <span>{{ locale?.["feedback"] }}</span>
+    </Button>
 
     <div class="build-no absolute bottom-0 right-4 text-[12px] text-gray-300 leading-4">build: {{ version }}</div>
   </div>

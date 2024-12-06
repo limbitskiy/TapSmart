@@ -18,7 +18,7 @@
                   fill="#23DE35"
                 />
               </svg>
-              <span class="text-lg exo-black"> {{ data?.["challenge_multiplicator"] || 0 }}</span>
+              <span class="text-lg"> {{ data?.["challenge_multiplicator"] || 0 }}</span>
             </div>
           </div>
         </div>

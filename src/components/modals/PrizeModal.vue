@@ -28,7 +28,7 @@
       <Button
         v-for="(button, index) in data?.buttons"
         :key="button.label"
-        class="w-full"
+        class="w-full leading-5"
         :class="[data.buttons?.length === 3 && index === 2 ? 'col-span-2' : '']"
         activeColor="#525252"
         :data="button"

@@ -17,7 +17,7 @@
       stroke-linecap="round"
       :style="`transform: rotate(-90deg); transform-origin: ${size / 2}px ${size / 2}px; transition: stroke-dasharray 0.8s linear 0s;`"
     ></circle>
-    <text v-if="progress" x="50%" y="50%" font-size="20px" text-anchor="middle" fill="#feac3e" font-family="Exo2Black" dy=".3em">{{ progress }}%</text>
+    <text v-if="progress" x="50%" y="50%" font-size="20px" text-anchor="middle" fill="#feac3e" font-family="Fira Sans" dy=".3em">{{ progress }}%</text>
   </svg>
 </template>
 

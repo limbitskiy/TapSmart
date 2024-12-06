@@ -56,7 +56,7 @@
 .inline-svg {
   svg {
     display: inline !important;
-    vertical-align: initial !important;
+    vertical-align: text-bottom !important;
   }
 
   &.svg-top-margin {
@@ -96,10 +96,6 @@
 
 .page-title {
   @apply text-2xl font-semibold mt-2 leading-8 max-w-[80%];
-
-  // font-family: "FiraSansBold", sans-serif;
-  // font-weight: 700;
-  // font-style: normal;
 }
 
 .page-subtitle {
@@ -108,16 +104,10 @@
 
 .bg-pill-title {
   @apply text-lg leading-5 font-semibold;
-
-  // font-family: "FiraSansCondensedBlack", sans-serif;
-  // font-weight: 900;
 }
 
 .bg-pill-subtitle {
   @apply text-gray-300 mt-4;
-
-  // font-family: "FiraSansCondensedRegular", sans-serif;
-  // font-weight: 400;
 }
 
 .triangle-down {
@@ -153,7 +143,7 @@
 .yesno-btn.correct {
   background: linear-gradient(180deg, #39c654 0%, #19902c 100%) !important;
   // background: linear-gradient(180deg, #098af5 0%, #0d75d4 100%) !important;
-  box-shadow: 0px 0px 85px 5px rgba(0, 137, 249, 0.9);
+  box-shadow: 0px 0px 85px 5px #39c654;
 }
 
 .yesno-btn.wrong {
@@ -173,7 +163,7 @@
   &.correct {
     background: linear-gradient(180deg, #39c654 0%, #19902c 100%) !important;
     // background: linear-gradient(180deg, #098af5 0%, #0d75d4 100%) !important;
-    box-shadow: 0px 0px 85px 5px rgba(0, 137, 249, 0.9);
+    box-shadow: 0px 0px 85px 5px #39c654;
   }
 
   &.wrong {

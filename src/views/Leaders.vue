@@ -143,6 +143,7 @@
                           <img v-if="filter.bigFilter === 'bolt'" class="h-[18px]" :src="getAsset('bolt')" />
                           <img v-else-if="filter.bigFilter === 'battle_win'" class="h-[18px]" :src="getAsset('cup')" />
                           <img v-else-if="filter.bigFilter === 'learned'" class="h-[18px]" :src="getAsset('book')" />
+                          <img v-else-if="filter.bigFilter === 'prize'" class="h-[12px]" :src="getAsset('friend')" />
                           <img v-else-if="filter.bigFilter === 'friends_in_battles'" class="h-[18px]" :src="getAsset('swords')" />
                           <img v-else-if="filter.bigFilter === 'winner_token'" class="h-[18px]" :src="getAsset('winner_token')" />
                           <span class="text-sm font-semibold" style="line-height: 13px">{{ showFormattedNumber(player.score) }}</span>
@@ -194,6 +195,7 @@
                           <img v-if="filter.bigFilter === 'bolt'" class="h-[18px]" :src="getAsset('bolt')" />
                           <img v-else-if="filter.bigFilter === 'battle_win'" class="h-[18px]" :src="getAsset('cup')" />
                           <img v-else-if="filter.bigFilter === 'learned'" class="h-[18px]" :src="getAsset('book')" />
+                          <img v-else-if="filter.bigFilter === 'prize'" class="h-[12px]" :src="getAsset('friend')" />
                           <img v-else-if="filter.bigFilter === 'friends_in_battles'" class="h-[18px]" :src="getAsset('swords')" />
                           <span class="text-sm font-semibold" style="line-height: 13px">{{ showFormattedNumber(player.score) }}</span>
                         </div>
@@ -238,6 +240,7 @@
                     <img v-if="filter.bigFilter === 'bolt'" class="h-[18px]" :src="getAsset('bolt')" />
                     <img v-else-if="filter.bigFilter === 'battle_win'" class="h-[18px]" :src="getAsset('cup')" />
                     <img v-else-if="filter.bigFilter === 'learned'" class="h-[18px]" :src="getAsset('book')" />
+                    <img v-else-if="filter.bigFilter === 'prize'" class="h-[12px]" :src="getAsset('friend')" />
                     <img v-else-if="filter.bigFilter === 'friends_in_battles'" class="h-[18px]" :src="getAsset('friends')" />
                     <img v-else-if="filter.bigFilter === 'winner_token'" class="h-[18px]" :src="getAsset('winner_token')" />
                     <span class="text-sm font-semibold" style="line-height: 13px">{{ showFormattedNumber(computedPlayer.score) }}</span>

@@ -4,9 +4,9 @@
     ref="btnRef"
     :class="[
       'generic-btn',
-      !unstyled && 'rounded-xl py-4 px-8 uppercase text-[14px] leading-5 manrope',
+      !unstyled && 'rounded-xl py-3 px-8 uppercase text-[16px] font-semibold',
       dark ? 'bg-black' : grey ? 'bg-[var(--grey-light)]' : !unstyled && 'bg-[var(--accent-color)] text-black',
-      font ? font : 'font-extrabold',
+      font ? font : '',
       data?.disabled ?? disabled ? '!bg-gray-500 bg-none' : '',
       backgroundMap[data?.accent],
     ]"
@@ -16,7 +16,7 @@
     @click="onClick"
   >
     <slot>
-      <span class="flex items-center justify-center gap-1" :class="[font, 'inline-svg']" v-if="data?.label" v-html="replaceWithSpecialSymbols(data.label)" />
+      <span class="inline-svg" :class="[font, 'inline-svg']" v-if="data?.label" v-html="replaceWithSpecialSymbols(data.label)" />
     </slot>
   </button>
 </template>

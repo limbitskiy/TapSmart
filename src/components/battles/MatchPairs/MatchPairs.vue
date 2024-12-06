@@ -20,7 +20,7 @@
             <Transition name="match-pairs-buttons" mode="out-in">
               <Button
                 v-if="pill.task"
-                class="match-pairs-btn w-full h-full !px-2 break-words"
+                class="match-pairs-btn w-full h-full !px-2 break-words fira"
                 :class="{ selected: pill.selected, success: pill.success, wrong: pill.wrong }"
                 @click="(event: MouseEvent) => onButton(pill, event)"
               >
@@ -34,7 +34,7 @@
             <Transition name="match-pairs-buttons" mode="out-in">
               <Button
                 v-if="pill.task"
-                class="match-pairs-btn w-full h-full !px-2 break-words"
+                class="match-pairs-btn w-full h-full !px-2 break-words fira"
                 :class="{ selected: pill.selected, success: pill.success, wrong: pill.wrong }"
                 style="background: linear-gradient(180deg, rgba(4, 4, 4, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%)"
                 @click="(event: MouseEvent) => onButton(pill, event)"

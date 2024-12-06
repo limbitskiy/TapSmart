@@ -11,13 +11,21 @@
 
       <!-- question -->
       <div class="slide-cnt flex flex-col justify-center relative">
-        <Transition name="fade" mode="out-in">
+        <Transition v-if="type === 'relax'" name="fade" mode="out-in">
           <div v-if="currentTask" :key="currentTask.task?.question" class="flex flex-col gap-2 items-center text-center break-words">
             <div class="question-cnt max-w-[calc(100dvw-5rem)]">
               <span class="line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)" :style="currentTask.settings?.style?.question">{{ currentTask?.task?.question }} </span>
             </div>
           </div>
         </Transition>
+
+        <template v-else>
+          <div v-if="currentTask" :key="currentTask.task?.question" class="flex flex-col gap-2 items-center text-center break-words">
+            <div class="question-cnt max-w-[calc(100dvw-5rem)]">
+              <span class="line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)" :style="currentTask.settings?.style?.question">{{ currentTask?.task?.question }} </span>
+            </div>
+          </div>
+        </template>
 
         <!-- correct answer -->
         <Transition name="correct-text">
@@ -46,7 +54,7 @@
       <div class="answer-buttons grid w-full grid-cols-2 grid-rows-2 gap-4 leading-5">
         <Button
           v-for="button in buttons"
-          class="four-answer-btn break-words"
+          class="four-answer-btn break-words fira"
           :class="{
             correct: button.success,
             wrong: button.danger,
@@ -139,7 +147,7 @@ if (props.taskTimeoutStatus) {
 }
 
 const nextTask = async () => {
-  await waitFor(50);
+  await waitFor(200);
 
   const newTask = props.getNextTask();
   if (props.startTaskTimeout) {

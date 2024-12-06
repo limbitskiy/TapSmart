@@ -40,7 +40,7 @@
         <div v-if="boosterState.isShown" class="booster absolute top-[35dvh] left-0 right-0 grid place-items-center z-30">
           <div class="bonus">
             <span
-              class="text-[8vw] exo-black text-[#edaa38]"
+              class="text-[8vw] text-[#edaa38]"
               style="
                 background: linear-gradient(to top left, #ff75c3, #ffa647, #ffe83f, #9fff5b, #70e2ff, #cd93ff);
                 -webkit-background-clip: text;

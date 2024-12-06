@@ -1,5 +1,5 @@
 <template>
-  <BackgroundPill id="challenge-statusbar" class="flex !flex-row rounded-xl gap-4 items-center justify-between exo-black !py-2">
+  <BackgroundPill id="challenge-statusbar" class="flex !flex-row rounded-xl gap-4 items-center justify-between !py-2">
     <!-- bolts amount -->
     <div class="bolts flex items-baseline gap-2">
       <div class="multiplier text-sm" :style="{ color: multiplierColor }">{{ "x" + Math.round(calculateCalcPoint()) }}</div>

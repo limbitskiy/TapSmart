@@ -8,8 +8,8 @@
     <LanguageSettings @change="onSettingsChange" />
 
     <div class="bnt-cnt flex justify-between absolute bottom-4 left-4 right-4">
-      <Button class="w-full py-3" activeColor="#fcdcb0" label="Next" @click="onNext">
-        <span class="text-xl leading-4">{{ locale?.["button_next"] || "Next" }}</span>
+      <Button class="w-full" activeColor="#fcdcb0" label="Next" @click="onNext">
+        <span>{{ locale?.["button_next"] || "Next" }}</span>
       </Button>
     </div>
   </div>

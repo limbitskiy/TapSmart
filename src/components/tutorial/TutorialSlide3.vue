@@ -87,7 +87,7 @@ const playAnimationCycle = async () => {
   // first move
   setTimeout(() => {
     cursorPosition.value.left = 42 * scale;
-    cursorPosition.value.top = 110 * scale;
+    cursorPosition.value.top = 128 * scale;
   }, 1000);
 
   // 1st correct answer
@@ -99,7 +99,7 @@ const playAnimationCycle = async () => {
   // second move
   setTimeout(() => {
     cursorPosition.value.left = 75 * scale;
-    cursorPosition.value.top = 110 * scale;
+    cursorPosition.value.top = 128 * scale;
   }, 4000);
 
   // 2nd answer - wrong
@@ -111,7 +111,7 @@ const playAnimationCycle = async () => {
   // third move
   setTimeout(() => {
     cursorPosition.value.left = 75 * scale;
-    cursorPosition.value.top = 135 * scale;
+    cursorPosition.value.top = 160 * scale;
   }, 8500);
 
   // 3d answer - correct

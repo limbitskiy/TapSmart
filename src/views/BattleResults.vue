@@ -43,11 +43,11 @@
                 <Pill v-for="player in leaderboardSortedCapped" :key="player.id" class="py-2 flex items-center justify-between gap-4" color="light">
                   <div class="player-meta leading-3 flex gap-4 items-center">
                     <div class="rounded-full bg-[var(--grey-dark)] w-[30px] h-[30px] grid place-items-center">
-                      <span class="league exo-black text-lg mb-[1px]" :style="`color: ${getPlayerColor(player)}`">{{ player.position }}</span>
+                      <span class="league text-lg mb-[1px]" :style="`color: ${getPlayerColor(player)}`">{{ player.position }}</span>
                     </div>
                     <span class="text-lg max-w-1/2 text-ellipsis">{{ player.name }}</span>
                   </div>
-                  <span class="bolts exo-black text-[var(--accent-color)]">{{ player?.score || 0 }}</span>
+                  <span class="bolts text-[var(--accent-color)]">{{ player?.score || 0 }}</span>
                 </Pill>
               </div>
 
@@ -55,11 +55,11 @@
                 <Pill v-for="player in leaderboardSorted" :key="player.id" class="py-2 flex items-center justify-between gap-4" color="light">
                   <div class="player-meta leading-3 flex gap-4 items-center">
                     <div class="rounded-full bg-[var(--grey-dark)] w-[30px] h-[30px] grid place-items-center">
-                      <span class="league exo-black text-lg mb-[1px]" :style="`color: ${getPlayerColor(player)}`">{{ player.position }}</span>
+                      <span class="league text-lg mb-[1px]" :style="`color: ${getPlayerColor(player)}`">{{ player.position }}</span>
                     </div>
                     <span class="text-lg max-w-1/2 text-ellipsis">{{ sliceTextAmount(player.name, 15) }}</span>
                   </div>
-                  <span class="bolts exo-black text-[var(--accent-color)]">{{ player?.score || 0 }}</span>
+                  <span class="bolts text-[var(--accent-color)]">{{ player?.score || 0 }}</span>
                 </Pill>
               </div>
             </div>
