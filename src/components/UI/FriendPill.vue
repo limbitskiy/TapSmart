@@ -60,8 +60,8 @@
                 <span class="text-sm font-semibold leading-4">{{ data.battle_quan || 0 }}</span>
               </div>
 
-              <div v-if="data.has_cup_icon" class="cup-icon">
-                <img class="h-5" :src="getAsset('cup')" />
+              <div v-if="data.has_prize_icon" class="present-icon">
+                <img class="h-5" :src="getAsset('present')" />
               </div>
             </div>
           </div>
@@ -89,7 +89,7 @@ defineProps<{
     battle_quan: number;
     bolts_earned: number;
     points_earned: number;
-    has_cup_icon: boolean;
+    has_prize_icon: boolean;
   };
   battleFilter: boolean;
 }>();

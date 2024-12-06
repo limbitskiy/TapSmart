@@ -1,12 +1,29 @@
 // manrope
-.manrope {
-  font-family: "Manrope", sans-serif;
-}
+// .manrope {
+//   font-family: "Manrope", sans-serif;
+// }
 
-.fira {
-  font-family: "Fira Sans", sans-serif;
-}
+// .fira {
+//   font-family: "Fira Sans", sans-serif;
+// }
 
 .monospace {
   font-family: monospace;
+}
+
+// fira
+.fira-regular {
+  font-family: "FiraSansRegular", sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.fira-semibold {
+  font-family: "FiraSansSemibold", sans-serif;
+  font-weight: 600;
+}
+
+.fira-bold {
+  font-family: "FiraSansBold", sans-serif;
+  font-weight: 700;
 }

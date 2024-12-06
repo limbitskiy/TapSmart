@@ -80,18 +80,12 @@
         <div class="ad-btns w-full flex gap-4 justify-between mt-6">
           <Button
             v-if="data?.battle_results_buttons?.left"
-            class="flex-1 !py-3 !px-2 text-white bg-[var(--grey-light)] !text-lg !inline-block !leading-5"
+            class="flex-1 text-white bg-[var(--grey-light)] !leading-5"
             activeColor="#525252"
             :data="data.battle_results_buttons.left"
           >
           </Button>
-          <Button
-            v-if="data?.battle_results_buttons?.right"
-            class="flex-1 !py-3 !px-2 !text-lg !inline-block !leading-5"
-            activeColor="#fcdcb0"
-            :data="data.battle_results_buttons.right"
-          >
-          </Button>
+          <Button v-if="data?.battle_results_buttons?.right" class="flex-1 !leading-5" activeColor="#fcdcb0" :data="data.battle_results_buttons.right"> </Button>
         </div>
       </BackgroundPill>
     </div>

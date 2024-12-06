@@ -29,7 +29,7 @@
               <path d="M16.5982 17.8557L11.6072 12.8647V4.46289H13.3929V12.1236L17.8572 16.5968L16.5982 17.8557Z" fill="#C0C0C0" />
             </svg>
 
-            <span class="font-semibold text-3xl mr-[38px]">{{ formattedTime(data?.["waiting_timer"]) ?? "00:00" }}</span>
+            <span class="text-3xl mr-[38px] monospace leading-4">{{ formattedTime(data?.["waiting_timer"]) ?? "00:00" }}</span>
           </div>
         </Pill>
       </div>

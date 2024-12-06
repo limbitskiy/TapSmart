@@ -94,22 +94,22 @@ export const sounds = {
 };
 
 export const fonts = {
-  // FiraSansRegular: {
-  //   src: "assets/fonts/fira-sans/fira-sans-v17-cyrillic_latin-regular.woff2",
-  //   weight: 400,
-  // },
-  // FiraSansSemibold: {
-  //   src: "assets/fonts/fira-sans/fira-sans-v17-cyrillic_latin-600.woff2",
-  //   weight: 600,
-  // },
-  // FiraSansBold: {
-  //   src: "assets/fonts/fira-sans/fira-sans-v17-cyrillic_latin-700.woff2",
-  //   weight: 700,
-  // },
-  // FiraSansBlack: {
-  //   src: "assets/fonts/fira-sans/fira-sans-v17-cyrillic_latin-900.woff2",
-  //   weight: 900,
-  // },
+  FiraSansRegular: {
+    src: "assets/fonts/fira-sans/fira-sans-v17-cyrillic_latin-regular.woff2",
+    weight: 400,
+  },
+  FiraSansSemibold: {
+    src: "assets/fonts/fira-sans/fira-sans-v17-cyrillic_latin-600.woff2",
+    weight: 600,
+  },
+  FiraSansBold: {
+    src: "assets/fonts/fira-sans/fira-sans-v17-cyrillic_latin-700.woff2",
+    weight: 700,
+  },
+  FiraSansBlack: {
+    src: "assets/fonts/fira-sans/fira-sans-v17-cyrillic_latin-900.woff2",
+    weight: 900,
+  },
   // FiraSansCondensedRegular: {
   //   src: "assets/fonts/fira-sans-condensed/fira-sans-condensed-v10-cyrillic_latin-regular.woff2",
   //   weight: 400,
