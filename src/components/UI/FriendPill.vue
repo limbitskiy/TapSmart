@@ -15,7 +15,7 @@
             <!-- name + score -->
             <div class="name-score flex items-center justify-between">
               <div class="name flex gap-1">
-                <span class="font-semibold leading-5">{{ sliceTextAmount(data.name, 15) }}</span>
+                <span class="fira-semibold leading-5">{{ sliceTextAmount(data.name, 15) }}</span>
                 <span class="status w-2 h-2 rounded-full" :class="data.isOnline ? 'bg-green-600' : 'bg-gray-400'"></span>
               </div>
               <div class="scores">
@@ -35,11 +35,11 @@
                       </clipPath>
                     </defs>
                   </svg>
-                  <span class="font-semibold">{{ shortenNumber(data.points_earned) || 0 }}</span>
+                  <span class="fira-semibold">{{ shortenNumber(data.points_earned) || 0 }}</span>
                 </div>
                 <div v-show="!battleFilter" class="money-earned flex items-center">
                   <img class="scale-75" :src="getAsset('bolt_earned')" />
-                  <span class="font-semibold">{{ shortenNumber(data.bolts_earned) || 0 }}</span>
+                  <span class="fira-semibold">{{ shortenNumber(data.bolts_earned) || 0 }}</span>
                 </div>
               </div>
             </div>
@@ -53,11 +53,11 @@
             <div class="wrap flex items-center gap-4">
               <div class="money flex items-center gap-1">
                 <img class="h-5" :src="getAsset('bolt')" />
-                <span class="text-sm font-semibold leading-4">{{ shortenNumber(data.bolts) || 0 }}</span>
+                <span class="text-sm fira-semibold leading-4">{{ shortenNumber(data.bolts) || 0 }}</span>
               </div>
               <div class="battle quan flex items-center gap-1">
                 <img class="h-5" :src="getAsset('swords')" />
-                <span class="text-sm font-semibold leading-4">{{ data.battle_quan || 0 }}</span>
+                <span class="text-sm fira-semibold leading-4">{{ data.battle_quan || 0 }}</span>
               </div>
 
               <div v-if="data.has_prize_icon" class="present-icon">

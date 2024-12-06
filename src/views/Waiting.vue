@@ -50,7 +50,7 @@
                 <div class="player-name flex">
                   <!-- <div class="fixed-length-name whitespace-nowrap overflow-x-hidden text-ellipsis"> -->
                   <div class="fixed-length-name">
-                    <span class="font-semibold text-lg">{{ sliceTextAmount(player.name, 15) }}</span>
+                    <span class="fira-semibold text-lg">{{ sliceTextAmount(player.name, 15) }}</span>
                   </div>
                   <div v-if="player?.isFriend" class="friend-badge ml-2">
                     <!-- friend icon -->
@@ -72,16 +72,16 @@
               <!-- other info -->
               <div class="other-info flex gap-4 items-center">
                 <div class="league flex gap-1">
-                  <span class="league font-semibold">L:</span>
-                  <span class="league font-semibold">{{ player?.league || 0 }}</span>
+                  <span class="league fira-semibold">L:</span>
+                  <span class="league fira-semibold">{{ player?.league || 0 }}</span>
                 </div>
                 <div class="battles flex items-center gap-1">
                   <img class="h-4" :src="getAsset('swords')" />
-                  <span class="font-semibold">{{ player?.battles || 0 }}</span>
+                  <span class="fira-semibold">{{ player?.battles || 0 }}</span>
                 </div>
                 <div class="bolts flex items-center gap-1">
                   <img class="h-4" :src="getAsset('bolt')" />
-                  <span class="font-semibold text-[var(--accent-color)]">{{ shortenNumber(player?.bolts) || 0 }}</span>
+                  <span class="fira-semibold text-[var(--accent-color)]">{{ shortenNumber(player?.bolts) || 0 }}</span>
                 </div>
               </div>
             </div>

@@ -24,7 +24,7 @@
     <!-- bolt bonuses -->
     <div v-for="bonus in bonuses" :key="bonus.id" class="bonus bonus-animate z-20 flex gap-2 items-center absolute" :style="{ left: bonus.x + 'px', top: bonus.y + 'px' }">
       <img class="h-4 scale-150" :src="getAsset('bolt')" />
-      <span class="font-bold text-xl">+{{ bonus.amount }}</span>
+      <span class="fira-bold text-xl">+{{ bonus.amount }}</span>
     </div>
 
     <!-- mechanic change modal -->

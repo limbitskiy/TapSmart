@@ -1,7 +1,7 @@
 <template>
   <div class="tutorial-slide flex-1 flex flex-col gap-4 p-4" style="background: linear-gradient(180deg, #000000 0%, #dc6c31 100%)">
     <div class="slide-content">
-      <h2 class="font-semibold mb-3 text-[34px]">
+      <h2 class="fira-semibold mb-3 text-[34px]">
         {{ locale?.["title"] ?? "Title" }}
       </h2>
       <span class="page-subtitle">{{ locale?.["subtitle"] ?? "subtitle" }}</span>

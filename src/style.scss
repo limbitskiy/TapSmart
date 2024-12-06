@@ -96,7 +96,10 @@
 }
 
 .page-title {
-  @apply text-2xl font-semibold mt-2 leading-8 max-w-[80%];
+  @apply text-2xl mt-2 leading-8 max-w-[80%];
+
+  font-family: "FiraSansSemibold", sans-serif;
+  font-weight: 600;
 }
 
 .page-subtitle {
@@ -104,7 +107,10 @@
 }
 
 .bg-pill-title {
-  @apply text-lg leading-5 font-semibold;
+  @apply text-lg leading-5;
+
+  font-family: "FiraSansSemibold", sans-serif;
+  font-weight: 600;
 }
 
 .bg-pill-subtitle {

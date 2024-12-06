@@ -52,7 +52,7 @@
             <span class="text-gray-300">{{ locale?.["bolts_earned"] || "Bolts earned" }}</span>
             <div class="price flex gap-2 items-center">
               <img class="h-4 scale-150" :src="getAsset('bolt')" />
-              <span class="font-semibold">{{ shortenNumber(data?.["income"]) || 0 }}</span>
+              <span class="fira-semibold">{{ shortenNumber(data?.["income"]) || 0 }}</span>
             </div>
           </div>
         </Pill>
@@ -60,14 +60,14 @@
         <Pill class="!py-2 rounded-xl" :tooltip="locale?.['tooltip_battles_played']">
           <div class="content flex justify-between">
             <span class="text-gray-300">{{ locale?.["battles_played"] || "Battles played" }}</span>
-            <span class="font-semibold">{{ data?.["battles"] || 0 }}</span>
+            <span class="fira-semibold">{{ data?.["battles"] || 0 }}</span>
           </div>
         </Pill>
 
         <Pill class="!py-2 rounded-xl" :tooltip="locale?.['tooltip_points_earned']">
           <div class="content flex justify-between">
             <span class="text-gray-300">{{ locale?.["points_earned"] || "Points earned" }}</span>
-            <span class="font-semibold">{{ data?.["points"] || 0 }}</span>
+            <span class="fira-semibold">{{ data?.["points"] || 0 }}</span>
           </div>
         </Pill>
       </div>
@@ -136,7 +136,7 @@
         <div class="qrcode-modal flex-1 flex flex-col justify-center items-center my-[6dvh] mx-8 text-center">
           <canvas ref="canvasRef" class="!w-full !h-full"></canvas>
           <div class="flex flex-col gap-2">
-            <span class="title text-lg font-semibold text-[var(--accent-color)]">{{ locale?.["qr_modal_title"] }}</span>
+            <span class="title text-lg fira-semibold text-[var(--accent-color)]">{{ locale?.["qr_modal_title"] }}</span>
             <span class="subtitle">{{ locale?.["qr_modal_subtitle"] }}</span>
           </div>
         </div>

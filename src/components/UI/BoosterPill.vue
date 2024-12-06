@@ -8,7 +8,7 @@
           </div>
           <div class="text flex flex-col gap-2">
             <div class="title flex gap-2 justify-between">
-              <span class="font-semibold text-xl leading-5 w-fit">{{ title }}</span>
+              <span class="fira-semibold text-xl leading-5 w-fit">{{ title }}</span>
               <div class="info-btn relative -top-2 -right-2">
                 <div class="btn" @click="(event) => emit('booster-tooltip', event)">
                   <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">

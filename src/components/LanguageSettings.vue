@@ -5,7 +5,7 @@
     <div class="flex flex-col gap-2 mt-4">
       <PillButton color="light" @click="onClick">
         <template #name>
-          <span class="text-lg font-semibold text-gray-300">{{ locale["target_language"] }}</span>
+          <span class="text-lg fira-semibold text-gray-300">{{ locale["target_language"] }}</span>
         </template>
         <template #value>{{ data?.["target_language_list"].find((item) => item.id === targetLang).label }}</template>
         <template #modal="{ closeModal }">
@@ -29,7 +29,7 @@
 
       <PillButton color="light" @click="onClick">
         <template #name>
-          <span class="text-lg font-semibold text-gray-300">{{ locale?.["native_language"] }}</span>
+          <span class="text-lg fira-semibold text-gray-300">{{ locale?.["native_language"] }}</span>
         </template>
         <template #value>{{ data?.["native_language_list"].find((item) => item.id === nativeLang).label }}</template>
         <template #modal="{ closeModal }">

@@ -4,7 +4,7 @@
     ref="btnRef"
     :class="[
       'generic-btn',
-      !unstyled && 'rounded-xl py-3 px-8 uppercase text-[15px] manrope font-semibold',
+      !unstyled && 'rounded-xl py-3 px-8 uppercase text-[15px] manrope fira-semibold',
       dark ? 'bg-black' : grey ? 'bg-[var(--grey-light)]' : !unstyled && 'bg-[var(--accent-color)] text-black',
       font ? font : '',
       data?.disabled ?? disabled ? '!bg-gray-500 bg-none' : '',

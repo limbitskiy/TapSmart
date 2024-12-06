@@ -11,7 +11,7 @@
     >
       <div class="flex justify-center gap-2 py-3 !px-2 relative">
         <div class="btn-cnt flex justify-center leading-6 gap-2 z-10">
-          <span v-bind="$attrs" class="text-[16px] font-semibold uppercase">{{ locale?.["button_challenge"] }}</span>
+          <span v-bind="$attrs" class="text-[16px] fira-semibold uppercase">{{ locale?.["button_challenge"] }}</span>
           <Badge v-if="data?.questions_left > 0" class="relative bottom-1" :data="data?.questions_left" grey />
         </div>
 

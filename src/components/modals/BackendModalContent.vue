@@ -3,7 +3,7 @@
     <img v-if="data.image" class="h-[30dvh]" :src="getAsset(data.image)" />
     <!-- <img v-else class="h-[30dvh] my-4" :src="getAsset('confirm')" /> -->
     <div class="text flex flex-col gap-2">
-      <span class="text-3xl font-semibold text-gray-100" v-html="data.title"></span>
+      <span class="text-3xl fira-semibold text-gray-100" v-html="data.title"></span>
       <Pill class="border border-[var(--accent-color)] mx-[10vw]">
         <span class="text-gray-300 inline-svg leading-4" v-html="replaceWithSpecialSymbols(data.subtitle)"></span>
       </Pill>

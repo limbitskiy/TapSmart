@@ -5,8 +5,8 @@
         <img class="h-[10dvh]" :src="getAsset('check')" />
       </div>
       <div class="text flex flex-col items-center">
-        <span class="font-semibold text-[10vw] text-white">Battle</span>
-        <span class="font-semibold text-[14vw] text-[var(--accent-color)] leading-10">complete</span>
+        <span class="fira-semibold text-[10vw] text-white">Battle</span>
+        <span class="fira-semibold text-[14vw] text-[var(--accent-color)] leading-10">complete</span>
       </div>
     </div>
   </div>

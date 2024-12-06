@@ -32,21 +32,21 @@
         <!-- bolts -->
         <div class="bolts flex-1 flex items-center gap-1 relative justify-center">
           <img class="h-4" :src="getAsset('bolt')" />
-          <span data-locale="profile.tooltip_bolts" class="font-semibold text-[var(--accent-color)]" @click="onTooltip">{{ shortenNumber(profileData?.["bolts"]) ?? 0 }}</span>
+          <span data-locale="profile.tooltip_bolts" class="fira-semibold text-[var(--accent-color)]" @click="onTooltip">{{ shortenNumber(profileData?.["bolts"]) ?? 0 }}</span>
           <div class="separator h-[10px] w-[1px] bg-gray-500 absolute -right-1 mt-[2px]"></div>
         </div>
 
         <!-- nuts -->
         <div class="nuts flex-1 flex items-center gap-1 relative justify-center">
           <img class="h-4" :src="getAsset('nut')" />
-          <span data-locale="profile.tooltip_nuts" class="font-semibold" @click="onTooltip">{{ profileData?.["nuts"] ?? 0 }}</span>
+          <span data-locale="profile.tooltip_nuts" class="fira-semibold" @click="onTooltip">{{ profileData?.["nuts"] ?? 0 }}</span>
           <div class="separator h-[10px] w-[1px] bg-gray-500 absolute -right-1 mt-[2px]"></div>
         </div>
 
         <!-- energy -->
         <div class="energy flex items-center gap-1 justify-center">
           <img class="h-4" :src="getAsset('energy')" />
-          <span data-locale="battle.tooltip_energy" class="font-semibold" @click="onTooltip">{{ battleData?.data?.["energy"] ?? 0 }}</span>
+          <span data-locale="battle.tooltip_energy" class="fira-semibold" @click="onTooltip">{{ battleData?.data?.["energy"] ?? 0 }}</span>
         </div>
       </div>
     </div>

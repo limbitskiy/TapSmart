@@ -12,11 +12,11 @@
       <div class="rewards-inner">
         <div v-if="data.bolts" class="bolts flex gap-2 text-center items-center justify-center">
           <img class="h-6" :src="getAsset('bolt')" />
-          <span class="font-semibold text-xl">{{ showFormattedNumber(data.bolts) }}</span>
+          <span class="fira-semibold text-xl">{{ showFormattedNumber(data.bolts) }}</span>
         </div>
         <div v-if="data.nuts" class="nuts flex gap-2 text-center items-center justify-center">
           <img class="h-6" :src="getAsset('nut')" />
-          <span class="font-semibold text-xl">{{ data.nuts }}</span>
+          <span class="fira-semibold text-xl">{{ data.nuts }}</span>
         </div>
       </div>
     </div>

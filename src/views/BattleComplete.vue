@@ -17,11 +17,11 @@
           <Pill class="!py-1">
             <div class="content flex flex-col items-center justify-between gap-1">
               <div class="place-icon-text flex gap-2 items-center">
-                <span class="font-semibold text-2xl">{{ data?.["completed_place"] || "Place:" }}</span>
+                <span class="fira-semibold text-2xl">{{ data?.["completed_place"] || "Place:" }}</span>
                 <img v-if="data?.['battle_complete_place'] === 1" class="h-10" :src="getAsset('1st_place')" />
                 <img v-else-if="data?.['battle_complete_place'] === 2" class="h-10" :src="getAsset('2nd_place')" />
                 <img v-else-if="data?.['battle_complete_place'] === 3" class="h-10" :src="getAsset('3rd_place')" />
-                <span v-else class="font-semibold text-2xl">{{ data?.["battle_complete_place"] || 0 }}</span>
+                <span v-else class="fira-semibold text-2xl">{{ data?.["battle_complete_place"] || 0 }}</span>
               </div>
 
               <div class="rewards flex item-center gap-2">
@@ -43,7 +43,7 @@
                     </defs>
                   </svg>
 
-                  <span class="text-xl font-semibold">{{ data?.["battle_complete_score"] || 0 }}</span>
+                  <span class="text-xl fira-semibold">{{ data?.["battle_complete_score"] || 0 }}</span>
                 </div>
 
                 <div class="mult flex gap-1 items-baseline">
@@ -55,14 +55,14 @@
                     />
                   </svg>
 
-                  <span class="text-xl font-semibold">{{ data?.["battle_complete_multiplicator"] || 0 }}</span>
+                  <span class="text-xl fira-semibold">{{ data?.["battle_complete_multiplicator"] || 0 }}</span>
                 </div>
 
                 <span class=""> = </span>
 
                 <div class="bolts flex gap-2 items-center ml-1">
                   <img class="h-4 scale-150" :src="getAsset('bolt')" />
-                  <span class="text-xl font-semibold">{{ data?.["battle_complete_bolts"] || 0 }}</span>
+                  <span class="text-xl fira-semibold">{{ data?.["battle_complete_bolts"] || 0 }}</span>
                 </div>
               </div>
             </div>
@@ -74,7 +74,7 @@
           <Pill class="!py-2 flex flex-col gap-2">
             <div class="stat flex gap-4 items-center justify-between">
               <span class="text-lg">{{ locale?.["error_data_title"] || "Errors" }}</span>
-              <span class="text-xl font-semibold text-red-600">{{ data?.["error_data"]?.length || 0 }}</span>
+              <span class="text-xl fira-semibold text-red-600">{{ data?.["error_data"]?.length || 0 }}</span>
             </div>
             <Button
               class="bg-[var(--grey-dark)] text-white flex-1"
@@ -114,13 +114,13 @@
     <Transition name="closeup-score">
       <div v-if="isCloseup" class="place-icon-text-cnt absolute inset-0 grid place-items-center z-[25]">
         <div class="place-icon-text flex flex-col gap-1 items-center justify-center w-full">
-          <span class="font-semibold text-4xl text-[var(--accent-color)]">{{ locale?.["battle_complete_modal_title"] || "Congrats!" }} </span>
+          <span class="fira-semibold text-4xl text-[var(--accent-color)]">{{ locale?.["battle_complete_modal_title"] || "Congrats!" }} </span>
           <div class="place flex flex-col gap-6 items-center">
             <span class="text-2xl">{{ locale?.["battle_complete_modal_subtitle"] || "Your place is:" }}</span>
             <img v-if="data?.['battle_complete_place'] === 1" class="h-12 scale-[2]" :src="getAsset('1st_place')" />
             <img v-else-if="data?.['battle_complete_place'] === 2" class="h-12 scale-[2]" :src="getAsset('2nd_place')" />
             <img v-else-if="data?.['battle_complete_place'] === 3" class="h-12 scale-[2]" :src="getAsset('3rd_place')" />
-            <span v-else class="font-semibold text-2xl">{{ data?.["battle_complete_place"] || 0 }}</span>
+            <span v-else class="fira-semibold text-2xl">{{ data?.["battle_complete_place"] || 0 }}</span>
           </div>
         </div>
       </div>
