@@ -99,7 +99,7 @@
 
               <div class="h-[17px]">
                 <Transition name="fade">
-                  <span v-if="locale?.prize_text" class="text-sm">{{ locale?.["prize_text"] ?? "" }}</span>
+                  <span v-if="locale?.prize_text" class="text-sm fira-bold">{{ locale?.["prize_text"] ?? "" }}</span>
                 </Transition>
               </div>
             </div>

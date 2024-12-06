@@ -9,8 +9,8 @@
     >
       <div class="battle-header-cnt flex gap-4 items-center px-4 py-1 rounded-xl border border-gray-700">
         <div class="text flex gap-2">
-          <span class="fira-semibold text-base text-white">{{ locale?.["mechanics_category"] }}</span>
-          <span class="font-normal capitalize text-base text-[#B7B7B7]">{{ title }}</span>
+          <span class="fira-regular text-base text-white">{{ locale?.["mechanics_category"] }}</span>
+          <span class="fira-regular capitalize text-base text-[#B7B7B7]">{{ title }}</span>
         </div>
 
         <svg class="mb-[1px] scale-75" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
