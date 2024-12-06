@@ -261,6 +261,7 @@ export const useBattleStore = defineStore("battle", () => {
           dataStore.addBolts(calculateRelaxMultiplierAmount());
           addEnergy(settings.value.energyOnCorrect);
           correctStreak.value += 1;
+          afkCounter.value = 0;
         } else {
           if (autoAnswer) {
             afkCounter.value += 1;
