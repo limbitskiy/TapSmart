@@ -110,24 +110,12 @@ export const fonts = {
     src: "assets/fonts/fira-sans/fira-sans-v17-cyrillic_latin-900.woff2",
     weight: 900,
   },
-  // FiraSansCondensedRegular: {
-  //   src: "assets/fonts/fira-sans-condensed/fira-sans-condensed-v10-cyrillic_latin-regular.woff2",
-  //   weight: 400,
-  // },
-  // FiraSansCondensedBold: {
-  //   src: "assets/fonts/fira-sans-condensed/fira-sans-condensed-v10-cyrillic_latin-700.woff2",
-  //   weight: 700,
-  // },
-  // Exo2Regular: {
-  //   src: "assets/fonts/exo2/exo-2-v21-latin-regular.woff2",
-  //   weight: 400,
-  // },
-  // Exo2Bold: {
-  //   src: "assets/fonts/exo2/exo-2-v21-latin-700.woff2",
-  //   weight: 700,
-  // },
-  // Exo2Black: {
-  //   src: "assets/fonts/exo2/exo-2-v21-latin-900.woff2",
-  //   weight: 900,
-  // },
+  LektonRegular: {
+    src: "assets/fonts/lekton/lekton-v20-latin-regular.woff2",
+    weight: 400,
+  },
+  LektonBold: {
+    src: "assets/fonts/lekton/lekton-v20-latin-700.woff2",
+    weight: 700,
+  },
 };

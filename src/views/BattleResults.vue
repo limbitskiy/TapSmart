@@ -172,6 +172,8 @@ const createImagesFromSnapshots = async () => {
   };
 
   for (const snapshot of HTMLSnapshots.value) {
+    console.log(snapshot);
+
     html.value = snapshot;
     await nextTick();
     const url = await htmlToImage.toJpeg(htmlEl.value, { quality: 0.85, filter });
@@ -181,12 +183,11 @@ const createImagesFromSnapshots = async () => {
 
   // debug
   screenshots.forEach((scr, idx) => {
-    // if (idx === 4) {
+    // if (idx === 0 || idx === 1) return;
     var link = document.createElement("a");
-    link.download = `my-image-name${idx}.jpeg`;
+    link.download = `my-image-name-${idx}.jpeg`;
     link.href = scr;
     link.click();
-    // }
   });
 
   HTMLSnapshots.value = screenshots;

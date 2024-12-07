@@ -13,8 +13,10 @@
       <div class="slide-cnt flex flex-col justify-center relative">
         <Transition v-if="type === 'relax'" name="fade" mode="out-in">
           <div v-if="currentTask" :key="currentTask.task?.question" class="flex flex-col gap-2 items-center text-center break-words">
-            <div class="question-cnt max-w-[calc(100dvw-5rem)]">
-              <span class="line-clamp-2" style="font-size: clamp(28px, 10vw, 38px)" :style="currentTask.settings?.style?.question">{{ currentTask?.task?.question }} </span>
+            <div class="question-cnt w-full max-w-[90vw]">
+              <span class="line-clamp-2 fira-bold" :style="currentTask.settings?.style?.question" style="font-size: clamp(28px, 10vw, 38px)"
+                >{{ currentTask?.task?.question }}
+              </span>
             </div>
             <div class="arrow">
               <svg width="16" height="26" viewBox="0 0 16 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -24,16 +26,18 @@
                 />
               </svg>
             </div>
-            <div class="question-cnt max-w-[calc(100dvw-5rem)]">
-              <span class="text-gray-400 line-clamp-2" style="font-size: clamp(26px, 8vw, 42px)" :style="currentTask.settings?.style?.answer">{{ currentTask?.task?.answer }}</span>
+            <div class="question-cnt w-full max-w-[90vw]">
+              <span class="text-gray-400 line-clamp-2" :style="currentTask.settings?.style?.answer" style="font-size: clamp(24px, 8vw, 32px)">{{ currentTask?.task?.answer }}</span>
             </div>
           </div>
         </Transition>
 
         <template v-else>
           <div v-if="currentTask" :key="currentTask.task?.question" class="flex flex-col gap-2 items-center text-center break-words">
-            <div class="question-cnt max-w-[calc(100dvw-5rem)]">
-              <span class="line-clamp-2" style="font-size: clamp(28px, 10vw, 38px)" :style="currentTask.settings?.style?.question">{{ currentTask?.task?.question }} </span>
+            <div class="question-cnt w-full max-w-[90vw]">
+              <span class="line-clamp-2 fira-bold" style="font-size: clamp(28px, 10vw, 38px)" :style="currentTask.settings?.style?.question"
+                >{{ currentTask?.task?.question }}
+              </span>
             </div>
             <div class="arrow">
               <svg width="16" height="26" viewBox="0 0 16 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -43,7 +47,7 @@
                 />
               </svg>
             </div>
-            <div class="question-cnt max-w-[calc(100dvw-5rem)]">
+            <div class="question-cnt w-full max-w-[90vw]">
               <span class="text-gray-400 line-clamp-2" style="font-size: clamp(26px, 8vw, 42px)" :style="currentTask.settings?.style?.answer">{{ currentTask?.task?.answer }}</span>
             </div>
           </div>
@@ -54,7 +58,7 @@
           <div v-if="correctAnswer.visible" class="correct-answer absolute z-20 inset-0 grid place-items-center">
             <div class="flex flex-col items-center justify-center text-center overflow-x-hidden break-words rounded-[15px] bg-black border border-[#850303] p-4 min-w-[70vw]">
               <div class="max-w-[calc(100dvw-5rem)]">
-                <span class="text-white line-clamp-2" style="font-size: clamp(26px, 8vw, 36px)">{{ correctAnswer.question }} </span>
+                <span class="text-white fira-bold line-clamp-2" style="font-size: clamp(26px, 8vw, 36px)">{{ correctAnswer.question }} </span>
               </div>
               <div class="correct-answer-arrow translate-y-[-10px] opacity-0">
                 <svg width="16" height="26" viewBox="0 0 16 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -281,7 +285,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  gsapCtx.revert();
+  gsapCtx?.revert();
 });
 </script>
 

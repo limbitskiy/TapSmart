@@ -13,16 +13,20 @@
       <div class="slide-cnt flex flex-col justify-center relative">
         <Transition v-if="type === 'relax'" name="fade" mode="out-in">
           <div v-if="currentTask" :key="currentTask.task?.question" class="flex flex-col gap-2 items-center text-center break-words">
-            <div class="question-cnt max-w-[calc(100dvw-5rem)]">
-              <span class="line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)" :style="currentTask.settings?.style?.question">{{ currentTask?.task?.question }} </span>
+            <div class="question-cnt w-full max-w-[90vw]">
+              <span class="fira-bold line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)" :style="currentTask.settings?.style?.question"
+                >{{ currentTask?.task?.question }}
+              </span>
             </div>
           </div>
         </Transition>
 
         <template v-else>
           <div v-if="currentTask" :key="currentTask.task?.question" class="flex flex-col gap-2 items-center text-center break-words">
-            <div class="question-cnt max-w-[calc(100dvw-5rem)]">
-              <span class="line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)" :style="currentTask.settings?.style?.question">{{ currentTask?.task?.question }} </span>
+            <div class="question-cnt w-full max-w-[90vw]">
+              <span class="fira-bold line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)" :style="currentTask.settings?.style?.question"
+                >{{ currentTask?.task?.question }}
+              </span>
             </div>
           </div>
         </template>
@@ -253,6 +257,6 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  gsapCtx.revert();
+  gsapCtx?.revert();
 });
 </script>

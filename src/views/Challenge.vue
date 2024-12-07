@@ -108,16 +108,16 @@ const playerPosition = computed(() => {
 
 const progressBarValue = computed(() => (timeLeft.value * 100) / data.value?.["battle_duration"]);
 
-setBgColor("linear-gradient(180deg, #000B14 17.5%, #A90306 100%");
+setBgColor("linear-gradient(180deg, #000B14 50.5%, #430405 100%)");
 
 await fetchChallengePageData();
 
 const onAnswer = async () => {
   if (needToMakeScreenshot) {
-    await nextTick();
+    // await nextTick();
     setTimeout(() => {
       takeHTMLSnapshot(screenshotEl.value);
-    }, 50);
+    }, 100);
   }
   needToMakeScreenshot = false;
 };

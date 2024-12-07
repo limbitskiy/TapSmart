@@ -28,8 +28,7 @@
               />
               <path d="M16.5982 17.8557L11.6072 12.8647V4.46289H13.3929V12.1236L17.8572 16.5968L16.5982 17.8557Z" fill="#C0C0C0" />
             </svg>
-
-            <span class="text-3xl mr-[38px] monospace leading-4">{{ formattedTime(data?.["waiting_timer"]) ?? "00:00" }}</span>
+            <span class="text-3xl fira-bold leading-4 mr-[38px]">{{ formattedTime(data?.["waiting_timer"]) ?? "00:00" }}</span>
           </div>
         </Pill>
       </div>
@@ -47,10 +46,10 @@
             <div class="player-meta flex-1">
               <!-- player data -->
               <div class="player-data flex gap-2 items-center justify-between">
-                <div class="player-name flex">
+                <div class="player-name flex flex-1">
                   <!-- <div class="fixed-length-name whitespace-nowrap overflow-x-hidden text-ellipsis"> -->
                   <div class="fixed-length-name">
-                    <span class="fira-semibold text-lg">{{ sliceTextAmount(player.name, 15) }}</span>
+                    <span class="fira-semibold text-lg whitespace-nowrap">{{ sliceTextAmount(player.name, 15) }}</span>
                   </div>
                   <div v-if="player?.isFriend" class="friend-badge ml-2">
                     <!-- friend icon -->
@@ -70,17 +69,77 @@
               </div>
 
               <!-- other info -->
-              <div class="other-info flex gap-4 items-center">
-                <div class="league flex gap-1">
-                  <span class="league fira-semibold">L:</span>
-                  <span class="league fira-semibold">{{ player?.league || 0 }}</span>
+              <div class="other-info flex gap-3 items-center justify-start">
+                <div class="league flex items-center gap-1">
+                  <svg width="22" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="m11 1.161 10 5.904v10.14l-10 5.647-10-5.648V7.066l10-5.904Z" fill="url(#league)" stroke="#2C9CFB" stroke-width="2" stroke-linejoin="round" />
+                    <path
+                      d="M8.425 17c-.33 0-.565-.07-.705-.21-.13-.14-.195-.355-.195-.645v-8.49c0-.29.065-.505.195-.645.14-.14.375-.21.705-.21h1.785c.34 0 .575.07.705.21.14.13.21.345.21.645v6.795h3.495c.32 0 .535.07.645.21.12.13.18.345.18.645v.84c0 .3-.06.52-.18.66-.11.13-.325.195-.645.195H8.425Z"
+                      fill="#fff"
+                    />
+                    <defs>
+                      <linearGradient id="league" x1="11" y1="0" x2="11" y2="24" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#319DFB" />
+                        <stop offset="1" stop-color="#035296" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  <span class="fira-semibold inline">{{ player?.league || 0 }}</span>
                 </div>
                 <div class="battles flex items-center gap-1">
-                  <img class="h-4" :src="getAsset('swords')" />
+                  <!-- <img class="h-4" :src="getAsset('swords')" /> -->
+                  <!-- <img class="h-4" src="@/assets/icons/swords.svg" /> -->
+                  <svg class="scale-[.9]" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="11" fill="url(#a)" stroke="#FF6967" stroke-width="2" />
+                    <path d="m15.436 6.41-5.88 6.565.82.82L17.898 6l-2.462.41Z" fill="#FEFEFE" />
+                    <path d="m17.488 8.735-6.291 5.88-.82-.82L17.896 6l-.41 2.735Z" fill="#E8ECF4" />
+                    <path d="m6.82 17.215 2.462-2.462-.82-.82L6 16.394l.82.82Z" fill="#636977" />
+                    <path d="m8.735 12.018-1.094 1.094 1.641 1.64 1.094-1.093-1.64-1.641Z" fill="#FECD00" />
+                    <path d="m10.376 13.658-1.094 1.094 1.641 1.641 1.094-1.094-1.64-1.64Z" fill="#D3A227" />
+                    <path d="m7.641 18.034 2.462-2.461-.82-.821-2.462 2.462.82.82Z" fill="#414952" />
+                    <path d="m8.462 6.41 5.88 6.565-.82.82L6 6l2.462.41Z" fill="#FEFEFE" />
+                    <path d="m6.41 8.735 6.291 5.88.82-.82L6.002 6l.41 2.735Z" fill="#E8ECF4" />
+                    <path d="m17.077 17.215-2.461-2.462.82-.82 2.462 2.461-.82.82Z" fill="#636977" />
+                    <path d="m15.163 12.018 1.094 1.094-1.641 1.64-1.094-1.093 1.64-1.641Z" fill="#FECD00" />
+                    <path d="m13.522 13.658 1.094 1.094-1.641 1.641L11.88 15.3l1.64-1.64Z" fill="#D3A227" />
+                    <path d="m16.257 18.034-2.462-2.461.82-.821 2.462 2.462-.82.82Z" fill="#414952" />
+                    <defs>
+                      <linearGradient id="a" x1="12" y1="0" x2="12" y2="24" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#EC0A07" />
+                        <stop offset="1" stop-color="#AB0502" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
                   <span class="fira-semibold">{{ player?.battles || 0 }}</span>
                 </div>
                 <div class="bolts flex items-center gap-1">
-                  <img class="h-4" :src="getAsset('bolt')" />
+                  <!-- <img class="h-4" :src="getAsset('bolt')" /> -->
+                  <!-- <img class="h-4" src="@/assets/icons/bolt.svg" /> -->
+                  <svg class="scale-[.9]" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="11" fill="url(#bolt)" stroke="#FBC44A" stroke-width="2" />
+                    <g filter="url(#b)">
+                      <path
+                        d="M8.496 17c-.24 0-.415-.05-.525-.15-.1-.11-.15-.275-.15-.495V7.46c0-.22.05-.385.15-.495.11-.11.285-.165.525-.165h4.395c1.1 0 1.925.255 2.475.765.55.5.825 1.195.825 2.085 0 .47-.115.89-.345 1.26-.22.37-.525.635-.915.795 1.03.34 1.545 1.095 1.545 2.265 0 .57-.135 1.085-.405 1.545-.26.46-.66.825-1.2 1.095-.53.26-1.19.39-1.98.39H8.496Zm3.975-6.075c.4 0 .71-.1.93-.3.22-.2.33-.49.33-.87 0-.41-.105-.7-.315-.87-.2-.18-.515-.27-.945-.27h-2.175v2.31h2.175Zm.24 4.26c.44 0 .765-.115.975-.345.22-.24.33-.55.33-.93 0-.43-.125-.75-.375-.96-.25-.22-.6-.33-1.05-.33h-2.295v2.565h2.415Z"
+                        fill="#fff"
+                      />
+                    </g>
+                    <defs>
+                      <linearGradient id="bolt" x1="12" y1="0" x2="12" y2="24" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#E1A300" />
+                        <stop offset="1" stop-color="#DB7510" />
+                      </linearGradient>
+                      <filter id="b" x="3.821" y="2.8" width="16.655" height="18.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                        <feColorMatrix in="SourceAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                        <feOffset />
+                        <feGaussianBlur stdDeviation="2" />
+                        <feComposite in2="hardAlpha" operator="out" />
+                        <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
+                        <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_2448_2276" />
+                        <feBlend in="SourceGraphic" in2="effect1_dropShadow_2448_2276" result="shape" />
+                      </filter>
+                    </defs>
+                  </svg>
                   <span class="fira-semibold text-[var(--accent-color)]">{{ shortenNumber(player?.bolts) || 0 }}</span>
                 </div>
               </div>
@@ -166,7 +225,7 @@ onMounted(() => {
   startBreakpoint("waiting");
 
   interval = setInterval(async () => {
-    if (Math.round(data.value?.waiting_timer / 1000) === 1 || Math.round(data.value?.waiting_timer / 1000) === 0) {
+    if (Math.round(data.value?.waiting_timer / 1000) === 3 || Math.round(data.value?.waiting_timer / 1000) === 0) {
       takeHTMLSnapshot(waitingRef.value);
     }
 

@@ -21,6 +21,8 @@
       @startChallenge="openBoosterModal"
     />
 
+    <div class="html" v-html="html"></div>
+
     <!-- bolt bonuses -->
     <div v-for="bonus in bonuses" :key="bonus.id" class="bonus bonus-animate z-20 flex gap-2 items-center absolute" :style="{ left: bonus.x + 'px', top: bonus.y + 'px' }">
       <img class="h-4 scale-150" :src="getAsset('bolt')" />
@@ -89,6 +91,8 @@ const { taskTimeoutStatus, startTaskTimeout: _startTaskTimeout, stopTaskTimeout,
 setThemeColor("#222");
 setBgColor("linear-gradient(180deg, #000B14 17.5%, #035DA9 100%");
 HTMLSnapshots.value = [];
+
+const html = ref(``);
 
 await fetchRelaxPageData();
 

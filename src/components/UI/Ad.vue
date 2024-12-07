@@ -12,11 +12,11 @@
         />
       </svg>
     </div>
-    <div v-if="image === 'progress'" class="w-20 h-20">
+    <div v-if="image === 'progress'" class="w-[80px] h-[80px]">
       <CircleProgress :size="80" :progress="progressValue" />
     </div>
     <img v-else-if="image" class="h-12 my-3" :src="getAsset(image)" />
-    <span class="fira-semibold text-lg text-[var(--accent-color)]">{{ title }}</span>
+    <span class="fira-semibold text-lg text-[var(--accent-color)] mt-4">{{ title }}</span>
     <span class="inline-svg" v-html="replaceWithSpecialSymbols(text) || 'Ad text is located around here somewhere'"></span>
   </div>
 </template>

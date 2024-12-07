@@ -1,12 +1,6 @@
 <template>
   <div class="modal relative">
-    <div
-      v-if="visible"
-      id="modal-backdrop"
-      class="modal-backdrop fixed inset-0 bg-black bg-opacity-50 pointer-events-none"
-      :style="{ zIndex: zIndex ?? 40 }"
-      @click="onBackdropClick"
-    ></div>
+    <div v-if="visible" id="modal-backdrop" class="modal-backdrop fixed inset-0 bg-black bg-opacity-50" :style="{ zIndex: zIndex ?? 40 }" @click="onBackdropClick"></div>
 
     <Transition name="modal-slide-up">
       <BackgroundPill

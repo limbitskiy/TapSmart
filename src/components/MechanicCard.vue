@@ -9,7 +9,20 @@
       <div class="pill-toolbar flex items-center justify-between min-h-[20px]">
         <!-- league -->
         <div v-if="propData.league" ref="leagueRef" class="league flex gap-1 items-center rounded-full px-2 bg-[var(--grey-dark)]" @click="onLeagueClick">
-          <img class="h-4" :src="getAsset('league')" />
+          <!-- <img class="h-4" :src="getAsset('league')" /> -->
+          <svg class="scale-[.8]" width="22" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="m11 1.161 10 5.904v10.14l-10 5.647-10-5.648V7.066l10-5.904Z" fill="url(#league)" stroke="#2C9CFB" stroke-width="2" stroke-linejoin="round" />
+            <path
+              d="M8.425 17c-.33 0-.565-.07-.705-.21-.13-.14-.195-.355-.195-.645v-8.49c0-.29.065-.505.195-.645.14-.14.375-.21.705-.21h1.785c.34 0 .575.07.705.21.14.13.21.345.21.645v6.795h3.495c.32 0 .535.07.645.21.12.13.18.345.18.645v.84c0 .3-.06.52-.18.66-.11.13-.325.195-.645.195H8.425Z"
+              fill="#fff"
+            />
+            <defs>
+              <linearGradient id="league" x1="11" y1="0" x2="11" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#319DFB" />
+                <stop offset="1" stop-color="#035296" />
+              </linearGradient>
+            </defs>
+          </svg>
           <span class="text-sm">: {{ propData.league }}</span>
         </div>
 

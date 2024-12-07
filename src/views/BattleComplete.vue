@@ -18,9 +18,9 @@
             <div class="content flex flex-col items-center justify-between gap-1">
               <div class="place-icon-text flex gap-2 items-center">
                 <span class="fira-semibold text-2xl">{{ data?.["completed_place"] || "Place:" }}</span>
-                <img v-if="data?.['battle_complete_place'] === 1" class="h-10" :src="getAsset('1st_place')" />
-                <img v-else-if="data?.['battle_complete_place'] === 2" class="h-10" :src="getAsset('2nd_place')" />
-                <img v-else-if="data?.['battle_complete_place'] === 3" class="h-10" :src="getAsset('3rd_place')" />
+                <img v-if="data?.['battle_complete_place'] === 1" class="h-8" :src="getAsset('1st_place')" />
+                <img v-else-if="data?.['battle_complete_place'] === 2" class="h-8" :src="getAsset('2nd_place')" />
+                <img v-else-if="data?.['battle_complete_place'] === 3" class="h-8" :src="getAsset('3rd_place')" />
                 <span v-else class="fira-semibold text-2xl">{{ data?.["battle_complete_place"] || 0 }}</span>
               </div>
 
@@ -115,7 +115,7 @@
       <div v-if="isCloseup" class="place-icon-text-cnt absolute inset-0 grid place-items-center z-[25]">
         <div class="place-icon-text flex flex-col gap-1 items-center justify-center w-full">
           <span class="fira-semibold text-4xl text-[var(--accent-color)]">{{ locale?.["battle_complete_modal_title"] || "Congrats!" }} </span>
-          <div class="place flex flex-col gap-6 items-center">
+          <div class="place flex flex-col gap-8 items-center">
             <span class="text-2xl">{{ locale?.["battle_complete_modal_subtitle"] || "Your place is:" }}</span>
             <img v-if="data?.['battle_complete_place'] === 1" class="h-12 scale-[2]" :src="getAsset('1st_place')" />
             <img v-else-if="data?.['battle_complete_place'] === 2" class="h-12 scale-[2]" :src="getAsset('2nd_place')" />

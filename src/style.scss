@@ -150,12 +150,12 @@
 .yesno-btn.correct {
   background: linear-gradient(180deg, #39c654 0%, #19902c 100%) !important;
   // background: linear-gradient(180deg, #098af5 0%, #0d75d4 100%) !important;
-  box-shadow: 0px 0px 85px 5px #39c654;
+  // box-shadow: 0px 0px 85px 5px #39c654;
 }
 
 .yesno-btn.wrong {
   background: linear-gradient(180deg, #ef0a07 0%, #a70401 100%) !important;
-  box-shadow: 0px 0px 85px 5px rgba(167, 4, 1, 0.9);
+  // box-shadow: 0px 0px 85px 5px rgba(167, 4, 1, 0.9);
 }
 
 .four-answer-btn {
@@ -170,12 +170,12 @@
   &.correct {
     background: linear-gradient(180deg, #39c654 0%, #19902c 100%) !important;
     // background: linear-gradient(180deg, #098af5 0%, #0d75d4 100%) !important;
-    box-shadow: 0px 0px 85px 5px #39c654;
+    // box-shadow: 0px 0px 85px 5px #39c654;
   }
 
   &.wrong {
     background: linear-gradient(180deg, #ef0a07 0%, #a70401 100%) !important;
-    box-shadow: 0px 0px 85px 5px rgba(167, 4, 1, 0.9);
+    // box-shadow: 0px 0px 85px 5px rgba(167, 4, 1, 0.9);
   }
 }
 
@@ -190,12 +190,14 @@
 
   &.wrong {
     background: linear-gradient(180deg, #ef0a07 0%, #a70401 100%) !important;
-    box-shadow: 0px 0px 85px 5px rgba(167, 4, 1, 0.9);
+    // box-shadow: 0px 0px 85px 5px rgba(167, 4, 1, 0.9);
   }
 
   &.success {
-    background: linear-gradient(180deg, #098af5 0%, #0d75d4 100%) !important;
-    box-shadow: 0px 0px 85px 5px rgba(0, 137, 249, 0.9);
+    background: linear-gradient(180deg, #39c654 0%, #19902c 100%) !important;
+    box-shadow: none;
+    // background: linear-gradient(180deg, #098af5 0%, #0d75d4 100%) !important;
+    // box-shadow: 0px 0px 85px 5px rgba(0, 137, 249, 0.9);
   }
 }
 
