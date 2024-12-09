@@ -12,7 +12,7 @@
         <Transition v-if="type === 'relax'" name="fade" mode="out-in">
           <div v-if="currentTask" :key="currentTask.task?.question" class="flex flex-col gap-2 items-center text-center break-words">
             <div class="question-cnt w-full max-w-[90vw]">
-              <span class="fira-bold line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)" :style="currentTask.settings?.style?.question"
+              <span v-show="showQuestion" class="fira-bold line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)" :style="currentTask.settings?.style?.question"
                 >{{ currentTask?.task?.question }}
               </span>
             </div>
@@ -30,7 +30,7 @@
         </template>
 
         <!-- correct answer -->
-        <!-- <Transition name="correct-text">
+        <Transition name="correct-text">
           <div v-if="correctAnswer.visible" class="correct-answer absolute z-20 inset-0 grid place-items-center">
             <div class="flex flex-col items-center justify-center text-center overflow-x-hidden break-words rounded-[15px] bg-black border border-[#850303] p-4 min-w-[70vw]">
               <div class="max-w-[calc(100dvw-5rem)]">
@@ -49,7 +49,7 @@
               </div>
             </div>
           </div>
-        </Transition> -->
+        </Transition>
       </div>
 
       <!-- buttons -->
@@ -72,9 +72,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, onMounted, onUnmounted, computed, watch } from "vue";
 import { getAsset, waitFor } from "@/utils";
 import { Howl, Howler } from "howler";
+import gsap from "gsap";
 
 // types
 import { AnswerProps, Task } from "@/types";
@@ -111,6 +112,9 @@ const props = defineProps<{
 
 const settings = {};
 
+let gsapCtx;
+let interval;
+const showQuestion = ref(false);
 const cachedTasks = ref([]);
 const buttons = ref([
   { id: 0, success: false, danger: false, label: "" },
@@ -119,6 +123,12 @@ const buttons = ref([
   { id: 3, success: false, danger: false, label: "" },
 ]);
 const currentTask = ref();
+const correctAnswer = ref({
+  visible: false,
+  question: "",
+  answer: "",
+  timeout: null,
+});
 
 // watching task timeout
 // if (props.taskTimeoutStatus) {
@@ -136,64 +146,92 @@ const currentTask = ref();
 // }
 
 const onButton = async (button: Button, event: MouseEvent) => {
-  //   if (correctAnswer.value.visible) return;
-  //   if (props.pauseTaskTimeout) {
-  //     props.pauseTaskTimeout();
-  //   }
-  //   const isCorrect = currentTask.value.correct === button.label;
-  //   // animate buttons
-  //   if (isCorrect) {
-  //     button.success = true;
-  //   } else {
-  //     button.danger = true;
-  //     if (props.type === "relax" && !currentTask.value.action?.api) {
-  //       animateCorrectAnswer();
-  //       await waitFor(1800);
-  //     }
-  //   }
-  //   setTimeout(() => {
-  //     button.success = false;
-  //     button.danger = false;
-  //   }, 300);
-  //   await submitTask({ answerString: button.label, isCorrect, task: currentTask.value, event });
-  //   nextTask();
+  if (correctAnswer.value.visible) return;
+
+  clearInterval(interval);
+
+  if (props.pauseTaskTimeout) {
+    props.pauseTaskTimeout();
+  }
+  const isCorrect = currentTask.value.correct === button.label;
+  // animate buttons
+  if (isCorrect) {
+    button.success = true;
+  } else {
+    button.danger = true;
+    if (props.type === "relax" && !currentTask.value.action?.api) {
+      animateCorrectAnswer();
+      await waitFor(1800);
+    }
+  }
+  setTimeout(() => {
+    button.success = false;
+    button.danger = false;
+  }, 300);
+  await submitTask({ answerString: button.label, isCorrect, task: currentTask.value, event });
+  nextTask();
 };
 
 const nextTask = async () => {
   await waitFor(200);
 
-  cachedTasks.value.shift();
+  preloadTask();
 
-  const newTask = cachedTasks.value[0];
+  currentTask.value = cachedTasks.value.shift();
 
-  if (props.startTaskTimeout) {
-    props.startTaskTimeout(newTask.settings?.timeout);
-  }
+  playCurrentTask();
 
-  currentTask.value = newTask;
+  startTaskTimeout();
 
   for (let i = 0; i < buttons.value.length; i++) {
-    buttons.value[i].label = newTask.task.variants[i];
+    buttons.value[i].label = currentTask.value.task.variants[i];
   }
 };
 
-const preloadTask = (task, autoplay = false) => {
+const submitTask = async (answerProps: AnswerProps) => {
+  emit("answer", answerProps);
+};
+
+const animateCorrectAnswer = () => {
+  clearTimeout(correctAnswer.value.timeout);
+
+  correctAnswer.value.visible = true;
+  correctAnswer.value.question = currentTask.value.task.question;
+  correctAnswer.value.answer = currentTask.value.correct;
+
+  setTimeout(() => {
+    gsapCtx.animateArrow();
+  }, 300);
+
+  setTimeout(() => {
+    gsapCtx.animateAnswer();
+  }, 600);
+
+  correctAnswer.value.timeout = setTimeout(() => {
+    correctAnswer.value.visible = false;
+    correctAnswer.value.question = "";
+    correctAnswer.value.answer = "";
+  }, 1500);
+};
+
+const preloadTask = () => {
+  const task = props.getNextTask();
+
   const sound = new Howl({
     src: task.task.url,
     volume: 0.3,
-    loop: true,
-    autoplay,
     onload: () => {
-      task.loaded = true;
+      //   task.loaded = true;
     },
     onloaderror: () => {
       new Error(`Couldn't load sound: '${task.task.url}'`);
+      showQuestion.value = true;
     },
   });
 
   task.sound = sound;
 
-  return task;
+  cachedTasks.value.push(task);
 };
 
 const autoAnswer = () => {
@@ -212,38 +250,60 @@ const emitAnswer = (props: AnswerProps) => {
 };
 
 const startGame = () => {
-  cachedTasks.value.push(preloadTask(props.getNextTask(), autoplay));
-  cachedTasks.value.push(preloadTask(props.getNextTask()));
-  cachedTasks.value.push(preloadTask(props.getNextTask()));
+  preloadTask();
+  preloadTask();
+  preloadTask();
 
-  const newTask = cachedTasks.value[0];
-
-  //   if (props.startTaskTimeout) {
-  //     props.startTaskTimeout(newTask.settings?.timeout);
-  //   }
-
-  currentTask.value = newTask;
+  currentTask.value = cachedTasks.value.shift();
 
   for (let i = 0; i < buttons.value.length; i++) {
-    buttons.value[i].label = newTask.task.variants[i];
+    buttons.value[i].label = currentTask.value.task.variants[i];
   }
 
-  startTaskTimeout();
+  setTimeout(() => {
+    playCurrentTask();
+    startTaskTimeout();
+  }, 200);
 };
 
 const startTaskTimeout = () => {
   if (props.startTaskTimeout) {
-    props.startTaskTimeout();
+    props.startTaskTimeout(currentTask.value.settings?.timeout);
   }
 };
 
-const applySettings = () => {};
+const playCurrentTask = () => {
+  currentTask.value.sound.play();
+
+  if (interval) {
+    clearInterval(interval);
+  }
+
+  interval = setInterval(() => {
+    currentTask.value.sound.play();
+  }, 10000);
+};
+
+const setup = () => {
+  gsapCtx = gsap.context(() => {});
+
+  gsapCtx.add("animateArrow", () => {
+    gsap.to(".correct-answer-arrow", { opacity: 1, y: 0, duration: 0.5 });
+  });
+  gsapCtx.add("animateAnswer", () => {
+    gsap.to(".correct-answer-answer", { opacity: 1, y: 0, duration: 0.5 });
+  });
+};
 
 onMounted(() => {
   console.log(`audio question mounted`);
 
-  applySettings();
+  setup();
 
   startGame();
+});
+
+onUnmounted(() => {
+  gsapCtx?.revert();
 });
 </script>

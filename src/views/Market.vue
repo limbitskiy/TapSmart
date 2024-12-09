@@ -13,7 +13,7 @@
         <div class="pill-header flex flex-col">
           <div class="top flex items-center justify-between mb-2">
             <span class="bg-pill-title">{{ section.title }}</span>
-            <Countdown :timeout="section.countdown" @complete="onTimerComplete" />
+            <Countdown v-if="section.countdown" :timeout="section.countdown" @complete="onTimerComplete" />
           </div>
           <span class="bg-pill-subtitle !mt-1" v-html="section.subtitle"></span>
         </div>
