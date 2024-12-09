@@ -32,6 +32,7 @@ import { useMainStore } from "@/store/main";
 import YesNo from "@/components/battles/YesNo/YesNo.vue";
 import FourAnswers from "@/components/battles/FourAnswers/FourAnswers.vue";
 import MatchPairs from "@/components/battles/MatchPairs/MatchPairs.vue";
+import AudioQuestion from "@/components/battles/AudioQuestion/AudioQuestion.vue";
 
 console.log(`Battle Mech created`);
 
@@ -60,6 +61,7 @@ const mechMap = {
   yesno: YesNo,
   "4answers": FourAnswers,
   match_pairs: MatchPairs,
+  audio_question: AudioQuestion,
 };
 
 // watching mechanic changes
