@@ -9,6 +9,7 @@
       :startTaskTimeout="startTaskTimeout"
       :pauseTaskTimeout="pauseTaskTimeout"
       :getNextTask="getNextTask"
+      :relaxModalOpen="relaxModalOpen"
       @answer="onAnswer"
       @changeMech="() => emit('changeMech')"
       @startChallenge="() => emit('startChallenge')"
@@ -44,6 +45,7 @@ const emit = defineEmits<{
 
 defineProps<{
   taskTimeoutStatus: {};
+  relaxModalOpen: Ref<boolean>;
   startTaskTimeout: () => void;
   pauseTaskTimeout: () => void;
 }>();

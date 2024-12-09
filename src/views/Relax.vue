@@ -16,6 +16,7 @@
       :startTaskTimeout="startTaskTimeout"
       :pauseTaskTimeout="pauseTaskTimeout"
       :taskTimeoutStatus="taskTimeoutStatus"
+      :relaxModalOpen="relaxModalOpen"
       @changeMech="onChangeMech"
       @answer="onAnswer"
       @startChallenge="openBoosterModal"
@@ -83,6 +84,7 @@ const isChangeMechModalVisible = ref(false);
 const isNoEnergyVisible = ref(false);
 const isBoostersModalVisible = ref(false);
 const isAFKModalVisible = ref(false);
+const relaxModalOpen = ref(false);
 
 const bonuses = ref<Bonus[]>([]);
 
@@ -102,11 +104,13 @@ watch([isChangeMechModalVisible, isNoEnergyVisible, isBoostersModalVisible, isAF
     stopBreakpoint();
     hideTooltip();
     pauseTaskTimeout();
+    relaxModalOpen.value = true;
   } else {
     afkCounter.value = 0;
     startBreakpoint("battle");
     hideTooltip();
     resumeTaskTimeout();
+    relaxModalOpen.value = false;
   }
 });
 

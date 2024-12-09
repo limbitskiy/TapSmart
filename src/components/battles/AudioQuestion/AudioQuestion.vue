@@ -22,7 +22,7 @@
         <template v-else>
           <div v-if="currentTask" :key="currentTask.task?.question" class="flex flex-col gap-2 items-center text-center break-words">
             <div class="question-cnt w-full max-w-[90vw]">
-              <span class="fira-bold line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)" :style="currentTask.settings?.style?.question"
+              <span v-show="showQuestion" class="fira-bold line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)" :style="currentTask.settings?.style?.question"
                 >{{ currentTask?.task?.question }}
               </span>
             </div>
@@ -72,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed, watch } from "vue";
+import { ref, onMounted, onUnmounted, computed, watch, Ref } from "vue";
 import { getAsset, waitFor } from "@/utils";
 import { Howl, Howler } from "howler";
 import gsap from "gsap";
@@ -105,6 +105,7 @@ const props = defineProps<{
   type: "relax" | "challenge";
   getNextTask: () => Task;
   locales: {};
+  relaxModalOpen: Ref<boolean>;
   taskTimeoutStatus: { timeout: number | null; status: string };
   startTaskTimeout: (customTimeout?: number) => void;
   pauseTaskTimeout: () => void;
@@ -130,20 +131,34 @@ const correctAnswer = ref({
   timeout: null,
 });
 
+watch(
+  () => props.relaxModalOpen,
+  (val) => {
+    if (val) {
+      console.log(`stoppihng`);
+
+      clearInterval(interval);
+    } else {
+      console.log(`resuming`);
+      playCurrentTask();
+    }
+  }
+);
+
 // watching task timeout
-// if (props.taskTimeoutStatus) {
-//   watch(
-//     props.taskTimeoutStatus,
-//     (val) => {
-//       if (val.status === "stopped") {
-//         autoAnswer();
-//       }
-//     },
-//     {
-//       deep: true,
-//     }
-//   );
-// }
+if (props.taskTimeoutStatus) {
+  watch(
+    props.taskTimeoutStatus,
+    (val) => {
+      if (val.status === "stopped") {
+        autoAnswer();
+      }
+    },
+    {
+      deep: true,
+    }
+  );
+}
 
 const onButton = async (button: Button, event: MouseEvent) => {
   if (correctAnswer.value.visible) return;
@@ -239,10 +254,10 @@ const autoAnswer = () => {
     isCorrect: false,
     answerString: "",
     autoAnswer: true,
-    task: null,
+    task: currentTask.value,
   });
 
-  startTaskTimeout();
+  nextTask();
 };
 
 const emitAnswer = (props: AnswerProps) => {
@@ -263,7 +278,7 @@ const startGame = () => {
   setTimeout(() => {
     playCurrentTask();
     startTaskTimeout();
-  }, 200);
+  }, 1000);
 };
 
 const startTaskTimeout = () => {
@@ -305,5 +320,6 @@ onMounted(() => {
 
 onUnmounted(() => {
   gsapCtx?.revert();
+  clearInterval(interval);
 });
 </script>
