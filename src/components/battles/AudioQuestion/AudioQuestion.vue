@@ -9,7 +9,17 @@
 
       <!-- question -->
       <div class="slide-cnt flex flex-col justify-center relative">
-        <img class="w-full h-[15dvh] object-contain" :src="getAsset('loudspeaker')" />
+        <div class="speaker-cnt w-[25vw] mx-auto relative">
+          <img class="speaker w-full h-full object-contain" :src="getAsset('loudspeaker')" />
+          <div class="waves absolute top-0 left-0 bottom-0 w-[35vw]">
+            <svg width="100%" height="auto" viewBox="0 0 100 100" class="" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="wave-path opacity-0" d="M 65 20 Q 78 40 74 65" stroke="#fff" stroke-width="1.5" stroke-linecap="round" />
+              <path class="wave-path opacity-0" d="M 77 11 Q 93 38 86 72" stroke="#fff" stroke-width="2" stroke-linecap="round" />
+              <path class="wave-path opacity-0" d="M 90 0 Q 110 40 100 80" stroke="#fff" stroke-width="2.5" stroke-linecap="round" />
+            </svg>
+          </div>
+        </div>
+        <!-- <button @click="animate">animate</button> -->
         <!-- <Transition v-if="type === 'relax'" name="fade" mode="out-in">
           <div v-if="currentTask" :key="currentTask.task?.question" class="flex flex-col gap-2 items-center text-center break-words">
             <div class="question-cnt w-full max-w-[90vw]">
@@ -302,7 +312,8 @@ const startTaskTimeout = () => {
 };
 
 const playCurrentTask = () => {
-  if (!isModalOpen.value && props.energy) {
+  if ((!isModalOpen.value && props.type === "relax" && props.energy) || props.type === "challenge") {
+    gsapCtx.animateSpeaker();
     currentTask.value.sound.play();
     currentTask.value.sound.on("end", () => {
       buttonsBlocked.value = false;
@@ -314,7 +325,8 @@ const playCurrentTask = () => {
   }
 
   interval = setInterval(() => {
-    if (!isModalOpen.value && props.energy) {
+    if ((!isModalOpen.value && props.type === "relax" && props.energy) || props.type === "challenge") {
+      gsapCtx.animateSpeaker();
       currentTask.value.sound.play();
       currentTask.value.sound.on("end", () => {
         buttonsBlocked.value = false;
@@ -332,6 +344,43 @@ const setup = () => {
   gsapCtx.add("animateAnswer", () => {
     gsap.to(".correct-answer-answer", { opacity: 1, y: 0, duration: 0.5 });
   });
+
+  gsapCtx.add("animateSpeaker", () => {
+    const speakerTl = gsap.timeline();
+    speakerTl.to(".speaker", { scale: 0.95, duration: () => getRandom() });
+    speakerTl.to(".speaker", { scale: 1.05, duration: () => getRandom() });
+    speakerTl.to(".speaker", { scale: 1, duration: () => getRandom() });
+    speakerTl.to(".speaker", { scale: 0.95, duration: () => getRandom() });
+    speakerTl.to(".speaker", { scale: 1.05, duration: () => getRandom() });
+    speakerTl.to(".speaker", { scale: 1, duration: () => getRandom() });
+    speakerTl.to(".speaker", { scale: 0.95, duration: () => getRandom() });
+    speakerTl.to(".speaker", { scale: 1.05, duration: () => getRandom() });
+    speakerTl.to(".speaker", { scale: 1, duration: () => getRandom() });
+
+    const waveTl = gsap.timeline();
+    waveTl.to(".wave-path", {
+      duration: 0.1,
+      opacity: 1,
+      delay: 0.1,
+      stagger: 0.1,
+    });
+
+    waveTl.to(".wave-path", {
+      duration: 0.1,
+      opacity: 0,
+      delay: 0.1,
+      stagger: 0.1,
+    });
+  });
+};
+
+const getRandom = () => {
+  const rand = gsap.utils.random(0.03, 0.08);
+  return rand;
+};
+
+const animate = () => {
+  gsapCtx.animateSpeaker();
 };
 
 onMounted(() => {
