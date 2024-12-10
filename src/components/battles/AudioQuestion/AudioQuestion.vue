@@ -320,7 +320,7 @@ const playCurrentTask = () => {
         buttonsBlocked.value = false;
       });
     }
-  }, 10000);
+  }, 5000);
 };
 
 const setup = () => {
