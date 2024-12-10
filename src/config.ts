@@ -70,6 +70,7 @@ export const essentialAssets = {
   user: "/user.webp",
   add_home_screen: "/add_home_screen.webp",
   invite_friends: "/invite_friends.webp",
+  loudspeaker: "/loudspeaker.webp",
 };
 
 export const nonEssentialAssets = {};

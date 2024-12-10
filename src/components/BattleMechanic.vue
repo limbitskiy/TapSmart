@@ -5,6 +5,7 @@
       :is="mountedMechanic"
       :type="currentBattleMode"
       :locales="locale"
+      :energy="data.energy"
       :taskTimeoutStatus="taskTimeoutStatus"
       :startTaskTimeout="startTaskTimeout"
       :pauseTaskTimeout="pauseTaskTimeout"
@@ -19,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, shallowRef, onUpdated } from "vue";
+import { ref, Ref, computed, watch, onMounted, shallowRef, onUpdated } from "vue";
 import { storeToRefs } from "pinia";
 import { getAsset } from "@/utils";
 
@@ -45,6 +46,7 @@ const emit = defineEmits<{
 
 defineProps<{
   taskTimeoutStatus: {};
+  energy: Ref<number>;
   relaxModalOpen: Ref<boolean>;
   startTaskTimeout: () => void;
   pauseTaskTimeout: () => void;
@@ -54,7 +56,7 @@ const store = useMainStore();
 
 // const { useFetch } = store;
 const { battles: locale } = storeToRefs(store.localeStore);
-const { сurrentMechanicName, currentBattleMode } = storeToRefs(store.battleStore);
+const { data, сurrentMechanicName, currentBattleMode } = storeToRefs(store.battleStore);
 const { handleAnswer, getNextTask, resetBattleStats, resetBattleProcessor } = store.battleStore;
 
 const mountedMechanic = shallowRef();

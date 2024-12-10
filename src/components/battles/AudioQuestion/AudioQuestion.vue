@@ -9,7 +9,8 @@
 
       <!-- question -->
       <div class="slide-cnt flex flex-col justify-center relative">
-        <Transition v-if="type === 'relax'" name="fade" mode="out-in">
+        <img class="w-full h-[15dvh] object-contain" :src="getAsset('loudspeaker')" />
+        <!-- <Transition v-if="type === 'relax'" name="fade" mode="out-in">
           <div v-if="currentTask" :key="currentTask.task?.question" class="flex flex-col gap-2 items-center text-center break-words">
             <div class="question-cnt w-full max-w-[90vw]">
               <span v-show="showQuestion" class="fira-bold line-clamp-2" style="font-size: clamp(28px, 10vw, 42px)" :style="currentTask.settings?.style?.question"
@@ -27,7 +28,7 @@
               </span>
             </div>
           </div>
-        </template>
+        </template> -->
 
         <!-- correct answer -->
         <Transition name="correct-text">
@@ -105,6 +106,7 @@ const props = defineProps<{
   type: "relax" | "challenge";
   getNextTask: () => Task;
   locales: {};
+  energy: Ref<number>;
   relaxModalOpen: Ref<boolean>;
   taskTimeoutStatus: { timeout: number | null; status: string };
   startTaskTimeout: (customTimeout?: number) => void;
@@ -115,6 +117,8 @@ const settings = {};
 
 let gsapCtx;
 let interval;
+
+const buttonsBlocked = ref(true);
 const showQuestion = ref(false);
 const cachedTasks = ref([]);
 const buttons = ref([
@@ -130,16 +134,19 @@ const correctAnswer = ref({
   answer: "",
   timeout: null,
 });
+const isModalOpen = ref(false);
 
+// watch opened modals
 watch(
   () => props.relaxModalOpen,
   (val) => {
     if (val) {
-      console.log(`stoppihng`);
+      console.log(`stopping`);
 
-      clearInterval(interval);
+      isModalOpen.value = true;
     } else {
       console.log(`resuming`);
+      isModalOpen.value = false;
       playCurrentTask();
     }
   }
@@ -161,7 +168,10 @@ if (props.taskTimeoutStatus) {
 }
 
 const onButton = async (button: Button, event: MouseEvent) => {
-  if (correctAnswer.value.visible) return;
+  if (correctAnswer.value.visible || buttonsBlocked.value) return;
+
+  buttonsBlocked.value = true;
+  currentTask.value.sound.stop();
 
   clearInterval(interval);
 
@@ -176,7 +186,7 @@ const onButton = async (button: Button, event: MouseEvent) => {
     button.danger = true;
     if (props.type === "relax" && !currentTask.value.action?.api) {
       animateCorrectAnswer();
-      await waitFor(1800);
+      await waitFor(2000);
     }
   }
   setTimeout(() => {
@@ -201,6 +211,10 @@ const nextTask = async () => {
   for (let i = 0; i < buttons.value.length; i++) {
     buttons.value[i].label = currentTask.value.task.variants[i];
   }
+
+  setTimeout(() => {
+    buttonsBlocked.value = false;
+  }, 500);
 };
 
 const submitTask = async (answerProps: AnswerProps) => {
@@ -240,7 +254,7 @@ const preloadTask = () => {
     },
     onloaderror: () => {
       new Error(`Couldn't load sound: '${task.task.url}'`);
-      showQuestion.value = true;
+      // showQuestion.value = true;
     },
   });
 
@@ -288,14 +302,24 @@ const startTaskTimeout = () => {
 };
 
 const playCurrentTask = () => {
-  currentTask.value.sound.play();
+  if (!isModalOpen.value && props.energy) {
+    currentTask.value.sound.play();
+    currentTask.value.sound.on("end", () => {
+      buttonsBlocked.value = false;
+    });
+  }
 
   if (interval) {
     clearInterval(interval);
   }
 
   interval = setInterval(() => {
-    currentTask.value.sound.play();
+    if (!isModalOpen.value && props.energy) {
+      currentTask.value.sound.play();
+      currentTask.value.sound.on("end", () => {
+        buttonsBlocked.value = false;
+      });
+    }
   }, 10000);
 };
 

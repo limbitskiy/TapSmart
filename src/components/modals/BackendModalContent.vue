@@ -1,6 +1,6 @@
 <template>
   <div class="data-content flex flex-col gap-4 items-center text-center mb-4">
-    <img v-if="data.image" class="h-[30dvh]" :src="getAsset(data.image)" />
+    <img v-if="data.image" class="h-[30dvh] py-[5dvh]" :src="getAsset(data.image)" />
     <!-- <img v-else class="h-[30dvh] my-4" :src="getAsset('confirm')" /> -->
     <div class="text flex flex-col gap-2">
       <span class="text-3xl fira-semibold text-gray-100" v-html="data.title"></span>
