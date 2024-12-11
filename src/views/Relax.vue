@@ -9,7 +9,14 @@
     <ChallengeButton @challenge="openBoosterModal" />
 
     <!-- battle header -->
-    <BattleHeader :taskTimeoutStatus="taskTimeoutStatus" :locale="locale" :title="headerTitle" @changeMech="onChangeMech" />
+    <BattleHeader
+      :taskTimeoutStatus="taskTimeoutStatus"
+      :locale="locale"
+      :title="headerTitle"
+      :subtitle="сurrentMechanicName === 'audio_question'"
+      @changeMech="onChangeMech"
+      @subtitleClick="onSubtitleClick"
+    />
 
     <!-- battle mechanic -->
     <BattleMechanic
@@ -77,6 +84,7 @@ const store = useMainStore();
 const { fetchRelaxPageData, useFetch, hideTooltip, setBgColor } = store;
 const { debugMessages, HTMLSnapshots } = storeToRefs(store);
 const { battles: locale } = storeToRefs(store.localeStore);
+const { toggleSetting } = store.dataStore;
 const { data, afkCounter, сurrentMechanicName, backendModalOpen, relaxPaused, startChallengeModalOpened } = storeToRefs(store.battleStore);
 const { startBreakpoint, stopBreakpoint, calculateRelaxMultiplierAmount } = store.battleStore;
 
@@ -185,6 +193,10 @@ const drawBonusAnimation = ({ x, y }: { x: number; y: number }) => {
   }, 700);
 
   return true;
+};
+
+const onSubtitleClick = () => {
+  toggleSetting("subtitles");
 };
 
 onMounted(() => {

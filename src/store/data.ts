@@ -7,7 +7,7 @@ import { useBattleStore } from "@/store/battle";
 import { useLocaleStore } from "@/store/locale";
 
 // types
-import { SettingsKeys, DataSections, DataState } from "@/types";
+import { Settings, DataState, BattleState } from "@/types";
 
 export const useDataStore = defineStore("data", () => {
   const battles = useBattleStore();
@@ -19,6 +19,7 @@ export const useDataStore = defineStore("data", () => {
       sound: false,
       music: false,
       vibro: false,
+      subtitles: false,
     },
   });
 
@@ -32,14 +33,14 @@ export const useDataStore = defineStore("data", () => {
   const market = computed(() => state.value.market);
   const loader = computed(() => state.value.loader);
 
-  const set = (section: DataSections, data: { locale: {}; store: {}; expand: {} }) => {
+  const set = (section: keyof DataState, data: { locale: {}; store: {}; expand: {} }) => {
     if (data.locale) {
       locale.set(section, data.locale);
     }
 
     if (data.store) {
       if (section === "battles") {
-        battles.set(data.store);
+        battles.set(data.store as BattleState);
       }
 
       if (!state.value[section]) {
@@ -68,9 +69,13 @@ export const useDataStore = defineStore("data", () => {
     state.value.profile.bolts = +(state.value.profile.bolts + amount).toFixed(2);
   };
 
-  const setSettings = (key: SettingsKeys, value: boolean) => {
+  const setSettings = (key: keyof Settings, value: boolean) => {
     state.value.settings[key] = value;
   };
 
-  return { menu, tutorial, profile, battles, friends, settings, tasks, leaders, market, loader, set, setSettings, addBolts };
+  const toggleSetting = (key: keyof Settings) => {
+    state.value.settings[key] = !state.value.settings[key];
+  };
+
+  return { menu, tutorial, profile, battles, friends, settings, tasks, leaders, market, loader, set, setSettings, addBolts, toggleSetting };
 });

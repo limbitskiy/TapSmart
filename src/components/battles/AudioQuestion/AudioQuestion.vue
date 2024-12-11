@@ -8,7 +8,7 @@
       </div>
 
       <!-- question -->
-      <div class="slide-cnt flex flex-col justify-center relative">
+      <div class="slide-cnt flex flex-col justify-center relative mt-4">
         <div class="speaker-cnt w-[25vw] mx-auto relative">
           <img class="speaker w-full h-full object-contain" :src="getAsset('loudspeaker')" />
           <div class="waves absolute top-0 left-0 bottom-0 w-[35vw]">
@@ -18,6 +18,12 @@
               <path class="wave-path opacity-0" d="M 90 0 Q 110 40 100 80" stroke="#fff" stroke-width="2.5" stroke-linecap="round" />
             </svg>
           </div>
+        </div>
+
+        <div class="question-cnt w-full max-w-[90vw] mt-4 h-[25px]">
+          <span v-show="settings?.['subtitles']" class="fira-semibold line-clamp-2 text-xl text-center" :style="currentTask?.settings?.style?.question"
+            >[ {{ currentTask?.task?.question }} ]</span
+          >
         </div>
         <!-- <button @click="animate">animate</button> -->
         <!-- <Transition v-if="type === 'relax'" name="fade" mode="out-in">
@@ -89,7 +95,7 @@ import { Howl, Howler } from "howler";
 import gsap from "gsap";
 
 // types
-import { AnswerProps, Task } from "@/types";
+import { Settings, AnswerProps, Task } from "@/types";
 
 interface Button {
   id: number;
@@ -116,14 +122,13 @@ const props = defineProps<{
   type: "relax" | "challenge";
   getNextTask: () => Task;
   locales: {};
+  settings: Settings;
   energy: Ref<number>;
   relaxModalOpen: Ref<boolean>;
   taskTimeoutStatus: { timeout: number | null; status: string };
   startTaskTimeout: (customTimeout?: number) => void;
   pauseTaskTimeout: () => void;
 }>();
-
-const settings = {};
 
 let gsapCtx;
 let interval;

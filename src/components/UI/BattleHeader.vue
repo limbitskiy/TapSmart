@@ -21,6 +21,9 @@
     </Button>
 
     <div class="right flex items-center gap-3">
+      <div v-if="subtitle" class="subtitle fira-semibold text-gray-500 rounded-lg px-2 leading-6" @click="onSubtitle">
+        <span class="pt-[1px] inline-block">CC</span>
+      </div>
       <CircleCountdown :taskTimeoutStatus="taskTimeoutStatus" :strokeWidth="2" color="grey" :size="20" />
       <VolumeControl />
     </div>
@@ -32,11 +35,17 @@ import { getAsset } from "@/utils";
 
 const emit = defineEmits<{
   changeMech: [];
+  subtitleClick: [];
 }>();
 
 const props = defineProps<{
-  locale: {};
+  locale: Record<string, string>;
   title: string;
   taskTimeoutStatus: { timeout: number | null; status: string };
+  subtitle: boolean;
 }>();
+
+const onSubtitle = () => {
+  emit("subtitleClick");
+};
 </script>

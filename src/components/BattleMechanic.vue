@@ -11,6 +11,7 @@
       :pauseTaskTimeout="pauseTaskTimeout"
       :getNextTask="getNextTask"
       :relaxModalOpen="relaxModalOpen"
+      :settings="settings"
       @answer="onAnswer"
       @changeMech="() => emit('changeMech')"
       @startChallenge="() => emit('startChallenge')"
@@ -56,6 +57,7 @@ const store = useMainStore();
 
 // const { useFetch } = store;
 const { battles: locale } = storeToRefs(store.localeStore);
+const { settings } = storeToRefs(store.dataStore);
 const { data, сurrentMechanicName, currentBattleMode } = storeToRefs(store.battleStore);
 const { handleAnswer, getNextTask, resetBattleStats, resetBattleProcessor } = store.battleStore;
 

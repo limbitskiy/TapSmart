@@ -33,12 +33,13 @@ export interface MainState {
 
 export interface DataState {
   tutorial?: {};
+  battles?: {};
   profile?: {
     bolts?: number;
   };
   menu?: {
-    items: [{ id: number; title: string; icon: string; link: string }];
-    badges: [{ id: number; value: string }];
+    // items: [{ id: number; title: string; icon: string; link: string }];
+    // badges: [{ id: number; value: string }];
   };
   friends?: {};
   tasks?: {};
@@ -124,6 +125,7 @@ export interface Settings {
   sound: boolean;
   music: boolean;
   vibro: boolean;
+  subtitles: boolean;
 }
 
 export type Task = {
@@ -189,6 +191,6 @@ export interface Bonus {
   amount: number;
 }
 
-export type LocaleSection = "tutorial" | "profile" | "battles" | "menu" | "friends" | "required-settings" | "leaders" | "market" | "tasks" | "loader" | "intro";
+// export type LocaleSection = "tutorial" | "profile" | "battles" | "menu" | "friends" | "required-settings" | "leaders" | "market" | "tasks" | "loader" | "intro";
 
 export type BattleType = "yesno" | "4answers" | "bubble_pairs" | "audio_question" | "match_pairs" | "work_on_mistakes" | "picture_question";
